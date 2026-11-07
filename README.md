@@ -74,11 +74,13 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Fabrication (draft prices). Only a merc with the TEC Phenom perk Fabricator (`TEC.B.ph`) gets the Fabrication bench on the character sheet. Create 300 €$, Upgrade 200 €$ per Mk level (Mk II to Mk IV, item `tier` 1 to 3), Fortify 150 €$ (item `fort`). Tweak `FAB_COST` in the script
 - Cyberpsychosis status (`psycho` on the merc). Set from the sheet (Lose it / Pull back) or by the DM from the dashboard. Turning it on glitches the whole page, then leaves a lingering vignette until it's cleared
 - Hitting 0 HP or 0 NET HP plays the FLATLINED screen
+- DM hacks (draft list in `HACKS`). System Lockout, Weapon Glitch, Optics Reboot, Cyberware Malfunction and Short Circuit. They stack on the merc (`hacks`), lock the matching sheet features, mark disadvantage and glitch the page until the DM clears them
+- Cool bonuses (`cool`). The DM awards them like inspiration, the player spends them from the sheet header
 - The DM's item library lives under that browser's DM account and carries between sessions. Copy library and Import library move it to another browser
 - Firestore layout
   - `sessions/{code}` holds dmUid, name, created
   - `sessions/{code}/players/{uid}` holds name, mercId, merc, updatedAt, seen (heartbeat every minute)
-  - `sessions/{code}/players/{uid}/inbox/{op}` holds kind (item, eddies, hp, ram, install, uninstall, psycho), amount, item, itemId, slot, cyberId, from, fromName, at
+  - `sessions/{code}/players/{uid}/inbox/{op}` holds kind (item, eddies, hp, ram, install, uninstall, psycho, hack, unhack, cool), amount, item, itemId, slot, cyberId, from, fromName, at
   - `sessions/{code}/portraits/{uid}` holds img (data URL) and mercId
   - `dms/{uid}/library/{item}` holds name, type, qty, stats
 
