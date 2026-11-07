@@ -24,6 +24,9 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - The SETTINGS button (bottom right, next to SFX and FX) opens the settings panel. Saved per device in `daemon-theme`
 - Four animated backgrounds. Circuit (the original), Nomad (sunset desert with drifting dunes, blowing dust and drifter headlights on the far ridge), Corpo (glass shards on an angular grid with light sweeps and data blips) and Streetkid (Night City skyline in the rain with flickering neon, spotlights and flying cars). Each has its own four colors, labeled for that scene, plus the six color presets. They live in `STYLES` and `SCENES` in the script. FX off freezes them
 
+- Settings has four tabs. Look (background, colors, background brightness). Comfort (text size, compact sheet, color-blind friendly bars, reduce flashing, battery saver). Sound (volume, plus toggles for UI clicks, game sounds and big moments). Controls (keyboard shortcuts). Stored in `daemon-theme` and `daemon-prefs`, and synced through the Google account when signed in
+- Keyboard shortcuts. 1 to 4 jump to Rules, Your Mercs, Live Session and Codex. P and C switch sheet tabs. D and H damage or heal using the amount box. R spends a Reaction. S opens settings. ? lists them all
+
 ## Saving
 - Mercs save automatically in the browser
 - Copy save code gives a `DMN1.` code to paste into Import on another device or in Discord

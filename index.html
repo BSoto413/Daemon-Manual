@@ -407,6 +407,33 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
 .setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:auto;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
 .setp h3{margin:0 0 4px}
+.stabs{display:flex;gap:4px;margin:12px 0 4px;border-bottom:1px solid rgba(47,230,240,.18)}
+.stabs button{flex:1;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 2px;cursor:pointer}
+.stabs button.on{color:var(--cyan);border-bottom-color:var(--cyan)}
+.crow input.sw2{appearance:none;-webkit-appearance:none;width:44px;height:22px;border:1px solid var(--cyan-dim);background:#08080f;position:relative;cursor:pointer;margin:0}
+.crow input.sw2::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--muted);transition:left .15s,background .15s}
+.crow input.sw2:checked{border-color:var(--cyan);background:rgba(47,230,240,.12)}.crow input.sw2:checked::after{left:25px;background:var(--cyan)}
+.crow.rng{grid-template-columns:1fr}.crow.rng b{color:var(--cyan);font-weight:500;font-size:13px;margin-left:4px}
+.crow input[type=range]{width:100%;accent-color:var(--cyan)}
+.keys{display:grid;gap:6px;margin-top:10px}.keys div{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center;font-size:13px}
+kbd{font-family:Orbitron,sans-serif;font-size:11px;color:#fff;border:1px solid var(--cyan-dim);padding:3px 6px;text-align:center;background:#08080f}
+/* color-blind bars */
+body.cb .bar i{background:repeating-linear-gradient(135deg,#ffa400 0 6px,#c97c00 6px 11px)}
+body.cb .bar.net i{background:#2f7dff radial-gradient(circle,#9cc4ff 1.2px,transparent 1.6px) 0 0/6px 6px}
+body.cb .pcard.npc .bar i{background:repeating-linear-gradient(135deg,#ffa400 0 6px,#c97c00 6px 11px)}
+/* compact sheet */
+body.compact #vSheet .panel{padding:12px 14px}
+body.compact #vSheet .gap{margin-top:10px}
+body.compact #vSheet h3{font-size:16px}
+body.compact .statgrid{gap:6px;margin-top:10px}body.compact .statbox{padding:6px 4px}body.compact .statbox .sc{font-size:24px;margin:1px 0}body.compact .statbox .nmx{display:none}
+body.compact .track{margin-bottom:8px}body.compact .track .num{font-size:22px}
+body.compact .irow,body.compact .inv-add{gap:5px}body.compact .irow{padding:4px 0}
+body.compact .ident{gap:8px}body.compact #vCS .row{margin-top:6px}
+body.compact .cslot{padding:8px 10px}
+/* calm mode */
+body.calm .gl::before,body.calm .gl::after{display:none}
+body.calm #vignette.on{animation:none}
+body.calm .tear{display:none}
 .styles{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 12px}
 .styles button{text-align:left;background:#08080f;border:1px solid rgba(47,230,240,.2);padding:9px 10px;cursor:pointer;color:inherit;font:inherit}
 .styles button b{display:block;font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#fff}
@@ -2493,16 +2520,17 @@ function cloudPurge(id){
 }
 function userMerge(u){
   u = u || {};
+  remoteSettings(u.settings);
   const hs = hosted(), js = joined();
   const H = [...hs, ...(u.hosted || []).filter(h => !hs.some(x => x.code === h.code))];
   const J = [...js, ...(u.joined || []).filter(j => !js.some(x => x.code === j.code && x.mercId === j.mercId))];
   try { localStorage.setItem(HOSTED_KEY, JSON.stringify(H.slice(0, 8))); localStorage.setItem(JOINED_KEY, JSON.stringify(J.slice(0, 6))); } catch(e){}
-  if (JSON.stringify(H.slice(0, 8)) !== JSON.stringify(u.hosted || []) || JSON.stringify(J.slice(0, 6)) !== JSON.stringify(u.joined || [])) pushUser();
+  if (JSON.stringify(H.slice(0, 8)) !== JSON.stringify(u.hosted || []) || JSON.stringify(J.slice(0, 6)) !== JSON.stringify(u.joined || []) || !u.settings || u.settings.at < settingsAt()) pushUser();
   if (liveState !== 'on') renderLive();
 }
 function pushUser(){
   if (!cloudApi) return;
-  clearTimeout(userT); userT = setTimeout(() => cloudApi.setUser({hosted:hosted(), joined:joined(), updatedAt:Date.now()}).catch(() => {}), 800);
+  clearTimeout(userT); userT = setTimeout(() => cloudApi.setUser({hosted:hosted(), joined:joined(), settings:{theme:THEME, prefs:PREFS, at:settingsAt()}, updatedAt:Date.now()}).catch(() => {}), 800);
 }
 
 /* ---- change log ---- */
@@ -3467,11 +3495,17 @@ document.querySelectorAll('.rsec').forEach(sec => tocObs.observe(sec));
 const PREF = k => { try { return localStorage.getItem(k) !== '0'; } catch(e){ return true; } };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FXS = {sfx: PREF('daemon-sfx'), motion: reducedMotion ? false : PREF('daemon-motion')};
+const PREFS_KEY = 'daemon-prefs';
+const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, cb:false, battery:false, compact:false, keys:true};
+let PREFS = {...PREFS_DEF};
+try { const p = JSON.parse(localStorage.getItem(PREFS_KEY)); if (p) PREFS = {...PREFS_DEF, ...p}; } catch(e){}
+const flashOK = () => FXS.motion && !PREFS.calm;
+const SND_CAT = {select:'ui', tab:'ui', up:'ui', down:'ui', deny:'ui', breach:'big', levelup:'big', cool:'big'};
 let actx = null, master = null, noiseBuf = null;
 function ac(){
   if (!actx){
     try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){ return null; }
-    master = actx.createGain(); master.gain.value = .7;
+    master = actx.createGain(); master.gain.value = .7 * PREFS.vol / 100;
     const comp = actx.createDynamicsCompressor(); master.connect(comp); comp.connect(actx.destination);
     noiseBuf = actx.createBuffer(1, actx.sampleRate * .5, actx.sampleRate);
     const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
@@ -3511,7 +3545,7 @@ const SOUNDS = {
   breach:  () => { for (let i = 0; i < 10; i++) tone(400 + Math.random() * 2400, 200 + Math.random() * 1800, .05, 'square', .035, i * .045); noise(.25, .08, .05, 3000, 6); tone(110, 60, .5, 'sawtooth', .05, .4); },
   receive: () => { [988, 1319, 1568, 1976].forEach((f, i) => tone(f, f, .11, 'triangle', .045, i * .06)); noise(.05, .05, 0, 6000, 2); }
 };
-function sfx(n){ if (!FXS.sfx || !SOUNDS[n]) return; try { SOUNDS[n](); } catch(e){} }
+function sfx(n){ if (!FXS.sfx || !SOUNDS[n] || !PREFS[SND_CAT[n] || 'game']) return; try { SOUNDS[n](); } catch(e){} }
 function classify(b){
   const d = b.dataset, txt = (b.textContent || '').trim();
   if (b.id === 'doAct' || b.id === 'tSfx' || b.id === 'coolSpend') return null;
@@ -3552,13 +3586,13 @@ document.addEventListener('change', e => { if (e.target.matches('select[data-ins
 
 /* ================= GLITCH FX ================= */
 function sfxFlatline(){
-  if (!FXS.sfx) return;
+  if (!FXS.sfx || !PREFS.big) return;
   tone(160, 50, .35, 'sawtooth', .1); noise(.2, .14, 0, 300, .8);
   [0, .28].forEach(d => tone(1000, 1000, .09, 'sine', .07, .5 + d));
   tone(1000, 1000, 2.2, 'sine', .06, 1.1);
 }
 function sfxPsycho(){
-  if (!FXS.sfx) return;
+  if (!FXS.sfx || !PREFS.big) return;
   for (let i = 0; i < 9; i++) noise(.08, .14, i * .11, 600 + Math.random() * 5000, 4);
   tone(900, 40, 1.4, 'sawtooth', .07); tone(57, 45, 1.8, 'square', .06, .1); tone(1500, 220, .5, 'square', .03, .9);
 }
@@ -3567,12 +3601,12 @@ function flatline(kind){
   $('#flSub').textContent = kind === 'net' ? 'Flatlined in the Net. Unconscious. Critical condition.' : 'Unconscious. Critical condition.';
   el.hidden = true; void el.offsetWidth; el.hidden = false;
   sfxFlatline();
-  clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; }, FXS.motion ? 4800 : 3000);
+  clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; }, flashOK() ? 4800 : 3000);
 }
 $('#flatline').addEventListener('click', () => { $('#flatline').hidden = true; });
 function glitchBurst(ms, word, palette){
   const fx = $('#glitchFx'); if (!fx) return;
-  if (!FXS.motion){ fx.innerHTML = word ? `<div class="word">${word}</div>` : ''; fx.classList.add('on'); setTimeout(() => { fx.classList.remove('on'); fx.innerHTML = ''; }, 1200); return; }
+  if (!flashOK()){ fx.innerHTML = word ? `<div class="word">${word}</div>` : ''; fx.classList.add('on'); setTimeout(() => { fx.classList.remove('on'); fx.innerHTML = ''; }, 1200); return; }
   document.body.classList.add('psy-glitch'); fx.classList.add('on');
   const colors = palette || ['rgba(194,27,255,.75)', 'rgba(47,230,240,.7)', 'rgba(255,42,109,.75)', 'rgba(255,255,255,.5)'];
   const tick = () => {
@@ -3585,7 +3619,7 @@ function glitchBurst(ms, word, palette){
   setTimeout(() => { clearInterval(iv); fx.innerHTML = ''; fx.classList.remove('on'); document.body.classList.remove('psy-glitch'); }, ms);
 }
 function heatFx(){
-  if (FXS.sfx){ noise(.9, .12, 0, 900, .5); tone(300, 60, .9, 'sawtooth', .06); for (let i = 0; i < 6; i++) noise(.04, .1, .2 + i * .09, 4000, 5); }
+  if (FXS.sfx && PREFS.big){ noise(.9, .12, 0, 900, .5); tone(300, 60, .9, 'sawtooth', .06); for (let i = 0; i < 6; i++) noise(.04, .1, .2 + i * .09, 4000, 5); }
   glitchBurst(1100, 'OVERHEATED', ['rgba(255,120,0,.6)', 'rgba(255,40,0,.55)', 'rgba(255,220,120,.45)', 'rgba(0,0,0,.5)']);
 }
 function hackFx(){
@@ -3602,7 +3636,7 @@ function coolFx(text, big){
 function updateHack(){
   const on = C && C.hacks && C.hacks.length && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
   document.body.classList.toggle('hacked', !!on);
-  document.body.classList.toggle('optics', !!on && C.hacks.includes('optics') && FXS.motion);
+  document.body.classList.toggle('optics', !!on && C.hacks.includes('optics') && flashOK());
 }
 function scramble(){
   const els = [...document.querySelectorAll('#sheetHead .vital .v, .tab .sc, .track .num')].filter(e => e.offsetParent);
@@ -3623,12 +3657,12 @@ function updatePsy(){
   const v = $('#psyVig'); if (!v) return;
   const show = C && C.psycho && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
   v.classList.toggle('on', !!show);
-  document.body.classList.toggle('psy-linger', !!show && FXS.motion);
+  document.body.classList.toggle('psy-linger', !!show && flashOK());
 }
 // ambient glitches
 function ambient(){
-  if (FXS.motion && !document.hidden && document.body.classList.contains('hacked')){ scramble(); setTimeout(scramble, 400); }
-  if (FXS.motion && !document.hidden){
+  if (flashOK() && !document.hidden && document.body.classList.contains('hacked')){ scramble(); setTimeout(scramble, 400); }
+  if (flashOK() && !document.hidden){
     const r = Math.random();
     if (r < .55){ const h = $('.gl-title'); h.classList.remove('glitching'); void h.offsetWidth; h.classList.add('glitching'); setTimeout(() => h.classList.remove('glitching'), 360); }
     else { const t = document.createElement('div'); t.className = 'tear'; t.style.top = (Math.random() * 100) + 'vh'; document.body.appendChild(t); setTimeout(() => t.remove(), 260); }
@@ -3636,7 +3670,7 @@ function ambient(){
   setTimeout(ambient, document.body.classList.contains('hacked') ? 1500 + Math.random() * 2500 : 5000 + Math.random() * 9000);
 }
 setTimeout(ambient, 3000);
-document.body.classList.toggle('fx', FXS.motion);
+document.body.classList.toggle('fx', flashOK());
 
 /* ================= NEAR DEATH VIGNETTE ================= */
 function updateVignette(){
@@ -3652,7 +3686,7 @@ function updateVignette(){
   v.style.setProperty('--vdur', (1.5 - .75 * lv).toFixed(2) + 's');
   v.classList.toggle('dead', r <= 0);
   v.style.opacity = '';
-  if (!FXS.motion){ v.classList.remove('on'); v.style.opacity = (.35 + .5 * lv).toFixed(2); }
+  if (!flashOK()){ v.classList.remove('on'); v.style.opacity = (.35 + .5 * lv).toFixed(2); }
   else v.classList.add('on');
 }
 
@@ -3719,7 +3753,7 @@ function buildLayer(L){
   L.tile = t;
 }
 function sizeCanvas(){
-  const nd = Math.min(window.devicePixelRatio || 1, 1.5);
+  const nd = PREFS.battery ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
   VW = innerWidth; VH = innerHeight;
   cv.width = Math.round(VW * nd); cv.height = Math.round(VH * nd);
   if (nd !== DPR || !LAYERS[0].tile){ DPR = nd; LAYERS.forEach(buildLayer); }
@@ -3760,7 +3794,7 @@ const srnd = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
 const SCENES = {};
 let sceneKey = '';
 function ensureScene(){
-  const k = [THEME.style, THEME.bg, THEME.trace, THEME.light, THEME.accent, VW, VH].join('|');
+  const k = [THEME.style, THEME.bg, THEME.trace, THEME.light, THEME.accent, VW, VH, PREFS.battery].join('|');
   if (k !== sceneKey){ sceneKey = k; SCENES[THEME.style].init(); }
 }
 
@@ -3773,7 +3807,7 @@ SCENES.nomad = (() => {
     const r = srnd(41);
     dunes = [0, 1, 2, 3].map(i => ({i, f1:.0021 + r() * .001, f2:.006 + r() * .003, f3:.017 + r() * .006, p1:r() * 6, p2:r() * 6, p3:r() * 6,
       amp:14 + i * 14, speed:3 + i * 7, mouse:4 + i * 10, scroll:.01 + i * .015, col:mixHex(mixHex(THEME.trace, THEME.bg, .55 - i * .17), '#000000', i * .16), base:0}));
-    dust = Array.from({length:Math.round(VW * VH / 9000)}, () => ({x:Math.random() * VW, y:VH * (.35 + Math.random() * .65), vx:40 + Math.random() * 120, s:.6 + Math.random() * 1.8, a:.08 + Math.random() * .3, w:Math.random() * 6}));
+    dust = Array.from({length:Math.round(VW * VH / (PREFS.battery ? 20000 : 9000))}, () => ({x:Math.random() * VW, y:VH * (.35 + Math.random() * .65), vx:40 + Math.random() * 120, s:.6 + Math.random() * 1.8, a:.08 + Math.random() * .3, w:Math.random() * 6}));
     stars = Array.from({length:70}, () => ({x:Math.random(), y:Math.random() * .4, a:.1 + Math.random() * .4}));
     const R = Math.round(Math.min(VW, VH) * .17), c = document.createElement('canvas'); c.width = c.height = R * 2 + 4;
     const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, R * 2);
@@ -3905,7 +3939,7 @@ SCENES.streetkid = (() => {
       }
       return {c, Hh, i, signs, speed:2 + i * 5, mouse:6 + i * 14, scroll:.02 + i * .03, y0:0};
     });
-    rain = Array.from({length:Math.round(VW * VH / 7000)}, () => ({x:Math.random() * VW, y:Math.random() * VH, v:600 + Math.random() * 500, l:8 + Math.random() * 18, a:.05 + Math.random() * .18}));
+    rain = Array.from({length:Math.round(VW * VH / (PREFS.battery ? 16000 : 7000))}, () => ({x:Math.random() * VW, y:Math.random() * VH, v:600 + Math.random() * 500, l:8 + Math.random() * 18, a:.05 + Math.random() * .18}));
     cars = Array.from({length:7}, (_, k) => ({x:Math.random() * VW, y:VH * (.12 + Math.random() * .4), v:(40 + Math.random() * 120) * (Math.random() < .5 ? 1 : -1), c:k % 3 ? 'light' : 'accent'}));
     beams = [{x:.22, ph:0}, {x:.78, ph:2.2}];
   }
@@ -3957,6 +3991,7 @@ SCENES.streetkid = (() => {
 
 let lastT = performance.now(), running = false;
 function frame(now){
+  if (PREFS.battery && FXS.motion && now - lastT < 31){ requestAnimationFrame(frame); return; }
   const t = now / 1000, dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
   ptr.sx += (ptr.x - ptr.sx) * .04; ptr.sy += (ptr.y - ptr.sy) * .04;
   cx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -3978,7 +4013,7 @@ function frame(now){
   });
   cx.globalAlpha = 1;
   if (FXS.motion){
-    while (pulses.length < Math.round(VW * VH / 52000)) spawnPulse(t);
+    while (pulses.length < Math.round(VW * VH / (PREFS.battery ? 110000 : 52000))) spawnPulse(t);
     cx.globalCompositeOperation = 'lighter';
     for (let k = pulses.length - 1; k >= 0; k--){
       const p = pulses[k]; p.s += p.speed * dt;
@@ -4011,19 +4046,62 @@ function applyTheme(rebuild){
   document.body.dataset.bg = THEME.style;
   if (rebuild){ LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; if (!FXS.motion) drawStatic(); }
 }
-function saveTheme(){ try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME)); } catch(e){} }
+const SET_AT_KEY = 'daemon-settings-at';
+const settingsAt = () => { try { return +localStorage.getItem(SET_AT_KEY) || 0; } catch(e){ return 0; } };
+function touchSettings(){ try { localStorage.setItem(SET_AT_KEY, Date.now()); } catch(e){} pushUser(); }
+function saveTheme(){ try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME)); } catch(e){} touchSettings(); }
+function savePrefs(){ try { localStorage.setItem(PREFS_KEY, JSON.stringify(PREFS)); } catch(e){} touchSettings(); }
+function applyPrefs(prev){
+  prev = prev || {};
+  const b = document.body;
+  $('.wrap').style.zoom = PREFS.text === 100 ? '' : PREFS.text / 100;
+  cv.style.opacity = PREFS.dim / 100;
+  b.classList.toggle('cb', PREFS.cb); b.classList.toggle('compact', PREFS.compact); b.classList.toggle('calm', PREFS.calm);
+  b.classList.toggle('fx', flashOK());
+  if (master) master.gain.value = .7 * PREFS.vol / 100;
+  if (prev.calm !== PREFS.calm){ updatePsy(); updateHack(); updateVignette(); }
+  if (prev.battery !== undefined && prev.battery !== PREFS.battery){ sizeCanvas(); LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; FXS.motion ? startBg() : drawStatic(); }
+  if (prev.text !== undefined && prev.text !== PREFS.text && C && !$('#vSheet').hidden && sheetTab === 'perks') requestAnimationFrame(build);
+}
+let setTab = 'look';
+const SHORTCUTS = [['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
 function renderSettings(){
-  const same = t => ['bg', 'trace', 'light', 'accent'].every(k => t[k].toLowerCase() === THEME[k].toLowerCase());
-  const row = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="color" data-theme="${k}" value="${THEME[k]}" aria-label="${label}"></label>`;
-  const S = STYLES[THEME.style] || STYLES.circuit, keys = ['bg', 'trace', 'light', 'accent'];
-  $('#setPanel').innerHTML = `<div class="row"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
-    <p class="muted" style="font-size:13px;margin:0">Make the page yours. Only changes how it looks on this device.</p>
-    <span class="lbl" style="margin-top:12px;display:block">Background</span>
+  const tabs = [['look', 'Look'], ['comfort', 'Comfort'], ['sound', 'Sound'], ['controls', 'Controls']];
+  const tog = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="checkbox" class="sw2" data-pref="${k}" ${PREFS[k] ? 'checked' : ''} aria-label="${label}"></label>`;
+  const rng = (k, label, hint, min, max, step, unit) => `<label class="crow rng"><span>${label} <b id="pv-${k}">${PREFS[k]}${unit}</b><small>${hint}</small></span><input type="range" data-pref="${k}" min="${min}" max="${max}" step="${step}" value="${PREFS[k]}" aria-label="${label}"></label>`;
+  let body = '';
+  if (setTab === 'look'){
+    const same = t => ['bg', 'trace', 'light', 'accent'].every(k => t[k].toLowerCase() === THEME[k].toLowerCase());
+    const row = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="color" data-theme="${k}" value="${THEME[k]}" aria-label="${label}"></label>`;
+    const S = STYLES[THEME.style] || STYLES.circuit, keys = ['bg', 'trace', 'light', 'accent'];
+    body = `<span class="lbl" style="margin-top:12px;display:block">Background</span>
     <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}</div>
     <span class="lbl" style="margin-top:6px;display:block">Color presets</span>
     <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}"><span class="sw"><i style="background:${t.bg}"></i><i style="background:${t.trace}"></i><i style="background:${t.light}"></i><i style="background:${t.accent}"></i></span>${n}</button>`).join('')}</div>
     ${keys.map((k, i) => row(k, S.lab[i][0], S.lab[i][1])).join('')}
-    <div class="row gap"><button class="btn small" data-set="reset">Reset to default</button></div>`;
+    ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
+    <div class="row gap"><button class="btn small" data-set="reset">Reset colors</button></div>`;
+  } else if (setTab === 'comfort'){
+    body = `${rng('text', 'Text size', 'Scales the whole site', 85, 140, 5, '%')}
+    ${tog('compact', 'Compact sheet', 'Tighter character sheet so more fits on screen in combat')}
+    ${tog('cb', 'Color-blind friendly bars', 'HP is orange with stripes, NET HP is blue with dots')}
+    ${tog('calm', 'Reduce flashing', 'Keeps the background but calms the glitches, flicker, pulsing and screen shake')}
+    ${tog('battery', 'Battery saver', 'Lower frame rate, fewer particles, lighter canvas. Good for phones')}
+    <p class="muted" style="font-size:12px;margin:8px 0 0">The background always pauses when the tab is hidden.</p>`;
+  } else if (setTab === 'sound'){
+    body = `${rng('vol', 'Volume', 'Master volume for every sound', 0, 100, 5, '%')}
+    ${tog('ui', 'UI clicks', 'Buttons, tabs and steppers')}
+    ${tog('game', 'Game sounds', 'Damage, healing, items, perks and chrome')}
+    ${tog('big', 'Big moments', 'Flatline, cyberpsychosis, overheat, hacks, level ups and Cool bonuses')}
+    <div class="row gap"><button class="btn small" data-set="test">Test sound</button><span class="muted" style="font-size:12px">The SFX button still mutes everything.</span></div>`;
+  } else {
+    body = `${tog('keys', 'Keyboard shortcuts', 'Ignored while you are typing in a box')}
+    <div class="keys">${SHORTCUTS.map(([k, d]) => `<div><kbd>${k}</kbd><span>${d}</span></div>`).join('')}</div>`;
+  }
+  $('#setPanel').innerHTML = `<div class="row"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
+    <p class="muted" style="font-size:13px;margin:0">${ACCT.google ? 'Synced to your Google account, so they follow you to every device.' : 'Saved on this device. Sign in with Google to sync them.'}</p>
+    <div class="stabs" role="tablist">${tabs.map(([k, n]) => `<button role="tab" aria-selected="${setTab === k}" class="${setTab === k ? 'on' : ''}" data-stab="${k}">${n}</button>`).join('')}</div>
+    ${body}`;
 }
 function toggleSettings(open){
   const p = $('#setPanel'); open = open ?? p.hidden;
@@ -4034,18 +4112,65 @@ $('#tSet').onclick = () => { sfx('select'); toggleSettings(); };
 $('#setPanel').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.dataset.set === 'close') return toggleSettings(false);
+  if (t.dataset.stab){ setTab = t.dataset.stab; return renderSettings(); }
+  if (t.dataset.set === 'test'){ const was = FXS.sfx; FXS.sfx = true; SOUNDS.perk(); FXS.sfx = was; return; }
   if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
   if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); return; }
   if (t.dataset.preset){ THEME = {...THEME, ...PRESETS[+t.dataset.preset][1], style:THEME.style}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
 });
-let themeT;
+let themeT, prefT;
 $('#setPanel').addEventListener('input', e => {
-  const k = e.target.dataset.theme; if (!k) return;
-  THEME[k] = e.target.value;
-  clearTimeout(themeT); themeT = setTimeout(() => { saveTheme(); applyTheme(k === 'trace'); $('#setPanel').querySelectorAll('[data-preset]').forEach(b => b.classList.remove('on')); }, 60);
+  const k = e.target.dataset.theme;
+  if (k){
+    THEME[k] = e.target.value;
+    clearTimeout(themeT); themeT = setTimeout(() => { saveTheme(); applyTheme(k === 'trace'); $('#setPanel').querySelectorAll('[data-preset]').forEach(b => b.classList.remove('on')); }, 60);
+    return;
+  }
+  const pk = e.target.dataset.pref; if (!pk) return;
+  const prev = {...PREFS};
+  PREFS[pk] = e.target.type === 'checkbox' ? e.target.checked : +e.target.value;
+  const lab = $('#pv-' + pk); if (lab) lab.textContent = PREFS[pk] + '%';
+  applyPrefs(prev);
+  clearTimeout(prefT); prefT = setTimeout(savePrefs, 300);
 });
-addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#setPanel').hidden) toggleSettings(false); });
+function remoteSettings(st){
+  if (!st || !(st.at > settingsAt())) return;
+  const prev = {...PREFS};
+  if (st.theme) THEME = {...THEME_DEF, ...st.theme};
+  if (st.prefs) PREFS = {...PREFS_DEF, ...st.prefs};
+  try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME)); localStorage.setItem(PREFS_KEY, JSON.stringify(PREFS)); localStorage.setItem(SET_AT_KEY, st.at); } catch(e){}
+  applyTheme(true); applyPrefs(prev);
+  if (!$('#setPanel').hidden) renderSettings();
+}
+/* keyboard shortcuts */
+addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#setPanel').hidden) return toggleSettings(false);
+  if (!PREFS.keys || e.ctrlKey || e.metaKey || e.altKey) return;
+  const tg = e.target; if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
+  const k = e.key.toLowerCase();
+  const sheet = C && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
+  const go = h => { location.hash = h; sfx('tab'); };
+  const press = sel => { const b = $(sel); if (b && b.offsetParent && !b.disabled){ b.click(); return true; } return false; };
+  const amtAct = act => {
+    if (!sheet) return;
+    if (sheetTab !== 'cs') setSheetTab('cs');
+    const box = $('#hpAmt');
+    if (box && (parseInt(box.value) || 0) > 0) press(`[data-act=${act}]`);
+    else if (box){ box.scrollIntoView({block:'center', behavior:'smooth'}); box.focus(); toast('Type an amount, then press ' + (act === 'dmg' ? 'D' : 'H') + ' again or hit the button.'); }
+  };
+  if (k === '1') go('#rules'); else if (k === '2') go('#mercs'); else if (k === '3') go('#live'); else if (k === '4') go('#codex');
+  else if (k === 'p' && sheet){ setSheetTab('perks'); sfx('tab'); }
+  else if (k === 'c' && sheet){ setSheetTab('cs'); sfx('tab'); }
+  else if (k === 'd') amtAct('dmg');
+  else if (k === 'h') amtAct('heal');
+  else if (k === 'r' && sheet){ if (sheetTab !== 'cs') setSheetTab('cs'); press('[data-act="ram-2"]'); }
+  else if (k === 's'){ sfx('select'); toggleSettings(); }
+  else if (e.key === '?'){ setTab = 'controls'; toggleSettings(true); }
+  else return;
+  e.preventDefault();
+});
 applyTheme(false);
+applyPrefs();
 
 function syncDock(){
   $('#tSfx').setAttribute('aria-pressed', FXS.sfx); $('#tFx').setAttribute('aria-pressed', FXS.motion);
@@ -4053,7 +4178,7 @@ function syncDock(){
 $('#tSfx').onclick = () => { FXS.sfx = !FXS.sfx; try { localStorage.setItem('daemon-sfx', FXS.sfx ? '1' : '0'); } catch(e){} syncDock(); if (FXS.sfx) sfx('up'); };
 $('#tFx').onclick = () => {
   FXS.motion = !FXS.motion; try { localStorage.setItem('daemon-motion', FXS.motion ? '1' : '0'); } catch(e){}
-  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); updatePsy(); updateHack(); document.body.classList.toggle('fx', FXS.motion); sfx('select');
+  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); updatePsy(); updateHack(); document.body.classList.toggle('fx', flashOK()); sfx('select');
 };
 syncDock();
 
