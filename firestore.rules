@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+
+    // A live session. Only the DM who made it can change or end it.
+    match /sessions/{code} {
+      function isDM() {
+        return signedIn() && get(/databases/$(database)/documents/sessions/$(code)).data.dmUid == request.auth.uid;
+      }
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.dmUid == request.auth.uid;
+      allow update, delete: if signedIn() && resource.data.dmUid == request.auth.uid;
+
+      // Portraits. Each player sets their own (small JPEGs only). Everyone in the session can see them.
+      match /portraits/{uid} {
+        allow read: if signedIn();
+        allow create, update: if signedIn() && request.auth.uid == uid
+          && request.resource.data.img is string && request.resource.data.img.size() < 300000;
+        allow delete: if signedIn() && (request.auth.uid == uid || isDM());
+      }
+
+      // Each player writes only their own merc. The DM can remove players.
+      match /players/{uid} {
+        allow read: if signedIn();
+        allow create, update: if signedIn() && request.auth.uid == uid
+          && exists(/databases/$(database)/documents/sessions/$(code));
+        allow delete: if signedIn() && (request.auth.uid == uid || isDM());
+
+        // Only the DM can send items, eddies, damage and healing.
+        match /inbox/{op} {
+          allow create: if isDM();
+          allow read, delete: if signedIn() && (request.auth.uid == uid || isDM());
+        }
+      }
+    }
+
+    // Each DM's private item library.
+    match /dms/{uid}/library/{item} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+  }
+}

@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daemon Manual V0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#ffe600; --cyan:#2fe6f0; --cyan-dim:rgba(47,230,240,.3);
+  --red:#ff4a5e; --panel:rgba(10,10,18,.88); --muted:#7f8c96;
+  --hexp:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  min-height:100vh; color:var(--cyan); font-family:'Exo 2',sans-serif; line-height:1.5; font-size:16px;
+  background:#0b0a12 linear-gradient(180deg,#b3213a 0,#5a1222 280px,#1a0910 760px,#0b0a12 1300px) no-repeat;
+}
+#circuit{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.55}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:30px 28px 70px}
+[hidden]{display:none !important}
+
+header h1{font-family:Orbitron,sans-serif;font-weight:500;color:var(--yellow);font-size:clamp(30px,5.4vw,58px);margin:0;letter-spacing:1px;line-height:1.1}
+.rule{height:2px;background:var(--red);box-shadow:0 0 12px var(--red);margin:16px 0 12px}
+nav{display:flex;flex-wrap:wrap;gap:24px;font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase}
+nav a{color:#fff;opacity:.7;text-decoration:none}
+nav a:hover{opacity:1;color:var(--cyan)}
+
+h2{font-family:Orbitron,sans-serif;font-weight:400;color:#fff;font-size:clamp(22px,3vw,32px);margin:52px 0 12px}
+h3{font-family:Orbitron,sans-serif;font-weight:400;color:#fff;font-size:17px;margin:0}
+.panel{background:var(--panel);border-left:3px solid var(--cyan);padding:18px 22px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%)}
+.panel p{margin:0 0 10px}
+.panel p:last-child{margin:0}
+.gap{margin-top:14px}
+.muted{color:var(--muted)}
+.lbl{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:#fff;text-transform:uppercase;display:block;margin-bottom:4px}
+.big{font-family:Orbitron,sans-serif;font-size:28px;color:var(--yellow);line-height:1}
+.big small{font-size:14px;color:var(--muted)}
+
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.tier-card{border:1px solid var(--cyan-dim);padding:10px 12px}
+.tier-card b{display:block;font-family:Orbitron,sans-serif;font-weight:500;color:#fff;font-size:13px;letter-spacing:1px}
+.tier-card span{font-size:14px}
+@media (max-width:640px){.tiers{grid-template-columns:repeat(2,1fr)}}
+
+.btn{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--cyan);border:1px solid var(--cyan);padding:10px 16px;cursor:pointer;clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%)}
+a.btn{text-decoration:none;display:inline-block}
+.btn:hover{background:rgba(47,230,240,.1)}
+.btn.primary{background:var(--cyan);color:#03161a}
+.btn.primary:hover{background:#7ff3f8}
+.btn.danger{color:var(--red);border-color:var(--red)}
+.btn.danger:hover{background:rgba(255,74,94,.12)}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn.small{padding:7px 11px;font-size:10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.spacer{flex:1}
+
+input[type=text],textarea{width:100%;background:#06060c;border:1px solid var(--cyan-dim);color:#fff;font-family:'Exo 2',sans-serif;font-size:16px;padding:12px 14px;outline:none}
+input[type=text]:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan)}
+input[type=text]{font-family:Orbitron,sans-serif;font-size:20px;letter-spacing:1px}
+textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;color:var(--cyan)}
+.err{color:var(--red);font-size:14px;margin-top:8px;min-height:1.2em}
+
+/* ---------- roster ---------- */
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid rgba(47,230,240,.18);padding:16px 18px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);display:flex;flex-direction:column;gap:10px}
+.card .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:19px;word-break:break-word}
+.card .sub{font-size:13px;color:var(--muted)}
+.mini-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;text-align:center;font-size:11px}
+.mini-stats b{display:block;font-family:Orbitron,sans-serif;color:#fff;font-size:14px;font-weight:500}
+.card.new{border-style:dashed;align-items:center;justify-content:center;text-align:center;min-height:170px;cursor:pointer}
+.card.new:hover{border-color:var(--cyan)}
+.card.new .plus{font-family:Orbitron,sans-serif;font-size:34px;line-height:1;color:var(--cyan)}
+
+/* ---------- wizard ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stepdot{border-top:3px solid rgba(47,230,240,.18);padding-top:8px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.stepdot.done{border-color:rgba(47,230,240,.55);color:var(--cyan)}
+.stepdot.on{border-color:var(--yellow);color:var(--yellow)}
+.stepdot b{display:block;font-size:18px;font-weight:500}
+.wstep{animation:stepin .45s ease both}
+@keyframes stepin{0%{opacity:0;transform:translateX(14px);filter:hue-rotate(120deg) brightness(1.8)}40%{filter:none}100%{opacity:1;transform:none}}
+.wnav{display:flex;gap:10px;margin-top:18px}
+.bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+@media (max-width:720px){.bgs{grid-template-columns:1fr}}
+.bg{background:#08080f;border:1px solid rgba(47,230,240,.2);padding:16px;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:border-color .2s,background .2s}
+.bg:hover{border-color:rgba(47,230,240,.6)}
+.bg.on{border-color:var(--cyan);background:rgba(47,230,240,.08);box-shadow:inset 3px 0 0 var(--cyan)}
+.bg .t{font-family:Orbitron,sans-serif;color:#fff;font-size:18px;display:block;margin-bottom:6px}
+.bg .d{font-size:14px;color:var(--muted);display:block;margin-bottom:10px}
+.bg .sk{font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{border:1px solid var(--cyan-dim);background:transparent;color:var(--cyan);padding:9px 14px;cursor:pointer;font:inherit;font-size:14px}
+.chip.on{background:var(--cyan);color:#03161a;border-color:var(--cyan)}
+.pb{display:grid;gap:8px;margin-top:14px}
+.pbrow{display:grid;grid-template-columns:110px minmax(0,1fr) auto 64px 64px;gap:12px;align-items:center;background:#08080f;border:1px solid rgba(47,230,240,.12);padding:10px 14px}
+.pbrow .ab{font-family:Orbitron,sans-serif;color:#fff;font-size:17px}
+.pbrow .ab small{display:block;font-family:'Exo 2',sans-serif;font-size:12px;color:var(--muted);letter-spacing:0}
+.pbrow .aff{font-size:13px;color:var(--muted)}
+.pbrow .mod,.pbrow .cost{font-family:Orbitron,sans-serif;font-size:13px;text-align:right}
+.pbrow .mod{color:#fff;font-size:16px}
+.pbrow .cost{color:var(--muted)}
+@media (max-width:640px){.pbrow{grid-template-columns:72px auto 1fr 50px}.pbrow .aff{display:none}.pbrow .cost{display:none}}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper button{width:32px;height:32px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);font-family:Orbitron,sans-serif;font-size:16px;cursor:pointer}
+.stepper button:hover:not(:disabled){background:rgba(47,230,240,.12)}
+.stepper button:disabled{opacity:.25;cursor:not-allowed}
+.stepper .val{font-family:Orbitron,sans-serif;font-size:22px;min-width:34px;text-align:center;color:#fff}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:10px}
+.summary .lbl{color:var(--muted)}
+.summary .v{color:#fff;font-size:17px}
+
+/* ---------- sheet ---------- */
+.sheet-head{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center}
+.sheet-head .who{flex:1;min-width:220px}
+.sheet-head .who .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:clamp(22px,3.4vw,34px);line-height:1.15;word-break:break-word}
+.sheet-head .who .sub{color:var(--muted);font-size:14px}
+.lvlbox{display:flex;align-items:center;gap:12px}
+.lvlbox .val{font-size:30px;color:var(--yellow);min-width:44px}
+.vitals{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+@media (max-width:760px){.vitals{grid-template-columns:repeat(2,1fr)}}
+.vital{background:#08080f;border:1px solid rgba(47,230,240,.14);padding:10px 12px}
+.vital .lbl{font-size:10px;color:var(--muted)}
+.vital .v{font-family:Orbitron,sans-serif;font-size:20px;color:#fff}
+.vital .v small{font-size:12px;color:var(--muted);font-family:'Exo 2',sans-serif}
+.vital.hot{border-color:var(--yellow)}
+.vital.hot .v{color:var(--yellow)}
+.lvlup{animation:lvlup .9s ease}
+@keyframes lvlup{0%{box-shadow:0 0 0 0 rgba(255,230,0,.8)}100%{box-shadow:0 0 0 18px rgba(255,230,0,0)}}
+
+.tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0}
+@media (max-width:760px){.tabs{grid-template-columns:repeat(3,1fr)}}
+.tab{background:var(--panel);border:1px solid rgba(47,230,240,.14);border-bottom:3px solid transparent;color:var(--muted);padding:10px 12px;text-align:left;cursor:pointer;font:inherit;transition:border-color .2s,color .2s}
+.tab:hover{border-color:rgba(47,230,240,.4)}
+.tab .top{display:flex;justify-content:space-between;align-items:baseline}
+.tab .ab{font-family:Orbitron,sans-serif;font-size:18px;color:#fff}
+.tab .sc{font-family:Orbitron,sans-serif;font-size:18px;color:var(--cyan)}
+.tab .sc small{font-size:12px;color:var(--muted);margin-left:4px}
+.tab.off .sc{color:var(--red)}
+.tab .nm{font-size:12px;display:block}
+.tab .ct{font-size:11px;letter-spacing:1px}
+.tab.active{border-bottom-color:var(--cyan);color:var(--cyan);border-color:rgba(47,230,240,.5)}
+
+.sim-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:880px){.sim-grid{grid-template-columns:1fr}}
+.tree-head{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.asi-note{font-size:12px;color:var(--muted);text-align:right}
+.asi-note.hot{color:var(--yellow)}
+
+.branch-row,.tree-row{display:grid;grid-template-columns:78px minmax(0,1fr)}
+.cols{position:relative;height:24px}
+.bl{position:absolute;transform:translateX(-50%);font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:#fff;text-transform:uppercase;white-space:nowrap}
+.bl.shared{color:var(--muted)}
+.gutter{position:relative}
+.tierlbl{position:absolute;left:0;transform:translateY(-50%);font-size:11px;color:var(--muted);line-height:1.3}
+.tierlbl b{display:block;font-family:Orbitron,sans-serif;font-weight:500;color:#6b2a36;letter-spacing:1px;font-size:11px;text-transform:uppercase}
+.tierlbl.open b{color:var(--cyan)}
+
+#tree{position:relative;height:560px}
+#edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tierline{stroke:rgba(255,74,94,.22);stroke-dasharray:3 7;stroke-width:1}
+.tierline.open{stroke:rgba(47,230,240,.2)}
+g.e{opacity:0;transition:opacity .3s}
+g.e.vis{opacity:1}
+.edge-base{fill:none;stroke:var(--cyan);stroke-width:2;opacity:.5}
+.edge-live{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:2 14;opacity:0;animation:flow .9s linear infinite}
+g.e.live .edge-base{opacity:.95}
+g.e.live .edge-live{opacity:.9}
+@keyframes flow{to{stroke-dashoffset:-16}}
+
+.node{position:absolute;transform:translate(-50%,-36px);background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;width:136px;color:inherit;font:inherit;
+  transition:opacity .4s ease var(--d,0s),transform .4s cubic-bezier(.2,1.4,.4,1) var(--d,0s)}
+.node.hidden{opacity:0;transform:translate(-50%,-36px) scale(.4);pointer-events:none}
+.node:focus{outline:none}
+.hexwrap{position:relative;transition:filter .3s}
+.hex{display:grid;place-items:center;width:62px;height:70px;clip-path:var(--hexp);background:#4a1c27;position:relative}
+.hex::before{content:'';position:absolute;inset:2px;clip-path:var(--hexp);background:#120910;transition:background .3s}
+.glyph{position:relative;font-family:Orbitron,sans-serif;font-size:15px;font-weight:500;color:#7a3442;transition:color .3s}
+.label{font-size:12.5px;line-height:1.25;color:var(--muted);text-align:center;max-width:136px;transition:color .3s}
+.req{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1px;color:var(--red);display:none}
+.tierlocked .req{display:block}
+.available .hex{background:var(--cyan)}
+.available .hex::before{background:#06181c}
+.available .glyph,.available .label{color:var(--cyan)}
+.available .hexwrap{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{filter:drop-shadow(0 0 2px rgba(47,230,240,.3))}50%{filter:drop-shadow(0 0 12px rgba(47,230,240,.9))}}
+.nopoints .hex{background:rgba(47,230,240,.35)}
+.nopoints .glyph,.nopoints .label{color:rgba(47,230,240,.55)}
+.unlocked .hex,.unlocked .hex::before{background:var(--cyan)}
+.unlocked .glyph{color:#03161a}
+.unlocked .label{color:#fff}
+.unlocked .hexwrap{filter:drop-shadow(0 0 12px rgba(47,230,240,.75))}
+.node.selected .hexwrap::after{content:'';position:absolute;inset:-8px -10px;pointer-events:none;background:
+  linear-gradient(var(--yellow),var(--yellow)) left top/12px 2px no-repeat,linear-gradient(var(--yellow),var(--yellow)) left top/2px 12px no-repeat,
+  linear-gradient(var(--yellow),var(--yellow)) right top/12px 2px no-repeat,linear-gradient(var(--yellow),var(--yellow)) right top/2px 12px no-repeat,
+  linear-gradient(var(--yellow),var(--yellow)) left bottom/12px 2px no-repeat,linear-gradient(var(--yellow),var(--yellow)) left bottom/2px 12px no-repeat,
+  linear-gradient(var(--yellow),var(--yellow)) right bottom/12px 2px no-repeat,linear-gradient(var(--yellow),var(--yellow)) right bottom/2px 12px no-repeat}
+.node.selected .label{color:var(--yellow)}
+.node:focus-visible .label{text-decoration:underline}
+.node.burst .hexwrap::before{content:'';position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border:2px solid var(--cyan);border-radius:50%;animation:burst .75s ease-out forwards;pointer-events:none}
+@keyframes burst{from{transform:scale(.6);opacity:1}to{transform:scale(2.6);opacity:0}}
+.node.reveal .hex{animation:glitch .6s var(--d,0s) both}
+@keyframes glitch{
+  0%{transform:translateX(-8px) skewX(14deg);filter:hue-rotate(160deg) brightness(2)}
+  15%{transform:translateX(6px) skewX(-10deg)}
+  30%{transform:translateX(-4px);filter:none}
+  45%{transform:translateX(2px) skewX(6deg);filter:brightness(1.8)}
+  60%,100%{transform:none;filter:none}
+}
+.offline-msg{display:none;position:absolute;inset:0;place-items:center;text-align:center;pointer-events:none}
+#tree.offline .offline-msg{display:grid}
+.offline-msg div{font-family:Orbitron,sans-serif;color:var(--red);letter-spacing:3px;font-size:20px}
+.offline-msg p{color:var(--muted);margin:8px 0 0;font-family:'Exo 2',sans-serif;letter-spacing:0;font-size:14px}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:8px;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:13px;clip-path:var(--hexp);vertical-align:-2px;margin-right:6px}
+
+.detail{position:sticky;top:16px;min-height:260px}
+.detail .tag{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.detail h3{font-size:20px;margin-bottom:10px}
+.detail ul{list-style:none;padding:0;margin:14px 0;font-size:14px}
+.detail li{padding:6px 0;border-top:1px solid rgba(47,230,240,.12)}
+.detail li b{color:#fff;font-weight:500}
+.detail .status{font-size:14px;margin:0 0 14px;color:#fff}
+.detail .status.bad{color:var(--red)}
+
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 24px;margin-top:10px}
+.skill{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(47,230,240,.08);font-size:14px;color:var(--muted)}
+.skill .s{color:#d5f9fb}
+.skill .s small{color:var(--muted);font-size:11px;margin-left:6px}
+.skill .m{font-family:Orbitron,sans-serif;font-size:13px;color:#fff}
+.skill.prof .s{color:var(--cyan)}
+.skill.prof .s::before{content:'◆ ';font-size:10px}
+.skill.prof .m{color:var(--yellow)}
+.skill.exp .s{color:var(--yellow)}
+.skill.exp .s::before{content:'◆◆ ';font-size:10px}
+.skill.exp .m{color:var(--yellow)}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;z-index:5;transition:all .3s;pointer-events:none;background:var(--panel);border-left:3px solid var(--red);padding:12px 18px;color:#fff;font-size:14px;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.good{border-left-color:var(--cyan)}
+
+/* ---------- character sheet ---------- */
+.vtabs{display:flex;gap:4px;margin:14px 0 0;border-bottom:1px solid rgba(47,230,240,.2)}
+.vtabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px 18px;cursor:pointer}
+.vtabs button:hover{color:#fff}
+.vtabs button.on{color:var(--cyan);border-bottom-color:var(--cyan)}
+.cs-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
+@media (max-width:820px){.cs-grid{grid-template-columns:1fr}}
+.ident{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.ident .v{color:#fff;font-size:17px}
+.track{margin-bottom:18px}
+.track .head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.track .num{font-family:Orbitron,sans-serif;font-size:26px;color:#fff;line-height:1.2}
+.track .num small{font-size:14px;color:var(--muted)}
+.bar{height:8px;background:rgba(255,255,255,.07);margin:8px 0 10px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--red);transition:width .35s}
+.bar.net i{background:var(--cyan)}
+.pips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 10px}
+.pip{width:16px;height:18px;clip-path:var(--hexp);background:rgba(255,230,0,.14);transition:background .2s}
+.pip.on{background:var(--yellow)}
+input[type=number]{width:78px;background:#06060c;border:1px solid var(--cyan-dim);color:#fff;padding:7px 8px;font-family:Orbitron,sans-serif;font-size:14px;outline:none}
+input[type=number]:focus,select:focus{border-color:var(--cyan)}
+select{background:#06060c;border:1px solid var(--cyan-dim);color:var(--cyan);padding:8px;font-family:'Exo 2',sans-serif;font-size:14px;outline:none;max-width:100%}
+input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10px;letter-spacing:0}
+.eqslots{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.eqslots{grid-template-columns:1fr}}
+.eqslot{border:1px dashed rgba(47,230,240,.3);padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px}
+.eqslot.on{border-style:solid;border-color:var(--cyan);background:rgba(47,230,240,.05)}
+.eqn{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
+.inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 170px;gap:8px;align-items:center}
+.irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 170px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(47,230,240,.08)}
+.irow.eq input[data-f=name]{border-color:var(--cyan);color:var(--cyan)}
+@media (max-width:760px){
+  .inv-add,.irow{grid-template-columns:1fr 1fr}
+  .inv-add > :first-child,.inv-add > :nth-child(4),.irow > :first-child,.irow > :nth-child(4){grid-column:1 / -1}
+}
+.q{display:flex;align-items:center;gap:6px;font-family:Orbitron,sans-serif;color:#fff}
+.q button{width:26px;height:26px;background:transparent;border:1px solid var(--cyan-dim);color:var(--cyan);cursor:pointer}
+.q span{min-width:22px;text-align:center}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.acts select{max-width:120px}
+.inv-add .btn{justify-self:end}
+.btn.small.on{background:var(--cyan);color:#03161a}
+.cyber{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:12px}
+.cslot{background:#08080f;border:1px solid rgba(47,230,240,.14);padding:12px}
+.cslot .h{display:flex;justify-content:space-between;align-items:baseline}
+.cslot .h b{font-family:Orbitron,sans-serif;font-weight:500;color:#fff;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.cslot .cap{font-size:12px;color:var(--muted)}
+.cslot.full .cap{color:var(--yellow)}
+.cw{border-left:2px solid var(--cyan);padding:8px;margin-top:8px;background:rgba(47,230,240,.05);display:grid;gap:6px}
+.cw .r{display:flex;gap:6px;align-items:center;font-size:12px}
+.cw input[type=number]{width:60px;padding:5px 6px}
+.cform{display:grid;gap:6px;margin-top:8px}
+textarea.notes{font-family:'Exo 2',sans-serif;font-size:15px;color:#fff;min-height:130px}
+/* ---------- live session ---------- */
+.live-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:820px){.live-grid{grid-template-columns:1fr}}
+.code{font-family:Orbitron,sans-serif;font-size:clamp(28px,5vw,44px);color:var(--yellow);letter-spacing:4px;line-height:1}
+.livebadge{display:inline-flex;align-items:center;gap:6px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:#03161a;background:var(--cyan);padding:4px 10px;margin-left:10px;vertical-align:middle}
+.livebadge::before{content:'';width:7px;height:7px;border-radius:50%;background:#03161a;animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted);margin-right:6px}
+.dot.on{background:#3ee08a;box-shadow:0 0 8px #3ee08a}
+.players{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-top:14px}
+.pcard{background:var(--panel);border:1px solid rgba(47,230,240,.2);padding:16px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);display:grid;gap:10px}
+.pcard .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:18px;word-break:break-word}
+.pcard .sub{font-size:13px;color:var(--muted)}
+.pcard .bar{margin:4px 0}
+.pcard .stat{display:flex;justify-content:space-between;font-size:13px}
+.pcard .stat b{font-family:Orbitron,sans-serif;font-weight:500;color:#fff}
+.pcard .pips{margin:2px 0}
+.pcard .pip{width:11px;height:12px}
+.chips2{display:flex;flex-wrap:wrap;gap:6px}
+.chips2 span{font-size:12px;border:1px solid rgba(47,230,240,.25);padding:3px 8px;color:#d5f9fb}
+.chips2 span.w{border-color:var(--cyan);color:var(--cyan)}
+.pcard .row input[type=number]{width:70px}
+.libadd{display:grid;grid-template-columns:minmax(0,2fr) 130px 70px minmax(0,2fr);gap:8px}
+@media (max-width:760px){.libadd{grid-template-columns:1fr 1fr}.libadd > :first-child,.libadd > :nth-child(4){grid-column:1 / -1}}
+.lrow{display:grid;grid-template-columns:minmax(0,1.4fr) 100px minmax(0,2fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(47,230,240,.08);font-size:14px}
+.lrow .n{color:#fff}
+.lrow .t{color:var(--muted);font-size:12px;letter-spacing:1px;text-transform:uppercase}
+@media (max-width:760px){.lrow{grid-template-columns:1fr 1fr}.lrow > :nth-child(3),.lrow > :nth-child(4){grid-column:1 / -1}}
+.flash{animation:flash 1.2s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,230,0,.9);border-color:var(--yellow)}100%{box-shadow:0 0 0 22px rgba(255,230,0,0)}}
+/* ---------- portraits + party ---------- */
+.av{flex:none;background:var(--cyan);padding:2px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.av > img,.av > span{display:grid;place-items:center;width:100%;height:100%;object-fit:cover;background:#0a0a12;clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,13px 100%,0 calc(100% - 13px));font-family:Orbitron,sans-serif;color:var(--cyan)}
+.av.lg{width:150px;height:150px}.av.lg span{font-size:40px}
+.av.md{width:64px;height:64px}.av.md span{font-size:20px}
+.av.sm{width:48px;height:48px}.av.sm span{font-size:15px}
+.av.off{background:#3a3f46}
+.idwrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:640px){.idwrap{grid-template-columns:1fr}}
+.pcard .head{display:flex;gap:12px;align-items:center}
+.pcard.me{border-color:var(--yellow)}
+.restore{margin-top:12px;display:grid;gap:8px}
+.restore .r{display:flex;gap:10px;align-items:center;background:#08080f;border:1px solid rgba(47,230,240,.14);padding:8px}
+/* ---------- rules page ---------- */
+nav a.on{opacity:1;color:var(--cyan)}
+.rules-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;margin-top:10px}
+.toc{position:sticky;top:16px;display:grid;gap:2px;max-height:calc(100vh - 32px);overflow:auto;padding-top:52px}
+.toc input{margin-bottom:10px}
+.toc a{color:var(--muted);text-decoration:none;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 10px;border-left:2px solid transparent}
+.toc a:hover{color:#fff}
+.toc a.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(47,230,240,.06)}
+@media (max-width:860px){
+  .rules-layout{grid-template-columns:minmax(0,1fr)}
+  .toc{position:static;max-height:none;padding-top:20px;display:flex;flex-wrap:wrap;gap:6px}
+  .toc input{flex:1 1 100%}
+  .toc a{border:1px solid rgba(47,230,240,.2);padding:6px 9px;font-size:10px}
+}
+.rules-layout > *{min-width:0}
+.rules h2{scroll-margin-top:16px}
+.rsec{scroll-margin-top:12px}
+.rtable{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+.rtable th{text-align:left;font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 10px;border-bottom:1px solid var(--cyan-dim)}
+.rtable td{padding:9px 10px;border-bottom:1px solid rgba(47,230,240,.08);vertical-align:top}
+.rtable td b{color:#fff;font-weight:500}
+.rtable td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.rtable td.none{color:#3a4048}
+.rtable td.cls b{color:var(--muted)}
+.ptree{overflow-x:auto}
+.ptree .rtable{min-width:640px}
+.ptree h3 .muted{font-family:'Exo 2',sans-serif;font-size:14px}
+.chips2.big span{font-size:14px;padding:6px 12px}
+.rlist{margin:10px 0 0;padding-left:20px}
+.rlist li{margin:4px 0}
+.lvltrack{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:18px}
+.lvltrack div{text-align:center;font-family:Orbitron,sans-serif;font-size:10px;padding:8px 0;background:rgba(47,230,240,.08);color:var(--cyan)}
+.lvltrack div.asi{background:var(--yellow);color:#1a1600}
+.lvltrack div.one{background:rgba(255,255,255,.04);color:var(--muted)}
+.wdiag{width:100%;max-width:320px;display:block;margin:16px auto 0}
+mark{background:rgba(255,230,0,.3);color:inherit}
+footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
+@media (max-width:560px){
+  .wrap{padding:22px 16px 60px}
+  .branch-row,.tree-row{grid-template-columns:54px minmax(0,1fr)}
+  .tierlbl span{display:none}
+  .node{width:96px;transform:translate(-50%,-28px)}
+  .node.hidden{transform:translate(-50%,-28px) scale(.4)}
+  .label{font-size:11px;max-width:96px}
+  .hex{width:48px;height:54px}
+  .bl{font-size:9px;letter-spacing:1px}
+  .steps .stepdot span{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<canvas id="circuit" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <h1>Daemon Manual V0.1</h1>
+    <div class="rule"></div>
+    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a></nav>
+  </header>
+
+  <div id="pgRules" hidden>
+  <div class="rules-layout">
+    <aside class="toc" id="toc">
+      <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
+      <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
+      <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
+      <a href="#r-ram">RAM</a><a href="#r-net">Netrunning</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
+    </aside>
+    <div class="rules" id="rulesBody">
+      <p class="err" id="rNone" hidden>Nothing in the rules matches that search.</p>
+
+      <section class="rsec" id="r-basics"><h2>How Daemon Works</h2>
+        <div class="panel">
+          <p>Daemon is a twisted take on 5e set in Night City. Every merc is a 5e Fighter with the Samurai subclass and keeps all of its normal Fighter and Samurai features.</p>
+          <p>There are no classes and no feats. Instead every merc fills a role, and what really makes your merc yours is the set of perk trees you climb with your stats. Those trees are ported from Cyberpunk 2077.</p>
+          <div class="row gap"><a class="btn primary" href="#mercs">Make a merc</a><a class="btn" href="#r-perks">Browse every perk</a></div>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-stats"><h2>Stats</h2>
+        <div class="panel">
+          <p>The six 5e ability scores are renamed and each one drives different parts of the game.</p>
+          <table class="rtable"><thead><tr><th>5e</th><th>Daemon</th><th>What it does</th></tr></thead><tbody>
+            <tr><td>Strength</td><td><b>STR</b> Strength</td><td>Blunt melee damage, shotguns, LMGs and HMGs</td></tr>
+            <tr><td>Dexterity</td><td><b>REF</b> Reflexes</td><td>Bladed melee damage, pistols, rifles, SMGs and stealth</td></tr>
+            <tr><td>Constitution</td><td><b>BOD</b> Body</td><td>HP, tolerances and healing</td></tr>
+            <tr><td>Intelligence</td><td><b>INT</b> Intelligence</td><td>Netrunning, hacks, smart weapons and RAM</td></tr>
+            <tr><td>Wisdom</td><td><b>TEC</b> Tech Ability</td><td>Armor, items, cyberware and vehicles</td></tr>
+            <tr><td>Charisma</td><td><b>COO</b> Cool</td><td>Social interactions, and mainly a buff and debuff stat</td></tr>
+          </tbody></table>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-roles"><h2>Roles</h2>
+        <div class="panel">
+          <p>Instead of classes, every merc fills a specialized role. Each role leans on certain stats.</p>
+          <table class="rtable"><thead><tr><th>Role</th><th>Key stats</th></tr></thead><tbody>
+            <tr><td><b>Netrunner</b></td><td>INT</td></tr><tr><td><b>Soldier</b></td><td>REF and STR</td></tr>
+            <tr><td><b>Technician</b></td><td>TEC and INT</td></tr><tr><td><b>Shinobi</b></td><td>REF</td></tr><tr><td><b>Bruiser</b></td><td>STR and BOD</td></tr>
+          </tbody></table>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-skills"><h2>Skills</h2>
+        <div class="panel">
+          <p>A few 5e skills are renamed to fit Night City. Every skill not listed here works exactly like normal 5e.</p>
+          <table class="rtable"><thead><tr><th>Old 5e skill</th><th>Daemon skill</th><th>Stat</th></tr></thead><tbody>
+            <tr><td>Animal Handling</td><td><b>Vehicle</b></td><td>TEC</td></tr><tr><td>Insight</td><td><b>Craft</b></td><td>TEC</td></tr>
+            <tr><td>Survival</td><td><b>Cyberware</b></td><td>TEC</td></tr><tr><td>Arcana</td><td><b>Hacking</b></td><td>INT</td></tr>
+            <tr><td>Investigation</td><td><b>Scan</b></td><td>INT</td></tr><tr><td>Nature</td><td><b>RAM</b></td><td>INT</td></tr>
+            <tr><td>Religion</td><td><b>Code</b></td><td>INT</td></tr>
+          </tbody></table>
+          <h3 style="margin-top:20px">Double proficiency</h3>
+          <p style="margin-top:8px">You can only get double proficiency after moving two thresholds. A Rookie Netrunner can be proficient in Hacking, but they can't double it until they reach Phenom.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-backgrounds"><h2>Backgrounds</h2>
+        <div class="panel">
+          <p>There are only three ways a merc comes up in Night City. Each background offers three skills and you pick two of them.</p>
+          <table class="rtable"><thead><tr><th>Nomad</th><th>Corpo</th><th>Streetkid</th></tr></thead><tbody>
+            <tr><td>Vehicle</td><td>Performance</td><td>History</td></tr><tr><td>Craft</td><td>Deception</td><td>Persuasion</td></tr><tr><td>Intimidation</td><td>Medicine</td><td>Perception</td></tr>
+          </tbody></table>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-creation"><h2>Making and Leveling a Merc</h2>
+        <div class="panel">
+          <table class="rtable"><tbody>
+            <tr><td><b>Stats</b></td><td>5e point buy. 27 points, every stat between 8 and 15 before increases</td></tr>
+            <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
+            <tr><td><b>Starting HP</b></td><td>10 + 1d10 + BOD mod</td></tr>
+            <tr><td><b>HP per level</b></td><td>10 + 1d10 + BOD mod each level up unless a perk or cyberware raises it. The GM is still finalizing this one</td></tr>
+            <tr><td><b>Perk points</b></td><td>1 every time you level up</td></tr>
+            <tr><td><b>Stat increases</b></td><td>2 points at levels 4, 6, 8, 12, 14, 16 and 19</td></tr>
+            <tr><td><b>Feats</b></td><td>None</td></tr>
+          </tbody></table>
+          <div class="lvltrack" id="lvlTrack" aria-label="Level 1 to 20 track"></div>
+          <p class="muted" style="font-size:13px;margin-top:8px">Every level after 1 gives a perk point. Yellow levels also give 2 stat increases.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-turn"><h2>Your Turn</h2>
+        <div class="panel">
+          <p>Normal 5e gives you a movement, an action and a bonus action. Daemon gives you <b>2 actions per turn</b> and you spend them however you want.</p>
+          <div class="chips2 big"><span>Move</span><span>Attack</span><span>Grapple</span><span>Reload</span><span>Heal</span><span>Throw</span><span>Use a skill, perk or object</span><span>Hold an action</span></div>
+          <p style="margin-top:14px">Reactions still exist but work a little differently. See below.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-reactions"><h2>Reactions</h2>
+        <div class="panel">
+          <p>You get <b>1 reaction per round</b>, same as 5e, and <b>every reaction costs 2 RAM</b>.</p>
+          <table class="rtable"><thead><tr><th>Reaction</th><th>Effect</th></tr></thead><tbody>
+            <tr><td><b>Brace</b></td><td>Add your TEC mod to your AC</td></tr>
+            <tr><td><b>Slide</b></td><td>Make a REF save against a DC to take half damage</td></tr>
+            <tr><td><b>Reboot</b></td><td>Make an INT check against a DC to give the attacker disadvantage</td></tr>
+          </tbody></table>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-ram"><h2>RAM</h2>
+        <div class="panel">
+          <p>RAM is the fuel for reactions, hacks and some perks. Your max RAM is 4 + your INT mod, plus whatever your installed cyberware adds.</p>
+          <p>The INT perk Extra Slot doubles your max RAM, and Automation cuts every RAM cost by 1, so reactions only cost 1. The full RAM rules are still on the way from the GM.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-net"><h2>Netrunning and Black ICE</h2>
+        <div class="panel">
+          <p>To go into The Net you need the INT perk Jack In. Netrunners can run into defensive anti-personnel programs called <b>Black ICE</b> (Intrusion Countermeasure Electronics), and they can be lethal.</p>
+          <p>Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. They're equal unless a perk, item or hack changes that. Black ICE mostly attacks your NET HP, but your body can still be attacked while you're under. If <b>either</b> pool hits 0 you go unconscious in critical condition.</p>
+          <p class="lbl" style="margin-top:16px">Known Black ICE</p>
+          <div class="chips2 big"><span>Hellhound</span><span>Cobra</span><span>Raven</span><span>Skunk</span><span>Scorpion</span><span>Wisp</span><span>Lich</span><span>Ogre</span><span>Kraken</span></div>
+          <p class="muted" style="font-size:13px;margin-top:10px">Each one has its own stats and effects. Those haven't been posted yet.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-psycho"><h2>Cyberpsychosis</h2>
+        <div class="panel">
+          <p>Cyberpsychosis saves are normally made at <b>−5</b>. A few perks push back on that, like Theseus and I'm Special in BOD and Tranquility in COO. The full rules are still coming.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-trees"><h2>Perk Trees</h2>
+        <div class="panel">
+          <p>Every perk tree is tied to one stat. If that stat is under 10 the tree is offline. Higher tiers open as the stat climbs, and you spend 1 perk point per perk.</p>
+          <table class="rtable"><thead><tr><th>Tier</th><th>Stat needed</th><th>Perks</th></tr></thead><tbody>
+            <tr><td><b>Rookie</b></td><td>10–13</td><td>2</td></tr><tr><td><b>Pro</b></td><td>14–16</td><td>3</td></tr>
+            <tr><td><b>Phenom</b></td><td>17–19</td><td>3</td></tr><tr><td><b>Legend</b></td><td>20</td><td>2</td></tr>
+          </tbody></table>
+          <p style="margin-top:16px">Each tree is shaped like a fork, or a "W". The two outer branches run all four tiers. The middle branch opens at Pro from either Rookie perk and ends at Phenom. Each Legend perk only opens from its own branch's Phenom.</p>
+          <svg class="wdiag" viewBox="0 0 300 200" aria-label="Perk tree shape">
+            <g fill="none" stroke="#2fe6f0" stroke-width="2" opacity=".6"><path d="M50 25 V75"/><path d="M250 25 V75"/><path d="M50 25 V50 H150 V75"/><path d="M250 25 V50 H150"/><path d="M50 75 V125"/><path d="M150 75 V125"/><path d="M250 75 V125"/><path d="M50 125 V175"/><path d="M250 125 V175"/></g>
+            <g fill="#06181c" stroke="#2fe6f0" stroke-width="2"><circle cx="50" cy="25" r="9"/><circle cx="250" cy="25" r="9"/><circle cx="50" cy="75" r="9"/><circle cx="150" cy="75" r="9"/><circle cx="250" cy="75" r="9"/><circle cx="50" cy="125" r="9"/><circle cx="150" cy="125" r="9"/><circle cx="250" cy="125" r="9"/><circle cx="50" cy="175" r="9"/><circle cx="250" cy="175" r="9"/></g>
+          </svg>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-perks"><h2>Every Perk</h2>
+        <div id="rPerks"></div>
+      </section>
+
+      <section class="rsec" id="r-coming"><h2>In the Works</h2>
+        <div class="panel">
+          <p>The GM is still building these. They'll land here as they're posted.</p>
+          <ul class="rlist"><li>Cyberpsychosis rules</li><li>COOL Tokens and the COO buff and debuff mechanics</li><li>Full RAM and hacking rules, including the CODE score</li><li>Black ICE stats and effects</li><li>The STR and TEC perk trees</li><li>The final HP per level formula</li></ul>
+        </div>
+      </section>
+    </div>
+  </div>
+  </div>
+
+  <div id="pgApp">
+
+  <section id="mercs">
+    <h2 id="mercsTitle">Your Mercs</h2>
+
+    <!-- ROSTER -->
+    <div id="vRoster">
+      <div class="roster" id="roster"></div>
+      <div class="panel gap" id="dbPanel">
+        <div class="row"><div style="flex:1;min-width:220px"><h3>Party database</h3><p class="muted" style="margin-top:6px;font-size:14px">Every merc on this device as one JSON file. The DM can update inventory, cyberware or HP in it, then import it back here to apply the changes.</p></div>
+        <button class="btn" id="dbCopy">Copy database</button><button class="btn" id="dbDl">Download database</button></div>
+        <textarea id="dbOut" readonly hidden aria-label="Database"></textarea>
+      </div>
+      <div class="panel gap" id="importBox" hidden>
+        <h3>Import a merc</h3>
+        <p class="muted" style="margin-top:6px">Paste a save code or pick a save file.</p>
+        <textarea id="importTxt" aria-label="Save code"></textarea>
+        <div class="row gap"><button class="btn primary" id="importGo">Import</button><label class="btn" style="display:inline-block">Choose file<input type="file" id="importFile" accept=".json,.txt" hidden></label><button class="btn" id="importCancel">Cancel</button></div>
+        <div class="err" id="importErr"></div>
+      </div>
+    </div>
+
+    <!-- WIZARD -->
+    <div id="vWizard" hidden>
+      <div class="steps" id="stepdots"></div>
+      <div class="panel" id="wbody"></div>
+    </div>
+
+    <!-- SHEET -->
+    <div id="vSheet" hidden>
+      <div class="panel" id="sheetHead"></div>
+      <div class="vtabs" role="tablist"><button data-v="perks" class="on" role="tab">Perks and skills</button><button data-v="cs" role="tab">Character sheet</button></div>
+      <div id="vPerks">
+      <div class="tabs" id="tabs" role="tablist"></div>
+      <div class="sim-grid">
+        <div class="panel" id="treePanel">
+          <div class="tree-head">
+            <h3 id="treeTitle">Reflexes Tree</h3>
+            <div>
+              <div class="stepper">
+                <span class="lbl" id="scoreLbl" style="margin:0">REF</span>
+                <button id="dec" aria-label="Remove an ability score increase">−</button>
+                <span class="val" id="score">10</span>
+                <button id="inc" aria-label="Add an ability score increase">+</button>
+              </div>
+              <div class="asi-note" id="asiNote"></div>
+            </div>
+          </div>
+          <div class="branch-row"><div></div><div class="cols">
+            <span class="bl" id="blA" style="left:17%"></span>
+            <span class="bl shared" id="blS" style="left:50%"></span>
+            <span class="bl" id="blB" style="left:83%"></span>
+          </div></div>
+          <div class="tree-row">
+            <div class="gutter" id="gutter"></div>
+            <div id="tree">
+              <svg id="edges"><g id="tl"></g><g id="eg"></g></svg>
+              <div class="offline-msg"><div>TREE OFFLINE<p id="offlineTxt">Raise this stat to 10 to jack in.</p></div></div>
+            </div>
+          </div>
+          <div class="legend">
+            <span><i style="background:var(--cyan)"></i>Installed</span>
+            <span><i style="background:var(--cyan);opacity:.6"></i>Ready to install</span>
+            <span><i style="background:#6b2a36"></i>Stat too low for this tier</span>
+          </div>
+        </div>
+        <aside class="panel detail" id="detail" aria-live="polite"></aside>
+      </div>
+
+      <h2 style="margin-top:36px">Skills</h2>
+      <div class="panel"><p class="muted" id="skillNote"></p><div class="skills" id="skills"></div></div>
+      </div>
+      <div id="vCS" hidden></div>
+
+      <h2 style="margin-top:36px">Save</h2>
+      <div class="panel">
+        <p>Your merc saves in this browser on its own. To back it up, move it to another device or share it in Discord, copy the save code and paste it into Import on the other end.</p>
+        <textarea id="codeOut" readonly aria-label="Save code" hidden></textarea>
+        <div class="row gap">
+          <button class="btn primary" id="copyCode">Copy save code</button>
+          <button class="btn" id="dlFile">Download save file</button>
+          <button class="btn" id="copyJson">Copy for DM</button>
+          <span class="spacer"></span>
+          <button class="btn" id="toRoster">All mercs</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="live">
+    <h2>Live Session</h2>
+    <div id="liveBody"></div>
+  </section>
+
+  </div>
+
+  <footer>Daemon Manual V0.1 · Unofficial player reference built from the GM's rules channel</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const NS = 'http://www.w3.org/2000/svg';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const mod = v => Math.floor((v - 10) / 2);
+const initials = n => String(n || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || '?';
+const avatar = (m, cls, img) => { const src = img || (m && m.portrait); return `<div class="${cls}">${src ? `<img src="${src}" alt="">` : `<span>${esc(initials(m && m.name))}</span>`}</div>`; };
+function readPortrait(file){
+  return new Promise((res, rej) => {
+    if (!file || !/^image\//.test(file.type)) return rej(new Error('type'));
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const S = 256, cv = document.createElement('canvas'); cv.width = cv.height = S;
+      const s = Math.min(img.width, img.height);
+      cv.getContext('2d').drawImage(img, (img.width - s) / 2, (img.height - s) * 0.25, s, s, 0, 0, S, S);
+      URL.revokeObjectURL(url); res(cv.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('load')); };
+    img.src = url;
+  });
+}
+const sgn = n => (n >= 0 ? '+' : '−') + Math.abs(n);
+
+/* ================= RULES DATA ================= */
+const ORDER = ['STR','REF','BOD','INT','TEC','COO'];
+const STATS = {
+  STR:{name:'Strength',     a:'Boxer',    s:'Shared',   b:'Lifter',   aff:'Blunt melee, shotguns, LMG and HMG'},
+  REF:{name:'Reflexes',     a:'Ninja',    s:'Surprise', b:'Cowboy',   aff:'Blades, pistols, rifles, SMGs, stealth'},
+  BOD:{name:'Body',         a:'Resist',   s:'Heal',     b:'Persist',     aff:'HP, tolerances, healing'},
+  INT:{name:'Intelligence', a:'Netrunning', s:'RAM',    b:'Hacks', aff:'Netrunning, hacks, smart weapons, RAM'},
+  TEC:{name:'Tech Ability', a:'Branch A', s:'Shared',   b:'Branch B', aff:'Armor, items, cyberware, vehicles'},
+  COO:{name:'Cool',         a:'Saint',    s:'Rocker',   b:'Sinner', aff:'Social, buffs and debuffs'}
+};
+const BACKGROUNDS = {
+  Nomad:    {d:'Raised on the road outside the city, loyal to the clan.', skills:['Vehicle','Craft','Intimidation']},
+  Corpo:    {d:'Came up inside the corporate machine and knows how it bites.', skills:['Performance','Deception','Medicine']},
+  Streetkid:{d:'Grew up on Night City streets, where everyone knows a guy.', skills:['History','Persuasion','Perception']}
+};
+const SKILLS = [
+  ['Acrobatics','REF'],['Athletics','STR'],['Code','INT','Religion'],['Craft','TEC','Insight'],
+  ['Cyberware','TEC','Survival'],['Deception','COO'],['Hacking','INT','Arcana'],['History','INT'],
+  ['Intimidation','COO'],['Medicine','TEC'],['Perception','TEC'],['Performance','COO'],
+  ['Persuasion','COO'],['RAM','INT','Nature'],['Scan','INT','Investigation'],['Sleight of Hand','REF'],
+  ['Stealth','REF'],['Vehicle','TEC','Animal Handling']
+];
+const PB_COST = {8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
+const PB_TOTAL = 27;
+const ASI_LEVELS = [4,6,8,12,14,16,19];
+
+const TIER_ORDER = ['r','p','ph','l'];
+const TIERS = {
+  r: {name:'Rookie', req:10, range:'10–13', y:.10},
+  p: {name:'Pro',    req:14, range:'14–16', y:.36},
+  ph:{name:'Phenom', req:17, range:'17–19', y:.62},
+  l: {name:'Legend', req:20, range:'20',    y:.88}
+};
+const COLS = {A:.17, S:.5, B:.83};
+const SLOTS = [
+  ['A.r','A','r',[]], ['B.r','B','r',[]],
+  ['A.p','A','p',['A.r']], ['S.p','S','p',['A.r','B.r']], ['B.p','B','p',['B.r']],
+  ['A.ph','A','ph',['A.p']], ['S.ph','S','ph',['S.p']], ['B.ph','B','ph',['B.p']],
+  ['A.l','A','l',['A.ph']], ['B.l','B','l',['B.ph']]
+].map(([slot,col,tier,parents]) => ({slot,col,tier,parents}));
+const SLOT = Object.fromEntries(SLOTS.map(s => [s.slot, s]));
+const CHILDREN = {};
+SLOTS.forEach(s => s.parents.forEach(p => (CHILDREN[p] = CHILDREN[p] || []).push(s.slot)));
+
+const PERKS = {
+  REF:{
+    'A.r': {n:'Plumber Legs', d:'Double Jump (−1 RAM). No additional LEAP cost.'},
+    'B.r': {n:'Waste of Time', d:'+10 MOVE after a KILL (−1 RAM).'},
+    'A.p': {n:'Kitty Got Claws', d:'Free ATK on everyone within 5 ft after a LEAP.'},
+    'S.p': {n:'Gag Order', d:'A kill on a Surprise attack alerts no one.'},
+    'B.p': {n:'Sharpshooter', d:'−5 to HIT, +10 DMG.'},
+    'A.ph':{n:'Fox Swipe', d:'Using your REACT, deflect DMG by rolling your blade DMG.'},
+    'S.ph':{n:'Pop Goes the Weasel', d:'Your first Surprise ATK is an automatic crit.'},
+    'B.ph':{n:'Focus Fire', d:'Your last ATK crits on 18, 19 and 20.'},
+    'A.l': {n:'Blender', d:'CRITing a foe below 50 HP dismembers them.'},
+    'B.l': {n:'High Noon', d:'CRITs add an ACTION.'}
+  },
+  INT:{
+    'A.r': {n:'Jack In', d:'You can enter The Net.'},
+    'B.r': {n:'Nerd!', d:'Proficiency with smart weapons.'},
+    'A.p': {n:'Insulated Wires', d:'Your NET attacks also hit the target\'s IRL body for half damage.'},
+    'S.p': {n:'Extra Slot', d:'Double your max RAM.'},
+    'B.p': {n:'R.E.M.', d:'Hack multiple things at once. Each extra target costs half the original RAM.'},
+    'A.ph':{n:'Who Let the Dogs Out', d:'Code 2 Hellhounds whenever you Jack In.'},
+    'S.ph':{n:'Automation', d:'Reduce all RAM costs by 1. Reactions cost 1 RAM instead of 2.'},
+    'B.ph':{n:'Developer', d:'Create your own I.C.E. It can be upgraded, and it uses your CODE score.'},
+    'A.l': {n:'Domain', d:'Everyone within 20 ft is forced into The Net, leaving their IRL bodies disconnected. Die in there, die out here.'},
+    'B.l': {n:'Pulling the Plug', d:'Your hacks permanently take things offline. Only you can access them.'}
+  },
+  COO:{
+    'A.r': {n:'Truth Seeker', d:'Proficiency in Persuasion.'},
+    'B.r': {n:'Doubt Bringer', d:'Proficiency in Deception.'},
+    'A.p': {n:'Smooth Talker', d:'Reroll 1s and 2s on Persuasion.'},
+    'S.p': {n:'Stage Name', d:'ADV on all COOL skills while pretending to be someone else.'},
+    'B.p': {n:'Silver Tongue', d:'Reroll 1s and 2s on Deception.'},
+    'A.ph':{n:'Tactical Diplomacy', d:'After a takedown, make a Persuasion roll to ease tensions.'},
+    'S.ph':{n:'You Ready to Rock?!', d:'When a COOL Token is used, all allies get its COOL buffs and one free ACTION.'},
+    'B.ph':{n:"Who's Next?", d:'After a takedown, make an Intimidation roll to cause fear.'},
+    'A.l': {n:'Tranquility', d:'Add your COOL mod to your own and your allies\' Cyberpsychosis rolls.'},
+    'B.l': {n:'Who the Fuck Are You?!', d:'Immune to fear and control hacks.'}
+  },
+  BOD:{
+    'A.r': {n:'Thick Skin', d:'Subtract your BOD mod from DMG taken.'},
+    'B.r': {n:'Big Boned', d:'Reroll 1s and 2s on your HP roll when you level up.'},
+    'A.p': {n:'Lead Belly', d:'ADV against meds, toxins and alcohol.'},
+    'S.p': {n:'Vampiric', d:'Takedowns heal 2d4.'},
+    'B.p': {n:'Porky', d:'Add double your BOD mod to HP when you level up.'},
+    'A.ph':{n:'Theseus', d:'ADV on Cyberpsychosis saves.'},
+    'S.ph':{n:'Adrenaline Rush', d:'Heal 2d6 every round.'},
+    'B.ph':{n:'Built to Last', d:'Add your BOD mod to all healing.'},
+    'A.l': {n:"I'm Special", d:'Your Cyberpsychosis save penalty drops from −5 to −2.'},
+    'B.l': {n:'Can Tank This', d:'+100 HP.'}
+  }
+};
+const CLASSIFIED = {n:'Classified', d:"The GM hasn't posted this perk yet.", unknown:true};
+const perk = (st, sl) => (PERKS[st] && PERKS[st][sl]) || CLASSIFIED;
+const glyph = p => p.unknown ? '?' : p.n.split(/\s+/).filter(w => /^[A-Za-z]/.test(w)).slice(0,2).map(w => w[0].toUpperCase()).join('');
+
+/* ================= STORAGE ================= */
+const KEY = 'daemon-mercs-v1';
+let DB = {chars:[], current:null};
+try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
+function persist(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+let C = null;       // current character
+let sel = null;     // selected tree slot
+
+const ITEM_TYPES = ['Weapon','Armor','Consumable','Ammo','Gear','Cyberware'];
+const CYBER_SLOTS = [
+  ['os','Operating System',1],['cortex','Frontal Cortex',3],['ocular','Ocular',1],['circ','Circulatory',3],
+  ['immune','Immune',2],['nervous','Nervous',2],['integ','Integumentary',3],['skeleton','Skeleton',2],
+  ['hands','Hands',2],['arms','Arms',1],['legs','Legs',1]
+];
+const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
+const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
+const numOrNull = v => (v === null || v === undefined || v === '' || isNaN(+v)) ? null : +v;
+function normalize(c){ return fixEq(normalize0(c)); }
+function normalize0(c){
+  const base = {}; ORDER.forEach(k => base[k] = Math.min(15, Math.max(8, +((c.base||{})[k]) || 8)));
+  const bg = BACKGROUNDS[c.background] ? c.background : 'Streetkid';
+  return {
+    id: c.id || uid(),
+    name: String(c.name || 'Unnamed Merc').slice(0, 32),
+    background: bg,
+    bgSkills: (c.bgSkills || []).filter(s => BACKGROUNDS[bg].skills.includes(s)).slice(0, 2),
+    base,
+    asi: (c.asi || []).filter(k => ORDER.includes(k)),
+    level: Math.min(20, Math.max(1, +c.level || 1)),
+    unlocked: (c.unlocked || []).filter(k => typeof k === 'string'),
+    active: ORDER.includes(c.active) ? c.active : 'REF',
+    created: c.created || Date.now(),
+    inv: (Array.isArray(c.inv) ? c.inv : []).filter(i => i && i.name).map(i => ({
+      id: i.id || uid(), name: String(i.name).slice(0, 60), type: ITEM_TYPES.includes(i.type) ? i.type : 'Gear',
+      qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120)
+    })),
+    eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null},
+    cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
+      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200)
+    })),
+    hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
+    hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram),
+    eddies: Math.max(0, parseInt(c.eddies) || 0),
+    notes: String(c.notes || '').slice(0, 5000),
+    portrait: typeof c.portrait === 'string' && c.portrait.length < 300000 && PORTRAIT_RE.test(c.portrait) ? c.portrait : null
+  };
+}
+function fixEq(c){
+  ['primary','secondary'].forEach(k => { const i = c.inv.find(x => x.id === c.eq[k]); if (!i || i.type !== 'Weapon') c.eq[k] = null; });
+  if (c.eq.primary && c.eq.primary === c.eq.secondary) c.eq.secondary = null;
+  return c;
+}
+
+/* ================= CHARACTER MATH ================= */
+const score = (st, c = C) => c.base[st] + c.asi.filter(k => k === st).length;
+const perkTotal = (c = C) => Math.max(0, c.level - 1);
+const perkLeft = (c = C) => perkTotal(c) - c.unlocked.length;
+const asiPool = (lvl) => 2 * ASI_LEVELS.filter(l => l <= lvl).length;
+const asiLeft = () => asiPool(C.level) - C.asi.length;
+const prof = lvl => 2 + Math.floor((lvl - 1) / 4);
+const nextAsi = lvl => ASI_LEVELS.find(l => l > lvl);
+
+const key = (st, sl) => st + '.' + sl;
+const isUn = (st, sl) => C.unlocked.includes(key(st, sl));
+const meets = (st, sl) => score(st) >= TIERS[SLOT[sl].tier].req;
+const split = k => { const [st, ...r] = k.split('.'); return [st, r.join('.')]; };
+function revealed(st, sl){
+  if (score(st) < 10) return false;
+  const s = SLOT[sl];
+  return !s.parents.length || s.parents.some(p => isUn(st, p));
+}
+const blockers = (st, sl) => (CHILDREN[sl] || []).filter(c => isUn(st, c) && !SLOT[c].parents.some(p => p !== sl && isUn(st, p)));
+
+function validate(){
+  let removed = 0;
+  if (C.asi.length > asiPool(C.level)) C.asi = C.asi.slice(0, asiPool(C.level));
+  let changed = true;
+  while (changed){
+    changed = false;
+    for (const k of [...C.unlocked]){
+      const [st, sl] = split(k), s = SLOT[sl];
+      if (!s || !STATS[st] || !meets(st, sl) || (s.parents.length && !s.parents.some(p => isUn(st, p)))){
+        C.unlocked = C.unlocked.filter(x => x !== k); removed++; changed = true;
+      }
+    }
+  }
+  while (C.unlocked.length > perkTotal()){
+    let victim = null;
+    for (const t of ['l','ph','p','r']){
+      victim = [...C.unlocked].reverse().find(k => { const [st, sl] = split(k); return SLOT[sl].tier === t && !(CHILDREN[sl] || []).some(c => isUn(st, c)); });
+      if (victim) break;
+    }
+    if (!victim) break;
+    C.unlocked = C.unlocked.filter(x => x !== victim); removed++;
+  }
+  return removed;
+}
+function saveC(){
+  if (!C) return;
+  const i = DB.chars.findIndex(x => x.id === C.id);
+  if (i >= 0) DB.chars[i] = C; else DB.chars.push(C);
+  DB.current = C.id;
+  persist();
+}
+
+/* ================= VIEWS ================= */
+function show(v){
+  $('#vRoster').hidden = v !== 'roster';
+  $('#vWizard').hidden = v !== 'wizard';
+  $('#vSheet').hidden = v !== 'sheet';
+  $('#mercsTitle').textContent = v === 'wizard' ? 'New Merc' : v === 'sheet' ? 'Merc Sheet' : 'Your Mercs';
+}
+function goTop(){ $('#mercs').scrollIntoView({behavior:'smooth', block:'start'}); }
+
+/* ---------- roster ---------- */
+let pendingDelete = null;
+function renderRoster(){
+  const r = $('#roster');
+  const cards = DB.chars.slice().sort((a,b) => b.created - a.created).map(c => {
+    c = normalize(c);
+    const stats = ORDER.map(k => `<div><b>${score(k, c)}</b>${k}</div>`).join('');
+    const del = pendingDelete === c.id
+      ? `<button class="btn danger small" data-del="${c.id}">Confirm delete</button><button class="btn small" data-keep="1">Keep</button>`
+      : `<button class="btn small" data-del="${c.id}">Delete</button>`;
+    return `<div class="card"><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background} · Level ${c.level} · ${c.unlocked.length} perks</div></div></div>
+      <div class="mini-stats">${stats}</div>
+      <div class="row"><button class="btn primary small" data-open="${c.id}">Open</button><span class="spacer"></span>${del}</div></div>`;
+  }).join('');
+  r.innerHTML = `<button class="card new" id="newMerc"><span class="plus">+</span><span class="nm" style="font-size:15px">Create a merc</span><span class="sub">Name, background, stats, then jack in</span></button>` + cards +
+    `<button class="card new" id="openImport"><span class="plus">⇣</span><span class="nm" style="font-size:15px">Import a merc</span><span class="sub">From a save code or file</span></button>`;
+}
+$('#roster').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.id === 'newMerc') return startWizard();
+  if (t.id === 'openImport'){ $('#importBox').hidden = false; $('#importErr').textContent = ''; $('#importTxt').focus(); return; }
+  if (t.dataset.open) return openChar(t.dataset.open);
+  if (t.dataset.keep){ pendingDelete = null; return renderRoster(); }
+  if (t.dataset.del){
+    if (pendingDelete === t.dataset.del){
+      const c = DB.chars.find(x => x.id === t.dataset.del);
+      DB.chars = DB.chars.filter(x => x.id !== t.dataset.del);
+      if (DB.current === t.dataset.del) DB.current = null;
+      pendingDelete = null; persist(); renderRoster();
+      toast(`${c ? c.name : 'Merc'} flatlined.`);
+    } else { pendingDelete = t.dataset.del; renderRoster(); }
+  }
+});
+
+/* ---------- import / export ---------- */
+function encode(c){
+  const json = JSON.stringify({v:1, ...c, portrait:null});
+  return 'DMN1.' + btoa(unescape(encodeURIComponent(json)));
+}
+function decode(txt){
+  txt = txt.trim();
+  let obj;
+  if (txt.startsWith('{')) obj = JSON.parse(txt);
+  else {
+    const body = txt.replace(/^DMN1\./, '').replace(/\s+/g, '');
+    obj = JSON.parse(decodeURIComponent(escape(atob(body))));
+  }
+  if (!obj || (!Array.isArray(obj.mercs) && !(obj.base && obj.name))) throw new Error('bad');
+  return obj;
+}
+function doImport(txt){
+  let obj;
+  try { obj = decode(txt); } catch(e){ $('#importErr').textContent = "That save code or database didn't work. Make sure you copied all of it."; return; }
+  const list = Array.isArray(obj.mercs) ? obj.mercs : [obj];
+  let up = 0, add = 0, last = null;
+  list.forEach(m => {
+    const c = normalize(m);
+    const i = DB.chars.findIndex(x => x.id === c.id);
+    if (i >= 0){ DB.chars[i] = c; up++; } else { DB.chars.push(c); add++; }
+    last = c;
+  });
+  persist();
+  $('#importBox').hidden = true; $('#importTxt').value = '';
+  if (list.length === 1){ toast(`${last.name} ${up ? 'updated' : 'imported'}.`, true); openChar(last.id); }
+  else { toast(`Database loaded. ${up} updated, ${add} added.`, true); show('roster'); renderRoster(); }
+}
+$('#importGo').onclick = () => doImport($('#importTxt').value);
+$('#importCancel').onclick = () => { $('#importBox').hidden = true; };
+$('#importFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader(); rd.onload = () => doImport(String(rd.result)); rd.readAsText(f);
+  e.target.value = '';
+});
+$('#copyCode').onclick = async () => {
+  const code = encode(C), out = $('#codeOut');
+  out.value = code; out.hidden = false;
+  try { await navigator.clipboard.writeText(code); toast('Save code copied.', true); }
+  catch(e){ out.focus(); out.select(); toast('Copy the highlighted code by hand.'); }
+};
+const framed = (() => { try { return window.self !== window.top; } catch(e){ return true; } })();
+if (framed) $('#dlFile').hidden = true;
+if (framed) $('#dbDl').hidden = true;
+function download(text, name){
+  try{
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], {type:'application/json'}));
+    a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){ toast("This browser blocked the download. Use copy instead."); }
+}
+function withDerived(c){
+  const nm = id => (c.inv.find(i => i.id === id) || {}).name || null;
+  return {...c, derived:{
+    stats: Object.fromEntries(ORDER.map(k => [k, score(k, c)])), ramMax: ramMax(c), perkPointsLeft: perkLeft(c),
+    perks: c.unlocked.map(k => { const [st, sl] = split(k); return `${st} ${perk(st, sl).n}`; }),
+    primary: nm(c.eq.primary), secondary: nm(c.eq.secondary)
+  }};
+}
+const dbText = () => JSON.stringify({format:'daemon-db', version:2, exported:new Date().toISOString(), mercs:DB.chars.map(c => withDerived(normalize(c)))}, null, 2);
+async function copyText(text, out, label){
+  if (out){ out.value = text; out.hidden = false; }
+  try { await navigator.clipboard.writeText(text); toast(`${label} copied.`, true); }
+  catch(e){ if (out){ out.focus(); out.select(); } toast('Copy the highlighted text by hand.'); }
+}
+$('#dlFile').onclick = () => download(JSON.stringify({format:'daemon-db', version:2, mercs:[withDerived(C)]}, null, 2), C.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase() + '.daemon.json');
+$('#copyJson').onclick = () => copyText(JSON.stringify({format:'daemon-db', version:2, mercs:[withDerived(C)]}, null, 2), $('#codeOut'), 'Merc data');
+$('#dbCopy').onclick = () => copyText(dbText(), $('#dbOut'), 'Database');
+$('#dbDl').onclick = () => download(dbText(), 'daemon-database.json');
+$('#toRoster').onclick = () => { show('roster'); renderRoster(); goTop(); };
+
+/* ================= WIZARD ================= */
+let W = null, wStep = 0, lastStep = -1;
+const STEP_NAMES = ['Handle','Background','Stats','Jack in'];
+const HANDLES = ['Static','Ghostwire','Neon Jackal','Rook','Hex','Vandal','Cinder','Byte','Lockjaw','Mirage','Switchblade','Halogen','Kestrel','Rust','Glitch','Saint','Volt','Nomi','Razor','Echo'];
+function startWizard(){
+  W = {name:'', portrait:null, background:null, bgSkills:[], base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
+  wStep = 0; lastStep = -1; show('wizard'); renderWizard(); goTop();
+}
+const pbSpent = () => ORDER.reduce((n, k) => n + PB_COST[W.base[k]], 0);
+
+function renderWizard(){
+  $('#stepdots').innerHTML = STEP_NAMES.map((n, i) =>
+    `<div class="stepdot ${i < wStep ? 'done' : i === wStep ? 'on' : ''}"><b>0${i+1}</b><span>${n}</span></div>`).join('');
+  const b = $('#wbody');
+  let h = '';
+  if (wStep === 0){
+    h = `<h3>What does Night City call you?</h3>
+      <p class="muted" style="margin:6px 0 14px">Your merc's name or street handle. You can change it later by making a new merc, so pick one you like.</p>
+      <input type="text" id="wName" maxlength="32" placeholder="Enter a handle" value="${esc(W.name)}" autocomplete="off">
+      <div class="row gap"><button class="btn small" id="wRand">Random handle</button></div>
+      <div class="row gap">${avatar({name:W.name || '?', portrait:W.portrait}, 'av md')}<div><label class="btn small" style="display:inline-block">${W.portrait ? 'Change portrait' : 'Add a portrait'}<input type="file" accept="image/*" id="wPortrait" hidden></label>
+        <p class="muted" style="font-size:13px;margin:6px 0 0">Optional. Everyone in your live session sees it.</p></div></div>
+      <div class="err" id="wErr"></div>`;
+  } else if (wStep === 1){
+    h = `<h3>Pick a background</h3>
+      <p class="muted" style="margin:6px 0 0">Each background offers three skills. You get proficiency in two of them.</p>
+      <div class="bgs">${Object.entries(BACKGROUNDS).map(([k, v]) =>
+        `<button class="bg ${W.background === k ? 'on' : ''}" data-bg="${k}"><span class="t">${k}</span><span class="d">${v.d}</span><span class="sk">${v.skills.join(' · ')}</span></button>`).join('')}</div>
+      ${W.background ? `<p style="margin:20px 0 0;color:#fff">Choose two ${W.background} skills <span class="muted">(${W.bgSkills.length} of 2)</span></p>
+      <div class="chips">${BACKGROUNDS[W.background].skills.map(s => `<button class="chip ${W.bgSkills.includes(s) ? 'on' : ''}" data-sk="${s}">${s}</button>`).join('')}</div>` : ''}
+      <div class="err" id="wErr"></div>`;
+  } else if (wStep === 2){
+    const left = PB_TOTAL - pbSpent();
+    h = `<div class="row"><div><h3>Assign your stats</h3><p class="muted" style="margin:6px 0 0">5e point buy. Every stat starts at 8 and can go up to 15. A perk tree needs its stat at 10 to come online.</p></div>
+      <span class="spacer"></span><div style="text-align:right"><span class="lbl">Points left</span><div class="big" id="pbLeft">${left} <small>/ ${PB_TOTAL}</small></div></div></div>
+      <div class="pb">${ORDER.map(k => {
+        const v = W.base[k], nxt = PB_COST[v+1];
+        const canUp = v < 15 && nxt - PB_COST[v] <= left;
+        return `<div class="pbrow"><div class="ab">${k}<small>${STATS[k].name}</small></div><div class="aff">${STATS[k].aff}</div>
+        <div class="stepper"><button data-pb="${k}" data-d="-1" ${v <= 8 ? 'disabled' : ''} aria-label="Lower ${k}">−</button><span class="val">${v}</span><button data-pb="${k}" data-d="1" ${canUp ? '' : 'disabled'} aria-label="Raise ${k}">+</button></div>
+        <div class="mod">${sgn(mod(v))}</div><div class="cost">${PB_COST[v]} pts</div></div>`;
+      }).join('')}</div>
+      <p class="muted" style="margin-top:12px;font-size:14px">Starting RAM ${4 + mod(W.base.INT)} · Starting HP 10 + 1d10 ${sgn(mod(W.base.BOD))} · Trees online ${ORDER.filter(k => W.base[k] >= 10).join(', ') || 'none yet'}</p>
+      <div class="err" id="wErr">${left > 0 ? `You still have ${left} point${left > 1 ? 's' : ''} to spend.` : ''}</div>`;
+  } else {
+    h = `<h3>Ready to jack in</h3>
+      <div class="summary">
+        <div><span class="lbl">Handle</span><div class="v">${esc(W.name)}</div></div>
+        <div><span class="lbl">Background</span><div class="v">${W.background}</div><div class="muted" style="font-size:14px">${W.bgSkills.join(' and ')}</div></div>
+        <div><span class="lbl">Class</span><div class="v">Fighter · Samurai</div></div>
+      </div>
+      <div class="mini-stats" style="margin-top:18px;font-size:12px">${ORDER.map(k => `<div><b style="font-size:20px">${W.base[k]}</b>${k} ${sgn(mod(W.base[k]))}</div>`).join('')}</div>
+      <p class="muted" style="margin-top:16px">You start at level 1. You earn your first perk point when you hit level 2.</p>`;
+  }
+  const back = wStep > 0 ? `<button class="btn" id="wBack">Back</button>` : `<button class="btn" id="wCancel">Cancel</button>`;
+  const next = wStep < 3 ? `<button class="btn primary" id="wNext">Next</button>` : `<button class="btn primary" id="wDone">Jack in</button>`;
+  const anim = wStep !== lastStep; lastStep = wStep;
+  b.innerHTML = `<div class="${anim ? 'wstep' : ''}">${h}<div class="wnav">${back}<span class="spacer"></span>${next}</div></div>`;
+  const nm = $('#wName');
+  if (nm){ if (anim) nm.focus(); nm.addEventListener('input', () => { W.name = nm.value; $('#wErr').textContent = ''; }); nm.addEventListener('keydown', e => { if (e.key === 'Enter') wNext(); }); }
+}
+function wNext(){
+  const err = m => { $('#wErr').textContent = m; };
+  if (wStep === 0){ W.name = W.name.trim(); if (!W.name) return err('Give your merc a name first.'); }
+  if (wStep === 1){
+    if (!W.background) return err('Pick a background first.');
+    if (W.bgSkills.length !== 2) return err('Choose exactly two skills.');
+  }
+  if (wStep === 2 && pbSpent() > PB_TOTAL) return err('You spent too many points.');
+  wStep++; renderWizard();
+}
+$('#wbody').addEventListener('change', async e => {
+  if (e.target.id !== 'wPortrait') return;
+  try { W.portrait = await readPortrait(e.target.files[0]); renderWizard(); } catch(err){ toast("That image didn't load. Try a JPG or PNG."); }
+});
+$('#wbody').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.id === 'wNext') return wNext();
+  if (t.id === 'wBack'){ wStep--; return renderWizard(); }
+  if (t.id === 'wCancel'){ show('roster'); return renderRoster(); }
+  if (t.id === 'wRand'){ W.name = HANDLES[Math.floor(Math.random() * HANDLES.length)]; return renderWizard(); }
+  if (t.dataset.bg){ if (W.background !== t.dataset.bg){ W.background = t.dataset.bg; W.bgSkills = []; } return renderWizard(); }
+  if (t.dataset.sk){
+    const s = t.dataset.sk;
+    if (W.bgSkills.includes(s)) W.bgSkills = W.bgSkills.filter(x => x !== s);
+    else { W.bgSkills.push(s); if (W.bgSkills.length > 2) W.bgSkills.shift(); }
+    return renderWizard();
+  }
+  if (t.dataset.pb){
+    const k = t.dataset.pb, v = W.base[k] + (+t.dataset.d);
+    if (v < 8 || v > 15) return;
+    const old = W.base[k]; W.base[k] = v;
+    if (pbSpent() > PB_TOTAL) W.base[k] = old;
+    return renderWizard();
+  }
+  if (t.id === 'wDone'){
+    const c = normalize({...W, id:uid(), level:1, unlocked:[], asi:[], created:Date.now(),
+      active: ORDER.slice().sort((a, b) => W.base[b] - W.base[a])[0]});
+    DB.chars.push(c); persist();
+    toast(`${c.name} is online. Welcome to Night City.`, true);
+    openChar(c.id);
+  }
+});
+
+/* ================= SHEET ================= */
+function openChar(id){
+  const raw = DB.chars.find(x => x.id === id); if (!raw) return;
+  C = normalize(raw); validate(); saveC();
+  sel = null; cyberForm = null; delItem = null; $('#codeOut').hidden = true;
+  show('sheet'); setSheetTab(sheetTab); goTop();
+  requestAnimationFrame(build);
+}
+
+function renderSheetHead(){
+  const p = prof(C.level), na = nextAsi(C.level);
+  $('#sheetHead').innerHTML = `<div class="sheet-head">
+    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · Fighter (Samurai) · ${C.bgSkills.join(' and ')}</div></div></div>
+    <div><span class="lbl">Level</span><div class="lvlbox stepper"><button id="lvDown" ${C.level <= 1 ? 'disabled' : ''} aria-label="Level down">−</button><span class="val big" id="lvVal">${C.level}</span><button id="lvUp" ${C.level >= 20 ? 'disabled' : ''} aria-label="Level up">+</button></div></div>
+  </div>
+  <div class="vitals">
+    <div class="vital ${perkLeft() > 0 ? 'hot' : ''}"><span class="lbl">Perk points</span><div class="v">${perkLeft()} <small>/ ${perkTotal()}</small></div></div>
+    <div class="vital ${asiLeft() > 0 ? 'hot' : ''}"><span class="lbl">Stat increases</span><div class="v">${asiLeft()} <small>${na ? 'next at lvl ' + na : 'all earned'}</small></div></div>
+    <div class="vital"><span class="lbl">RAM</span><div class="v">${4 + mod(score('INT'))}</div></div>
+    <div class="vital"><span class="lbl">HP per level</span><div class="v">10 + d10 <small>${sgn(mod(score('BOD')))}</small></div></div>
+    <div class="vital"><span class="lbl">Proficiency</span><div class="v">${sgn(p)}</div></div>
+  </div>`;
+  $('#lvUp').onclick = () => setLevel(C.level + 1);
+  $('#lvDown').onclick = () => setLevel(C.level - 1);
+}
+function setLevel(l){
+  const up = l > C.level;
+  C.level = Math.max(1, Math.min(20, l));
+  changed();
+  if (up){
+    $('#sheetHead').classList.remove('lvlup'); void $('#sheetHead').offsetWidth; $('#sheetHead').classList.add('lvlup');
+    const gotAsi = ASI_LEVELS.includes(C.level);
+    toast(`Level ${C.level}. +1 perk point${gotAsi ? ' and +2 stat increases' : ''}.`, true);
+  }
+}
+
+function renderTabs(){
+  const st = C.active;
+  $('#tabs').innerHTML = ORDER.map(k => {
+    const n = C.unlocked.filter(u => u.startsWith(k + '.')).length;
+    const v = score(k), off = v < 10;
+    return `<button class="tab${k === st ? ' active' : ''}${off ? ' off' : ''}" role="tab" aria-selected="${k === st}" data-k="${k}">
+      <span class="top"><span class="ab">${k}</span><span class="sc">${v}<small>${sgn(mod(v))}</small></span></span>
+      <span class="nm">${STATS[k].name}</span>
+      <span class="ct">${off ? 'Offline' : n + ' / 10 installed'}</span></button>`;
+  }).join('');
+  const v = score(st), extra = C.asi.filter(k => k === st).length;
+  $('#treeTitle').textContent = `${STATS[st].name} Tree`;
+  $('#scoreLbl').textContent = st;
+  $('#score').textContent = v;
+  $('#dec').disabled = extra === 0;
+  $('#inc').disabled = asiLeft() <= 0 || v >= 20;
+  const note = $('#asiNote');
+  note.classList.toggle('hot', asiLeft() > 0 && v < 20);
+  note.textContent = asiLeft() > 0 ? `${asiLeft()} stat increase${asiLeft() > 1 ? 's' : ''} to spend` : `Base ${C.base[st]}${extra ? ' + ' + extra + ' from increases' : ''}`;
+  $('#offlineTxt').textContent = `Raise ${st} to 10 to jack in.`;
+}
+
+const PERK_PROF = {'COO.A.r':'Persuasion', 'COO.B.r':'Deception'};
+function skillProf(name, st, c = C){
+  const src = (c.bgSkills.includes(name) ? 1 : 0) + Object.entries(PERK_PROF).filter(([k, sk]) => sk === name && c.unlocked.includes(k)).length;
+  const canDouble = score(st, c) >= TIERS.ph.req;
+  return {src, level: src >= 2 && canDouble ? 2 : src >= 1 ? 1 : 0, locked: src >= 2 && !canDouble};
+}
+function renderSkills(){
+  const p = prof(C.level);
+  $('#skillNote').innerHTML = `◆ proficient · ◆◆ double proficiency. Double proficiency only opens two tiers up, once the skill's stat hits Phenom (17). Renamed skills show their old 5e name.`;
+  $('#skills').innerHTML = SKILLS.map(([n, st, old]) => {
+    const pf = skillProf(n, st);
+    const m = mod(score(st)) + p * pf.level;
+    return `<div class="skill ${pf.level === 2 ? 'exp' : pf.level ? 'prof' : ''}"><span class="s">${n}<small>${st}${old ? ' · was ' + old : ''}${pf.locked ? ' · double at ' + st + ' 17' : ''}</small></span><span class="m">${sgn(m)}</span></div>`;
+  }).join('');
+}
+
+/* ---------- tree DOM ---------- */
+const treeEl = $('#tree'), svg = $('#edges'), eg = $('#eg'), tl = $('#tl');
+let nodeEls = {}, edges = [], prevRev = new Set(), prevEdge = new Set();
+
+function build(){
+  treeEl.querySelectorAll('.node').forEach(n => n.remove());
+  eg.innerHTML = ''; nodeEls = {}; edges = [];
+  const st = C.active;
+  SLOTS.forEach(s => {
+    const p = perk(st, s.slot);
+    const b = document.createElement('button');
+    b.className = 'node hidden';
+    b.style.left = COLS[s.col]*100 + '%';
+    b.style.top = TIERS[s.tier].y*100 + '%';
+    b.innerHTML = `<span class="hexwrap"><span class="hex"><span class="glyph">${glyph(p)}</span></span></span><span class="label">${p.n}</span><span class="req">${st} ${TIERS[s.tier].req}+</span>`;
+    b.addEventListener('click', () => { sel = s.slot; update(false); });
+    b.addEventListener('dblclick', () => act(s.slot));
+    treeEl.appendChild(b);
+    nodeEls[s.slot] = b;
+    s.parents.forEach(pa => {
+      const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'e');
+      const base = document.createElementNS(NS, 'path'); base.setAttribute('class', 'edge-base');
+      const live = document.createElementNS(NS, 'path'); live.setAttribute('class', 'edge-live');
+      g.append(base, live); eg.append(g);
+      edges.push({from:pa, to:s.slot, g, base, live, len:0});
+    });
+  });
+  $('#blA').textContent = STATS[st].a;
+  $('#blB').textContent = STATS[st].b;
+  $('#blS').textContent = STATS[st].s;
+  $('#blS').classList.toggle('shared', STATS[st].s === 'Shared');
+  $('#gutter').innerHTML = TIER_ORDER.map(t => `<div class="tierlbl" data-t="${t}" style="top:${TIERS[t].y*100}%"><b>${TIERS[t].name}</b><span>${st} ${TIERS[t].range}</span></div>`).join('');
+  layout();
+  prevRev = new Set(); prevEdge = new Set();
+  update('build');
+}
+
+function layout(){
+  if (!C || !edges.length) return;
+  const w = treeEl.clientWidth, h = treeEl.clientHeight;
+  if (!w) return;
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  tl.innerHTML = TIER_ORDER.map(t => `<line class="tierline" data-t="${t}" x1="0" x2="${w}" y1="${TIERS[t].y*h}" y2="${TIERS[t].y*h}"/>`).join('');
+  edges.forEach(e => {
+    const a = SLOT[e.from], b = SLOT[e.to];
+    const x1 = COLS[a.col]*w, y1 = TIERS[a.tier].y*h, x2 = COLS[b.col]*w, y2 = TIERS[b.tier].y*h;
+    const ym = (y1 + y2) / 2;
+    const d = x1 === x2 ? `M${x1} ${y1} V${y2}` : `M${x1} ${y1} V${ym} H${x2} V${y2}`;
+    e.base.setAttribute('d', d); e.live.setAttribute('d', d);
+    e.len = e.base.getTotalLength();
+    e.base.style.transition = 'none';
+    e.base.style.strokeDasharray = 'none';
+    e.base.style.strokeDashoffset = 0;
+  });
+  updateTierMarks();
+}
+function updateTierMarks(){
+  const sc = score(C.active);
+  document.querySelectorAll('.tierline').forEach(l => l.classList.toggle('open', sc >= TIERS[l.dataset.t].req));
+  document.querySelectorAll('.tierlbl').forEach(l => l.classList.toggle('open', sc >= TIERS[l.dataset.t].req));
+}
+function drawEdge(e, delay){
+  const L = e.len;
+  e.base.style.transition = 'none';
+  e.base.style.strokeDasharray = L;
+  e.base.style.strokeDashoffset = L;
+  e.base.getBoundingClientRect();
+  e.base.style.transition = `stroke-dashoffset .5s ease-out ${delay}s`;
+  e.base.style.strokeDashoffset = 0;
+}
+
+/* mode: 'build' (staggered intro), true (animate changes), false (no animation) */
+function update(mode = true){
+  const st = C.active;
+  treeEl.classList.toggle('offline', score(st) < 10);
+  const nowRev = new Set(), pts = perkLeft();
+  SLOTS.forEach(s => {
+    const el = nodeEls[s.slot]; if (!el) return;
+    const rev = revealed(st, s.slot), un = isUn(st, s.slot), ok = meets(st, s.slot);
+    el.classList.toggle('hidden', !rev);
+    el.classList.toggle('unlocked', un);
+    el.classList.toggle('tierlocked', rev && !un && !ok);
+    el.classList.toggle('available', rev && !un && ok && pts > 0);
+    el.classList.toggle('nopoints', rev && !un && ok && pts <= 0);
+    el.classList.toggle('selected', sel === s.slot);
+    el.tabIndex = rev ? 0 : -1;
+    el.setAttribute('aria-hidden', String(!rev));
+    el.setAttribute('aria-label', `${perk(st, s.slot).n}, ${TIERS[s.tier].name}, ${un ? 'installed' : 'not installed'}`);
+    if (rev){
+      nowRev.add(s.slot);
+      if (mode && !prevRev.has(s.slot)){
+        const d = mode === 'build' ? TIER_ORDER.indexOf(s.tier) * 0.14 : (s.parents.length ? 0.42 : 0.05);
+        el.style.setProperty('--d', d + 's');
+        el.classList.remove('reveal'); void el.offsetWidth; el.classList.add('reveal');
+        setTimeout(() => { el.classList.remove('reveal'); el.style.setProperty('--d', '0s'); }, (d + 0.7) * 1000);
+      }
+    } else if (sel === s.slot) sel = null;
+  });
+  edges.forEach(e => {
+    const vis = isUn(st, e.from) && nowRev.has(e.to);
+    const k = e.from + '>' + e.to;
+    e.g.classList.toggle('vis', vis);
+    e.g.classList.toggle('live', vis && isUn(st, e.to));
+    if (vis && !prevEdge.has(k) && mode) drawEdge(e, mode === 'build' ? TIER_ORDER.indexOf(SLOT[e.from].tier) * 0.14 : 0);
+  });
+  prevRev = nowRev;
+  prevEdge = new Set(edges.filter(e => e.g.classList.contains('vis')).map(e => e.from + '>' + e.to));
+  renderSheetHead(); renderTabs(); renderSkills(); renderDetail(); updateTierMarks(); renderCS(); saveC();
+}
+
+function act(sl){
+  const st = C.active;
+  if (isUn(st, sl)) return refund(sl);
+  if (!revealed(st, sl)) return;
+  if (!meets(st, sl)) return toast(`${st} needs to be ${TIERS[SLOT[sl].tier].req} for ${TIERS[SLOT[sl].tier].name} perks.`);
+  if (perkLeft() <= 0) return toast('No perk points left. Level up to earn more.');
+  C.unlocked.push(key(st, sl));
+  sel = sl;
+  const el = nodeEls[sl];
+  el.classList.remove('burst'); void el.offsetWidth; el.classList.add('burst');
+  setTimeout(() => el.classList.remove('burst'), 800);
+  update(true);
+}
+function refund(sl){
+  const st = C.active, b = blockers(st, sl);
+  if (b.length) return toast(`Uninstall ${b.map(c => perk(st, c).n).join(' and ')} first.`);
+  C.unlocked = C.unlocked.filter(x => x !== key(st, sl));
+  update(true);
+}
+function changed(){
+  const r = validate();
+  if (r) toast(`${r} perk${r > 1 ? 's' : ''} went offline.`);
+  update(true);
+}
+
+function renderDetail(){
+  const d = $('#detail'), st = C.active;
+  if (!sel){
+    const pts = perkLeft();
+    d.innerHTML = `<div class="tag">${STATS[st].name}</div><h3>Pick a perk</h3>
+      <p>Click a node to see what it does, then install it from here. Double-clicking a node installs or uninstalls it.</p>
+      <p>${pts > 0 ? `You have ${pts} perk point${pts > 1 ? 's' : ''} to spend.` : C.level === 1 ? 'You earn your first perk point at level 2. Use the level buttons up top when your GM levels you up.' : 'No perk points left. Level up to earn more.'}</p>`;
+    return;
+  }
+  const s = SLOT[sel], p = perk(st, sel), t = TIERS[s.tier];
+  const un = isUn(st, sel), ok = meets(st, sel), pts = perkLeft();
+  const branch = STATS[st][s.col.toLowerCase()];
+  const from = s.parents.length ? s.parents.map(x => perk(st, x).n).join(' or ') : `${st} at 10 or higher`;
+  let status, btn;
+  if (un){
+    const b = blockers(st, sel);
+    status = `<p class="status">Installed.</p>`;
+    btn = `<button class="btn" id="doAct" ${b.length ? 'disabled' : ''}>Uninstall</button>` +
+      (b.length ? `<p style="font-size:13px;margin:10px 0 0;color:var(--muted)">Uninstall ${b.map(c => perk(st, c).n).join(' and ')} first.</p>` : '');
+  } else if (!ok){
+    status = `<p class="status bad">Your ${st} is ${score(st)}. ${t.name} perks need ${t.req}.</p>`;
+    btn = `<button class="btn primary" disabled>Install</button>`;
+  } else if (pts <= 0){
+    status = `<p class="status bad">No perk points left. Level up to earn more.</p>`;
+    btn = `<button class="btn primary" disabled>Install</button>`;
+  } else {
+    status = `<p class="status">Ready to install.</p>`;
+    btn = `<button class="btn primary" id="doAct">Install for 1 point</button>`;
+  }
+  d.innerHTML = `<div class="tag">${st} · ${branch} · ${t.name}</div>
+    <h3>${p.n}</h3><p>${p.d}</p>
+    <ul><li><b>Needs</b> ${st} ${t.req} or higher</li><li><b>Costs</b> 1 perk point</li><li><b>Opens from</b> ${from}</li></ul>
+    ${status}<div class="row">${btn}</div>`;
+  const a = $('#doAct'); if (a) a.onclick = () => act(sel);
+}
+
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if (!b || b.dataset.k === C.active) return;
+  C.active = b.dataset.k; sel = null; build();
+});
+$('#inc').onclick = () => { const st = C.active; if (asiLeft() > 0 && score(st) < 20){ C.asi.push(st); changed(); } };
+$('#dec').onclick = () => { const st = C.active, i = C.asi.lastIndexOf(st); if (i >= 0){ C.asi.splice(i, 1); changed(); } };
+new ResizeObserver(() => layout()).observe(treeEl);
+
+let tt;
+function toast(msg, good){
+  const t = $('#toast'); t.textContent = msg; t.classList.toggle('good', !!good); t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ================= CHARACTER SHEET TAB ================= */
+const cyberRam = (c = C) => c.cyber.reduce((n, x) => n + (+x.ram || 0), 0);
+const hasPerk = (k, c = C) => c.unlocked.includes(k);
+const ramBase = (c = C) => Math.max(0, 4 + mod(score('INT', c)) + cyberRam(c));
+const ramMax = (c = C) => ramBase(c) * (hasPerk('INT.S.p', c) ? 2 : 1);
+const reactCost = (c = C) => hasPerk('INT.S.ph', c) ? 1 : 2;
+const ramCur = () => C.ram == null ? ramMax() : Math.max(0, Math.min(C.ram, ramMax()));
+let sheetTab = 'perks', cyberForm = null, delItem = null;
+
+function setSheetTab(t){
+  sheetTab = t;
+  $('#vPerks').hidden = t !== 'perks';
+  $('#vCS').hidden = t !== 'cs';
+  document.querySelectorAll('.vtabs button').forEach(b => { b.classList.toggle('on', b.dataset.v === t); b.setAttribute('aria-selected', b.dataset.v === t); });
+  if (t === 'cs') renderCS(); else requestAnimationFrame(layout);
+}
+document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSheetTab(b.dataset.v); });
+
+function renderCS(){
+  if (!C || sheetTab !== 'cs') return;
+  const hm = C.hpMax, hp = C.hp == null ? hm : Math.min(C.hp, hm), net = C.netHp == null ? hm : Math.min(C.netHp, hm);
+  const rm = ramMax(), rc = ramCur(), cr = cyberRam();
+  const it = id => C.inv.find(i => i.id === id);
+  const pct = (a, b) => b ? Math.max(0, Math.min(100, a / b * 100)) : 0;
+  const opts = sel => ITEM_TYPES.map(t => `<option ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
+  const eqCard = (k, label) => {
+    const i = it(C.eq[k]);
+    return `<div class="eqslot ${i ? 'on' : ''}"><span class="lbl">${label}</span>` + (i
+      ? `<div class="eqn">${esc(i.name)}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div><div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
+      : `<div class="muted" style="font-size:14px">Empty. Hit ${k === 'primary' ? 'P' : 'S'} on a weapon in your inventory to equip it here.</div>`) + `</div>`;
+  };
+  const ident = `<div class="ident">
+      <div><span class="lbl">Handle</span><div class="v">${esc(C.name)}</div></div>
+      <div><span class="lbl">Origin</span><div class="v">${C.background}</div></div>
+      <div><span class="lbl">Class</span><div class="v">Fighter · Samurai</div></div>
+      <div><span class="lbl">Level</span><div class="v">${C.level}</div></div>
+      <div><span class="lbl">Eddies</span><div class="v"><input type="number" min="0" data-field="eddies" value="${C.eddies}" aria-label="Eddies" style="width:120px"> €$</div></div>
+    </div>
+    <div class="mini-stats" style="margin-top:16px">${ORDER.map(k => `<div><b>${score(k)}</b>${k} ${sgn(mod(score(k)))}</div>`).join('')}</div>
+    <p class="muted" style="font-size:14px;margin-top:12px">Proficient in ${C.bgSkills.join(' and ')} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>`;
+  const hpBlock = hm == null
+    ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Roll your HP (10 + 1d10 ${sgn(mod(score('BOD')))} at level 1, plus your level ups) and enter your max.</p>
+       <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
+    : `<div class="track"><div class="head"><span class="lbl" style="margin:0">HP</span><span class="muted" style="font-size:12px">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
+       <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
+       <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
+     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool</span></div>
+       <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
+       <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
+  const ramBlock = `<div class="track"><div class="head"><span class="lbl" style="margin:0">RAM</span><span class="muted" style="font-size:12px">4 base ${sgn(mod(score('INT')))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
+      <div class="num">${rc} <small>/ ${rm}</small></div>
+      <div class="pips">${Array.from({length: rm}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
+      <div class="row"><button class="btn small" data-act="ram-1">−1</button><button class="btn small" data-act="ram-2">Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull">Restore</button></div></div>`;
+  const rows = C.inv.length ? C.inv.map(i => {
+    const p = C.eq.primary === i.id, s2 = C.eq.secondary === i.id;
+    return `<div class="irow ${p || s2 ? 'eq' : ''}">
+      <input type="text" class="f" data-i="${i.id}" data-f="name" value="${esc(i.name)}" aria-label="Item name">
+      <select data-i="${i.id}" data-f="type" aria-label="Item type">${opts(i.type)}</select>
+      <div class="q"><button data-qty="-1" data-i="${i.id}" aria-label="Less">−</button><span>${i.qty}</span><button data-qty="1" data-i="${i.id}" aria-label="More">+</button></div>
+      <input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Stats or notes" aria-label="Item stats">
+      <div class="acts">
+        ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" data-equip="primary" data-i="${i.id}" title="Equip as primary">P</button><button class="btn small ${s2 ? 'on' : ''}" data-equip="secondary" data-i="${i.id}" title="Equip as secondary">S</button>` : ''}
+        ${i.type === 'Cyberware' ? `<select data-install="${i.id}" aria-label="Install into slot"><option value="">Install…</option>${CYBER_SLOTS.map(([k, n, cap]) => `<option value="${k}" ${C.cyber.filter(x => x.slot === k).length >= cap ? 'disabled' : ''}>${n}</option>`).join('')}</select>` : ''}
+        <button class="btn small ${delItem === i.id ? 'danger' : ''}" data-del-item="${i.id}" aria-label="Delete item">${delItem === i.id ? 'Sure?' : '✕'}</button>
+      </div></div>`;
+  }).join('') : `<p class="muted" style="margin-top:12px">Nothing in the bag yet.</p>`;
+  const cyber = CYBER_SLOTS.map(([k, n, cap]) => {
+    const list = C.cyber.filter(x => x.slot === k);
+    const form = cyberForm === k
+      ? `<div class="cform"><input type="text" class="f" id="cfName" placeholder="Cyberware name" aria-label="Cyberware name">
+         <label class="muted" style="font-size:12px">RAM bonus <input type="number" id="cfRam" value="0"></label>
+         <input type="text" class="f" id="cfEff" placeholder="What it does" aria-label="Effect">
+         <div class="row"><button class="btn small primary" data-act="cfSave" data-slot="${k}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div>`
+      : (list.length < cap ? `<button class="btn small" data-act="cfOpen" data-slot="${k}" style="margin-top:8px">+ Install</button>` : '');
+    return `<div class="cslot ${list.length >= cap ? 'full' : ''}"><div class="h"><b>${n}</b><span class="cap">${list.length} / ${cap}</span></div>
+      ${list.map(x => `<div class="cw"><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}" aria-label="Cyberware name">
+        <div class="r"><span class="muted">RAM</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}" aria-label="RAM bonus"><span class="spacer"></span><button class="btn small" data-uninstall="${x.id}">Remove</button></div>
+        <input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}" placeholder="What it does" aria-label="Effect"></div>`).join('')}
+      ${form}</div>`;
+  }).join('');
+  $('#vCS').innerHTML = `
+    <div class="panel gap"><div class="idwrap"><div style="display:grid;gap:8px;justify-items:start">${avatar(C, 'av lg')}
+      <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
+      <div>${ident}</div></div></div>
+    <div class="cs-grid">
+      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}</div>
+      <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}</div></div>
+    </div>
+    <div class="panel gap"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
+      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><button class="btn primary small" data-act="addItem">Add</button></div>
+      <div>${rows}</div></div>
+    <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
+      <p class="muted" style="font-size:13px;margin-top:6px">Each install's RAM bonus adds to your max RAM. Slot counts are a starting point until the GM sets them.</p>
+      <div class="cyber">${cyber}</div></div>
+    <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
+}
+const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
+$('#vCS').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const amt = id => Math.max(0, parseInt(($('#' + id) || {}).value) || 0);
+  const hm = C.hpMax;
+  if (t.dataset.equip){
+    const k = t.dataset.equip, id = t.dataset.i, other = k === 'primary' ? 'secondary' : 'primary';
+    if (C.eq[k] === id) C.eq[k] = null; else { C.eq[k] = id; if (C.eq[other] === id) C.eq[other] = null; }
+    return csSave();
+  }
+  if (t.dataset.unequip){ C.eq[t.dataset.unequip] = null; return csSave(); }
+  if (t.dataset.qty){ const i = C.inv.find(x => x.id === t.dataset.i); if (i) i.qty = Math.max(0, i.qty + (+t.dataset.qty)); return csSave(); }
+  if (t.dataset.delItem){
+    const id = t.dataset.delItem;
+    if (delItem === id){ C.inv = C.inv.filter(x => x.id !== id); fixEq(C); delItem = null; } else delItem = id;
+    return csSave();
+  }
+  if (t.dataset.uninstall){
+    const x = C.cyber.find(y => y.id === t.dataset.uninstall);
+    if (x){
+      C.cyber = C.cyber.filter(y => y !== x);
+      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
+      toast(`${x.name} moved to inventory.`, true);
+    }
+    return csSave();
+  }
+  switch (t.dataset.act){
+    case 'setHpMax': { const v = parseInt($('#setHpMax').value); if (v > 0){ C.hpMax = v; C.hp = v; C.netHp = v; } else toast('Enter your max HP first.'); return csSave(); }
+    case 'dmg': { C.hp = Math.max(0, (C.hp ?? hm) - amt('hpAmt')); if (C.hp === 0) toast(`${C.name} is down and in critical condition.`); return csSave(); }
+    case 'heal': C.hp = Math.min(hm, (C.hp ?? hm) + amt('hpAmt')); return csSave();
+    case 'hpFull': C.hp = hm; return csSave();
+    case 'netDmg': { C.netHp = Math.max(0, (C.netHp ?? hm) - amt('netAmt')); if (C.netHp === 0) toast(`${C.name} flatlined in the Net. Unconscious and critical.`); return csSave(); }
+    case 'netHeal': C.netHp = Math.min(hm, (C.netHp ?? hm) + amt('netAmt')); return csSave();
+    case 'netFull': C.netHp = hm; return csSave();
+    case 'ram-1': C.ram = Math.max(0, ramCur() - 1); return csSave();
+    case 'ram-2': { const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
+    case 'ram+1': C.ram = Math.min(ramMax(), ramCur() + 1); return csSave();
+    case 'ramFull': C.ram = null; return csSave();
+    case 'rmPortrait': C.portrait = null; return csSave();
+    case 'addItem': {
+      const name = $('#niName').value.trim();
+      if (!name){ $('#niName').focus(); return toast('Give the item a name.'); }
+      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120)};
+      C.inv.push(item);
+      const keepType = item.type;
+      csSave();
+      $('#niType').value = keepType; $('#niName').focus();
+      return;
+    }
+    case 'cfOpen': cyberForm = t.dataset.slot; renderCS(); $('#cfName').focus(); return;
+    case 'cfCancel': cyberForm = null; return renderCS();
+    case 'cfSave': {
+      const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the cyberware first.'); }
+      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), ram:parseInt($('#cfRam').value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
+      toast(`${name} installed in ${SLOTMAP[t.dataset.slot][1]}.`, true);
+      cyberForm = null; return csSave();
+    }
+  }
+});
+$('#vCS').addEventListener('change', async e => {
+  const t = e.target;
+  if (t.id === 'portraitIn'){
+    try { C.portrait = await readPortrait(t.files[0]); toast('Portrait updated.', true); }
+    catch(err){ toast("That image didn't load. Try a JPG or PNG."); }
+    return csSave();
+  }
+  if (t.dataset.install){
+    const slot = t.value; if (!slot) return;
+    const i = C.inv.find(x => x.id === t.dataset.install); if (!i) return;
+    if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return renderCS(); }
+    const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
+    C.cyber.push({id:uid(), slot, name:i.name, ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
+    if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
+    toast(`${i.name} installed in ${SLOTMAP[slot][1]}.`, true);
+    return csSave();
+  }
+  if (t.dataset.i && t.dataset.f){
+    const i = C.inv.find(x => x.id === t.dataset.i); if (!i) return;
+    if (t.dataset.f === 'name'){ const v = t.value.trim(); if (v) i.name = v.slice(0, 60); else t.value = i.name; return saveC(); }
+    if (t.dataset.f === 'stats'){ i.stats = t.value.slice(0, 120); return saveC(); }
+    if (t.dataset.f === 'type'){ i.type = t.value; fixEq(C); return csSave(); }
+  }
+  if (t.dataset.c && t.dataset.cf){
+    const x = C.cyber.find(y => y.id === t.dataset.c); if (!x) return;
+    if (t.dataset.cf === 'ram'){ x.ram = parseInt(t.value) || 0; return csSave(); }
+    if (t.dataset.cf === 'name'){ const v = t.value.trim(); if (v) x.name = v.slice(0, 60); else t.value = x.name; return saveC(); }
+    x.effect = t.value.slice(0, 200); return saveC();
+  }
+  const f = t.dataset.field;
+  if (f === 'notes'){ C.notes = t.value.slice(0, 5000); return saveC(); }
+  if (f === 'eddies'){ C.eddies = Math.max(0, parseInt(t.value) || 0); t.value = C.eddies; return saveC(); }
+  if (f === 'hpMax'){
+    const v = parseInt(t.value);
+    if (v > 0){ C.hpMax = v; if (C.hp != null) C.hp = Math.min(C.hp, v); if (C.netHp != null) C.netHp = Math.min(C.netHp, v); }
+    return csSave();
+  }
+});
+$('#vCS').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const id = e.target.id;
+  if (id === 'niName' || id === 'niStats' || id === 'niQty'){ e.preventDefault(); $('[data-act=addItem]').click(); }
+  if (id === 'cfName' || id === 'cfEff' || id === 'cfRam'){ e.preventDefault(); $('[data-act=cfSave]').click(); }
+  if (id === 'setHpMax'){ e.preventDefault(); $('[data-act=setHpMax]').click(); }
+});
+let notesT;
+$('#vCS').addEventListener('input', e => {
+  if (e.target.dataset.field !== 'notes') return;
+  clearTimeout(notesT); notesT = setTimeout(() => { C.notes = e.target.value.slice(0, 5000); saveC(); }, 400);
+});
+
+/* ================= LIVE SESSIONS ================= */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA73IjMliOj11a04ZWOHzMfWXIvD-GUkgY",
+  authDomain: "daemonmanual.firebaseapp.com",
+  projectId: "daemonmanual",
+  storageBucket: "daemonmanual.firebasestorage.app",
+  messagingSenderId: "204327641861",
+  appId: "1:204327641861:web:5d966bc9be993f0e320d6c"
+};
+const FB_VER = '13.2.0';
+const MOCK = (() => { try { return localStorage.getItem('daemon-live-mock') === '1'; } catch(e){ return false; } })();
+const LIVE_OK = MOCK || (!framed && /^https?:$/.test(location.protocol));
+const LS_KEY = 'daemon-live', HOSTED_KEY = 'daemon-hosted';
+let LS = null; try { LS = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){}
+let liveApi = null, liveState = 'idle', liveErr = '', unsubs = [], players = [], lib = [], sessMeta = null, endConfirm = false, libImport = false;
+let portraits = {}, lastPortrait = null, restoreList = null, leaveConfirm = false;
+const JOINED_KEY = 'daemon-joined';
+const joined = () => { try { return JSON.parse(localStorage.getItem(JOINED_KEY)) || []; } catch(e){ return []; } };
+const saveJoined = j => { try { localStorage.setItem(JOINED_KEY, JSON.stringify(j.slice(0, 6))); } catch(e){} };
+const isOnline = p => Date.now() - (p.seen || 0) < 150000;
+function dedupe(list){
+  const best = {}, stale = [];
+  list.filter(p => p.merc).forEach(p => {
+    const k = p.mercId || p.id, cur = best[k];
+    if (!cur){ best[k] = p; return; }
+    const newer = (p.updatedAt || 0) > (cur.updatedAt || 0) ? p : cur;
+    stale.push(newer === p ? cur : p); best[k] = newer;
+  });
+  return {keep:Object.values(best), stale};
+}
+const seenOps = new Set();
+const saveLS = () => { try { LS ? localStorage.setItem(LS_KEY, JSON.stringify(LS)) : localStorage.removeItem(LS_KEY); } catch(e){} };
+const hosted = () => { try { return JSON.parse(localStorage.getItem(HOSTED_KEY)) || []; } catch(e){ return []; } };
+const saveHosted = h => { try { localStorage.setItem(HOSTED_KEY, JSON.stringify(h.slice(0, 8))); } catch(e){} };
+const genCode = () => { const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)]; return c; };
+const ago = t => { if (!t) return 'never'; const s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'just now' : s < 3600 ? Math.round(s / 60) + ' min ago' : Math.round(s / 3600) + ' h ago'; };
+
+async function firebaseLive(){
+  const B = `https://www.gstatic.com/firebasejs/${FB_VER}/`;
+  let mods;
+  try { mods = await Promise.all([import(B + 'firebase-app.js'), import(B + 'firebase-auth.js'), import(B + 'firebase-firestore.js')]); }
+  catch(e){ const E = `https://esm.sh/firebase@${FB_VER}/`; mods = await Promise.all([import(E + 'app'), import(E + 'auth'), import(E + 'firestore')]); }
+  const [{initializeApp}, A, F] = mods;
+  const app = initializeApp(FIREBASE_CONFIG);
+  const auth = A.getAuth(app), db = F.getFirestore(app);
+  const uid = await new Promise((res, rej) => {
+    const off = A.onAuthStateChanged(auth, u => { if (u){ off(); res(u.uid); } else A.signInAnonymously(auth).catch(e => { off(); rej(e); }); });
+  });
+  const d = (...p) => F.doc(db, ...p), c = (...p) => F.collection(db, ...p);
+  const list = q => q.docs.map(x => ({id:x.id, ...x.data()}));
+  const onErr = e => { console.error(e); toast('Live sync error. Check your connection.'); };
+  return {
+    uid,
+    async createSession(code, data){ await F.runTransaction(db, async t => { const s = await t.get(d('sessions', code)); if (s.exists()) throw new Error('exists'); t.set(d('sessions', code), data); }); },
+    async getSession(code){ const s = await F.getDoc(d('sessions', code)); return s.exists() ? s.data() : null; },
+    deleteSession: code => F.deleteDoc(d('sessions', code)),
+    watchSession: (code, cb) => F.onSnapshot(d('sessions', code), s => cb(s.exists() ? s.data() : null), onErr),
+    watchPlayers: (code, cb) => F.onSnapshot(c('sessions', code, 'players'), q => cb(list(q)), onErr),
+    setPlayer: (code, u, data) => F.setDoc(d('sessions', code, 'players', u), data),
+    removePlayer: (code, u) => F.deleteDoc(d('sessions', code, 'players', u)),
+    watchInbox: (code, u, cb) => F.onSnapshot(c('sessions', code, 'players', u, 'inbox'), q => cb(list(q)), onErr),
+    sendInbox: (code, u, op) => F.addDoc(c('sessions', code, 'players', u, 'inbox'), op),
+    deleteInbox: (code, u, id) => F.deleteDoc(d('sessions', code, 'players', u, 'inbox', id)),
+    watchLibrary: cb => F.onSnapshot(c('dms', uid, 'library'), q => cb(list(q)), onErr),
+    async getPlayers(code){ return list(await F.getDocs(c('sessions', code, 'players'))); },
+    async getPortrait(code, u){ const s = await F.getDoc(d('sessions', code, 'portraits', u)); return s.exists() ? s.data() : null; },
+    touchPlayer: (code, u, data) => F.setDoc(d('sessions', code, 'players', u), data, {merge:true}),
+    watchPortraits: (code, cb) => F.onSnapshot(c('sessions', code, 'portraits'), q => cb(list(q)), onErr),
+    setPortrait: (code, u, data) => F.setDoc(d('sessions', code, 'portraits', u), data),
+    removePortrait: (code, u) => F.deleteDoc(d('sessions', code, 'portraits', u)),
+    setLibItem: it => F.setDoc(d('dms', uid, 'library', it.id), it),
+    delLibItem: id => F.deleteDoc(d('dms', uid, 'library', id))
+  };
+}
+function mockLive(){
+  const K = 'daemon-mockfs', subs = new Set();
+  const read = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch(e){ return {}; } };
+  const fire = () => subs.forEach(f => f());
+  const write = db => { localStorage.setItem(K, JSON.stringify(db)); fire(); };
+  let uid = sessionStorage.getItem('mock-uid'); if (!uid){ uid = 'u' + Math.random().toString(36).slice(2, 8); sessionStorage.setItem('mock-uid', uid); }
+  addEventListener('storage', e => { if (e.key === K) fire(); });
+  const coll = pre => { const db = read(); return Object.keys(db).filter(k => k.startsWith(pre + '/') && !k.slice(pre.length + 1).includes('/')).map(k => ({id:k.slice(pre.length + 1), ...db[k]})); };
+  const watch = (get, cb) => { const f = () => cb(get()); subs.add(f); setTimeout(f, 0); return () => subs.delete(f); };
+  const mut = fn => { const db = read(); fn(db); write(db); };
+  return {
+    uid,
+    async createSession(code, data){ const db = read(); if (db['sessions/' + code]) throw new Error('exists'); db['sessions/' + code] = data; write(db); },
+    async getSession(code){ return read()['sessions/' + code] || null; },
+    async deleteSession(code){ mut(db => delete db['sessions/' + code]); },
+    watchSession: (code, cb) => watch(() => read()['sessions/' + code] || null, cb),
+    watchPlayers: (code, cb) => watch(() => coll(`sessions/${code}/players`), cb),
+    async setPlayer(code, u, data){ mut(db => db[`sessions/${code}/players/${u}`] = data); },
+    async removePlayer(code, u){ mut(db => delete db[`sessions/${code}/players/${u}`]); },
+    watchInbox: (code, u, cb) => watch(() => coll(`sessions/${code}/players/${u}/inbox`), cb),
+    async sendInbox(code, u, op){ mut(db => db[`sessions/${code}/players/${u}/inbox/${Math.random().toString(36).slice(2)}`] = op); },
+    async deleteInbox(code, u, id){ mut(db => delete db[`sessions/${code}/players/${u}/inbox/${id}`]); },
+    watchLibrary: cb => watch(() => coll(`dms/${uid}/library`), cb),
+    async getPlayers(code){ return coll(`sessions/${code}/players`); },
+    async getPortrait(code, u){ return read()[`sessions/${code}/portraits/${u}`] || null; },
+    async touchPlayer(code, u, data){ mut(db => { const k = `sessions/${code}/players/${u}`; db[k] = {...(db[k] || {}), ...data}; }); },
+    watchPortraits: (code, cb) => watch(() => coll(`sessions/${code}/portraits`), cb),
+    async setPortrait(code, u, data){ mut(db => db[`sessions/${code}/portraits/${u}`] = data); },
+    async removePortrait(code, u){ mut(db => delete db[`sessions/${code}/portraits/${u}`]); },
+    async setLibItem(it){ mut(db => db[`dms/${uid}/library/${it.id}`] = it); },
+    async delLibItem(id){ mut(db => delete db[`dms/${uid}/library/${id}`]); }
+  };
+}
+let apiPromise = null;
+function getLive(){
+  if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).catch(e => { apiPromise = null; throw e; });
+  return apiPromise;
+}
+function stopAll(){ unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+
+/* ---- player side ---- */
+let pushT = null;
+function schedulePush(){
+  if (!LS || LS.role !== 'player' || !liveApi) return;
+  clearTimeout(pushT); pushT = setTimeout(pushNow, 500);
+}
+function pushNow(){
+  if (!LS || LS.role !== 'player' || !liveApi) return Promise.resolve();
+  const raw = DB.chars.find(x => x.id === LS.mercId);
+  if (!raw) return Promise.resolve();
+  const n = normalize(raw), pic = n.portrait, now = Date.now();
+  const m = withDerived({...n, portrait:null});
+  const jobs = [liveApi.setPlayer(LS.code, liveApi.uid, {name:m.name, mercId:m.id, merc:m, updatedAt:now, seen:now})];
+  const ph = pic ? pic.length + ':' + pic.slice(-48) : '';
+  if (ph !== lastPortrait){
+    lastPortrait = ph;
+    jobs.push(pic ? liveApi.setPortrait(LS.code, liveApi.uid, {img:pic, mercId:m.id}) : liveApi.removePortrait(LS.code, liveApi.uid));
+  }
+  return Promise.all(jobs).catch(e => { console.error(e); toast("Couldn't sync your merc to the session."); });
+}
+setInterval(() => { if (LS && LS.role === 'player' && liveApi && liveState === 'on') liveApi.touchPlayer(LS.code, liveApi.uid, {seen:Date.now()}).catch(() => {}); }, 60000);
+function applyOp(op){
+  const isOpen = C && C.id === LS.mercId;
+  const raw = isOpen ? C : DB.chars.find(x => x.id === LS.mercId);
+  if (!raw) return;
+  const m = isOpen ? C : normalize(raw);
+  let msg = '';
+  if (op.kind === 'item' && op.item && op.item.name){
+    const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
+    const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || ''));
+    if (same) same.qty += q; else m.inv.push({id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120)});
+    msg = `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`;
+  } else if (op.kind === 'eddies'){
+    const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
+    msg = n >= 0 ? `+${n} €$ from the DM.` : `The DM took ${-n} €$.`;
+  } else if (op.kind === 'hp' && m.hpMax){
+    const n = parseInt(op.amount) || 0, cur = m.hp == null ? m.hpMax : m.hp;
+    m.hp = Math.max(0, Math.min(m.hpMax, cur + n));
+    msg = n < 0 ? `The DM dealt ${-n} damage.` : `The DM healed you for ${n}.`;
+  } else if (op.kind === 'ram'){
+    m.ram = null; msg = 'The DM restored your RAM.';
+  } else return;
+  if (isOpen){ saveC(); update(false); flashSheet(); }
+  else { const i = DB.chars.findIndex(x => x.id === m.id); DB.chars[i] = m; persist(); }
+  toast(msg, true);
+}
+function flashSheet(){ const h = $('#sheetHead'); if (!h) return; h.classList.remove('flash'); void h.offsetWidth; h.classList.add('flash'); }
+async function startPlayer(){
+  const api = liveApi;
+  unsubs.push(api.watchSession(LS.code, s => {
+    if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
+    sessMeta = s; renderLive();
+  }));
+  unsubs.push(api.watchPlayers(LS.code, list => { players = dedupe(list).keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
+  unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
+  unsubs.push(api.watchInbox(LS.code, api.uid, ops => {
+    ops.sort((a, b) => (a.at || 0) - (b.at || 0)).forEach(op => {
+      if (seenOps.has(op.id)) return;
+      seenOps.add(op.id);
+      applyOp(op);
+      api.deleteInbox(LS.code, api.uid, op.id).catch(() => {});
+    });
+  }));
+  lastPortrait = null;
+  await pushNow();
+  const m = DB.chars.find(x => x.id === LS.mercId);
+  saveJoined([{code:LS.code, mercId:LS.mercId, name:m ? m.name : 'Merc', sname:sessMeta && sessMeta.name || ''}, ...joined().filter(j => !(j.code === LS.code && j.mercId === LS.mercId))]);
+}
+
+/* ---- dm side ---- */
+function startDM(){
+  const api = liveApi;
+  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else renderLive(); }));
+  unsubs.push(api.watchPlayers(LS.code, list => {
+    const {keep, stale} = dedupe(list);
+    stale.forEach(p => { api.removePlayer(LS.code, p.id).catch(() => {}); api.removePortrait(LS.code, p.id).catch(() => {}); });
+    players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
+  }));
+  unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
+  unsubs.push(api.watchLibrary(list => { lib = list.sort((a, b) => (a.type + a.name).localeCompare(b.type + b.name)); renderLive(); }));
+}
+const STARTER = [
+  ['Light Pistol','Weapon','1d8 piercing, range 60 ft'],['Heavy Pistol','Weapon','2d6 piercing, range 60 ft'],
+  ['SMG','Weapon','1d6 piercing, burst fire'],['Assault Rifle','Weapon','2d8 piercing, range 150 ft'],
+  ['Shotgun','Weapon','2d8 piercing, close range'],['Sniper Rifle','Weapon','2d10 piercing, range 300 ft'],
+  ['Katana','Weapon','1d10 slashing'],['Combat Knife','Weapon','1d4 slashing, thrown'],['Baseball Bat','Weapon','1d6 bludgeoning'],
+  ['Frag Grenade','Consumable','3d6 in a 10 ft radius'],['Med Injector','Consumable','Heal 2d4'],
+  ['Armored Jacket','Armor','+1 AC'],['Ammo Box','Ammo','20 rounds']
+];
+async function sendOp(u, op){
+  try {
+    await liveApi.sendInbox(LS.code, u, {...op, at:Date.now()});
+    const p = players.find(x => x.id === u);
+    if (p && !isOnline(p)) setTimeout(() => toast(`${p.name} is offline. It'll land on their sheet when they reconnect.`), 1200);
+    return true;
+  }
+  catch(e){ console.error(e); toast("That didn't go through. Check your connection."); return false; }
+}
+
+/* ---- connect / leave ---- */
+async function connect(){
+  liveState = 'connecting'; liveErr = ''; renderLive();
+  try {
+    liveApi = await getLive();
+    const s = await liveApi.getSession(LS.code);
+    if (!s){ liveErr = `Session ${LS.code} doesn't exist anymore.`; if (LS.role === 'dm') saveHosted(hosted().filter(h => h.code !== LS.code)); LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
+    if (LS.role === 'dm' && s.dmUid !== liveApi.uid){ liveErr = 'That session was hosted from a different browser, so only that browser can run it.'; LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
+    sessMeta = s; liveState = 'on';
+    if (LS.role === 'dm') startDM(); else await startPlayer();
+    renderLive(); if (C) renderSheetHead();
+  } catch(e){
+    console.error(e);
+    liveErr = "Couldn't reach the live server. Check your connection and that the site is opened from its web address.";
+    liveState = 'idle'; renderLive();
+  }
+}
+async function leaveLive(silent, forGood){
+  const was = LS;
+  if (was && was.role === 'player' && liveApi && !silent){
+    if (forGood){
+      await liveApi.removePlayer(was.code, liveApi.uid).catch(() => {});
+      await liveApi.removePortrait(was.code, liveApi.uid).catch(() => {});
+      saveJoined(joined().filter(j => !(j.code === was.code && j.mercId === was.mercId)));
+    } else await liveApi.touchPlayer(was.code, liveApi.uid, {seen:0}).catch(() => {});
+  }
+  stopAll();
+  LS = null; saveLS(); liveState = 'idle'; endConfirm = false;
+  renderLive(); if (C) renderSheetHead();
+}
+/* ---- render ---- */
+function keepInputs(root, fn){
+  const vals = {}, act = document.activeElement, actId = act && root.contains(act) ? act.id : null;
+  let selS = null, selE = null;
+  root.querySelectorAll('input[id],select[id],textarea[id]').forEach(el => { if (el.type !== 'file') vals[el.id] = el.value; });
+  if (actId){ try { selS = act.selectionStart; selE = act.selectionEnd; } catch(e){} }
+  fn();
+  Object.entries(vals).forEach(([id, v]) => { const el = document.getElementById(id); if (el && root.contains(el)) el.value = v; });
+  if (actId){ const el = document.getElementById(actId); if (el){ el.focus(); try { if (selS != null) el.setSelectionRange(selS, selE); } catch(e){} } }
+}
+function partyCard(p, dm){
+  const m = p.merc ? normalize(p.merc) : null; if (!m) return '';
+  const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
+  const rmx = (p.merc.derived && p.merc.derived.ramMax) || ramMax(m), rc = m.ram == null ? rmx : Math.min(m.ram, rmx);
+  const nm = id => m.inv.find(i => i.id === id);
+  const pr = nm(m.eq.primary), se = nm(m.eq.secondary);
+  const on = isOnline(p), k = p.id, me = liveApi && p.id === liveApi.uid;
+  const controls = dm ? `
+      <div class="row"><input type="number" min="0" id="amt-${k}" placeholder="Amt" aria-label="Amount for ${esc(m.name)}">
+        <button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button>
+        <button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button>
+        <button class="btn small" data-live="ram" data-u="${k}">Restore RAM</button></div>
+      <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
+        <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
+      <div class="row"><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
+  return `<div class="pcard ${me ? 'me' : ''}">
+      <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
+        <div class="sub">${m.background} · Level ${m.level} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
+      <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
+        ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
+        <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
+        <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div></div>
+      <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
+      <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
+      ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name)).join(', ')}</div>` : ''}${controls}
+    </div>`;
+}
+function renderLive(){
+  const root = $('#liveBody');
+  keepInputs(root, () => { root.innerHTML = liveHTML(); });
+}
+function liveHTML(){
+  if (!LIVE_OK){
+    return `<div class="panel"><h3>Live sessions need the web address</h3>
+      <p style="margin-top:8px">Hosting and joining sessions only works when the site is opened from its web address (like your GitHub Pages link or a local server), not straight from the file or inside the claude.ai preview. Everything else on this page works offline.</p></div>`;
+  }
+  const err = liveErr ? `<p class="err">${esc(liveErr)}</p>` : '';
+  if (liveState === 'connecting') return `<div class="panel"><h3>Connecting…</h3><p class="muted" style="margin-top:8px">Jacking into the session.</p></div>`;
+  if (!LS || liveState !== 'on'){
+    const mercs = DB.chars.map(c => normalize(c));
+    const hs = hosted();
+    return `${err}<div class="live-grid">
+      <div class="panel"><h3>Join a session</h3>
+        <p class="muted" style="margin:6px 0 14px">Get the code from your DM and pick the merc you're bringing. Your sheet updates for the DM as you play, and anything the DM sends you shows up on its own.</p>
+        <input type="text" id="joinCode" maxlength="6" placeholder="CODE" autocomplete="off" style="text-transform:uppercase;letter-spacing:4px">
+        <div class="row gap"><select id="joinMerc" aria-label="Merc to bring" style="flex:1">${mercs.length ? mercs.map(m => `<option value="${m.id}" ${C && C.id === m.id ? 'selected' : ''}>${esc(m.name)} · ${m.background} · Lvl ${m.level}</option>`).join('') : '<option value="">Make a merc first</option>'}</select>
+        <button class="btn primary" data-live="join" ${mercs.length ? '' : 'disabled'}>Join</button></div>
+        <div class="row gap"><button class="btn small" data-live="findmerc">New device? Restore my merc from this session</button></div>
+        ${restoreList ? `<div class="restore">${restoreList.length ? restoreList.map(p => `<div class="r">${avatar(p.merc, 'av sm')}<div style="flex:1;min-width:0"><div style="color:#fff">${esc(p.merc.name)}</div><div class="muted" style="font-size:12px">Level ${p.merc.level} · ${esc(p.merc.background)}</div></div><button class="btn small primary" data-live="restore" data-u="${p.id}">This is me</button></div>`).join('') : '<p class="muted">No mercs in that session yet.</p>'}</div>` : ''}
+        ${joined().length ? `<p class="lbl" style="margin-top:18px">Rejoin</p><div class="row">${joined().map(j => `<button class="btn small primary" data-live="rejoin" data-code="${esc(j.code)}" data-m="${esc(j.mercId)}">${esc(j.code)} as ${esc(j.name)}</button>`).join('')}</div>` : ''}
+      </div>
+      <div class="panel"><h3>Host as DM</h3>
+        <p class="muted" style="margin:6px 0 14px">Start a session and share the code. You'll see every player's sheet live, and you can hand out items, eddies, damage and healing from your item library.</p>
+        <input type="text" id="hostName" maxlength="40" placeholder="Session name, like Night City Run" autocomplete="off" class="f">
+        <div class="row gap"><button class="btn primary" data-live="host">Host session</button></div>
+        ${hs.length ? `<p class="lbl" style="margin-top:18px">Your sessions</p><div class="row">${hs.map(h => `<button class="btn small" data-live="reopen" data-code="${h.code}">${esc(h.code)} · ${esc(h.name || 'Session')}</button>`).join('')}</div>` : ''}
+      </div></div>`;
+  }
+  if (LS.role === 'player'){
+    const m = DB.chars.find(x => x.id === LS.mercId);
+    return `<div class="panel"><div class="row"><div style="flex:1;min-width:220px"><span class="lbl">Connected to</span><div class="code">${esc(LS.code)}</div>
+      <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · Playing as ${m ? esc(m.name) : 'unknown merc'}</p></div>
+      <button class="btn primary" data-live="opensheet">Open my sheet</button><button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
+      <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
+      <h3 style="margin:22px 0 0">Your party</h3>
+      <div class="players">${players.map(p => partyCard(p, false)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>`;
+  }
+  const playerCards = players.length ? players.map(p => partyCard(p, true)).join('')
+    : `<div class="panel"><p>No one has joined yet. Share the code and have players hit Join on their own device.</p></div>`;
+  const opts = sel => ITEM_TYPES.map(t => `<option ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
+  const giveTargets = `<option value="">Library only</option><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}`;
+  const libRows = lib.length ? lib.map(i => `<div class="lrow"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${i.type}</span><span class="muted">${esc(i.stats || '')}</span>
+      <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
+      <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
+    : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
+  return `${err}<div class="panel"><div class="row"><div style="flex:1;min-width:220px"><span class="lbl">Session code</span><div class="code">${esc(LS.code)}</div>
+      <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · ${players.length} player${players.length === 1 ? '' : 's'} connected</p></div>
+      <button class="btn" data-live="copycode">Copy code</button><button class="btn" data-live="leave">Close dashboard</button><button class="btn danger" data-live="end">${endConfirm ? 'Confirm end' : 'End session'}</button></div>
+      <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard keeps the session running so you can come back. End session kicks everyone and deletes it.</p></div>
+    <h3 style="margin:22px 0 0">Players</h3>
+    <div class="players">${playerCards}</div>
+    <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
+      ${lib.length ? '' : '<button class="btn small" data-live="starter">Load starter pack</button>'}
+      <button class="btn small" data-live="libcopy">Copy library</button><button class="btn small" data-live="libimp">${libImport ? 'Cancel import' : 'Import library'}</button></div>
+      <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account on this browser and carries over between sessions.</p>
+      ${libImport ? `<textarea id="libImpTxt" placeholder="Paste a copied library here"></textarea><div class="row gap"><button class="btn small primary" data-live="libimpgo">Import</button></div>` : ''}
+      <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
+      <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
+      <div style="margin-top:10px">${libRows}</div>
+    </div>`;
+}
+
+$('#liveBody').addEventListener('click', async e => {
+  const t = e.target.closest('button'); if (!t || !t.dataset.live) return;
+  const a = t.dataset.live, u = t.dataset.u;
+  const amt = () => Math.max(0, parseInt(($('#amt-' + u) || {}).value) || 0);
+  const pname = id => (players.find(p => p.id === id) || {}).name || 'player';
+  if (a === 'join'){
+    const code = ($('#joinCode').value || '').trim().toUpperCase(), mercId = $('#joinMerc').value;
+    if (code.length !== 6){ liveErr = 'Session codes are 6 characters.'; return renderLive(); }
+    if (!mercId) return;
+    LS = {role:'player', code, mercId}; saveLS(); return connect();
+  }
+  if (a === 'host'){
+    const name = ($('#hostName').value || '').trim().slice(0, 40) || 'Night City Run';
+    liveState = 'connecting'; liveErr = ''; renderLive();
+    try {
+      liveApi = await getLive();
+      let code, tries = 0;
+      while (true){ code = genCode(); try { await liveApi.createSession(code, {dmUid:liveApi.uid, name, created:Date.now()}); break; } catch(err){ if (++tries > 4 || err.message !== 'exists') throw err; } }
+      saveHosted([{code, name}, ...hosted().filter(h => h.code !== code)]);
+      LS = {role:'dm', code}; saveLS(); return connect();
+    } catch(err){ console.error(err); liveErr = "Couldn't create the session. Check your connection and that the site is opened from its web address."; liveState = 'idle'; return renderLive(); }
+  }
+  if (a === 'reopen'){ LS = {role:'dm', code:t.dataset.code}; saveLS(); return connect(); }
+  if (a === 'rejoin'){
+    if (!DB.chars.some(c => c.id === t.dataset.m)){ liveErr = "That merc isn't on this device anymore. Use Restore to pull it from the session."; return renderLive(); }
+    LS = {role:'player', code:t.dataset.code, mercId:t.dataset.m}; saveLS(); return connect();
+  }
+  if (a === 'findmerc'){
+    const code = ($('#joinCode').value || '').trim().toUpperCase();
+    if (code.length !== 6){ liveErr = 'Type the session code first.'; return renderLive(); }
+    liveErr = '';
+    try {
+      liveApi = await getLive();
+      if (!(await liveApi.getSession(code))){ liveErr = `Session ${code} doesn't exist.`; restoreList = null; return renderLive(); }
+      restoreList = dedupe(await liveApi.getPlayers(code)).keep;
+      const pics = await Promise.all(restoreList.map(p => liveApi.getPortrait(code, p.id).catch(() => null)));
+      restoreList.forEach((p, i) => { if (pics[i] && pics[i].img) p.merc = {...p.merc, portrait:pics[i].img}; });
+      restoreList.code = code;
+    } catch(err){ console.error(err); liveErr = "Couldn't reach the session."; }
+    return renderLive();
+  }
+  if (a === 'restore'){
+    const p = restoreList && restoreList.find(x => x.id === u); if (!p) return;
+    const c = normalize(p.merc), i = DB.chars.findIndex(x => x.id === c.id);
+    if (i >= 0) DB.chars[i] = c; else DB.chars.push(c);
+    persist(); renderRoster();
+    const code = restoreList.code; restoreList = null;
+    toast(`${c.name} restored to this device.`, true);
+    LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
+  }
+  if (a === 'leave') return leaveLive(false);
+  if (a === 'leaveparty'){ if (!leaveConfirm){ leaveConfirm = true; return renderLive(); } return leaveLive(false, true); }
+  if (a === 'opensheet'){ openChar(LS.mercId); return; }
+  if (a === 'copycode') return copyText(LS.code, null, 'Code');
+  if (a === 'end'){
+    if (!endConfirm){ endConfirm = true; return renderLive(); }
+    const code = LS.code;
+    try { await liveApi.deleteSession(code); } catch(err){ console.error(err); }
+    saveHosted(hosted().filter(h => h.code !== code));
+    return leaveLive(true);
+  }
+  if (a === 'hp-' || a === 'hp+'){
+    const n = amt(); if (!n) return toast('Enter an amount first.');
+    if (await sendOp(u, {kind:'hp', amount: a === 'hp-' ? -n : n})) toast(`${a === 'hp-' ? 'Dealt ' + n + ' damage to' : 'Healed ' + n + ' for'} ${pname(u)}.`, true);
+    return;
+  }
+  if (a === 'ed+' || a === 'ed-'){
+    const n = amt(); if (!n) return toast('Enter an amount first.');
+    if (await sendOp(u, {kind:'eddies', amount: a === 'ed-' ? -n : n})) toast(`${a === 'ed-' ? '−' : '+'}${n} €$ for ${pname(u)}.`, true);
+    return;
+  }
+  if (a === 'ram'){ if (await sendOp(u, {kind:'ram'})) toast(`Restored RAM for ${pname(u)}.`, true); return; }
+  if (a === 'give'){
+    const it = lib.find(x => x.id === ($('#give-' + u) || {}).value); if (!it) return;
+    if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || ''}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
+    return;
+  }
+  if (a === 'kick'){ await liveApi.removePlayer(LS.code, u).catch(() => {}); await liveApi.removePortrait(LS.code, u).catch(() => {}); return; }
+  if (a === 'starter'){ for (const [name, type, stats] of STARTER) await liveApi.setLibItem({id:uid(), name, type, qty:1, stats}).catch(() => {}); toast('Starter pack loaded.', true); return; }
+  if (a === 'libadd'){
+    const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
+    const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120)};
+    const to = $('#liTo').value;
+    try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
+    $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
+    if (to){
+      const targets = to === '*' ? players.map(p => p.id) : [to];
+      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats}});
+      toast(`${item.name} saved and sent to ${to === '*' ? 'everyone' : pname(to)}.`, true);
+    } else toast(`${item.name} saved to your library.`, true);
+    $('#liName').focus();
+    return;
+  }
+  if (a === 'libgive'){
+    const it = lib.find(x => x.id === t.dataset.i); if (!it) return;
+    const to = ($('#lg-' + it.id) || {}).value || '*';
+    const targets = to === '*' ? players.map(p => p.id) : [to];
+    for (const id of targets) await sendOp(id, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || ''}});
+    toast(`Sent ${it.name} to ${to === '*' ? 'everyone' : pname(to)}.`, true);
+    return;
+  }
+  if (a === 'libdel'){ await liveApi.delLibItem(t.dataset.i).catch(() => {}); return; }
+  if (a === 'libcopy') return copyText(JSON.stringify(lib.map(({id, ...r}) => r), null, 2), null, 'Library');
+  if (a === 'libimp'){ libImport = !libImport; return renderLive(); }
+  if (a === 'libimpgo'){
+    try {
+      const arr = JSON.parse($('#libImpTxt').value);
+      if (!Array.isArray(arr)) throw 0;
+      let n = 0;
+      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120)}); n++; }
+      libImport = false; toast(`Imported ${n} items.`, true); renderLive();
+    } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
+  }
+});
+$('#liveBody').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (e.target.id === 'joinCode'){ e.preventDefault(); $('[data-live=join]').click(); }
+  if (e.target.id === 'hostName'){ e.preventDefault(); $('[data-live=host]').click(); }
+  if (['liName','liStats','liQty'].includes(e.target.id)){ e.preventDefault(); $('[data-live=libadd]').click(); }
+});
+setInterval(() => { if (LS && LS.role === 'dm' && liveState === 'on') renderLive(); }, 30000);
+
+/* ================= RULES PAGE + ROUTING ================= */
+function renderRulePerks(){
+  $('#rPerks').innerHTML = ORDER.map(st => {
+    const S = STATS[st], known = SLOTS.some(sl => !perk(st, sl.slot).unknown);
+    const cell = (sl) => {
+      if (!SLOT[sl]) return `<td class="none">—</td>`;
+      const p = perk(st, sl);
+      return p.unknown ? `<td class="cls"><b>Classified</b></td>` : `<td><b>${esc(p.n)}</b><small>${esc(p.d)}</small></td>`;
+    };
+    const rows = TIER_ORDER.map(t => `<tr><td><b>${TIERS[t].name}</b><small>${st} ${TIERS[t].range}</small></td>${cell('A.' + t)}${cell('S.' + t)}${cell('B.' + t)}</tr>`).join('');
+    return `<div class="panel ptree gap" id="r-perks-${st.toLowerCase()}"><h3>${st} · ${S.name} <span class="muted">${known ? '' : 'not posted yet'}</span></h3>
+      <table class="rtable"><thead><tr><th style="width:110px">Tier</th><th>${esc(S.a)}</th><th>${esc(S.s)}${S.s === 'Shared' ? '' : ' <span class="muted" style="font-family:Exo 2;letter-spacing:0;text-transform:none">middle</span>'}</th><th>${esc(S.b)}</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join('');
+  $('#lvlTrack').innerHTML = Array.from({length:20}, (_, i) => `<div class="${i === 0 ? 'one' : ASI_LEVELS.includes(i + 1) ? 'asi' : ''}">${i + 1}</div>`).join('');
+}
+renderRulePerks();
+
+let rIndex = null;
+function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }
+$('#rSearch').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase(), body = $('#rulesBody');
+  clearMarks(body);
+  let any = false;
+  body.querySelectorAll('.rsec').forEach(sec => {
+    const hit = !q || sec.textContent.toLowerCase().includes(q);
+    sec.hidden = !hit; any = any || hit;
+    if (hit && q.length > 1){
+      const walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT), nodes = [];
+      while (walker.nextNode()) if (walker.currentNode.nodeValue.toLowerCase().includes(q)) nodes.push(walker.currentNode);
+      nodes.forEach(n => {
+        const i = n.nodeValue.toLowerCase().indexOf(q); if (i < 0) return;
+        const mid = n.splitText(i); mid.splitText(q.length);
+        const mk = document.createElement('mark'); mk.textContent = mid.nodeValue; mid.replaceWith(mk);
+      });
+    }
+  });
+  $('#rNone').hidden = any;
+});
+
+function route(){
+  const h = location.hash.replace('#', '');
+  const rules = h === 'rules' || h.startsWith('r-');
+  $('#pgRules').hidden = !rules; $('#pgApp').hidden = rules;
+  document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : a.getAttribute('href') === '#' + (h || 'mercs')));
+  if (rules){
+    const el = h.startsWith('r-') && document.getElementById(h);
+    requestAnimationFrame(() => el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0));
+  } else {
+    const el = h && document.getElementById(h);
+    if (el) requestAnimationFrame(() => el.scrollIntoView({block:'start'}));
+    requestAnimationFrame(layout);
+  }
+}
+addEventListener('hashchange', route);
+const tocObs = new IntersectionObserver(es => es.forEach(en => {
+  if (en.isIntersecting) document.querySelectorAll('.toc a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
+}), {rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('.rsec').forEach(sec => tocObs.observe(sec));
+
+/* ================= CIRCUIT BACKGROUND ================= */
+const cv = $('#circuit'), cx = cv.getContext('2d');
+function drawCircuit(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), W2 = innerWidth, H = innerHeight;
+  cv.width = W2 * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  cx.clearRect(0, 0, W2, H);
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const G = 22, dirs = [[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]];
+  const count = Math.round(W2 * H / 9000);
+  cx.lineWidth = 1.6; cx.lineCap = 'round'; cx.lineJoin = 'round';
+  for (let i = 0; i < count; i++){
+    let x = Math.round(rnd() * W2 / G) * G, y = Math.round(rnd() * H / G) * G;
+    let d = Math.floor(rnd() * 4);
+    const a = 0.25 + rnd() * 0.45;
+    cx.strokeStyle = `rgba(163,40,58,${a})`; cx.fillStyle = `rgba(163,40,58,${a})`;
+    cx.beginPath(); cx.arc(x, y, 3.5, 0, 7); cx.stroke();
+    cx.beginPath(); cx.moveTo(x, y);
+    const segs = 2 + Math.floor(rnd() * 4);
+    for (let s = 0; s < segs; s++){
+      const len = (2 + Math.floor(rnd() * 6)) * G;
+      const [dx, dy] = dirs[d];
+      const k = d > 3 ? 0.7071 : 1;
+      x += dx * len * k; y += dy * len * k;
+      cx.lineTo(x, y);
+      d = d < 4 ? (rnd() < .5 ? 4 + Math.floor(rnd() * 4) : Math.floor(rnd() * 4)) : Math.floor(rnd() * 4);
+    }
+    cx.stroke();
+    cx.beginPath(); cx.arc(x, y, rnd() < .5 ? 3.5 : 4.5, 0, 7);
+    rnd() < .5 ? cx.fill() : cx.stroke();
+  }
+}
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawCircuit, 150); });
+drawCircuit();
+
+/* ================= START ================= */
+if (DB.current && DB.chars.some(c => c.id === DB.current)){ C = normalize(DB.chars.find(c => c.id === DB.current)); show('sheet'); setSheetTab('perks'); requestAnimationFrame(build); }
+else { show('roster'); renderRoster(); }
+renderLive();
+route();
+if (LS && LIVE_OK) connect();
+})();
+</script>
+</body>
+</html>
