@@ -384,6 +384,58 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 .dock{position:fixed;right:14px;bottom:14px;z-index:6;display:flex;gap:6px}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
 .dock button[aria-pressed=false]{color:var(--muted);text-decoration:line-through}
+.cw .r .muted{white-space:nowrap}
+.hotb{white-space:nowrap;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;color:#1a1600;background:var(--yellow);padding:3px 6px;align-self:center}
+.cw.hot{border-left-color:var(--yellow)}
+.surg{border-top:1px solid rgba(47,230,240,.15);padding-top:10px}
+.acts select{max-width:130px}
+/* ---------- glitch + flatline + psycho ---------- */
+.tagb{white-space:nowrap;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
+.stagb{display:inline-block;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;padding:3px 8px;margin:4px 6px 0 0}
+.stagb.red{background:var(--red);color:#1a0004}
+.stagb.psy{background:#c21bff;color:#12001a}
+.gl{position:relative;display:inline-block}
+.gl::before,.gl::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.gl::before{color:#2fe6f0;text-shadow:none;animation:glA 2.4s steps(1) infinite;mix-blend-mode:screen}
+.gl::after{color:#ff2a6d;text-shadow:none;animation:glB 1.9s steps(1) infinite;mix-blend-mode:screen}
+@keyframes glA{0%,100%{clip-path:inset(0 0 100% 0);transform:none}8%{clip-path:inset(10% 0 62% 0);transform:translate(-4px,1px)}12%{clip-path:inset(55% 0 20% 0);transform:translate(3px,-1px)}16%{clip-path:inset(0 0 100% 0)}61%{clip-path:inset(30% 0 45% 0);transform:translate(-6px,0)}64%{clip-path:inset(0 0 100% 0)}}
+@keyframes glB{0%,100%{clip-path:inset(0 0 100% 0);transform:none}20%{clip-path:inset(70% 0 5% 0);transform:translate(5px,0)}24%{clip-path:inset(15% 0 70% 0);transform:translate(-3px,1px)}28%{clip-path:inset(0 0 100% 0)}80%{clip-path:inset(40% 0 35% 0);transform:translate(4px,-1px)}83%{clip-path:inset(0 0 100% 0)}}
+.gl-title::before,.gl-title::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;opacity:0}
+.gl-title{position:relative}
+.gl-title.glitching{animation:jit .32s steps(2) 1}
+.gl-title.glitching::before{opacity:1;color:#2fe6f0;animation:glA .32s steps(1) 1;animation-delay:-.18s}
+.gl-title.glitching::after{opacity:1;color:#ff2a6d;animation:glB .32s steps(1) 1;animation-delay:-.45s}
+@keyframes jit{0%{transform:none}25%{transform:translate(-2px,1px) skewX(-6deg)}50%{transform:translate(3px,0)}75%{transform:translate(-1px,-1px) skewX(4deg)}100%{transform:none}}
+body.fx h2:hover{animation:jit .28s steps(2) 1}
+.tear{position:fixed;left:0;right:0;height:3px;z-index:7;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(47,230,240,.9) 20%,rgba(255,42,109,.9) 60%,transparent);box-shadow:0 0 12px rgba(255,42,109,.8);animation:tear .22s linear forwards}
+@keyframes tear{0%{transform:translateX(-30%) scaleY(1);opacity:1}100%{transform:translateX(30%) scaleY(3);opacity:0}}
+#flatline{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(0,0,0,0);animation:flBg 4.8s ease forwards;cursor:pointer}
+#flatline[hidden]{display:none}
+@keyframes flBg{0%{background:rgba(40,0,6,0)}12%{background:rgba(20,0,4,.82)}85%{background:rgba(20,0,4,.82)}100%{background:rgba(20,0,4,0)}}
+.fl-inner{text-align:center;width:min(92vw,820px);animation:flIn 4.8s ease forwards}
+@keyframes flIn{0%{opacity:0;transform:scale(.96)}14%{opacity:1}85%{opacity:1;transform:scale(1.04)}100%{opacity:0;transform:scale(1.06)}}
+.fl-text{font-family:Orbitron,sans-serif;font-weight:500;color:var(--red);font-size:clamp(44px,10vw,112px);letter-spacing:.12em;text-shadow:0 0 24px rgba(255,74,94,.8),0 0 60px rgba(255,20,40,.5);animation:flSpread 4.8s ease forwards}
+.fl-text::before{animation:glA .9s steps(1) infinite}
+.fl-text::after{animation:glB .7s steps(1) infinite}
+@keyframes flSpread{0%{letter-spacing:.04em}100%{letter-spacing:.2em}}
+.ekg{width:100%;height:70px;margin-top:6px}
+.ekg path{fill:none;stroke:var(--red);stroke-width:3;stroke-dasharray:700;stroke-dashoffset:700;animation:ekg 1.6s ease-out .3s forwards;filter:drop-shadow(0 0 6px rgba(255,74,94,.9))}
+@keyframes ekg{to{stroke-dashoffset:0}}
+.fl-sub{font-family:Orbitron,sans-serif;color:#fff;letter-spacing:.3em;font-size:13px;text-transform:uppercase;margin-top:8px}
+.fl-hint{color:var(--muted);font-size:12px;margin-top:22px;letter-spacing:.2em;text-transform:uppercase}
+#psyVig{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity 1.2s;
+  background:radial-gradient(ellipse at center,rgba(194,27,255,0) 40%,rgba(194,27,255,.22) 70%,rgba(255,0,90,.6) 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+#psyVig.on{opacity:1;animation:psyPulse 3.2s ease-in-out infinite}
+@keyframes psyPulse{0%,100%{filter:hue-rotate(0)}50%{filter:hue-rotate(-35deg) brightness(1.25)}}
+body.psy-linger #sheetHead{animation:psyJit 5s steps(1) infinite}
+@keyframes psyJit{0%,100%{transform:none;filter:none}47%{transform:translate(-2px,0);filter:hue-rotate(80deg)}48%{transform:translate(3px,1px)}49%{transform:none;filter:none}}
+#glitchFx{position:fixed;inset:0;pointer-events:none;z-index:19;overflow:hidden;display:none}
+#glitchFx.on{display:block}
+#glitchFx .bar{position:absolute;left:0;right:0;mix-blend-mode:difference}
+#glitchFx .word{position:absolute;inset:0;display:grid;place-items:center;font-family:Orbitron,sans-serif;font-size:clamp(36px,8vw,96px);color:#c21bff;letter-spacing:.15em;text-shadow:0 0 30px rgba(194,27,255,.9)}
+body.psy-glitch .wrap,body.psy-glitch #circuit{animation:pageGl .16s steps(2) infinite}
+@keyframes pageGl{0%{transform:none;filter:none}25%{transform:translate(-10px,4px) skewX(5deg);filter:hue-rotate(110deg) saturate(3)}50%{transform:translate(8px,-3px);filter:invert(.15) hue-rotate(-70deg) contrast(1.6)}75%{transform:translate(-4px,0) skewX(-7deg);filter:contrast(2.2) brightness(1.3)}100%{transform:none;filter:none}}
+.track.psy.on .num{color:#c21bff}
 footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 @media (max-width:560px){
   .wrap{padding:22px 16px 60px}
@@ -405,7 +457,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <canvas id="circuit" aria-hidden="true"></canvas>
 <div class="wrap">
   <header>
-    <h1>Daemon Manual V0.1</h1>
+    <h1 class="gl-title" data-text="Daemon Manual V0.1">Daemon Manual V0.1</h1>
     <div class="rule"></div>
     <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a></nav>
   </header>
@@ -416,7 +468,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
-      <a href="#r-ram">RAM</a><a href="#r-net">Netrunning</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -529,9 +581,36 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         </div>
       </section>
 
+      <section class="rsec" id="r-chrome"><h2>Cyberware and RipperDocs</h2>
+        <div class="panel">
+          <p>Chrome goes into body slots, and each piece can add to your max RAM. Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, in themselves or in anyone else. If nobody in the crew is a RipperDoc, you'll need the DM's ripper.</p>
+          <p>During a live session a RipperDoc sees an install panel on every party member's card. The part has to be in the patient's bag, so hand it over first. Any merc can hand items and eddies to the rest of the crew.</p>
+          <h3 style="margin-top:18px">Hot-swappable parts</h3>
+          <p style="margin-top:8px">For an extra fee, a RipperDoc can make a part hot-swappable. Anyone can swap a hot part in or out of themselves without a RipperDoc, but it comes with a cost.</p>
+          <table class="rtable"><tbody>
+            <tr><td><b>Price</b></td><td>500 €$ of the RipperDoc's time and parts</td></tr>
+            <tr><td><b>Weaker link</b></td><td>A hot part only gives half its RAM bonus, rounded down</td></tr>
+            <tr><td><b>Swapping</b></td><td>Costs 2 RAM and an ACTION each time you swap it in or out yourself</td></tr>
+          </tbody></table>
+          <p class="muted" style="font-size:13px;margin-top:10px">The hot-swap numbers are a house rule draft until the GM signs off.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-fab"><h2>Fabrication</h2>
+        <div class="panel">
+          <p>Only a merc with the TEC Phenom perk <b>Fabricator</b> can create, upgrade or fortify items. Roll Craft against a DC the DM sets, then pay for the parts. To work on a crewmate's gear, they hand it to you and you hand it back.</p>
+          <table class="rtable"><thead><tr><th>Job</th><th>Cost</th><th>What you get</th></tr></thead><tbody>
+            <tr><td><b>Create</b></td><td>300 €$</td><td>A new item with stats agreed with the DM</td></tr>
+            <tr><td><b>Upgrade</b></td><td>200 €$ per Mk level</td><td>Mk II, Mk III, then Mk IV at most. The DM decides what each level adds</td></tr>
+            <tr><td><b>Fortify</b></td><td>150 €$</td><td>The item is reinforced and tagged FORT</td></tr>
+          </tbody></table>
+          <p class="muted" style="font-size:13px;margin-top:10px">The Maintenance Crew perk lets you repair items with your Craft score. These prices are a draft until the GM sets them.</p>
+        </div>
+      </section>
+
       <section class="rsec" id="r-psycho"><h2>Cyberpsychosis</h2>
         <div class="panel">
-          <p>Cyberpsychosis saves are normally made at <b>−5</b>. A few perks push back on that, like Theseus and I'm Special in BOD and Tranquility in COO. The full rules are still coming.</p>
+          <p>Cyberpsychosis saves are normally made at <b>−5</b>. A few perks push back on that, like Theseus and I'm Special in BOD, Tranquility in COO and Limit Setter in TEC. The full rules are still coming.</p>
         </div>
       </section>
 
@@ -557,7 +636,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-coming"><h2>In the Works</h2>
         <div class="panel">
           <p>The GM is still building these. They'll land here as they're posted.</p>
-          <ul class="rlist"><li>Cyberpsychosis rules</li><li>COOL Tokens and the COO buff and debuff mechanics</li><li>Full RAM and hacking rules, including the CODE score</li><li>Black ICE stats and effects</li><li>The STR and TEC perk trees</li><li>The final HP per level formula</li></ul>
+          <ul class="rlist"><li>Cyberpsychosis rules</li><li>COOL Tokens and the COO buff and debuff mechanics</li><li>Full RAM and hacking rules, including the CODE score</li><li>Black ICE stats and effects</li><li>The final HP per level formula</li></ul>
         </div>
       </section>
     </div>
@@ -664,6 +743,11 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 </div>
 <div class="toast" id="toast" role="status"></div>
 <div id="vignette" aria-hidden="true"></div>
+<div id="psyVig" aria-hidden="true"></div>
+<div id="glitchFx" aria-hidden="true"></div>
+<div id="flatline" hidden role="alert"><div class="fl-inner"><div class="fl-text gl" data-text="FLATLINED">FLATLINED</div>
+  <svg class="ekg" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 H170 L185 40 L195 12 L208 70 L220 30 L232 40 H600"/></svg>
+  <div class="fl-sub" id="flSub">Unconscious. Critical condition.</div><div class="fl-hint">Click to continue</div></div></div>
 <div class="dock"><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
@@ -693,11 +777,11 @@ const sgn = n => (n >= 0 ? '+' : '−') + Math.abs(n);
 /* ================= RULES DATA ================= */
 const ORDER = ['STR','REF','BOD','INT','TEC','COO'];
 const STATS = {
-  STR:{name:'Strength',     a:'Boxer',    s:'Shared',   b:'Lifter',   aff:'Blunt melee, shotguns, LMG and HMG'},
+  STR:{name:'Strength',     a:'Boxer',    s:'Lifter',   b:'Gunner',   aff:'Blunt melee, shotguns, LMG and HMG'},
   REF:{name:'Reflexes',     a:'Ninja',    s:'Surprise', b:'Cowboy',   aff:'Blades, pistols, rifles, SMGs, stealth'},
   BOD:{name:'Body',         a:'Resist',   s:'Heal',     b:'Persist',     aff:'HP, tolerances, healing'},
   INT:{name:'Intelligence', a:'Netrunning', s:'RAM',    b:'Hacks', aff:'Netrunning, hacks, smart weapons, RAM'},
-  TEC:{name:'Tech Ability', a:'Branch A', s:'Shared',   b:'Branch B', aff:'Armor, items, cyberware, vehicles'},
+  TEC:{name:'Tech Ability', a:'Cyberware', s:'Meds',    b:'Engineer', aff:'Armor, items, cyberware, vehicles'},
   COO:{name:'Cool',         a:'Saint',    s:'Rocker',   b:'Sinner', aff:'Social, buffs and debuffs'}
 };
 const BACKGROUNDS = {
@@ -735,6 +819,30 @@ const CHILDREN = {};
 SLOTS.forEach(s => s.parents.forEach(p => (CHILDREN[p] = CHILDREN[p] || []).push(s.slot)));
 
 const PERKS = {
+  STR:{
+    'A.r': {n:"Put 'em Up!", d:'Your fists are registered weapons. Unarmed strikes have a ROF of 2 and deal 1d8 + your STR mod + your proficiency.'},
+    'A.p': {n:'Sailor Spinach', d:'When you use an ACTION to heal, the amount you heal is added to the DMG of your next melee STR ATK.'},
+    'S.p': {n:'Pigtails?!', d:'ACTION. Throw grappled foes 15 ft for 2d6 + their BOD mod. Anyone in the way makes a REF save for half DMG.'},
+    'A.ph':{n:'Ape Shit', d:'ACTION, −3 RAM. Ground pound that sends out a shockwave for 6d6 in a 15 ft cone. Half DMG on a REF save.'},
+    'S.ph':{n:'Juggernaut', d:'DASH ACTION in a straight line, dragging everyone in the way for 1d6 DMG every 5 ft dragged.'},
+    'A.l': {n:'Wallop!', d:"Use one ACTION to focus all your energy into a single strike. If you haven't moved, your next ATK is at ADV, and if the foe is below 50 HP, they explode."},
+    'B.r': {n:'Hold My Beer', d:'Reloading an LMG or any special HEAVY gun takes an ACTION instead of your whole TURN.'},
+    'B.p': {n:"Hold 'er Steady", d:'Extra ATK ACTIONS with HEAVY weapons take −2 to HIT instead of disadvantage.'},
+    'B.ph':{n:'I Call Shotgun!', d:'Shotguns auto-hit within 10 ft.'},
+    'B.l': {n:'Empty the Clip', d:'Firing the last bullet or shell in the chamber RESETS your TURN.'}
+  },
+  TEC:{
+    'A.r': {n:'Transfusion', d:'Add your CYBERWARE mod to healing when you use your cyberware.'},
+    'A.p': {n:'Driver Update', d:'Your cyberware can be upgraded.'},
+    'S.p': {n:'Pill Popper', d:'Use meds as a REACT.'},
+    'A.ph':{n:'Friendly Fire', d:'Half AOE DMG to and from allies, and 0 DMG if you burn your REACT.'},
+    'S.ph':{n:'Alchemist', d:'Combine meds. Two combine for free, three or more need a DC roll.'},
+    'A.l': {n:'Limit Setter', d:"The first piece of cyberware that pushes you past your threshold doesn't make you a Cyberpsycho."},
+    'B.r': {n:'Third Pedal', d:'Proficiency in Vehicle.'},
+    'B.p': {n:'Maintenance Crew', d:'Repair items using your CRAFT score.'},
+    'B.ph':{n:'Fabricator', d:'Fortify, upgrade and create items using your CRAFT score.'},
+    'B.l': {n:'RipperDoc', d:'Licensed to chrome. You get discounts on cyberware and can install cyberware yourself.'}
+  },
   REF:{
     'A.r': {n:'Plumber Legs', d:'Double Jump (−1 RAM). No additional LEAP cost.'},
     'B.r': {n:'Waste of Time', d:'+10 MOVE after a KILL (−1 RAM).'},
@@ -824,16 +932,18 @@ function normalize0(c){
     created: c.created || Date.now(),
     inv: (Array.isArray(c.inv) ? c.inv : []).filter(i => i && i.name).map(i => ({
       id: i.id || uid(), name: String(i.name).slice(0, 60), type: ITEM_TYPES.includes(i.type) ? i.type : 'Gear',
-      qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120)
+      qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
+      tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort
     })),
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null},
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
-      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200)
+      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), hot: !!x.hot
     })),
     hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
     hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram),
     eddies: Math.max(0, parseInt(c.eddies) || 0),
     notes: String(c.notes || '').slice(0, 5000),
+    psycho: !!c.psycho,
     portrait: typeof c.portrait === 'string' && c.portrait.length < 300000 && PORTRAIT_RE.test(c.portrait) ? c.portrait : null
   };
 }
@@ -1128,7 +1238,7 @@ function openChar(id){
 }
 
 function renderSheetHead(){
-  updateVignette();
+  updateVignette(); if (typeof updatePsy === 'function') updatePsy();
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
     <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · Fighter · ${C.bgSkills.join(' and ')}</div></div></div>
@@ -1177,7 +1287,7 @@ function renderTabs(){
   $('#offlineTxt').textContent = `Raise ${st} to 10 to jack in.`;
 }
 
-const PERK_PROF = {'COO.A.r':'Persuasion', 'COO.B.r':'Deception'};
+const PERK_PROF = {'COO.A.r':'Persuasion', 'COO.B.r':'Deception', 'TEC.B.r':'Vehicle'};
 function skillProf(name, st, c = C){
   const src = (c.bgSkills.includes(name) ? 1 : 0) + Object.entries(PERK_PROF).filter(([k, sk]) => sk === name && c.unlocked.includes(k)).length;
   const canDouble = score(st, c) >= TIERS.ph.req;
@@ -1380,13 +1490,21 @@ function toast(msg, good){
 }
 
 /* ================= CHARACTER SHEET TAB ================= */
-const cyberRam = (c = C) => c.cyber.reduce((n, x) => n + (+x.ram || 0), 0);
+const RIPPER = 'TEC.B.l', HOTSWAP_COST = 500, HOTSWAP_RAM = 2;
+const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200};
+const MK = ['', 'Mk II', 'Mk III', 'Mk IV'];
+const canFab = (c = C) => c.unlocked.includes(FABRICATOR);
+const upCost = i => FAB_COST.upgrade * (i.tier + 1);
+const itemTags = i => `${i.tier ? `<span class="tagb">${MK[i.tier]}</span>` : ''}${i.fort ? '<span class="tagb">FORT</span>' : ''}`;
+const cyberRam = (c = C) => c.cyber.reduce((n, x) => n + (x.hot ? Math.floor((+x.ram || 0) / 2) : (+x.ram || 0)), 0);
+const canRip = (c = C) => c.unlocked.includes(RIPPER);
+const liveMe = () => LS && LS.role === 'player' && liveApi && liveState === 'on' && C && C.id === LS.mercId;
 const hasPerk = (k, c = C) => c.unlocked.includes(k);
 const ramBase = (c = C) => Math.max(0, 4 + mod(score('INT', c)) + cyberRam(c));
 const ramMax = (c = C) => ramBase(c) * (hasPerk('INT.S.p', c) ? 2 : 1);
 const reactCost = (c = C) => hasPerk('INT.S.ph', c) ? 1 : 2;
 const ramCur = () => C.ram == null ? ramMax() : Math.max(0, Math.min(C.ram, ramMax()));
-let sheetTab = 'perks', cyberForm = null, delItem = null;
+let sheetTab = 'perks', cyberForm = null, delItem = null, psyConfirm = false;
 
 function setSheetTab(t){
   sheetTab = t;
@@ -1441,22 +1559,45 @@ function renderCS(){
       <input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Stats or notes" aria-label="Item stats">
       <div class="acts">
         ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" data-equip="primary" data-i="${i.id}" title="Equip as primary">P</button><button class="btn small ${s2 ? 'on' : ''}" data-equip="secondary" data-i="${i.id}" title="Equip as secondary">S</button>` : ''}
-        ${i.type === 'Cyberware' ? `<select data-install="${i.id}" aria-label="Install into slot"><option value="">Install…</option>${CYBER_SLOTS.map(([k, n, cap]) => `<option value="${k}" ${C.cyber.filter(x => x.slot === k).length >= cap ? 'disabled' : ''}>${n}</option>`).join('')}</select>` : ''}
+        ${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}
+        ${i.type === 'Cyberware' && (canRip() || i.hot) ? `<select data-install="${i.id}" aria-label="Install into slot"><option value="">${canRip() ? 'Install…' : 'Swap in (−' + HOTSWAP_RAM + ' RAM)…'}</option>${CYBER_SLOTS.map(([k, n, cap]) => `<option value="${k}" ${C.cyber.filter(x => x.slot === k).length >= cap ? 'disabled' : ''}>${n}</option>`).join('')}</select>` : ''}
+        ${i.type === 'Cyberware' && canRip() && !i.hot ? `<button class="btn small" data-hot="${i.id}" title="Make one hot-swappable for ${HOTSWAP_COST} €$">Hot-swap</button>` : ''}
+        ${liveMe() && players.some(p => p.id !== liveApi.uid) ? `<select data-hand="${i.id}" aria-label="Hand to a party member"><option value="">Hand to…</option>${players.filter(p => p.id !== liveApi.uid).map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>` : ''}
         <button class="btn small ${delItem === i.id ? 'danger' : ''}" data-del-item="${i.id}" aria-label="Delete item">${delItem === i.id ? 'Sure?' : '✕'}</button>
       </div></div>`;
   }).join('') : `<p class="muted" style="margin-top:12px">Nothing in the bag yet.</p>`;
+  const rip = canRip(), fab = canFab();
+  const craft = mod(score('TEC')) + prof(C.level) * skillProf('Craft', 'TEC').level;
+  const psyBlock = `<div class="track psy ${C.psycho ? 'on' : ''}"><div class="head"><span class="lbl" style="margin:0">Cyberpsychosis</span><span class="muted" style="font-size:12px">Saves at −5</span></div>
+      <div class="num" style="font-size:18px">${C.psycho ? '<span class="gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : 'Stable'}</div>
+      <div class="row" style="margin-top:8px">${C.psycho ? '<button class="btn small" data-act="psyOff">Pull back</button>' : `<button class="btn small danger" data-act="psyOn">${psyConfirm ? 'Confirm. Lose it' : 'Lose it'}</button>`}</div></div>`;
+  const workable = C.inv.filter(i => i.type !== 'Cyberware');
+  const fabPanel = `<div class="panel gap"><div class="row"><h3>Fabrication</h3><span class="spacer"></span>${fab ? `<span class="muted" style="font-size:13px">Craft ${sgn(craft)}</span>` : ''}</div>
+    ${fab ? `<p style="font-size:14px;margin:6px 0 4px">You're a Fabricator. Roll Craft against the DM's DC, then pay for the parts here. Upgrade and fortify a crewmate's gear by having them hand it over, then hand it back.</p>
+      <p class="muted" style="font-size:13px;margin:0 0 12px">Create ${FAB_COST.create} €$ · Upgrade ${FAB_COST.upgrade} €$ per Mk level · Fortify ${FAB_COST.fortify} €$. Draft prices until the GM sets them.</p>
+      <span class="lbl">Create an item</span>
+      <div class="libadd"><input type="text" class="f" id="fbName" placeholder="What are you building?" aria-label="New item name"><select id="fbType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="fbQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="fbStats" placeholder="Stats, agreed with the DM" aria-label="Stats"></div>
+      <div class="row gap"><button class="btn small primary" data-act="fabCreate">Fabricate · ${FAB_COST.create} €$</button></div>
+      <span class="lbl" style="margin-top:18px">Work on an item</span>
+      ${workable.length ? `<div class="row"><select id="fbItem" aria-label="Item to work on" style="flex:1">${workable.map(i => `<option value="${i.id}">${esc(i.name)}${i.tier ? ' ' + MK[i.tier] : ''}${i.fort ? ' · Fortified' : ''}</option>`).join('')}</select>
+        <button class="btn small" data-act="fabUp">Upgrade</button><button class="btn small" data-act="fabFort">Fortify · ${FAB_COST.fortify} €$</button></div>` : '<p class="muted" style="font-size:14px">Nothing in your bag to work on.</p>'}`
+    : `<p style="font-size:14px;margin-top:6px">Creating, upgrading and fortifying gear takes the TEC Phenom perk <b>Fabricator</b>. Find a crewmate who has it and hand them your gear.</p>`}
+  </div>`;
   const cyber = CYBER_SLOTS.map(([k, n, cap]) => {
     const list = C.cyber.filter(x => x.slot === k);
-    const form = cyberForm === k
+    const form = !rip ? '' : cyberForm === k
       ? `<div class="cform"><input type="text" class="f" id="cfName" placeholder="Cyberware name" aria-label="Cyberware name">
          <label class="muted" style="font-size:12px">RAM bonus <input type="number" id="cfRam" value="0"></label>
          <input type="text" class="f" id="cfEff" placeholder="What it does" aria-label="Effect">
          <div class="row"><button class="btn small primary" data-act="cfSave" data-slot="${k}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div>`
       : (list.length < cap ? `<button class="btn small" data-act="cfOpen" data-slot="${k}" style="margin-top:8px">+ Install</button>` : '');
     return `<div class="cslot ${list.length >= cap ? 'full' : ''}"><div class="h"><b>${n}</b><span class="cap">${list.length} / ${cap}</span></div>
-      ${list.map(x => `<div class="cw"><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}" aria-label="Cyberware name">
-        <div class="r"><span class="muted">RAM</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}" aria-label="RAM bonus"><span class="spacer"></span><button class="btn small" data-uninstall="${x.id}">Remove</button></div>
-        <input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}" placeholder="What it does" aria-label="Effect"></div>`).join('')}
+      ${list.map(x => rip ? `<div class="cw ${x.hot ? 'hot' : ''}"><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}" aria-label="Cyberware name">
+        <div class="r"><span class="muted">RAM</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}" aria-label="RAM bonus">${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span><button class="btn small" data-uninstall="${x.id}">Remove</button></div>
+        <input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}" placeholder="What it does" aria-label="Effect"></div>`
+      : `<div class="cw ${x.hot ? 'hot' : ''}"><div style="color:#fff">${esc(x.name)}</div>
+        <div class="r"><span class="muted">RAM ${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)}</span>${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span>${x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out (−${HOTSWAP_RAM} RAM)</button>` : ''}</div>
+        ${x.effect ? `<div class="muted" style="font-size:13px">${esc(x.effect)}</div>` : ''}</div>`).join('')}
       ${form}</div>`;
   }).join('');
   $('#vCS').innerHTML = `
@@ -1464,14 +1605,16 @@ function renderCS(){
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
     <div class="cs-grid">
-      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}</div>
+      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}${psyBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}</div></div>
     </div>
     <div class="panel gap"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
       <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><button class="btn primary small" data-act="addItem">Add</button></div>
       <div>${rows}</div></div>
+    ${fabPanel}
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
-      <p class="muted" style="font-size:13px;margin-top:6px">Each install's RAM bonus adds to your max RAM. Slot counts are a starting point until the GM sets them.</p>
+      <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
+      <p class="muted" style="font-size:13px;margin-top:4px">Each install's RAM bonus adds to your max RAM. Hot-swap parts only give half (rounded down), and swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
       <div class="cyber">${cyber}</div></div>
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
@@ -1495,18 +1638,57 @@ $('#vCS').addEventListener('click', e => {
   if (t.dataset.uninstall){
     const x = C.cyber.find(y => y.id === t.dataset.uninstall);
     if (x){
+      if (!canRip()){
+        if (!x.hot) return toast('Only a RipperDoc can take that out.');
+        if (ramCur() < HOTSWAP_RAM) return toast(`Swapping out takes ${HOTSWAP_RAM} RAM.`);
+        C.ram = ramCur() - HOTSWAP_RAM;
+      }
       C.cyber = C.cyber.filter(y => y !== x);
-      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
+      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
       toast(`${x.name} moved to inventory.`, true);
     }
     return csSave();
   }
+  if (t.dataset.hot){
+    if (!canRip()) return;
+    const i = C.inv.find(x => x.id === t.dataset.hot); if (!i) return;
+    if (C.eddies < HOTSWAP_COST) return toast(`Hot-swap work costs ${HOTSWAP_COST} €$. You have ${C.eddies}.`);
+    C.eddies -= HOTSWAP_COST;
+    if (i.qty > 1){ i.qty--; C.inv.push({...i, id:uid(), qty:1, hot:true}); } else i.hot = true;
+    sfx('perk'); toast(`${i.name} is now hot-swappable. −${HOTSWAP_COST} €$.`, true);
+    return csSave();
+  }
   switch (t.dataset.act){
     case 'setHpMax': { const v = parseInt($('#setHpMax').value); if (v > 0){ C.hpMax = v; C.hp = v; C.netHp = v; } else toast('Enter your max HP first.'); return csSave(); }
-    case 'dmg': { C.hp = Math.max(0, (C.hp ?? hm) - amt('hpAmt')); if (C.hp === 0) toast(`${C.name} is down and in critical condition.`); return csSave(); }
+    case 'dmg': { const pv = C.hp ?? hm; C.hp = Math.max(0, pv - amt('hpAmt')); csSave(); if (pv > 0 && C.hp === 0) flatline('body'); return; }
     case 'heal': C.hp = Math.min(hm, (C.hp ?? hm) + amt('hpAmt')); return csSave();
     case 'hpFull': C.hp = hm; return csSave();
-    case 'netDmg': { C.netHp = Math.max(0, (C.netHp ?? hm) - amt('netAmt')); if (C.netHp === 0) toast(`${C.name} flatlined in the Net. Unconscious and critical.`); return csSave(); }
+    case 'netDmg': { const pv = C.netHp ?? hm; C.netHp = Math.max(0, pv - amt('netAmt')); csSave(); if (pv > 0 && C.netHp === 0) flatline('net'); return; }
+    case 'psyOn': if (!psyConfirm){ psyConfirm = true; return renderCS(); } psyConfirm = false; C.psycho = true; csSave(); cyberpsycho(true); return;
+    case 'psyOff': C.psycho = false; csSave(); cyberpsycho(false); toast(`${C.name} pulled back from the edge.`, true); return;
+    case 'fabCreate': {
+      if (!canFab()) return;
+      const name = ($('#fbName').value || '').trim(); if (!name){ $('#fbName').focus(); return toast('Name what you are building.'); }
+      if (C.eddies < FAB_COST.create) return toast(`Fabricating costs ${FAB_COST.create} €$. You have ${C.eddies}.`);
+      C.eddies -= FAB_COST.create;
+      C.inv.push({id:uid(), name:name.slice(0, 60), type:$('#fbType').value, qty:Math.max(1, parseInt($('#fbQty').value) || 1), stats:($('#fbStats').value || '').trim().slice(0, 120), hot:false, tier:0, fort:false});
+      sfx('perk'); toast(`Fabricated ${name}. −${FAB_COST.create} €$.`, true); return csSave();
+    }
+    case 'fabUp': case 'fabFort': {
+      if (!canFab()) return;
+      const i = C.inv.find(x => x.id === ($('#fbItem') || {}).value); if (!i) return;
+      const up = t.dataset.act === 'fabUp';
+      if (up && i.tier >= 3) return toast(`${i.name} is already ${MK[3]}, as good as it gets.`);
+      if (!up && i.fort) return toast(`${i.name} is already fortified.`);
+      const cost = up ? upCost(i) : FAB_COST.fortify;
+      if (C.eddies < cost) return toast(`That work costs ${cost} €$. You have ${C.eddies}.`);
+      C.eddies -= cost;
+      let target = i;
+      if (i.qty > 1){ i.qty--; target = {...i, id:uid(), qty:1}; C.inv.push(target); }
+      if (up) target.tier++; else target.fort = true;
+      sfx('perk'); toast(`${target.name} ${up ? 'upgraded to ' + MK[target.tier] : 'fortified'}. −${cost} €$.`, true);
+      csSave(); const sel2 = $('#fbItem'); if (sel2) sel2.value = target.id; return;
+    }
     case 'netHeal': C.netHp = Math.min(hm, (C.netHp ?? hm) + amt('netAmt')); return csSave();
     case 'netFull': C.netHp = hm; return csSave();
     case 'ram-1': C.ram = Math.max(0, ramCur() - 1); return csSave();
@@ -1524,9 +1706,10 @@ $('#vCS').addEventListener('click', e => {
       $('#niType').value = keepType; $('#niName').focus();
       return;
     }
-    case 'cfOpen': cyberForm = t.dataset.slot; renderCS(); $('#cfName').focus(); return;
+    case 'cfOpen': if (!canRip()) return; cyberForm = t.dataset.slot; renderCS(); $('#cfName').focus(); return;
     case 'cfCancel': cyberForm = null; return renderCS();
     case 'cfSave': {
+      if (!canRip()) return;
       const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the cyberware first.'); }
       C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), ram:parseInt($('#cfRam').value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
       toast(`${name} installed in ${SLOTMAP[t.dataset.slot][1]}.`, true);
@@ -1541,12 +1724,28 @@ $('#vCS').addEventListener('change', async e => {
     catch(err){ toast("That image didn't load. Try a JPG or PNG."); }
     return csSave();
   }
+  if (t.dataset.hand){
+    const to = t.value; if (!to) return;
+    const i = C.inv.find(x => x.id === t.dataset.hand); if (!i || !liveMe()) return renderCS();
+    const target = players.find(p => p.id === to);
+    const ok = await sendPlayerOp(to, {kind:'item', item:{name:i.name, type:i.type, qty:1, stats:i.stats, hot:i.hot, tier:i.tier, fort:i.fort}});
+    if (ok){
+      if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
+      toast(`Handed ${i.name} to ${target ? target.name : 'them'}.`, true);
+    }
+    return csSave();
+  }
   if (t.dataset.install){
     const slot = t.value; if (!slot) return;
     const i = C.inv.find(x => x.id === t.dataset.install); if (!i) return;
     if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return renderCS(); }
+    if (!canRip()){
+      if (!i.hot){ toast('Only a RipperDoc can install that.'); return renderCS(); }
+      if (ramCur() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return renderCS(); }
+      C.ram = ramCur() - HOTSWAP_RAM;
+    }
     const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
-    C.cyber.push({id:uid(), slot, name:i.name, ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
+    C.cyber.push({id:uid(), slot, name:i.name, hot:i.hot, ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
     if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
     toast(`${i.name} installed in ${SLOTMAP[slot][1]}.`, true);
     return csSave();
@@ -1571,6 +1770,9 @@ $('#vCS').addEventListener('change', async e => {
     if (v > 0){ C.hpMax = v; if (C.hp != null) C.hp = Math.min(C.hp, v); if (C.netHp != null) C.netHp = Math.min(C.netHp, v); }
     return csSave();
   }
+});
+$('#vCS').addEventListener('input', e => {
+  if (e.target.id !== 'fbItem') return;
 });
 $('#vCS').addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
@@ -1725,26 +1927,54 @@ function applyOp(op){
   const raw = isOpen ? C : DB.chars.find(x => x.id === LS.mercId);
   if (!raw) return;
   const m = isOpen ? C : normalize(raw);
-  let msg = '';
+  const who = op.fromName || 'The DM';
+  let msg = '', sound = 'up', good = true;
   if (op.kind === 'item' && op.item && op.item.name){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
-    const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || ''));
-    if (same) same.qty += q; else m.inv.push({id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120)});
-    msg = `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`;
+    const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort;
+    const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort);
+    if (same) same.qty += q; else m.inv.push({id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort});
+    msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
-    msg = n >= 0 ? `+${n} €$ from the DM.` : `The DM took ${-n} €$.`;
+    msg = n >= 0 ? `+${n} €$ from ${op.fromName || 'the DM'}.` : `The DM took ${-n} €$.`; sound = n >= 0 ? 'up' : 'down';
+  } else if (op.kind === 'psycho'){
+    m.psycho = !!op.on;
+    msg = op.on ? 'The DM says you snapped. Cyberpsychosis.' : 'The DM pulled you back from the edge.'; sound = op.on ? null : 'heal';
+    setTimeout(() => cyberpsycho(!!op.on), 50);
   } else if (op.kind === 'hp' && m.hpMax){
     const n = parseInt(op.amount) || 0, cur = m.hp == null ? m.hpMax : m.hp;
     m.hp = Math.max(0, Math.min(m.hpMax, cur + n));
-    msg = n < 0 ? `The DM dealt ${-n} damage.` : `The DM healed you for ${n}.`;
+    if (cur > 0 && m.hp === 0) setTimeout(() => flatline('body'), 50);
+    msg = n < 0 ? `The DM dealt ${-n} damage.` : `The DM healed you for ${n}.`; sound = n < 0 ? 'damage' : 'heal';
   } else if (op.kind === 'ram'){
     m.ram = null; msg = 'The DM restored your RAM.';
+  } else if (op.kind === 'install'){
+    const i = m.inv.find(x => x.id === op.itemId), slot = SLOTMAP[op.slot];
+    if (!i || i.type !== 'Cyberware' || !slot){ msg = `${who} tried to install something that isn't in your bag anymore.`; good = false; sound = 'deny'; }
+    else if (m.cyber.filter(x => x.slot === op.slot).length >= slot[2]){ msg = `${who} couldn't install ${i.name}. Your ${slot[1]} slot is full.`; good = false; sound = 'deny'; }
+    else {
+      const r = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
+      m.cyber.push({id:uid(), slot:op.slot, name:i.name, hot:i.hot, ram:r ? parseInt(r[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
+      if (i.qty > 1) i.qty--; else { m.inv = m.inv.filter(x => x !== i); fixEq(m); }
+      msg = `${who} installed ${i.name} in your ${slot[1]}.`; sound = 'equip';
+    }
+  } else if (op.kind === 'uninstall'){
+    const x = m.cyber.find(y => y.id === op.cyberId);
+    if (!x) return;
+    m.cyber = m.cyber.filter(y => y !== x);
+    m.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
+    msg = `${who} removed your ${x.name}. It's in your bag.`; sound = 'unequip';
   } else return;
-  sfx(op.kind === 'item' ? 'receive' : op.kind === 'hp' ? ((parseInt(op.amount) || 0) < 0 ? 'damage' : 'heal') : op.kind === 'eddies' ? ((parseInt(op.amount) || 0) < 0 ? 'down' : 'up') : 'up');
+  if (good && sound) sfx(sound);
   if (isOpen){ saveC(); update(false); flashSheet(); }
   else { const i = DB.chars.findIndex(x => x.id === m.id); DB.chars[i] = m; persist(); }
-  toast(msg, true);
+  toast(msg, good);
+}
+async function sendPlayerOp(u, op){
+  const me = DB.chars.find(x => x.id === LS.mercId);
+  try { await liveApi.sendInbox(LS.code, u, {...op, from:liveApi.uid, fromName:me ? me.name : 'A merc', at:Date.now()}); return true; }
+  catch(e){ console.error(e); toast("That didn't go through. Check your connection."); return false; }
 }
 function flashSheet(){ const h = $('#sheetHead'); if (!h) return; h.classList.remove('flash'); void h.offsetWidth; h.classList.add('flash'); }
 async function startPlayer(){
@@ -1753,7 +1983,11 @@ async function startPlayer(){
     if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
     sessMeta = s; renderLive();
   }));
-  unsubs.push(api.watchPlayers(LS.code, list => { players = dedupe(list).keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
+  unsubs.push(api.watchPlayers(LS.code, list => {
+    const before = players.map(p => p.id).join();
+    players = dedupe(list).keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
+    if (players.map(p => p.id).join() !== before && sheetTab === 'cs' && C) renderCS();
+  }));
   unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
   unsubs.push(api.watchInbox(LS.code, api.uid, ops => {
     ops.sort((a, b) => (a.at || 0) - (b.at || 0)).forEach(op => {
@@ -1791,7 +2025,7 @@ const STARTER = [
 ];
 async function sendOp(u, op){
   try {
-    await liveApi.sendInbox(LS.code, u, {...op, at:Date.now()});
+    await liveApi.sendInbox(LS.code, u, {...op, from:liveApi.uid, at:Date.now()});
     const p = players.find(x => x.id === u);
     if (p && !isOnline(p)) setTimeout(() => toast(`${p.name} is offline. It'll land on their sheet when they reconnect.`), 1200);
     return true;
@@ -1836,7 +2070,12 @@ function keepInputs(root, fn){
   root.querySelectorAll('input[id],select[id],textarea[id]').forEach(el => { if (el.type !== 'file') vals[el.id] = el.value; });
   if (actId){ try { selS = act.selectionStart; selE = act.selectionEnd; } catch(e){} }
   fn();
-  Object.entries(vals).forEach(([id, v]) => { const el = document.getElementById(id); if (el && root.contains(el)) el.value = v; });
+  Object.entries(vals).forEach(([id, v]) => {
+    const el = document.getElementById(id); if (!el || !root.contains(el)) return;
+    if (el.tagName === 'SELECT' && !v) return;
+    if (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v && !o.disabled)) return;
+    el.value = v;
+  });
   if (actId){ const el = document.getElementById(actId); if (el){ el.focus(); try { if (selS != null) el.setSelectionRange(selS, selE); } catch(e){} } }
 }
 function partyCard(p, dm){
@@ -1846,24 +2085,37 @@ function partyCard(p, dm){
   const nm = id => m.inv.find(i => i.id === id);
   const pr = nm(m.eq.primary), se = nm(m.eq.secondary);
   const on = isOnline(p), k = p.id, me = liveApi && p.id === liveApi.uid;
+  const myMerc = !dm && LS && DB.chars.find(x => x.id === LS.mercId);
+  const surgeon = !me && (dm || (myMerc && normalize(myMerc).unlocked.includes(RIPPER)));
+  const cyInv = m.inv.filter(i => i.type === 'Cyberware');
+  const surgery = surgeon ? `
+      <div class="surg"><span class="lbl">${dm ? 'Install chrome' : 'RipperDoc'}</span>
+        <div class="row"><select id="surg-${k}" aria-label="Cyberware to install" style="flex:1">${cyInv.length ? cyInv.map(i => `<option value="${i.id}">${esc(i.name)}${i.hot ? ' (hot)' : ''}</option>`).join('') : '<option value="">No cyberware in their bag</option>'}</select>
+          <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select>
+          <button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Install</button></div>
+        ${m.cyber.length ? `<div class="row" style="margin-top:6px">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Remove ${esc(x.name)}</button>`).join('')}</div>` : ''}</div>` : '';
+  const pay = !dm && !me && myMerc ? `
+      <div class="row"><input type="number" min="1" id="pe-${k}" placeholder="€$" aria-label="Eddies to send ${esc(m.name)}"><button class="btn small" data-live="sendEd" data-u="${k}">Send €$</button></div>` : '';
   const controls = dm ? `
       <div class="row"><input type="number" min="0" id="amt-${k}" placeholder="Amt" aria-label="Amount for ${esc(m.name)}">
         <button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button>
         <button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button>
-        <button class="btn small" data-live="ram" data-u="${k}">Restore RAM</button></div>
+        <button class="btn small" data-live="ram" data-u="${k}">Restore RAM</button>
+        <button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
       <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
         <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
       <div class="row"><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''}">
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
-        <div class="sub">${m.background} · Level ${m.level} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
+        ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}
+        <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
       <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div></div>
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
-      <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
-      ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name)).join(', ')}</div>` : ''}${controls}
+      <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' ' + MK[i.tier] : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
+      ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}${controls}
     </div>`;
 }
 function renderLive(){
@@ -2008,6 +2260,34 @@ $('#liveBody').addEventListener('click', async e => {
     if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || ''}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
     return;
   }
+  if (a === 'install' || a === 'uninstall'){
+    const send = LS.role === 'dm' ? sendOp : sendPlayerOp, target = players.find(p => p.id === u);
+    if (a === 'install'){
+      const itemId = ($('#surg-' + u) || {}).value, slot = ($('#slot-' + u) || {}).value;
+      if (!itemId || !slot) return;
+      const it = target && target.merc && (target.merc.inv || []).find(i => i.id === itemId);
+      if (await send(u, {kind:'install', itemId, slot})) toast(`Installing ${it ? it.name : 'chrome'} for ${pname(u)}.`, true);
+    } else {
+      if (await send(u, {kind:'uninstall', cyberId:t.dataset.c})) toast(`Pulling chrome out of ${pname(u)}.`, true);
+    }
+    return;
+  }
+  if (a === 'sendEd'){
+    const n = Math.max(0, parseInt(($('#pe-' + u) || {}).value) || 0); if (!n) return toast('Enter how many eddies to send.');
+    const isOpen = C && C.id === LS.mercId, me = isOpen ? C : normalize(DB.chars.find(x => x.id === LS.mercId));
+    if (me.eddies < n) return toast(`You only have ${me.eddies} €$.`);
+    if (await sendPlayerOp(u, {kind:'eddies', amount:n})){
+      me.eddies -= n;
+      if (isOpen){ saveC(); update(false); } else { DB.chars[DB.chars.findIndex(x => x.id === me.id)] = me; persist(); }
+      $('#pe-' + u).value = ''; toast(`Sent ${n} €$ to ${pname(u)}.`, true);
+    }
+    return;
+  }
+  if (a === 'psy'){
+    const onv = !!t.dataset.on;
+    if (await sendOp(u, {kind:'psycho', on:onv})) toast(`${pname(u)} ${onv ? 'snapped. Cyberpsychosis.' : 'pulled back.'}`, true);
+    return;
+  }
   if (a === 'kick'){ await liveApi.removePlayer(LS.code, u).catch(() => {}); await liveApi.removePortrait(LS.code, u).catch(() => {}); return; }
   if (a === 'starter'){ for (const [name, type, stats] of STARTER) await liveApi.setLibItem({id:uid(), name, type, qty:1, stats}).catch(() => {}); toast('Starter pack loaded.', true); return; }
   if (a === 'libadd'){
@@ -2096,7 +2376,7 @@ function route(){
   const h = location.hash.replace('#', '');
   const rules = h === 'rules' || h.startsWith('r-');
   document.body.classList.toggle('on-rules', rules);
-  setTimeout(updateVignette, 0);
+  setTimeout(() => { updateVignette(); updatePsy(); }, 0);
   $('#pgRules').hidden = !rules; $('#pgApp').hidden = rules;
   document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : a.getAttribute('href') === '#' + (h || 'mercs')));
   if (rules){
@@ -2169,6 +2449,7 @@ function classify(b){
   if (b.id === 'inc') return 'up';
   if (d.equip) return b.classList.contains('on') ? 'unequip' : 'equip';
   if (d.unequip || d.uninstall) return 'unequip';
+  if (d.hot) return null;
   if (d.qty) return +d.qty > 0 ? 'up' : 'down';
   if (d.pb) return +d.d > 0 ? 'up' : 'down';
   const a = d.act || d.live;
@@ -2177,7 +2458,9 @@ function classify(b){
     if (/^(heal|hpFull|netHeal|netFull|hp\+)$/.test(a)) return 'heal';
     if (/^(ram-1|ram-2|ed-)$/.test(a)) return 'down';
     if (/^(ram\+1|ramFull|ram|ed\+)$/.test(a)) return 'up';
-    if (/^(addItem|cfSave|give|libgive|libadd|starter)$/.test(a)) return 'equip';
+    if (/^(addItem|cfSave|give|libgive|libadd|starter|install|sendEd)$/.test(a)) return 'equip';
+    if (a === 'uninstall') return 'unequip';
+    if (/^(fabCreate|fabUp|fabFort|psyOn|psy)$/.test(a)) return null;
   }
   if (b.matches('.tab, .vtabs button, #topnav a, .toc a')) return 'tab';
   if (txt === '+') return 'up';
@@ -2189,7 +2472,63 @@ document.addEventListener('click', e => {
   if (!b || b.disabled) return;
   const n = classify(b); if (n) sfx(n);
 }, true);
-document.addEventListener('change', e => { if (e.target.matches('select[data-install]') && e.target.value) sfx('equip'); }, true);
+document.addEventListener('change', e => { if (e.target.matches('select[data-install], select[data-hand]') && e.target.value) sfx('equip'); }, true);
+
+/* ================= GLITCH FX ================= */
+function sfxFlatline(){
+  if (!FXS.sfx) return;
+  tone(160, 50, .35, 'sawtooth', .1); noise(.2, .14, 0, 300, .8);
+  [0, .28].forEach(d => tone(1000, 1000, .09, 'sine', .07, .5 + d));
+  tone(1000, 1000, 2.2, 'sine', .06, 1.1);
+}
+function sfxPsycho(){
+  if (!FXS.sfx) return;
+  for (let i = 0; i < 9; i++) noise(.08, .14, i * .11, 600 + Math.random() * 5000, 4);
+  tone(900, 40, 1.4, 'sawtooth', .07); tone(57, 45, 1.8, 'square', .06, .1); tone(1500, 220, .5, 'square', .03, .9);
+}
+function flatline(kind){
+  const el = $('#flatline'); if (!el) return;
+  $('#flSub').textContent = kind === 'net' ? 'Flatlined in the Net. Unconscious. Critical condition.' : 'Unconscious. Critical condition.';
+  el.hidden = true; void el.offsetWidth; el.hidden = false;
+  sfxFlatline();
+  clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; }, FXS.motion ? 4800 : 3000);
+}
+$('#flatline').addEventListener('click', () => { $('#flatline').hidden = true; });
+function glitchBurst(ms, word){
+  const fx = $('#glitchFx'); if (!fx) return;
+  if (!FXS.motion){ fx.innerHTML = word ? `<div class="word">${word}</div>` : ''; fx.classList.add('on'); setTimeout(() => { fx.classList.remove('on'); fx.innerHTML = ''; }, 1200); return; }
+  document.body.classList.add('psy-glitch'); fx.classList.add('on');
+  const colors = ['rgba(194,27,255,.75)', 'rgba(47,230,240,.7)', 'rgba(255,42,109,.75)', 'rgba(255,255,255,.5)'];
+  const tick = () => {
+    fx.innerHTML = Array.from({length: 7 + Math.floor(Math.random() * 7)}, () => {
+      const h = 2 + Math.random() * 40, top = Math.random() * 100;
+      return `<div class="bar" style="top:${top}%;height:${h}px;background:${colors[Math.floor(Math.random() * colors.length)]};transform:translateX(${(Math.random() - .5) * 120}px)"></div>`;
+    }).join('') + (word && Math.random() < .7 ? `<div class="word gl" data-text="${word}" style="transform:translate(${(Math.random() - .5) * 30}px,${(Math.random() - .5) * 16}px)">${word}</div>` : '');
+  };
+  tick(); const iv = setInterval(tick, 70);
+  setTimeout(() => { clearInterval(iv); fx.innerHTML = ''; fx.classList.remove('on'); document.body.classList.remove('psy-glitch'); }, ms);
+}
+function cyberpsycho(on){
+  if (on){ sfxPsycho(); glitchBurst(2600, 'CYBERPSYCHOSIS'); }
+  setTimeout(updatePsy, on ? 2400 : 0);
+}
+function updatePsy(){
+  const v = $('#psyVig'); if (!v) return;
+  const show = C && C.psycho && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
+  v.classList.toggle('on', !!show);
+  document.body.classList.toggle('psy-linger', !!show && FXS.motion);
+}
+// ambient glitches
+function ambient(){
+  if (FXS.motion && !document.hidden){
+    const r = Math.random();
+    if (r < .55){ const h = $('.gl-title'); h.classList.remove('glitching'); void h.offsetWidth; h.classList.add('glitching'); setTimeout(() => h.classList.remove('glitching'), 360); }
+    else { const t = document.createElement('div'); t.className = 'tear'; t.style.top = (Math.random() * 100) + 'vh'; document.body.appendChild(t); setTimeout(() => t.remove(), 260); }
+  }
+  setTimeout(ambient, 5000 + Math.random() * 9000);
+}
+setTimeout(ambient, 3000);
+document.body.classList.toggle('fx', FXS.motion);
 
 /* ================= NEAR DEATH VIGNETTE ================= */
 function updateVignette(){
@@ -2330,7 +2669,7 @@ function syncDock(){
 $('#tSfx').onclick = () => { FXS.sfx = !FXS.sfx; try { localStorage.setItem('daemon-sfx', FXS.sfx ? '1' : '0'); } catch(e){} syncDock(); if (FXS.sfx) sfx('up'); };
 $('#tFx').onclick = () => {
   FXS.motion = !FXS.motion; try { localStorage.setItem('daemon-motion', FXS.motion ? '1' : '0'); } catch(e){}
-  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); sfx('select');
+  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); updatePsy(); document.body.classList.toggle('fx', FXS.motion); sfx('select');
 };
 syncDock();
 

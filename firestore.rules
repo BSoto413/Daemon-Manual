@@ -8,6 +8,12 @@ service cloud.firestore {
       function isDM() {
         return signedIn() && get(/databases/$(database)/documents/sessions/$(code)).data.dmUid == request.auth.uid;
       }
+      function isMember() {
+        return signedIn() && exists(/databases/$(database)/documents/sessions/$(code)/players/$(request.auth.uid));
+      }
+      function isRipper() {
+        return 'TEC.B.l' in get(/databases/$(database)/documents/sessions/$(code)/players/$(request.auth.uid)).data.merc.unlocked;
+      }
       allow read: if signedIn();
       allow create: if signedIn() && request.resource.data.dmUid == request.auth.uid;
       allow update, delete: if signedIn() && resource.data.dmUid == request.auth.uid;
@@ -27,9 +33,14 @@ service cloud.firestore {
           && exists(/databases/$(database)/documents/sessions/$(code));
         allow delete: if signedIn() && (request.auth.uid == uid || isDM());
 
-        // Only the DM can send items, eddies, damage and healing.
+        // The DM can send anything. Players can hand over items and eddies,
+        // and only a RipperDoc can install or remove someone's cyberware.
         match /inbox/{op} {
-          allow create: if isDM();
+          allow create: if isDM() || (isMember() && request.resource.data.from == request.auth.uid && (
+            request.resource.data.kind == 'item' ||
+            (request.resource.data.kind == 'eddies' && request.resource.data.amount > 0) ||
+            ((request.resource.data.kind == 'install' || request.resource.data.kind == 'uninstall') && isRipper())
+          ));
           allow read, delete: if signedIn() && (request.auth.uid == uid || isDM());
         }
       }

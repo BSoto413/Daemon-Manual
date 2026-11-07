@@ -68,11 +68,17 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - New device? Enter the code and hit Restore to pull your merc (and portrait) from the session. The DM's dashboard drops the old copy on its own
 - Players see a live party view with everyone's portrait, HP, NET HP, RAM, eddies, weapons and items
 - Portraits are cropped to 256x256 JPEGs and stored in Firestore (no Firebase Storage needed, so it stays on the free plan)
+- Only a merc with the TEC Legend perk RipperDoc (`TEC.B.l`) can install or remove cyberware, in themselves or (in a live session) in other players. The DM can too. The rules enforce this server-side
+- Players can hand items and send eddies to each other in a live session. Everything moves through the target's inbox
+- Hot-swap parts (house rule draft). A RipperDoc spends 500 €$ to make a Cyberware item hot-swappable (`hot: true`). Anyone can swap a hot part in or out of themselves for 2 RAM, but it only gives half its RAM bonus. Tweak `HOTSWAP_COST` and `HOTSWAP_RAM` in the script
+- Fabrication (draft prices). Only a merc with the TEC Phenom perk Fabricator (`TEC.B.ph`) gets the Fabrication bench on the character sheet. Create 300 €$, Upgrade 200 €$ per Mk level (Mk II to Mk IV, item `tier` 1 to 3), Fortify 150 €$ (item `fort`). Tweak `FAB_COST` in the script
+- Cyberpsychosis status (`psycho` on the merc). Set from the sheet (Lose it / Pull back) or by the DM from the dashboard. Turning it on glitches the whole page, then leaves a lingering vignette until it's cleared
+- Hitting 0 HP or 0 NET HP plays the FLATLINED screen
 - The DM's item library lives under that browser's DM account and carries between sessions. Copy library and Import library move it to another browser
 - Firestore layout
   - `sessions/{code}` holds dmUid, name, created
   - `sessions/{code}/players/{uid}` holds name, mercId, merc, updatedAt, seen (heartbeat every minute)
-  - `sessions/{code}/players/{uid}/inbox/{op}` holds kind (item, eddies, hp, ram), amount or item, at
+  - `sessions/{code}/players/{uid}/inbox/{op}` holds kind (item, eddies, hp, ram, install, uninstall, psycho), amount, item, itemId, slot, cyberId, from, fromName, at
   - `sessions/{code}/portraits/{uid}` holds img (data URL) and mercId
   - `dms/{uid}/library/{item}` holds name, type, qty, stats
 
