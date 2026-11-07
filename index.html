@@ -414,7 +414,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-basics"><h2>How Daemon Works</h2>
         <div class="panel">
-          <p>Daemon is a twisted take on 5e set in Night City. Every merc is a 5e Fighter with the Samurai subclass and keeps all of its normal Fighter and Samurai features.</p>
+          <p>Daemon is a twisted take on 5e set in Night City. Every merc is a 5e Fighter and keeps all of its normal Fighter features.</p>
           <p>There are no classes and no feats. Instead every merc fills a role, and what really makes your merc yours is the set of perk trees you climb with your stats. Those trees are ported from Cyberpunk 2077.</p>
           <div class="row gap"><a class="btn primary" href="#mercs">Make a merc</a><a class="btn" href="#r-perks">Browse every perk</a></div>
         </div>
@@ -1051,7 +1051,7 @@ function renderWizard(){
       <div class="summary">
         <div><span class="lbl">Handle</span><div class="v">${esc(W.name)}</div></div>
         <div><span class="lbl">Background</span><div class="v">${W.background}</div><div class="muted" style="font-size:14px">${W.bgSkills.join(' and ')}</div></div>
-        <div><span class="lbl">Class</span><div class="v">Fighter · Samurai</div></div>
+        <div><span class="lbl">Class</span><div class="v">Fighter</div></div>
       </div>
       <div class="mini-stats" style="margin-top:18px;font-size:12px">${ORDER.map(k => `<div><b style="font-size:20px">${W.base[k]}</b>${k} ${sgn(mod(W.base[k]))}</div>`).join('')}</div>
       <p class="muted" style="margin-top:16px">You start at level 1. You earn your first perk point when you hit level 2.</p>`;
@@ -1118,7 +1118,7 @@ function openChar(id){
 function renderSheetHead(){
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
-    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · Fighter (Samurai) · ${C.bgSkills.join(' and ')}</div></div></div>
+    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · Fighter · ${C.bgSkills.join(' and ')}</div></div></div>
     <div><span class="lbl">Level</span><div class="lvlbox stepper"><button id="lvDown" ${C.level <= 1 ? 'disabled' : ''} aria-label="Level down">−</button><span class="val big" id="lvVal">${C.level}</span><button id="lvUp" ${C.level >= 20 ? 'disabled' : ''} aria-label="Level up">+</button></div></div>
   </div>
   <div class="vitals">
@@ -1399,7 +1399,7 @@ function renderCS(){
   const ident = `<div class="ident">
       <div><span class="lbl">Handle</span><div class="v">${esc(C.name)}</div></div>
       <div><span class="lbl">Origin</span><div class="v">${C.background}</div></div>
-      <div><span class="lbl">Class</span><div class="v">Fighter · Samurai</div></div>
+      <div><span class="lbl">Class</span><div class="v">Fighter</div></div>
       <div><span class="lbl">Level</span><div class="v">${C.level}</div></div>
       <div><span class="lbl">Eddies</span><div class="v"><input type="number" min="0" data-field="eddies" value="${C.eddies}" aria-label="Eddies" style="width:120px"> €$</div></div>
     </div>
