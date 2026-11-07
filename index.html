@@ -374,6 +374,16 @@ nav a.on{opacity:1;color:var(--cyan)}
 .lvltrack div.one{background:rgba(255,255,255,.04);color:var(--muted)}
 .wdiag{width:100%;max-width:320px;display:block;margin:16px auto 0}
 mark{background:rgba(255,230,0,.3);color:inherit}
+/* ---------- fx ---------- */
+#circuit{opacity:1}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .8s;
+  background:radial-gradient(ellipse at center, rgba(255,20,40,0) 42%, rgba(255,20,40,.28) 72%, rgba(255,10,30,.75) 100%)}
+#vignette.on{animation:heartbeat var(--vdur,1.3s) ease-in-out infinite}
+#vignette.dead{background:radial-gradient(ellipse at center, rgba(120,0,10,.15) 20%, rgba(255,10,30,.85) 100%)}
+@keyframes heartbeat{0%,100%{opacity:var(--vmin,.3)}14%{opacity:var(--vmax,.7)}28%{opacity:var(--vmin,.3)}42%{opacity:calc(var(--vmax,.7) * .8)}60%{opacity:var(--vmin,.3)}}
+.dock{position:fixed;right:14px;bottom:14px;z-index:6;display:flex;gap:6px}
+.dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
+.dock button[aria-pressed=false]{color:var(--muted);text-decoration:line-through}
 footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 @media (max-width:560px){
   .wrap{padding:22px 16px 60px}
@@ -653,6 +663,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   <footer>Daemon Manual V0.1 · Unofficial player reference built from the GM's rules channel</footer>
 </div>
 <div class="toast" id="toast" role="status"></div>
+<div id="vignette" aria-hidden="true"></div>
+<div class="dock"><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
 (() => {
@@ -1116,6 +1128,7 @@ function openChar(id){
 }
 
 function renderSheetHead(){
+  updateVignette();
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
     <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · Fighter · ${C.bgSkills.join(' and ')}</div></div></div>
@@ -1297,7 +1310,7 @@ function act(sl){
   if (!meets(st, sl)) return toast(`${st} needs to be ${TIERS[SLOT[sl].tier].req} for ${TIERS[SLOT[sl].tier].name} perks.`);
   if (perkLeft() <= 0) return toast('No perk points left. Level up to earn more.');
   C.unlocked.push(key(st, sl));
-  sel = sl;
+  sel = sl; sfx('perk');
   const el = nodeEls[sl];
   el.classList.remove('burst'); void el.offsetWidth; el.classList.add('burst');
   setTimeout(() => el.classList.remove('burst'), 800);
@@ -1307,7 +1320,7 @@ function refund(sl){
   const st = C.active, b = blockers(st, sl);
   if (b.length) return toast(`Uninstall ${b.map(c => perk(st, c).n).join(' and ')} first.`);
   C.unlocked = C.unlocked.filter(x => x !== key(st, sl));
-  update(true);
+  sfx('unperk'); update(true);
 }
 function changed(){
   const r = validate();
@@ -1361,6 +1374,7 @@ new ResizeObserver(() => layout()).observe(treeEl);
 
 let tt;
 function toast(msg, good){
+  if (!good) sfx('deny');
   const t = $('#toast'); t.textContent = msg; t.classList.toggle('good', !!good); t.classList.add('show');
   clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2800);
 }
@@ -1727,6 +1741,7 @@ function applyOp(op){
   } else if (op.kind === 'ram'){
     m.ram = null; msg = 'The DM restored your RAM.';
   } else return;
+  sfx(op.kind === 'item' ? 'receive' : op.kind === 'hp' ? ((parseInt(op.amount) || 0) < 0 ? 'damage' : 'heal') : op.kind === 'eddies' ? ((parseInt(op.amount) || 0) < 0 ? 'down' : 'up') : 'up');
   if (isOpen){ saveC(); update(false); flashSheet(); }
   else { const i = DB.chars.findIndex(x => x.id === m.id); DB.chars[i] = m; persist(); }
   toast(msg, true);
@@ -2080,6 +2095,8 @@ $('#rSearch').addEventListener('input', e => {
 function route(){
   const h = location.hash.replace('#', '');
   const rules = h === 'rules' || h.startsWith('r-');
+  document.body.classList.toggle('on-rules', rules);
+  setTimeout(updateVignette, 0);
   $('#pgRules').hidden = !rules; $('#pgApp').hidden = rules;
   document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : a.getAttribute('href') === '#' + (h || 'mercs')));
   if (rules){
@@ -2097,39 +2114,225 @@ const tocObs = new IntersectionObserver(es => es.forEach(en => {
 }), {rootMargin:'-20% 0px -70% 0px'});
 document.querySelectorAll('.rsec').forEach(sec => tocObs.observe(sec));
 
-/* ================= CIRCUIT BACKGROUND ================= */
+/* ================= SOUND ================= */
+const PREF = k => { try { return localStorage.getItem(k) !== '0'; } catch(e){ return true; } };
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FXS = {sfx: PREF('daemon-sfx'), motion: reducedMotion ? false : PREF('daemon-motion')};
+let actx = null, master = null, noiseBuf = null;
+function ac(){
+  if (!actx){
+    try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){ return null; }
+    master = actx.createGain(); master.gain.value = .7;
+    const comp = actx.createDynamicsCompressor(); master.connect(comp); comp.connect(actx.destination);
+    noiseBuf = actx.createBuffer(1, actx.sampleRate * .5, actx.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function tone(f1, f2, dur, type = 'square', vol = .05, delay = 0){
+  const a = ac(); if (!a) return;
+  const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.setValueAtTime(f1, t);
+  if (f2 && f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .006); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .03);
+}
+function noise(dur, vol = .08, delay = 0, freq = 2000, q = 1){
+  const a = ac(); if (!a) return;
+  const t = a.currentTime + delay, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  src.connect(f); f.connect(g); g.connect(master); src.start(t); src.stop(t + dur + .02);
+}
+const SOUNDS = {
+  select:  () => { tone(1500, 1900, .04, 'square', .025); },
+  tab:     () => { tone(820, 1240, .07, 'triangle', .05); noise(.03, .03, 0, 5000, 2); },
+  up:      () => { tone(620, 940, .07, 'triangle', .06); },
+  down:    () => { tone(760, 440, .08, 'triangle', .06); },
+  equip:   () => { noise(.05, .12, 0, 3200, 3); tone(240, 480, .08, 'sawtooth', .035, .02); tone(1180, 1180, .05, 'square', .03, .09); noise(.03, .08, .1, 4500, 4); },
+  unequip: () => { noise(.04, .08, 0, 2600, 3); tone(520, 230, .11, 'sawtooth', .03, .01); },
+  perk:    () => { [523, 659, 784, 1047].forEach((f, i) => tone(f, f * 1.01, .13, 'square', .035, i * .055)); tone(2093, 2093, .25, 'sine', .03, .22); },
+  unperk:  () => { [784, 587, 440].forEach((f, i) => tone(f, f * .97, .1, 'square', .03, i * .055)); },
+  levelup: () => { [392, 523, 659, 784, 1047].forEach((f, i) => tone(f, f, .16, 'triangle', .055, i * .07)); noise(.3, .03, .3, 6000, .7); },
+  damage:  () => { tone(170, 55, .28, 'sawtooth', .09); noise(.16, .16, 0, 380, .8); },
+  heal:    () => { tone(880, 1320, .2, 'sine', .05); tone(1320, 1760, .22, 'sine', .035, .09); },
+  deny:    () => { tone(190, 150, .09, 'square', .04); tone(190, 150, .09, 'square', .04, .12); },
+  receive: () => { [988, 1319, 1568, 1976].forEach((f, i) => tone(f, f, .11, 'triangle', .045, i * .06)); noise(.05, .05, 0, 6000, 2); }
+};
+function sfx(n){ if (!FXS.sfx || !SOUNDS[n]) return; try { SOUNDS[n](); } catch(e){} }
+function classify(b){
+  const d = b.dataset, txt = (b.textContent || '').trim();
+  if (b.id === 'doAct' || b.id === 'tSfx') return null;
+  if (b.id === 'lvUp') return 'levelup';
+  if (b.id === 'lvDown' || b.id === 'dec') return 'down';
+  if (b.id === 'inc') return 'up';
+  if (d.equip) return b.classList.contains('on') ? 'unequip' : 'equip';
+  if (d.unequip || d.uninstall) return 'unequip';
+  if (d.qty) return +d.qty > 0 ? 'up' : 'down';
+  if (d.pb) return +d.d > 0 ? 'up' : 'down';
+  const a = d.act || d.live;
+  if (a){
+    if (/^(dmg|netDmg|hp-)$/.test(a)) return 'damage';
+    if (/^(heal|hpFull|netHeal|netFull|hp\+)$/.test(a)) return 'heal';
+    if (/^(ram-1|ram-2|ed-)$/.test(a)) return 'down';
+    if (/^(ram\+1|ramFull|ram|ed\+)$/.test(a)) return 'up';
+    if (/^(addItem|cfSave|give|libgive|libadd|starter)$/.test(a)) return 'equip';
+  }
+  if (b.matches('.tab, .vtabs button, #topnav a, .toc a')) return 'tab';
+  if (txt === '+') return 'up';
+  if (txt === '−' || txt === '-') return 'down';
+  return 'select';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button, a.btn, label.btn, .toc a, #topnav a, .node');
+  if (!b || b.disabled) return;
+  const n = classify(b); if (n) sfx(n);
+}, true);
+document.addEventListener('change', e => { if (e.target.matches('select[data-install]') && e.target.value) sfx('equip'); }, true);
+
+/* ================= NEAR DEATH VIGNETTE ================= */
+function updateVignette(){
+  const v = $('#vignette'); if (!v) return;
+  const show = C && C.hpMax && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
+  if (!show){ v.classList.remove('on', 'dead'); v.style.opacity = 0; return; }
+  const hm = C.hpMax, hp = C.hp == null ? hm : C.hp, net = C.netHp == null ? hm : C.netHp;
+  const r = Math.min(hp / hm, net / hm);
+  if (r > .3){ v.classList.remove('on', 'dead'); v.style.opacity = 0; return; }
+  const lv = 1 - r / .3;
+  v.style.setProperty('--vmin', (.25 + .35 * lv).toFixed(2));
+  v.style.setProperty('--vmax', (.6 + .4 * lv).toFixed(2));
+  v.style.setProperty('--vdur', (1.5 - .75 * lv).toFixed(2) + 's');
+  v.classList.toggle('dead', r <= 0);
+  v.style.opacity = '';
+  if (!FXS.motion){ v.classList.remove('on'); v.style.opacity = (.35 + .5 * lv).toFixed(2); }
+  else v.classList.add('on');
+}
+
+/* ================= LIVING CIRCUIT BACKGROUND ================= */
 const cv = $('#circuit'), cx = cv.getContext('2d');
-function drawCircuit(){
-  const dpr = Math.min(window.devicePixelRatio || 1, 2), W2 = innerWidth, H = innerHeight;
-  cv.width = W2 * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  cx.clearRect(0, 0, W2, H);
-  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const G = 22, dirs = [[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]];
-  const count = Math.round(W2 * H / 9000);
-  cx.lineWidth = 1.6; cx.lineCap = 'round'; cx.lineJoin = 'round';
-  for (let i = 0; i < count; i++){
-    let x = Math.round(rnd() * W2 / G) * G, y = Math.round(rnd() * H / G) * G;
-    let d = Math.floor(rnd() * 4);
-    const a = 0.25 + rnd() * 0.45;
-    cx.strokeStyle = `rgba(163,40,58,${a})`; cx.fillStyle = `rgba(163,40,58,${a})`;
-    cx.beginPath(); cx.arc(x, y, 3.5, 0, 7); cx.stroke();
-    cx.beginPath(); cx.moveTo(x, y);
-    const segs = 2 + Math.floor(rnd() * 4);
-    for (let s = 0; s < segs; s++){
-      const len = (2 + Math.floor(rnd() * 6)) * G;
-      const [dx, dy] = dirs[d];
-      const k = d > 3 ? 0.7071 : 1;
-      x += dx * len * k; y += dy * len * k;
-      cx.lineTo(x, y);
+const TW = 1100, TH = 800;
+const LAYERS = [
+  {seed:11, grid:30, count:46, alpha:.16, width:1.1, dot:2.6, drift:[7, 3],   scroll:.06, mouse:8},
+  {seed:7,  grid:22, count:60, alpha:.32, width:1.6, dot:3.5, drift:[13, 5],  scroll:.16, mouse:18},
+  {seed:29, grid:26, count:24, alpha:.44, width:2.2, dot:4.5, drift:[21, 9],  scroll:.3,  mouse:32}
+];
+let DPR = 1, VW = 0, VH = 0;
+function buildLayer(L){
+  let seed = L.seed; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const dirs = [[1,0],[0,1],[-1,0],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1]], G = L.grid, M = 14;
+  L.traces = [];
+  for (let i = 0; i < L.count; i++){
+    let x = M + Math.round(rnd() * (TW - 2 * M) / G) * G, y = M + Math.round(rnd() * (TH - 2 * M) / G) * G, d = Math.floor(rnd() * 4);
+    const pts = [[x, y]], segs = 2 + Math.floor(rnd() * 4);
+    for (let s2 = 0; s2 < segs; s2++){
+      const len = (2 + Math.floor(rnd() * 6)) * G, [dx, dy] = dirs[d], k = d > 3 ? .7071 : 1;
+      const nx = x + dx * len * k, ny = y + dy * len * k;
+      if (nx < M || ny < M || nx > TW - M || ny > TH - M) break;
+      x = nx; y = ny; pts.push([x, y]);
       d = d < 4 ? (rnd() < .5 ? 4 + Math.floor(rnd() * 4) : Math.floor(rnd() * 4)) : Math.floor(rnd() * 4);
     }
-    cx.stroke();
-    cx.beginPath(); cx.arc(x, y, rnd() < .5 ? 3.5 : 4.5, 0, 7);
-    rnd() < .5 ? cx.fill() : cx.stroke();
+    if (pts.length < 2) continue;
+    let total = 0; const segl = [];
+    for (let j = 1; j < pts.length; j++){ const l = Math.hypot(pts[j][0] - pts[j-1][0], pts[j][1] - pts[j-1][1]); segl.push(l); total += l; }
+    L.traces.push({pts, segl, total, fillEnd: rnd() < .5});
   }
+  const t = document.createElement('canvas'); t.width = TW * DPR; t.height = TH * DPR;
+  const g = t.getContext('2d'); g.scale(DPR, DPR);
+  g.strokeStyle = g.fillStyle = `rgba(163,40,58,${L.alpha})`; g.lineWidth = L.width; g.lineCap = g.lineJoin = 'round';
+  L.traces.forEach(tr => {
+    g.beginPath(); g.arc(tr.pts[0][0], tr.pts[0][1], L.dot, 0, 7); g.stroke();
+    g.beginPath(); tr.pts.forEach(([px, py], j) => j ? g.lineTo(px, py) : g.moveTo(px, py)); g.stroke();
+    const e2 = tr.pts[tr.pts.length - 1]; g.beginPath(); g.arc(e2[0], e2[1], L.dot, 0, 7); tr.fillEnd ? g.fill() : g.stroke();
+  });
+  L.tile = t;
 }
-let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawCircuit, 150); });
-drawCircuit();
+function sizeCanvas(){
+  const nd = Math.min(window.devicePixelRatio || 1, 1.5);
+  VW = innerWidth; VH = innerHeight;
+  cv.width = Math.round(VW * nd); cv.height = Math.round(VH * nd);
+  if (nd !== DPR || !LAYERS[0].tile){ DPR = nd; LAYERS.forEach(buildLayer); }
+}
+const ptr = {x:0, y:0, sx:0, sy:0};
+addEventListener('pointermove', e => { ptr.x = e.clientX / innerWidth * 2 - 1; ptr.y = e.clientY / innerHeight * 2 - 1; }, {passive:true});
+const pulses = [];
+function offset(L, t){
+  return [-(L.drift[0] * t) - ptr.sx * L.mouse, -(L.drift[1] * t) - scrollY * L.scroll - ptr.sy * L.mouse];
+}
+function spawnPulse(t){
+  const li = Math.random() < .55 ? 2 : 1, L = LAYERS[li], tr = L.traces[Math.floor(Math.random() * L.traces.length)];
+  if (!tr) return;
+  const [ox, oy] = offset(L, t);
+  const ix = Math.floor((Math.random() * VW - ox) / TW), iy = Math.floor((Math.random() * VH - oy) / TH);
+  pulses.push({L, tr, ix, iy, s:0, speed:70 + Math.random() * 110, cyan:Math.random() < .14, rev:Math.random() < .5});
+}
+function pointAt(tr, s){
+  for (let j = 0; j < tr.segl.length; j++){
+    if (s <= tr.segl[j]){ const f = s / tr.segl[j], a = tr.pts[j], b = tr.pts[j + 1]; return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]; }
+    s -= tr.segl[j];
+  }
+  return tr.pts[tr.pts.length - 1];
+}
+const glowCache = {};
+function glowSprite(color){
+  if (glowCache[color]) return glowCache[color];
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, `rgba(${color},1)`); gr.addColorStop(.18, `rgba(${color},.85)`); gr.addColorStop(.45, `rgba(${color},.25)`); gr.addColorStop(1, `rgba(${color},0)`);
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+  return glowCache[color] = c;
+}
+let lastT = performance.now(), running = false;
+function frame(now){
+  const t = now / 1000, dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
+  ptr.sx += (ptr.x - ptr.sx) * .04; ptr.sy += (ptr.y - ptr.sy) * .04;
+  cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  cx.clearRect(0, 0, VW, VH);
+  cx.globalCompositeOperation = 'source-over';
+  LAYERS.forEach((L, i) => {
+    const [ox, oy] = offset(L, FXS.motion ? t : 0);
+    cx.globalAlpha = FXS.motion ? .82 + .18 * Math.sin(t * .7 + i * 2.1) : 1;
+    const sx = ((ox % TW) + TW) % TW - TW, sy = ((oy % TH) + TH) % TH - TH;
+    for (let x = sx; x < VW; x += TW) for (let y = sy; y < VH; y += TH) cx.drawImage(L.tile, x, y, TW, TH);
+  });
+  cx.globalAlpha = 1;
+  if (FXS.motion){
+    while (pulses.length < Math.round(VW * VH / 52000)) spawnPulse(t);
+    cx.globalCompositeOperation = 'lighter';
+    for (let k = pulses.length - 1; k >= 0; k--){
+      const p = pulses[k]; p.s += p.speed * dt;
+      if (p.s > p.tr.total){ pulses.splice(k, 1); continue; }
+      const [ox, oy] = offset(p.L, t), bx = ox + p.ix * TW, by = oy + p.iy * TH;
+      const spr = glowSprite(p.cyan ? '47,230,240' : '255,74,94');
+      const fade = Math.min(1, p.s / 30, (p.tr.total - p.s) / 30);
+      for (let q = 0; q < 5; q++){
+        const ss = p.s - q * 7; if (ss < 0) break;
+        const [px, py] = pointAt(p.tr, p.rev ? p.tr.total - ss : ss);
+        const r = (p.L === LAYERS[2] ? 16 : 11) * (1 - q * .16);
+        cx.globalAlpha = fade * (1 - q * .2);
+        cx.drawImage(spr, bx + px - r, by + py - r, r * 2, r * 2);
+      }
+    }
+    cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(frame);
+  } else running = false;
+}
+function startBg(){ if (running) return; running = true; lastT = performance.now(); requestAnimationFrame(frame); }
+function drawStatic(){ frame(performance.now()); }
+addEventListener('scroll', () => { if (!FXS.motion) drawStatic(); }, {passive:true});
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { sizeCanvas(); FXS.motion ? startBg() : drawStatic(); }, 120); });
+sizeCanvas();
+FXS.motion ? startBg() : drawStatic();
+
+function syncDock(){
+  $('#tSfx').setAttribute('aria-pressed', FXS.sfx); $('#tFx').setAttribute('aria-pressed', FXS.motion);
+}
+$('#tSfx').onclick = () => { FXS.sfx = !FXS.sfx; try { localStorage.setItem('daemon-sfx', FXS.sfx ? '1' : '0'); } catch(e){} syncDock(); if (FXS.sfx) sfx('up'); };
+$('#tFx').onclick = () => {
+  FXS.motion = !FXS.motion; try { localStorage.setItem('daemon-motion', FXS.motion ? '1' : '0'); } catch(e){}
+  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); sfx('select');
+};
+syncDock();
 
 /* ================= START ================= */
 if (DB.current && DB.chars.some(c => c.id === DB.current)){ C = normalize(DB.chars.find(c => c.id === DB.current)); show('sheet'); setSheetTab('perks'); requestAnimationFrame(build); }
