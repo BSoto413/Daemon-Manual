@@ -75,12 +75,14 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Cyberpsychosis status (`psycho` on the merc). Set from the sheet (Lose it / Pull back) or by the DM from the dashboard. Turning it on glitches the whole page, then leaves a lingering vignette until it's cleared
 - Hitting 0 HP or 0 NET HP plays the FLATLINED screen
 - DM hacks (draft list in `HACKS`). System Lockout, Weapon Glitch, Optics Reboot, Cyberware Malfunction and Short Circuit. They stack on the merc (`hacks`), lock the matching sheet features, mark disadvantage and glitch the page until the DM clears them
+- Overheated. When a merc's RAM hits 0 they're OVERHEATED (stunned) and the sheet locks every action until RAM comes back. The INT perk Insulated Wires (`INT.A.p`) makes them immune. It's worked out from RAM, nothing extra is stored
+- The DM can damage or heal NET HP and drain or add RAM, not just restore it
 - Cool bonuses (`cool`). The DM awards them like inspiration, the player spends them from the sheet header
 - The DM's item library lives under that browser's DM account and carries between sessions. Copy library and Import library move it to another browser
 - Firestore layout
   - `sessions/{code}` holds dmUid, name, created
   - `sessions/{code}/players/{uid}` holds name, mercId, merc, updatedAt, seen (heartbeat every minute)
-  - `sessions/{code}/players/{uid}/inbox/{op}` holds kind (item, eddies, hp, ram, install, uninstall, psycho, hack, unhack, cool), amount, item, itemId, slot, cyberId, from, fromName, at
+  - `sessions/{code}/players/{uid}/inbox/{op}` holds kind (item, eddies, hp, net, ram, ramDelta, install, uninstall, psycho, hack, unhack, cool), amount, item, itemId, slot, cyberId, from, fromName, at
   - `sessions/{code}/portraits/{uid}` holds img (data URL) and mercId
   - `dms/{uid}/library/{item}` holds name, type, qty, stats
 
