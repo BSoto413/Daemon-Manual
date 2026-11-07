@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daemon Manual V0.72</title>
+<title>Daemon Manual V0.77</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
@@ -292,7 +292,7 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .eqslot{border:1px dashed rgba(47,230,240,.3);padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px}
 .eqslot.on{border-style:solid;border-color:var(--cyan);background:rgba(47,230,240,.05)}
 .eqn{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
-.inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center}
+.inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 150px auto;gap:8px;align-items:center}
 .irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(47,230,240,.08)}
 .irow.eq input[data-f=name]{border-color:var(--cyan);color:var(--cyan)}
 @media (max-width:760px){
@@ -412,6 +412,15 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 .surg{border-top:1px solid rgba(47,230,240,.15);padding-top:10px}
 .acts select{max-width:130px}
 /* ---------- glitch + flatline + psycho ---------- */
+.tagb.tier{background:transparent;border:1px solid currentColor}.tagb.t1{color:#9aa6b2}.tagb.t2{color:var(--cyan)}.tagb.t3{color:var(--yellow)}.tagb.t4{color:var(--red)}
+.gens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:12px}@media (max-width:900px){.gens{grid-template-columns:1fr}}
+.gen{background:#08080f;border:1px solid rgba(47,230,240,.2);padding:14px;display:flex;flex-direction:column;gap:10px}
+.gen .res{min-height:74px;border-left:3px solid var(--cyan);padding:8px 12px;background:rgba(47,230,240,.05)}
+.gnf{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center}.gnf input,.gnf select{width:100%}
+.gnf input[type=text]{font-size:15px;padding:9px 12px;letter-spacing:0;font-family:"Exo 2",sans-serif}
+.lock{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;padding:7px 8px;background:transparent;border:1px solid rgba(47,230,240,.3);color:var(--muted);cursor:pointer;min-width:70px}
+.lock.on{color:var(--yellow);border-color:var(--yellow);background:rgba(255,230,0,.08)}
+.gen .res .nm{color:#fff;font-size:17px}.gen select{width:100%}
 .tagb{white-space:nowrap;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
 .stagb{display:inline-block;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;padding:3px 8px;margin:4px 6px 0 0}
 .stagb.red{background:var(--red);color:#1a0004}
@@ -557,7 +566,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <canvas id="circuit" aria-hidden="true"></canvas>
 <div class="wrap">
   <header>
-    <h1 class="gl-title" data-text="Daemon Manual V0.72">Daemon Manual V0.72</h1>
+    <h1 class="gl-title" data-text="Daemon Manual V0.77">Daemon Manual V0.77</h1>
     <div class="rule"></div>
     <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a></nav>
   </header>
@@ -568,7 +577,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
-      <a href="#r-ram">RAM</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -707,10 +716,18 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <p>Only a merc with the TEC Phenom perk <b>Fabricator</b> can create, upgrade or fortify items. Roll Craft against a DC the DM sets, then pay for the parts. To work on a crewmate's gear, they hand it to you and you hand it back.</p>
           <table class="rtable"><thead><tr><th>Job</th><th>Cost</th><th>What you get</th></tr></thead><tbody>
             <tr><td><b>Create</b></td><td>300 €$</td><td>A new item with stats agreed with the DM</td></tr>
-            <tr><td><b>Upgrade</b></td><td>200 €$ per Mk level</td><td>Mk II, Mk III, then Mk IV at most. The DM decides what each level adds</td></tr>
+            <tr><td><b>Upgrade</b></td><td>200 €$ per tier</td><td>Raises an item one tier, up to Tier 4. See Item Tiers for what each tier adds</td></tr>
             <tr><td><b>Fortify</b></td><td>150 €$</td><td>The item is reinforced and tagged FORT</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:10px">The Maintenance Crew perk lets you repair items with your Craft score. These prices are a draft until the GM sets them.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-tiers"><h2>Item Tiers</h2>
+        <div class="panel">
+          <p>Every weapon, armor piece, cyberware, piece of gear and consumable is Tier 1 to 4. Higher tiers hit harder and carry effects. A Fabricator can push an item up one tier at a time.</p>
+          <div id="rTiers"></div>
+          <p class="muted" style="font-size:13px;margin-top:10px">Everything on this page marked placeholder is a stand-in until the GM sets the real buffs and effects.</p>
         </div>
       </section>
 
@@ -868,7 +885,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
   </div>
 
-  <footer>Daemon Manual V0.72 · Unofficial player reference built from the GM's rules channel</footer>
+  <footer>Daemon Manual V0.77 · Unofficial player reference built from the GM's rules channel</footer>
 </div>
 <div class="toast" id="toast" role="status"></div>
 <div id="vignette" aria-hidden="true"></div>
@@ -1718,10 +1735,88 @@ function cwPips(c, small){
 }
 const RIPPER = 'TEC.B.l', HOTSWAP_COST = 500, HOTSWAP_RAM = 2;
 const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200};
-const MK = ['', 'Mk II', 'Mk III', 'Mk IV'];
+const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
+/* ================= ITEM TIERS + GENERATORS =================
+   Placeholder tables. Swap these out when the GM posts the real ones. */
+const ITEM_TIERS = [
+  {n:'Tier 1', name:'Street', buff:'No bonus. Standard street gear.', effect:'No effect slot.'},
+  {n:'Tier 2', name:'Custom', buff:'Placeholder · +1 to hit or +1 AC', effect:'Placeholder · 1 minor effect'},
+  {n:'Tier 3', name:'Military', buff:'Placeholder · +2 to hit or +2 AC', effect:'Placeholder · 1 major effect'},
+  {n:'Tier 4', name:'Iconic', buff:'Placeholder · +3 to hit or +3 AC', effect:'Placeholder · 1 signature effect'}
+];
+const TIER_WEIGHT = [50, 30, 15, 5];
+const EFFECTS = {
+  Weapon: ['Shock', 'Burn', 'Armor Piercing', 'Quickdraw', 'Ricochet', 'Charged Shot', 'Smart Tracking', 'Silenced', 'Extended Mag', 'Brutal Crits'],
+  Melee: ['Shock', 'Burn', 'Bleed', 'Knockback', 'Monowire Edge', 'Brutal Crits', 'Parry'],
+  Armor: ['Insulated', 'Fire Resistant', 'Reactive Plating', 'Lightweight', 'Concealed', 'Hardened'],
+  Cyberware: ['Overclock', 'Firewall', 'Dampener', 'Booster', 'Coolant Loop', 'Backup Battery'],
+  Gear: ['Reinforced', 'Compact', 'Encrypted', 'Long Range', 'Quiet'],
+  Consumable: ['Double Dose', 'Fast Acting', 'Lingering', 'Wide Spread'],
+  Ammo: ['Hollow Point', 'Incendiary', 'EMP', 'Tracer']
+};
+const GEN = {
+  masc: ['Dante','Gage','Ivo','Jax','Nico','Silas','Uri','Xavi','Zane','Amir','Bao','Cruz','Dmitri','Hiro','Kofi','Malik','Omar','Teo','Mateo','Kenji','Viktor','Ezra','Rafa','Tariq'],
+  fem: ['Aiko','Bex','Faye','Hana','Kira','Mara','Oona','Rhea','Tova','Vesna','Esme','Farah','Isa','Juno','Lena','Nadia','Priya','Vivi','Yara','Zora','Mei','Lucia','Anya','Dahlia'],
+  neutral: ['Quinn','Wren','Rook','Sasha','Yuki','Eli','Pax','Lio','Cass','Ash','Remy','Sky','Jules','Kai','Rio','Sol'],
+  genders: [['Male', 46], ['Female', 46], ['Nonbinary', 8]],
+  ages: [['Child', 6], ['Teen', 12], ['Young Adult', 30], ['Adult', 37], ['Elder', 15]],
+  last: ['Alvarez','Brandt','Castillo','Duarte','Esposito','Fujita','Grieve','Hollis','Ibarra','Jansen','Kovac','Larkin','Moreau','Nakamura','Okafor','Petrov','Quill','Reyes','Sato','Tanaka','Ulloa','Vance','Whitlock','Xu','Yilmaz','Zielinski','Abara','Blackwood','Chen','Delacroix','Mbeki','Novak','Ortega','Park','Rossi','Santos','Volkov','Wilde','Kane','Mercer'],
+  origins: ['Nomad','Corpo','Streetkid'],
+  makers: ['Halcyon Arms','Vashti Dynamics','Kessler-Okoro','Redline Armory','Sato Heavy','Black Lantern','Cobalt Union','Ironclad','Ghostline','Mercer Ballistics'],
+  models: ['Viper','Hornet','Jackal','Mamba','Wraith','Lynx','Bastion','Torque','Riot','Halo','Spectre','Grinder','Nomad','Cinder','Saint','Razorback','Howler','Mantle','Pike','Dusk'],
+  weapons: [
+    ['Light Pistol','1d8 piercing','range 60 ft'],['Heavy Pistol','2d6 piercing','range 60 ft'],['Revolver','2d6 piercing','range 80 ft, 6 shots'],
+    ['SMG','1d6 piercing','burst fire'],['Assault Rifle','2d8 piercing','range 150 ft'],['Shotgun','2d8 piercing','close range'],
+    ['Sniper Rifle','2d10 piercing','range 300 ft'],['LMG','2d8 piercing','heavy, suppressing fire'],
+    ['Katana','1d10 slashing','finesse'],['Combat Knife','1d4 slashing','thrown, finesse'],['Machete','1d8 slashing',''],
+    ['Baseball Bat','1d6 bludgeoning',''],['Sledgehammer','2d6 bludgeoning','heavy, two-handed'],['Tonfa','1d6 bludgeoning','light']
+  ],
+  items: {
+    Consumable: [['Med Injector','Heal 2d4'],['Trauma Stim','Heal 4d4, then 1 level of exhaustion'],['Frag Grenade','3d6 in a 10 ft radius'],['EMP Grenade','Shorts out cyberware and drones in 10 ft'],['Smoke Grenade','Heavy obscurement in 15 ft'],['Focus Shot','Advantage on your next INT check'],['Flash Grenade','Blinds for 1 round, DEX save']],
+    Gear: [['Lockpick Kit','Advantage to pick mechanical locks'],['Handheld Scanner','Scan a target in 30 ft'],['Grapple Line','50 ft climb in one action'],['Burner Phone','Untraceable for one call'],['Data Shard','Holds one stolen file'],['Medkit','Stabilize a dying merc'],['Night Optics','Darkvision 60 ft while worn']],
+    Armor: [['Armored Jacket','+1 AC'],['Ballistic Vest','+2 AC, disadvantage on Stealth'],['Riot Plate','+3 AC, heavy'],['Padded Hoodie','+1 AC, concealed'],['Combat Helmet','+1 AC vs ranged']],
+    Ammo: [['Pistol Rounds','20 rounds'],['Rifle Rounds','30 rounds'],['Shotgun Shells','12 shells'],['Sniper Rounds','10 rounds']],
+    Cyberware: [['Optic Scanner','RAM +1 · Scan targets in 60 ft',1],['Reflex Booster','Bonus action Dash once per rest',3],['Subdermal Plating','+1 AC',2],['Grip Servos','Advantage on grapples',1],['Arm Blades','1d8 slashing melee weapon',2],['Neural Deck','RAM +2',2],['Toxin Filter','Advantage vs poison',1],['Leg Pistons','Jump distance doubled',2]]
+  }
+};
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const rollTier = t => t !== '' && t != null ? +t : (() => { let r = Math.random() * 100; for (let i = 0; i < 4; i++){ if ((r -= TIER_WEIGHT[i]) < 0) return i; } return 0; })();
+const TBUFF = {Weapon:t => `+${t} to hit`, Melee:t => `+${t} to hit`, Armor:t => `+${t} AC`};
+const tierBit = (t, type) => t ? ` · ${(TBUFF[type] || (x => 'Tier ' + (x + 1) + ' bonus'))(t)} (TBD) · ${pick(EFFECTS[type] || EFFECTS.Gear)} effect (TBD)` : '';
+const wpick = a => { let r = Math.random() * a.reduce((n, x) => n + x[1], 0); for (const x of a){ if ((r -= x[1]) < 0) return x[0]; } return a[0][0]; };
+const firstFor = g => pick(g === 'Male' ? [...GEN.masc, ...GEN.neutral.slice(0, 4)] : g === 'Female' ? [...GEN.fem, ...GEN.neutral.slice(0, 4)] : [...GEN.neutral, ...GEN.masc, ...GEN.fem]);
+function genNpcRoll(prev, lock){
+  prev = prev || {}; lock = lock || {};
+  const o = {};
+  o.gender = lock.gender && prev.gender ? prev.gender : wpick(GEN.genders);
+  o.age = lock.age && prev.age ? prev.age : wpick(GEN.ages);
+  o.origin = lock.origin && prev.origin ? prev.origin : Math.random() < .1 ? 'Unknown' : pick(GEN.origins);
+  o.name = lock.name && prev.name ? prev.name : firstFor(o.gender) + ' ' + pick(GEN.last);
+  return o;
+}
+function genWeaponRoll(t, cls){
+  const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t);
+  return {name:`${pick(GEN.makers)} ${pick(GEN.models)} ${w[0]}`.slice(0, 60), type:'Weapon', qty:1, tier, cw:0,
+    stats:(w[1] + (w[2] ? ', ' + w[2] : '') + tierBit(tier, /piercing/.test(w[1]) ? 'Weapon' : 'Melee')).slice(0, 120)};
+}
+function genItemRoll(t, type){
+  type = type || pick(Object.keys(GEN.items));
+  const it = pick(GEN.items[type]), tier = rollTier(t);
+  const cw = type === 'Cyberware' ? (it[2] || 1) + Math.floor(tier / 2) : 0;
+  return {name:it[0], type, qty:type === 'Ammo' ? 1 : 1, tier, cw, stats:(it[1] + tierBit(tier, type)).slice(0, 120)};
+}
+const tierTag = (t, small) => `<span class="tagb tier t${(t || 0) + 1}" title="${esc(ITEM_TIERS[t || 0].name + '. ' + ITEM_TIERS[t || 0].buff)}">${small ? 'T' + ((t || 0) + 1) : ITEM_TIERS[t || 0].n}</span>`;
+const tierOpts = (sel, any) => (any ? `<option value="">Any tier</option>` : '') + ITEM_TIERS.map((x, i) => `<option value="${i}" ${String(sel) === String(i) ? 'selected' : ''}>${x.n} · ${x.name}</option>`).join('');
+function renderRuleTiers(){
+  const el = $('#rTiers'); if (!el) return;
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Tier</th><th>Grade</th><th>Buff</th><th>Effects</th></tr></thead><tbody>${ITEM_TIERS.map(x => `<tr><td><b>${x.n}</b></td><td>${x.name}</td><td>${esc(x.buff)}</td><td>${esc(x.effect)}</td></tr>`).join('')}</tbody></table>
+    <p style="margin-top:14px">Placeholder effects by item type. Names only for now, the GM will write what each one does.</p>
+    <table class="rtable"><thead><tr><th>Type</th><th>Effects</th></tr></thead><tbody>${Object.entries(EFFECTS).map(([k, v]) => `<tr><td><b>${k === 'Weapon' ? 'Ranged weapon' : k === 'Melee' ? 'Melee weapon' : k}</b></td><td>${v.join(', ')}</td></tr>`).join('')}</tbody></table>`;
+}
+
 const canFab = (c = C) => c.unlocked.includes(FABRICATOR);
 const upCost = i => FAB_COST.upgrade * (i.tier + 1);
-const itemTags = i => `${i.tier ? `<span class="tagb">${MK[i.tier]}</span>` : ''}${i.fort ? '<span class="tagb">FORT</span>' : ''}`;
+const itemTags = i => `${tierTag(i.tier)}${i.fort ? '<span class="tagb">FORT</span>' : ''}`;
 const cyberRam = (c = C) => (c.hacks || []).includes('cyber') ? 0 : c.cyber.reduce((n, x) => n + (x.hot ? Math.floor((+x.ram || 0) / 2) : (+x.ram || 0)), 0);
 const canRip = (c = C) => c.unlocked.includes(RIPPER);
 const INSULATED = 'INT.A.p';
@@ -1812,7 +1907,7 @@ function renderCS(){
   const workable = C.inv.filter(i => i.type !== 'Cyberware');
   const fabPanel = `<div class="panel gap"><div class="row"><h3>Fabrication</h3><span class="spacer"></span>${fab ? `<span class="muted" style="font-size:13px">Craft ${sgn(craft)}</span>` : ''}</div>
     ${fab ? `<p style="font-size:14px;margin:6px 0 4px">You're a Fabricator. Roll Craft against the DM's DC, then pay for the parts here. Upgrade and fortify a crewmate's gear by having them hand it over, then hand it back.</p>
-      <p class="muted" style="font-size:13px;margin:0 0 12px">Create ${FAB_COST.create} €$ · Upgrade ${FAB_COST.upgrade} €$ per Mk level · Fortify ${FAB_COST.fortify} €$. Draft prices until the GM sets them.</p>
+      <p class="muted" style="font-size:13px;margin:0 0 12px">Create ${FAB_COST.create} €$ · Upgrade ${FAB_COST.upgrade} €$ per tier · Fortify ${FAB_COST.fortify} €$. Draft prices until the GM sets them.</p>
       <span class="lbl">Create an item</span>
       <div class="libadd"><input type="text" class="f" id="fbName" placeholder="What are you building?" aria-label="New item name"><select id="fbType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="fbQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="fbStats" placeholder="Stats, agreed with the DM" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="fbCw" value="1" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters when you build Cyberware</span></div>
@@ -1849,7 +1944,7 @@ function renderCS(){
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}</div></div>
     </div>
     <div class="panel gap"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
-      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><button class="btn primary small" data-act="addItem">Add</button></div>
+      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><button class="btn primary small" data-act="addItem">Add</button></div>
       <div>${rows}</div></div>
     ${fabPanel}
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
@@ -1951,7 +2046,7 @@ $('#vCS').addEventListener('click', e => {
     case 'addItem': {
       const name = $('#niName').value.trim();
       if (!name){ $('#niName').focus(); return toast('Give the item a name.'); }
-      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120)};
+      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120), tier:Math.max(0, Math.min(3, parseInt($('#niTier').value) || 0))};
       C.inv.push(item);
       const keepType = item.type;
       csSave();
@@ -2278,7 +2373,7 @@ document.addEventListener('click', async e => {
         : c === 'auth/operation-not-allowed' ? "Google sign-in isn't turned on in Firebase yet."
         : c === 'auth/unauthorized-domain' ? "This web address isn't on Firebase's authorized domains list."
         : c === 'auth/popup-blocked' ? 'Your browser blocked the sign-in popup. Allow popups for this site and try again.'
-        : "Couldn't sign in. Try again.";
+        : `Couldn't sign in${c ? ' (' + c + ')' : ''}. Try again.`;
       renderAcct();
     }
   }
@@ -2468,6 +2563,87 @@ function logHTML(dm){
 $('#liveBody').addEventListener('change', e => {
   if (e.target.id === 'logWho'){ logFilter = e.target.value; renderLive(); }
 });
+
+/* ---- DM generators ---- */
+let gN = null, gNLock = {name:false, origin:false, gender:false, age:false}, gW = null, gI = null, gWT = '', gWC = '', gIT = '', gIType = '';
+function genResult(x){
+  if (!x) return `<div class="res"><p class="muted" style="margin:0">Hit Roll to generate one.</p></div>`;
+  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span></div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
+}
+function npcGenFields(){
+  if (!gN) gN = genNpcRoll();
+  const lk = k => `<button class="lock ${gNLock[k] ? 'on' : ''}" data-live="glock" data-k="${k}" aria-pressed="${gNLock[k]}" title="${gNLock[k] ? 'Locked. Click to unlock' : 'Lock so it doesn\'t reroll'}">${gNLock[k] ? 'LOCKED' : 'LOCK'}</button>`;
+  const sel = (k, list) => `<select id="gn-${k}" data-gn="${k}" aria-label="${k}">${list.map(v => `<option ${gN[k] === v ? 'selected' : ''}>${v}</option>`).join('')}</select>`;
+  return `<div class="gnf">
+      <span class="ctl">Name</span><input type="text" id="gn-name" data-gn="name" maxlength="40" value="${esc(gN.name)}" aria-label="Name">${lk('name')}
+      <span class="ctl">Origin</span>${sel('origin', ORIGINS)}${lk('origin')}
+      <span class="ctl">Gender</span>${sel('gender', GEN.genders.map(x => x[0]))}${lk('gender')}
+      <span class="ctl">Age</span>${sel('age', GEN.ages.map(x => x[0]))}${lk('age')}
+    </div>`;
+}
+function genHTML(){
+  const to = `<option value="">Library only</option><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}`;
+  const sendRow = k => `<div class="row"><select id="gto-${k}" aria-label="Also give to" style="flex:1">${to}</select><button class="btn small primary" data-live="gsave" data-g="${k}" ${(k === 'w' ? gW : gI) ? '' : 'disabled'}>Save</button></div>`;
+  return `<div class="panel gap"><div class="row"><h3>Generators</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Random picks from placeholder tables until the GM's real ones are in.</span></div>
+    <div class="gens">
+      <div class="gen"><span class="lbl">NPC</span>
+        ${npcGenFields()}
+        <div class="row"><button class="btn small primary" data-live="groll" data-g="n">Reroll</button><span class="muted" style="font-size:12px">Locked fields stay put</span></div>
+        <div class="row"><input type="number" min="1" id="gnHp" placeholder="Max HP" aria-label="Max HP" style="width:100px"><button class="btn small" data-live="gnadd">Add to NPCs</button></div>
+      </div>
+      <div class="gen"><span class="lbl">Weapon</span>
+        <div class="row"><select id="gwT" aria-label="Weapon tier">${tierOpts(gWT, true)}</select><select id="gwC" aria-label="Weapon class"><option value="">Any weapon</option>${GEN.weapons.map(w => `<option ${gWC === w[0] ? 'selected' : ''}>${w[0]}</option>`).join('')}</select></div>
+        ${genResult(gW)}
+        <div class="row"><button class="btn small primary" data-live="groll" data-g="w">${gW ? 'Reroll' : 'Roll weapon'}</button></div>
+        ${sendRow('w')}
+      </div>
+      <div class="gen"><span class="lbl">Item</span>
+        <div class="row"><select id="giT" aria-label="Item tier">${tierOpts(gIT, true)}</select><select id="giType" aria-label="Item type"><option value="">Any type</option>${Object.keys(GEN.items).map(k => `<option ${gIType === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
+        ${genResult(gI)}
+        <div class="row"><button class="btn small primary" data-live="groll" data-g="i">${gI ? 'Reroll' : 'Roll item'}</button></div>
+        ${sendRow('i')}
+      </div>
+    </div></div>`;
+}
+$('#liveBody').addEventListener('change', e => {
+  const id = e.target.id;
+  if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
+  if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
+  else if (id === 'giT') gIT = e.target.value; else if (id === 'giType') gIType = e.target.value;
+});
+async function genClick(a, t){
+  if (a === 'groll'){
+    const g = t.dataset.g;
+    if (g === 'n'){
+      gN = genNpcRoll(gN, gNLock);
+      ['name', 'origin', 'gender', 'age'].forEach(k => { const el = $('#gn-' + k); if (el) el.value = gN[k]; });
+    }
+    if (g === 'w') gW = genWeaponRoll(gWT, gWC);
+    if (g === 'i') gI = genItemRoll(gIT, gIType);
+    sfx('select'); renderLive(); return true;
+  }
+  if (a === 'glock'){ const k = t.dataset.k; gNLock[k] = !gNLock[k]; sfx('select'); renderLive(); return true; }
+  if (a === 'gnadd'){
+    if (!gN) return true;
+    const hm = Math.max(0, parseInt(($('#gnHp') || {}).value) || 0);
+    const n = {id:uid(), name:(gN.name || '').trim().slice(0, 40) || 'Nameless', origin:gN.origin, gender:gN.gender, age:gN.age, hpMax:hm, hp:hm, adv:'norm', notes:'', portrait:null};
+    try { await liveApi.setDmNpc(n); toast(`${n.name} added to your NPCs.`, true); gN = genNpcRoll(gN, gNLock); ['name', 'origin', 'gender', 'age'].forEach(k => { const el = $('#gn-' + k); if (el) el.value = gN[k]; }); if ($('#gnHp')) $('#gnHp').value = ''; renderLive(); } catch(err){ toast("Couldn't save the NPC."); }
+    return true;
+  }
+  if (a === 'gsave'){
+    const x = t.dataset.g === 'w' ? gW : gI; if (!x) return true;
+    const item = {...x, id:uid()}, to = ($('#gto-' + t.dataset.g) || {}).value || '';
+    try { await liveApi.setLibItem(item); } catch(err){ toast("Couldn't save the item."); return true; }
+    if (to){
+      const targets = to === '*' ? players.map(p => p.id) : [to];
+      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats, cw:item.cw || 0, tier:item.tier || 0}});
+      toast(`${item.name} saved and sent.`, true);
+    } else toast(`${item.name} saved to your library.`, true);
+    if (t.dataset.g === 'w') gW = null; else gI = null;
+    renderLive(); return true;
+  }
+  return false;
+}
 
 /* ---- DM party backups + session notes ---- */
 let backups = [], backupsReady = false, backupT = null, bkDel = null, sessNotes = '', notesT2 = null;
@@ -2781,7 +2957,7 @@ function partyCard(p, dm){
         <div class="stat"><span>Cool bonuses</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}${dm ? ` <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button>` : ''}</span>`).join('')}</div>` : ''}
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
-      <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' ' + MK[i.tier] : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
+      <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
       ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}${controls}
     </div>`;
 }
@@ -2833,7 +3009,7 @@ function liveHTML(){
   const npcCards = npcsDM.map(n => {
     const pub = npcsPub.find(x => x.id === n.id), hm = n.hpMax || 0, hp = n.hp ?? hm, pct = hm ? Math.max(0, Math.min(100, hp / hm * 100)) : 0;
     return `<div class="pcard npc ${npcCrit(n) ? 'crit' : ''}">
-      <div class="head">${avatar(n, 'av md')}<div style="min-width:0"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}${pub ? ' · in the codex' : ' · not met yet'}</div>
+      <div class="head">${avatar(n, 'av md')}<div style="min-width:0"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}${n.gender ? ' · ' + esc(n.gender) : ''}${n.age ? ' · ' + esc(n.age) : ''}${pub ? ' · in the codex' : ' · not met yet'}</div>
         ${npcDown(n) ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : npcCrit(n) ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></div>
       <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}</div>
       <div class="row"><input type="number" min="0" id="na-${n.id}" placeholder="Amt" aria-label="Amount for ${esc(n.name)}"><button class="btn small danger" data-live="nhp-" data-n="${n.id}">Damage</button><button class="btn small" data-live="nhp+" data-n="${n.id}">Heal</button><button class="btn small" data-live="nfull" data-n="${n.id}">Full</button></div>
@@ -2846,7 +3022,7 @@ function liveHTML(){
       <div class="npadd gap"><input type="text" class="f" id="npName" placeholder="NPC name" aria-label="NPC name"><select id="npOrigin" aria-label="Origin">${ORIGINS.map(o => `<option>${o}</option>`).join('')}</select><input type="number" id="npHp" min="1" placeholder="Max HP" aria-label="Max HP"><label class="btn small" style="display:inline-block;align-self:center">Portrait<input type="file" accept="image/*" id="npPic" hidden></label></div>
       <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
       <div class="players">${npcCards || '<p class="muted">No NPCs yet.</p>'}</div></div>`;
-  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
+  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
       <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
       <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libhide" data-i="${i.id}" title="${i.hidden ? 'Hidden from the codex' : 'Shown in the codex'}">${i.hidden ? 'Hidden' : 'Codex'}</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
     : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
@@ -2858,6 +3034,7 @@ function liveHTML(){
     <div class="players">${playerCards}</div>
     ${logHTML(true)}
     ${sessNotesHTML()}
+    ${genHTML()}
     ${npcPanel}
     ${backupHTML()}
     <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
@@ -2866,7 +3043,7 @@ function liveHTML(){
       <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account and carries over between sessions${ACCT.google ? ' and devices' : '. Sign in with Google to use it on other devices too'}. Everything here shows up in the players' Codex unless you set it to Hidden.</p>
       ${libImport ? `<textarea id="libImpTxt" placeholder="Paste a copied library here"></textarea><div class="row gap"><button class="btn small primary" data-live="libimpgo">Import</button></div>` : ''}
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
-      <div class="row gap"><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
+      <div class="row gap"><label class="muted" style="font-size:13px">Tier <select id="liTier" aria-label="Tier">${tierOpts(0)}</select></label><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
       <div style="margin-top:10px">${libRows}</div>
     </div>`;
@@ -2922,6 +3099,7 @@ $('#liveBody').addEventListener('click', async e => {
     toast(`${c.name} restored to this device.`, true);
     LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
   }
+  if (await genClick(a, t)) return;
   if (a === 'logclear'){
     if (!logClear){ logClear = true; return renderLive(); }
     logClear = false;
@@ -2985,7 +3163,7 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'ram'){ if (await sendOp(u, {kind:'ram'})) toast(`Restored RAM for ${pname(u)}.`, true); return; }
   if (a === 'give'){
     const it = lib.find(x => x.id === ($('#give-' + u) || {}).value); if (!it) return;
-    if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
+    if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0, tier:it.tier || 0}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
     return;
   }
   if ((a === 'install' || a === 'uninstall') && LS.role === 'player'){
@@ -3064,13 +3242,13 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'starter'){ for (const [name, type, stats] of STARTER) await liveApi.setLibItem({id:uid(), name, type, qty:1, stats}).catch(() => {}); toast('Starter pack loaded.', true); return; }
   if (a === 'libadd'){
     const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
-    const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0)};
+    const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0), tier:Math.max(0, Math.min(3, parseInt($('#liTier').value) || 0))};
     const to = $('#liTo').value;
     try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
     $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
     if (to){
       const targets = to === '*' ? players.map(p => p.id) : [to];
-      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats, cw:item.cw || 0}});
+      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats, cw:item.cw || 0, tier:item.tier || 0}});
       toast(`${item.name} saved and sent to ${to === '*' ? 'everyone' : pname(to)}.`, true);
     } else toast(`${item.name} saved to your library.`, true);
     $('#liName').focus();
@@ -3080,7 +3258,7 @@ $('#liveBody').addEventListener('click', async e => {
     const it = lib.find(x => x.id === t.dataset.i); if (!it) return;
     const to = ($('#lg-' + it.id) || {}).value || '*';
     const targets = to === '*' ? players.map(p => p.id) : [to];
-    for (const id of targets) await sendOp(id, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0}});
+    for (const id of targets) await sendOp(id, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0, tier:it.tier || 0}});
     toast(`Sent ${it.name} to ${to === '*' ? 'everyone' : pname(to)}.`, true);
     return;
   }
@@ -3191,7 +3369,7 @@ function renderCodex(){
   const cards = codexTab === 'npcs'
     ? list.map(n => `<button class="cxcard npc ${n.critical || n.down ? 'crit' : ''}" data-cx="${n.id}">${avatar(n, 'av md')}<div style="min-width:0;text-align:left"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}</div>
         <div class="sub">${idNo(n.id)}</div>${n.down ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : n.critical ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></button>`).join('')
-    : list.map(i => `<div class="cxcard"><div style="min-width:0"><div class="nm">${esc(i.name)}</div><div class="sub">${esc(i.type)}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</div>${i.stats ? `<p style="margin:8px 0 0;font-size:14px">${esc(i.stats)}</p>` : ''}</div></div>`).join('');
+    : list.map(i => `<div class="cxcard"><div style="min-width:0"><div class="nm">${esc(i.name)}</div><div class="sub">${tierTag(i.tier)} ${esc(i.type)}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</div>${i.stats ? `<p style="margin:8px 0 0;font-size:14px">${esc(i.stats)}</p>` : ''}</div></div>`).join('');
   body.innerHTML = `<div class="panel"><div class="row"><div style="flex:1;min-width:200px"><span class="lbl">${d.live ? 'Live from session' : 'Last synced from session'}</span><div style="font-family:Orbitron,sans-serif;color:#fff;font-size:18px">${esc(d.code)}${d.sname ? ' · ' + esc(d.sname) : ''}</div>${d.live ? '' : `<p class="muted" style="font-size:13px;margin:4px 0 0">Updated ${ago(d.at)}. Join the session to get the latest.</p>`}</div>
       <input type="text" class="f" id="cxSearch" placeholder="Search the codex" value="${esc(codexQ)}" aria-label="Search the codex" style="max-width:280px"></div></div>
     <div class="vtabs cxtabs">${CODEX_TABS.map(([k, l]) => `<button data-cxt="${k}" class="${codexTab === k ? 'on' : ''}">${l} <span class="muted">${codexOf(k, d).length}</span></button>`).join('')}</div>
@@ -3223,7 +3401,7 @@ function renderRulePerks(){
   }).join('');
   $('#lvlTrack').innerHTML = Array.from({length:20}, (_, i) => `<div class="${i === 0 ? 'one' : ASI_LEVELS.includes(i + 1) ? 'asi' : ''}">${i + 1}</div>`).join('');
 }
-renderRulePerks();
+renderRulePerks(); renderRuleTiers();
 
 let rIndex = null;
 function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }

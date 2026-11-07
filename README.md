@@ -1,4 +1,4 @@
-# Daemon Manual V0.72
+# Daemon Manual V0.77
 
 Player reference and character builder for the Daemon Cyberpunk 5e campaign. Everything lives in `index.html` (no build step), so it can go straight onto GitHub Pages.
 
@@ -72,6 +72,8 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - New device? Enter the code and hit Restore to pull your merc (and portrait) from the session. The DM's dashboard drops the old copy on its own
 - Activity log. Every change to a merc in a session (HP, NET HP, RAM, eddies, items, gear, perks, levels, stats, cyberware, hacks, Cool, notes) is written to `sessions/{code}/log`, newest first, grouped by day. Changes from the DM or another player are tagged. Edits made between sessions are logged when the player reconnects. The DM can filter by merc or clear it
 - Party backups. The DM's page keeps a copy of every merc that plays in `dms/{uid}/party`. Send back (or Restore merc on the party card) puts a deleted merc back on the player's roster. Copy save code works for players who left the party
+- Generators on the DM dashboard. NPC (random name, origin, gender and age group, each one lockable so a reroll leaves it alone, add straight to your NPCs), Weapon and Item (pick a tier and class or type, or leave them on Any). Save drops the result in the library and can hand it to a player. The tables live in `GEN` and `EFFECTS` in the script, swap them for the GM's tables when they're ready
+- Item tiers. Every item is Tier 1 to 4 (`tier` 0 to 3 in the data). Tier names, buffs and effects are placeholders in `ITEM_TIERS` and show on the Rules page under Item Tiers. Fabricator upgrades raise an item one tier
 - Session notes for the DM, private, saved per session in `dms/{uid}/notes/{code}`
 - Players see a live party view with everyone's portrait, HP, NET HP, RAM, eddies, weapons and items
 - Portraits are cropped to 256x256 JPEGs and stored in Firestore (no Firebase Storage needed, so it stays on the free plan)
