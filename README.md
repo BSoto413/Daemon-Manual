@@ -21,7 +21,8 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Perk trees are shaped like a fork or a "W". The middle branch opens from either Rookie perk and ends at Phenom. Each Legend opens only from its own branch's Phenom
 
 ## Settings
-- The SETTINGS button (bottom right, next to SFX and FX) opens a panel with six color presets and pickers for the background glow, board traces, lights and accent lights. Saved per device in `daemon-theme`. Add presets in `PRESETS` in the script
+- The SETTINGS button (bottom right, next to SFX and FX) opens the settings panel. Saved per device in `daemon-theme`
+- Four animated backgrounds. Circuit (the original), Nomad (sunset desert with drifting dunes, blowing dust and drifter headlights on the far ridge), Corpo (glass shards on an angular grid with light sweeps and data blips) and Streetkid (Night City skyline in the rain with flickering neon, spotlights and flying cars). Each has its own four colors, labeled for that scene, plus the six color presets. They live in `STYLES` and `SCENES` in the script. FX off freezes them
 
 ## Saving
 - Mercs save automatically in the browser

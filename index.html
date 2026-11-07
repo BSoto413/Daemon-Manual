@@ -407,6 +407,11 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
 .setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:auto;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
 .setp h3{margin:0 0 4px}
+.styles{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 12px}
+.styles button{text-align:left;background:#08080f;border:1px solid rgba(47,230,240,.2);padding:9px 10px;cursor:pointer;color:inherit;font:inherit}
+.styles button b{display:block;font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#fff}
+.styles button small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3;margin-top:3px}
+.styles button.on{border-color:var(--cyan);box-shadow:inset 3px 0 0 var(--cyan);background:rgba(47,230,240,.07)}
 .presets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 14px}
 .presets button{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.2px;color:#fff;background:#08080f;border:1px solid rgba(47,230,240,.2);padding:8px 4px 7px;cursor:pointer;text-transform:uppercase}
 .presets button.on{border-color:var(--cyan);box-shadow:inset 0 0 0 1px var(--cyan)}
@@ -3652,7 +3657,17 @@ function updateVignette(){
 }
 
 const THEME_KEY = 'daemon-theme';
-const THEME_DEF = {bg:'#b3213a', trace:'#a3283a', light:'#ff4a5e', accent:'#2fe6f0'};
+const THEME_DEF = {style:'circuit', bg:'#b3213a', trace:'#a3283a', light:'#ff4a5e', accent:'#2fe6f0'};
+const STYLES = {
+  circuit:{n:'Circuit', d:'The original living circuit board', pal:{bg:'#b3213a', trace:'#a3283a', light:'#ff4a5e', accent:'#2fe6f0'},
+    lab:[['Background', 'The glow at the top of the page'], ['Board traces', 'The circuit lines'], ['Lights', 'Most of the pulses running the traces'], ['Accent lights', 'The rarer second pulse color']]},
+  nomad:{n:'Nomad', d:'Sunset badlands, drifting dunes and dust', pal:{bg:'#c4561b', trace:'#6b3418', light:'#ffb062', accent:'#fff1c4'},
+    lab:[['Sky', 'The sunset haze'], ['Dunes', 'The rolling sand'], ['Sun and dust', 'The sun and the blowing sand'], ['Headlights', 'Drifters crossing the far dunes']]},
+  corpo:{n:'Corpo', d:'Clean glass shards on an angular grid', pal:{bg:'#1d3b5c', trace:'#5a8fc2', light:'#8fdcff', accent:'#e8c56a'},
+    lab:[['Glow', 'The backdrop tint'], ['Shards and grid', 'The glass panels and lines'], ['Light sweeps', 'The glint that runs across the glass'], ['Data blips', 'The little packets on the grid']]},
+  streetkid:{n:'Streetkid', d:'Night City skyline in the rain', pal:{bg:'#3a1250', trace:'#2a1840', light:'#ffcf6b', accent:'#ff2fa8'},
+    lab:[['Sky haze', 'The smog over the city'], ['Buildings', 'The skyline'], ['Windows and rain', 'Lit windows, rain and spotlights'], ['Neon', 'Signs and flying cars']]}
+};
 const PRESETS = [
   ['Night City', THEME_DEF],
   ['Neon Ice', {bg:'#13607a', trace:'#1f7f99', light:'#2fe6f0', accent:'#ffffff'}],
@@ -3738,6 +3753,208 @@ function glowSprite(color){
   g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
   return glowCache[color] = c;
 }
+/* ---- alternate backgrounds: Nomad desert, Corpo shards, Streetkid city ---- */
+const rgbA = (h, a) => `rgba(${hexRgb(h)},${a})`;
+const mixHex = (a, b, f) => { const A = hexRgb(a).split(',').map(Number), B = hexRgb(b).split(',').map(Number); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * f).toString(16).padStart(2, '0')).join(''); };
+const srnd = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
+const SCENES = {};
+let sceneKey = '';
+function ensureScene(){
+  const k = [THEME.style, THEME.bg, THEME.trace, THEME.light, THEME.accent, VW, VH].join('|');
+  if (k !== sceneKey){ sceneKey = k; SCENES[THEME.style].init(); }
+}
+
+/* Nomad. Sunset desert, drifting dunes, blowing dust, far off headlights */
+SCENES.nomad = (() => {
+  let dunes = [], dust = [], cars = [], stars = [], sun = null, nextCar = 0;
+  const horizon = () => VH * .6 - Math.min(scrollY, 3000) * .015;
+  const ridge = (d, x) => d.base + d.amp * (Math.sin(x * d.f1 + d.p1) * .6 + Math.sin(x * d.f2 + d.p2) * .3 + Math.sin(x * d.f3 + d.p3) * .1);
+  function init(){
+    const r = srnd(41);
+    dunes = [0, 1, 2, 3].map(i => ({i, f1:.0021 + r() * .001, f2:.006 + r() * .003, f3:.017 + r() * .006, p1:r() * 6, p2:r() * 6, p3:r() * 6,
+      amp:14 + i * 14, speed:3 + i * 7, mouse:4 + i * 10, scroll:.01 + i * .015, col:mixHex(mixHex(THEME.trace, THEME.bg, .55 - i * .17), '#000000', i * .16), base:0}));
+    dust = Array.from({length:Math.round(VW * VH / 9000)}, () => ({x:Math.random() * VW, y:VH * (.35 + Math.random() * .65), vx:40 + Math.random() * 120, s:.6 + Math.random() * 1.8, a:.08 + Math.random() * .3, w:Math.random() * 6}));
+    stars = Array.from({length:70}, () => ({x:Math.random(), y:Math.random() * .4, a:.1 + Math.random() * .4}));
+    const R = Math.round(Math.min(VW, VH) * .17), c = document.createElement('canvas'); c.width = c.height = R * 2 + 4;
+    const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, R * 2);
+    gr.addColorStop(0, mixHex(THEME.light, '#ffffff', .15)); gr.addColorStop(1, mixHex(THEME.light, THEME.bg, .6));
+    g.fillStyle = gr; g.beginPath(); g.arc(R + 2, R + 2, R, 0, 7); g.fill();
+    g.globalCompositeOperation = 'destination-out';
+    for (let k = 0; k < 7; k++){ const y = R + 2 + R * .15 + k * R * .13, h = 2 + k * 1.6; g.fillRect(0, y, R * 2 + 4, h); }
+    sun = {c, R}; cars = []; nextCar = 0;
+  }
+  function draw(t, dt){
+    const H = horizon(), W = VW;
+    const sky = cx.createLinearGradient(0, 0, 0, VH);
+    sky.addColorStop(0, mixHex(THEME.bg, '#05040a', .82)); sky.addColorStop(.45, mixHex(THEME.bg, '#05040a', .35));
+    sky.addColorStop(H / VH, mixHex(THEME.bg, THEME.light, .35)); sky.addColorStop(1, mixHex(THEME.trace, '#000000', .6));
+    cx.fillStyle = sky; cx.fillRect(0, 0, W, VH);
+    stars.forEach(s => { cx.fillStyle = `rgba(255,240,220,${s.a * (FXS.motion ? .75 + .25 * Math.sin(t * 1.3 + s.x * 40) : 1)})`; cx.fillRect(s.x * W, s.y * VH, 1.4, 1.4); });
+    const sx = W * .7 - ptr.sx * 6, sy = H - sun.R * .55 - ptr.sy * 4;
+    cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = .45;
+    cx.drawImage(glowSprite(hexRgb(THEME.light)), sx - sun.R * 2.4, sy - sun.R * 2.4, sun.R * 4.8, sun.R * 4.8);
+    cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = .85;
+    cx.drawImage(sun.c, sx - sun.R - 2, sy - sun.R - 2); cx.globalAlpha = 1;
+    dunes.forEach(d => {
+      d.base = H + d.i * VH * .085 - Math.min(scrollY, 3000) * d.scroll - ptr.sy * d.mouse * .3;
+      const off = t * d.speed + ptr.sx * d.mouse;
+      cx.fillStyle = d.col; cx.beginPath(); cx.moveTo(0, VH);
+      for (let x = 0; x <= W + 8; x += 8) cx.lineTo(x, ridge(d, x + off));
+      cx.lineTo(W, VH); cx.closePath(); cx.fill();
+      cx.strokeStyle = rgbA(THEME.light, .12 - d.i * .025); cx.lineWidth = 1.2; cx.beginPath();
+      for (let x = 0; x <= W + 8; x += 8) x ? cx.lineTo(x, ridge(d, x + off)) : cx.moveTo(x, ridge(d, x + off));
+      cx.stroke();
+    });
+    if (FXS.motion && t > nextCar){ nextCar = t + 6 + Math.random() * 9; const dir = Math.random() < .5 ? 1 : -1; cars.push({x:dir > 0 ? -30 : W + 30, dir, v:35 + Math.random() * 45, trail:[]}); }
+    const far = dunes[0], fo = t * far.speed + ptr.sx * far.mouse;
+    cx.globalCompositeOperation = 'lighter';
+    for (let k = cars.length - 1; k >= 0; k--){
+      const c = cars[k]; c.x += c.dir * c.v * dt;
+      if (c.x < -60 || c.x > W + 60){ cars.splice(k, 1); continue; }
+      const y = ridge(far, c.x + fo) - 3;
+      if (Math.random() < .5) c.trail.push({x:c.x, y, a:.25, r:4});
+      c.trail.forEach(p => { p.a -= dt * .18; p.r += dt * 9; p.y -= dt * 3; });
+      c.trail = c.trail.filter(p => p.a > 0);
+      c.trail.forEach(p => { cx.fillStyle = rgbA(THEME.light, p.a * .35); cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fill(); });
+      cx.drawImage(glowSprite(hexRgb(THEME.accent)), c.x - 9, y - 9, 18, 18);
+    }
+    dust.forEach(p => {
+      if (FXS.motion){ p.x += p.vx * dt; p.y += Math.sin(t * 1.7 + p.w) * 12 * dt; if (p.x > W + 10){ p.x = -10; p.y = VH * (.35 + Math.random() * .65); } }
+      cx.fillStyle = rgbA(THEME.light, p.a); cx.fillRect(p.x, p.y, p.s * (FXS.motion ? 3.5 : 1.4), p.s);
+    });
+    cx.globalCompositeOperation = 'source-over';
+  }
+  return {init, draw};
+})();
+
+/* Corpo. Glass shards over an angular grid, light sweeps and data blips */
+SCENES.corpo = (() => {
+  let shards = [], blips = [], sweepAt = 0;
+  function init(){
+    const r = srnd(97), n = Math.round(10 + VW * VH / 90000);
+    shards = Array.from({length:n}, () => {
+      const z = .3 + r() * .7, R = (60 + r() * 220) * (.5 + z * .7), k = 3 + Math.floor(r() * 3), a0 = r() * 6.28;
+      const pts = Array.from({length:k}, (_, i) => { const a = a0 + i / k * 6.28 + (r() - .5) * .9, rr = R * (.55 + r() * .45); return [Math.cos(a) * rr, Math.sin(a) * rr]; });
+      return {x:r() * VW, y:r() * VH, z, pts, rot:r() * 6.28, vr:(r() - .5) * .05, vx:(r() - .5) * 6, vy:-2 - r() * 5, R};
+    }).sort((a, b) => a.z - b.z);
+    blips = Array.from({length:14}, () => ({x:Math.random() * VW, y:Math.random() * VH, v:60 + Math.random() * 120, d:Math.random() < .5 ? 1 : -1, trail:[]}));
+    sweepAt = 0;
+  }
+  const place = (s, t) => {
+    const m = s.R + 40, W = VW + m * 2, Hh = VH + m * 2;
+    let x = s.x + s.vx * t - ptr.sx * 30 * s.z, y = s.y + s.vy * t - Math.min(scrollY, 4000) * .08 * s.z - ptr.sy * 20 * s.z;
+    x = ((x + m) % W + W) % W - m; y = ((y + m) % Hh + Hh) % Hh - m; return [x, y];
+  };
+  const path = (s, t) => { const [x, y] = place(s, t), a = s.rot + s.vr * t, c = Math.cos(a), n = Math.sin(a); cx.moveTo(x + s.pts[0][0] * c - s.pts[0][1] * n, y + s.pts[0][0] * n + s.pts[0][1] * c); s.pts.slice(1).forEach(p => cx.lineTo(x + p[0] * c - p[1] * n, y + p[0] * n + p[1] * c)); cx.closePath(); };
+  function draw(t, dt){
+    const W = VW;
+    const bg = cx.createLinearGradient(0, 0, W, VH);
+    bg.addColorStop(0, mixHex(THEME.bg, '#04050a', .55)); bg.addColorStop(.6, mixHex(THEME.bg, '#04050a', .85)); bg.addColorStop(1, mixHex(THEME.bg, '#04050a', .7));
+    cx.fillStyle = bg; cx.fillRect(0, 0, W, VH);
+    const sp = 90, tan = Math.tan(Math.PI / 6), go = (t * 6 + Math.min(scrollY, 4000) * .05) % sp;
+    cx.strokeStyle = rgbA(THEME.trace, .08); cx.lineWidth = 1; cx.beginPath();
+    for (let x = -VH * 2; x < W + VH; x += sp){ cx.moveTo(x + go, 0); cx.lineTo(x + go + VH / tan, VH); cx.moveTo(x - go + VH / tan, 0); cx.lineTo(x - go, VH); }
+    cx.stroke();
+    shards.forEach(s => {
+      cx.beginPath(); path(s, t);
+      const [x, y] = place(s, t), g = cx.createLinearGradient(x - s.R, y - s.R, x + s.R, y + s.R);
+      g.addColorStop(0, rgbA(THEME.trace, .03 + s.z * .12)); g.addColorStop(1, rgbA(THEME.bg, .02 + s.z * .05));
+      cx.fillStyle = g; cx.fill();
+      cx.strokeStyle = rgbA(THEME.trace, .15 + s.z * .4); cx.lineWidth = .6 + s.z; cx.stroke();
+    });
+    const period = 7, ph = FXS.motion ? (t % period) / period : .45, band = (W + VH) * (ph * 1.6 - .3);
+    cx.save(); cx.beginPath(); shards.forEach(s => path(s, t)); cx.clip();
+    const g = cx.createLinearGradient(band - 160, 0, band + 160, VH * .4);
+    g.addColorStop(0, rgbA(THEME.light, 0)); g.addColorStop(.5, rgbA(THEME.light, .28)); g.addColorStop(1, rgbA(THEME.light, 0));
+    cx.globalCompositeOperation = 'lighter'; cx.fillStyle = g; cx.fillRect(0, 0, W, VH); cx.restore();
+    cx.globalCompositeOperation = 'lighter';
+    blips.forEach(b => {
+      if (FXS.motion){ b.x += b.d * b.v * dt; b.y += b.v * dt * tan * 1.0; b.trail.unshift([b.x, b.y]); b.trail.length = Math.min(b.trail.length, 10);
+        if (b.x < -20 || b.x > W + 20 || b.y > VH + 20){ b.x = Math.random() * W; b.y = -10; b.trail = []; } }
+      b.trail.forEach((p, i) => { cx.fillStyle = rgbA(THEME.accent, .5 * (1 - i / 10)); cx.fillRect(p[0] - 1.5, p[1] - 1.5, 3, 3); });
+      cx.fillStyle = rgbA(THEME.accent, .9); cx.fillRect(b.x - 2.5, b.y - 2.5, 5, 5);
+    });
+    cx.globalCompositeOperation = 'source-over';
+  }
+  return {init, draw};
+})();
+
+/* Streetkid. Night City skyline, flickering windows and neon, rain, flying cars */
+SCENES.streetkid = (() => {
+  let layers = [], rain = [], cars = [], beams = [];
+  const TWc = 1400;
+  function init(){
+    const r = srnd(13), Hh = Math.min(1400, Math.max(600, VH));
+    layers = [0, 1, 2].map(i => {
+      const c = document.createElement('canvas'); c.width = TWc; c.height = Hh;
+      const g = c.getContext('2d'), col = mixHex(mixHex(THEME.trace, THEME.bg, .5 - i * .2), '#000000', .1 + i * .3), signs = [];
+      let x = 0;
+      while (x < TWc){
+        const w = 40 + r() * (70 + i * 40), h = Hh * (.12 + i * .07 + r() * (.18 + i * .06)), top = Hh - h;
+        g.fillStyle = col; g.fillRect(x, top, w, h);
+        const st = r();
+        if (st < .3){ g.fillRect(x + w * .2, top - h * .08, w * .6, h * .08); }
+        if (st > .55 && st < .8){ g.fillRect(x + w * .48, top - 30 - r() * 50, 2, 80); }
+        if (st > .9){ g.beginPath(); g.moveTo(x, top); g.lineTo(x + w / 2, top - w * .8); g.lineTo(x + w, top); g.fill(); }
+        const ww = 3 + i, wh = 4 + i, gx = 6 + i * 2, gy = 8 + i * 2;
+        for (let wy = top + 10; wy < Hh - 10; wy += gy) for (let wx = x + 5; wx < x + w - 5; wx += gx){
+          if (r() < .13 + i * .03){ g.fillStyle = rgbA(r() < .85 ? THEME.light : THEME.accent, .07 + r() * (.14 + i * .07)); g.fillRect(wx, wy, ww, wh); }
+        }
+        if (r() < .35) signs.push({x:x + w * (.15 + r() * .6), y:top + h * (.1 + r() * .35), h:22 + r() * 60, w:4 + i * 2, c:r() < .7 ? 'accent' : 'light', ph:r() * 10});
+        x += w + r() * 14;
+      }
+      return {c, Hh, i, signs, speed:2 + i * 5, mouse:6 + i * 14, scroll:.02 + i * .03, y0:0};
+    });
+    rain = Array.from({length:Math.round(VW * VH / 7000)}, () => ({x:Math.random() * VW, y:Math.random() * VH, v:600 + Math.random() * 500, l:8 + Math.random() * 18, a:.05 + Math.random() * .18}));
+    cars = Array.from({length:7}, (_, k) => ({x:Math.random() * VW, y:VH * (.12 + Math.random() * .4), v:(40 + Math.random() * 120) * (Math.random() < .5 ? 1 : -1), c:k % 3 ? 'light' : 'accent'}));
+    beams = [{x:.22, ph:0}, {x:.78, ph:2.2}];
+  }
+  function draw(t, dt){
+    const W = VW;
+    const sky = cx.createLinearGradient(0, 0, 0, VH);
+    sky.addColorStop(0, mixHex(THEME.bg, '#020208', .88)); sky.addColorStop(.55, mixHex(THEME.bg, '#020208', .55)); sky.addColorStop(1, mixHex(THEME.bg, THEME.accent, .18));
+    cx.fillStyle = sky; cx.fillRect(0, 0, W, VH);
+    cx.globalCompositeOperation = 'lighter';
+    beams.forEach(b => {
+      const a = Math.sin(t * .25 + b.ph) * .5, bx = b.x * W, L = VH * 1.2;
+      const g = cx.createLinearGradient(bx, VH, bx + Math.sin(a) * L, VH - Math.cos(a) * L);
+      g.addColorStop(0, rgbA(THEME.light, .1)); g.addColorStop(1, rgbA(THEME.light, 0));
+      cx.fillStyle = g; cx.beginPath(); cx.moveTo(bx - 6, VH); cx.lineTo(bx + Math.sin(a - .06) * L, VH - Math.cos(a - .06) * L); cx.lineTo(bx + Math.sin(a + .06) * L, VH - Math.cos(a + .06) * L); cx.lineTo(bx + 6, VH); cx.fill();
+    });
+    cx.globalCompositeOperation = 'source-over';
+    layers.forEach((L, li) => {
+      const ox = -(t * L.speed + ptr.sx * L.mouse), oy = VH - L.Hh + L.i * 30 + Math.min(scrollY, 3000) * L.scroll - ptr.sy * L.mouse * .4 + (2 - L.i) * -VH * .04;
+      const sx = ((ox % TWc) + TWc) % TWc - TWc;
+      for (let x = sx; x < W; x += TWc) cx.drawImage(L.c, x, oy);
+      cx.globalCompositeOperation = 'lighter';
+      for (let x = sx; x < W; x += TWc) L.signs.forEach(s => {
+        const fl = FXS.motion ? (Math.sin(t * 3 + s.ph) > -.85 ? 1 : .2) * (.75 + .25 * Math.sin(t * 9 + s.ph * 3)) : 1;
+        const col = s.c === 'accent' ? THEME.accent : THEME.light;
+        cx.fillStyle = rgbA(col, .12 * fl); cx.fillRect(x + s.x - s.w * 2, oy + s.y - 6, s.w * 5, s.h + 12);
+        cx.fillStyle = rgbA(col, .8 * fl); cx.fillRect(x + s.x, oy + s.y, s.w, s.h);
+      });
+      cx.globalCompositeOperation = 'source-over';
+      if (li === 1){
+        cx.globalCompositeOperation = 'lighter';
+        cars.forEach(c => {
+          if (FXS.motion){ c.x += c.v * dt; if (c.x > W + 40) c.x = -40; if (c.x < -40) c.x = W + 40; }
+          const col = c.c === 'accent' ? THEME.accent : THEME.light;
+          cx.fillStyle = rgbA(col, .25); cx.fillRect(c.v > 0 ? c.x - 28 : c.x, c.y, 28, 1.5);
+          cx.drawImage(glowSprite(hexRgb(col)), c.x - 7, c.y - 6, 14, 14);
+        });
+        cx.globalCompositeOperation = 'source-over';
+      }
+    });
+    cx.strokeStyle = rgbA(THEME.light, .14); cx.lineWidth = 1; cx.beginPath();
+    rain.forEach(d => {
+      if (FXS.motion){ d.y += d.v * dt; d.x -= d.v * dt * .18; if (d.y > VH){ d.y = -20; d.x = Math.random() * (W + 100); } }
+      cx.moveTo(d.x, d.y); cx.lineTo(d.x + d.l * .18, d.y - d.l);
+    });
+    cx.stroke();
+  }
+  return {init, draw};
+})();
+
 let lastT = performance.now(), running = false;
 function frame(now){
   const t = now / 1000, dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
@@ -3745,6 +3962,14 @@ function frame(now){
   cx.setTransform(DPR, 0, 0, DPR, 0, 0);
   cx.clearRect(0, 0, VW, VH);
   cx.globalCompositeOperation = 'source-over';
+  if (SCENES[THEME.style]){
+    ensureScene();
+    cx.globalAlpha = 1;
+    SCENES[THEME.style].draw(FXS.motion ? t : 0, FXS.motion ? dt : 0);
+    cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+    if (FXS.motion) requestAnimationFrame(frame); else running = false;
+    return;
+  }
   LAYERS.forEach((L, i) => {
     const [ox, oy] = offset(L, FXS.motion ? t : 0);
     cx.globalAlpha = FXS.motion ? .82 + .18 * Math.sin(t * .7 + i * 2.1) : 1;
@@ -3783,19 +4008,21 @@ FXS.motion ? startBg() : drawStatic();
 /* ================= SETTINGS / THEME ================= */
 function applyTheme(rebuild){
   document.documentElement.style.setProperty('--bgc', THEME.bg);
-  if (rebuild){ LAYERS.forEach(buildLayer); if (!FXS.motion) drawStatic(); }
+  document.body.dataset.bg = THEME.style;
+  if (rebuild){ LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; if (!FXS.motion) drawStatic(); }
 }
 function saveTheme(){ try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME)); } catch(e){} }
 function renderSettings(){
   const same = t => ['bg', 'trace', 'light', 'accent'].every(k => t[k].toLowerCase() === THEME[k].toLowerCase());
   const row = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="color" data-theme="${k}" value="${THEME[k]}" aria-label="${label}"></label>`;
+  const S = STYLES[THEME.style] || STYLES.circuit, keys = ['bg', 'trace', 'light', 'accent'];
   $('#setPanel').innerHTML = `<div class="row"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
     <p class="muted" style="font-size:13px;margin:0">Make the page yours. Only changes how it looks on this device.</p>
+    <span class="lbl" style="margin-top:12px;display:block">Background</span>
+    <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}</div>
+    <span class="lbl" style="margin-top:6px;display:block">Color presets</span>
     <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}"><span class="sw"><i style="background:${t.bg}"></i><i style="background:${t.trace}"></i><i style="background:${t.light}"></i><i style="background:${t.accent}"></i></span>${n}</button>`).join('')}</div>
-    ${row('bg', 'Background', 'The glow at the top of the page')}
-    ${row('trace', 'Board traces', 'The circuit lines')}
-    ${row('light', 'Lights', 'Most of the pulses running the traces')}
-    ${row('accent', 'Accent lights', 'The rarer second pulse color')}
+    ${keys.map((k, i) => row(k, S.lab[i][0], S.lab[i][1])).join('')}
     <div class="row gap"><button class="btn small" data-set="reset">Reset to default</button></div>`;
 }
 function toggleSettings(open){
@@ -3807,8 +4034,9 @@ $('#tSet').onclick = () => { sfx('select'); toggleSettings(); };
 $('#setPanel').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.dataset.set === 'close') return toggleSettings(false);
-  if (t.dataset.set === 'reset'){ THEME = {...THEME_DEF}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
-  if (t.dataset.preset){ THEME = {...PRESETS[+t.dataset.preset][1]}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
+  if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
+  if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); return; }
+  if (t.dataset.preset){ THEME = {...THEME, ...PRESETS[+t.dataset.preset][1], style:THEME.style}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
 });
 let themeT;
 $('#setPanel').addEventListener('input', e => {
