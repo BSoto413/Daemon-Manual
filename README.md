@@ -1,4 +1,4 @@
-# Daemon Manual V0.1
+# Daemon Manual V0.72
 
 Player reference and character builder for the Daemon Cyberpunk 5e campaign. Everything lives in `index.html` (no build step), so it can go straight onto GitHub Pages.
 
@@ -6,7 +6,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Rules page (`#rules`) with a chapter sidebar and search. It's the official rules reference, there's no separate document. The Every Perk tables are built from the same `PERKS` data as the trees, so editing a perk updates both
 - Chapters are plain HTML sections with ids starting `r-` (like `#r-reactions`), so you can link straight to one in Discord
 - Your Mercs, a roster of saved characters, plus the party database tools
-- Onboarding in four steps (handle, background with 2 of 3 skills, 27-point buy, review)
+- Onboarding in five steps (handle, background with 2 of 3 skills, role, 27-point buy, review). Role is flavor only for now and can be changed on the sheet
 - Each merc has two tabs
   - Perks and skills. Level, perk points, stat increases, the six perk trees and the skill list
   - Character sheet. Handle, origin, eddies, HP and NET HP trackers, RAM tracker, primary and secondary weapon slots, inventory, cyberware slots and notes
@@ -36,6 +36,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
       "id": "keep this the same so import updates the right merc",
       "name": "Vex",
       "background": "Nomad",
+      "role": "Netrunner",
       "level": 3,
       "base": {"STR": 10, "REF": 15, "BOD": 14, "INT": 12, "TEC": 12, "COO": 9},
       "asi": ["REF", "REF"],

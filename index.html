@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daemon Manual V0.1</title>
+<title>Daemon Manual V0.72</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
@@ -76,7 +76,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 .card.new .plus{font-family:Orbitron,sans-serif;font-size:34px;line-height:1;color:var(--cyan)}
 
 /* ---------- wizard ---------- */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
 .stepdot{border-top:3px solid rgba(47,230,240,.18);padding-top:8px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
 .stepdot.done{border-color:rgba(47,230,240,.55);color:var(--cyan)}
 .stepdot.on{border-color:var(--yellow);color:var(--yellow)}
@@ -85,6 +85,15 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 @keyframes stepin{0%{opacity:0;transform:translateX(14px);filter:hue-rotate(120deg) brightness(1.8)}40%{filter:none}100%{opacity:1;transform:none}}
 .wnav{display:flex;gap:10px;margin-top:18px}
 .bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.bgs.roles{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.bg .rk{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:.12em;color:var(--yellow)}
+.statgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:18px}
+.statbox{background:#08080f;border:1px solid rgba(47,230,240,.25);border-top:3px solid var(--cyan);padding:12px 6px 10px;text-align:center;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
+.statbox .ab{font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:.14em;color:var(--cyan)}
+.statbox .sc{font-family:Orbitron,sans-serif;font-size:34px;color:#fff;line-height:1.15;margin:4px 0 2px}
+.statbox .md{font-family:Orbitron,sans-serif;font-size:15px;color:var(--yellow)}
+.statbox .nmx{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+@media (max-width:720px){.statgrid{grid-template-columns:repeat(3,1fr)}.statbox .sc{font-size:30px}}
 @media (max-width:720px){.bgs{grid-template-columns:1fr}}
 .bg{background:#08080f;border:1px solid rgba(47,230,240,.2);padding:16px;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:border-color .2s,background .2s}
 .bg:hover{border-color:rgba(47,230,240,.6)}
@@ -535,7 +544,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <canvas id="circuit" aria-hidden="true"></canvas>
 <div class="wrap">
   <header>
-    <h1 class="gl-title" data-text="Daemon Manual V0.1">Daemon Manual V0.1</h1>
+    <h1 class="gl-title" data-text="Daemon Manual V0.72">Daemon Manual V0.72</h1>
     <div class="rule"></div>
     <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a></nav>
   </header>
@@ -844,7 +853,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
   </div>
 
-  <footer>Daemon Manual V0.1 · Unofficial player reference built from the GM's rules channel</footer>
+  <footer>Daemon Manual V0.72 · Unofficial player reference built from the GM's rules channel</footer>
 </div>
 <div class="toast" id="toast" role="status"></div>
 <div id="vignette" aria-hidden="true"></div>
@@ -1045,6 +1054,7 @@ function normalize0(c){
     id: c.id || uid(),
     name: String(c.name || 'Unnamed Merc').slice(0, 32),
     background: bg,
+    role: ROLES[c.role] ? c.role : '',
     bgSkills: (c.bgSkills || []).filter(s => BACKGROUNDS[bg].skills.includes(s)).slice(0, 2),
     base,
     asi: (c.asi || []).filter(k => ORDER.includes(k)),
@@ -1149,7 +1159,7 @@ function renderRoster(){
     const del = pendingDelete === c.id
       ? `<button class="btn danger small" data-del="${c.id}">Confirm delete</button><button class="btn small" data-keep="1">Keep</button>`
       : `<button class="btn small" data-del="${c.id}">Delete</button>`;
-    return `<div class="card"><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background} · Level ${c.level} · ${c.unlocked.length} perks</div></div></div>
+    return `<div class="card"><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background}${c.role ? ' · ' + c.role : ''} · Level ${c.level} · ${c.unlocked.length} perks</div></div></div>
       <div class="mini-stats">${stats}</div>
       <div class="row"><button class="btn primary small" data-open="${c.id}">Open</button><span class="spacer"></span>${del}</div></div>`;
   }).join('');
@@ -1251,12 +1261,20 @@ $('#toRoster').onclick = () => { show('roster'); renderRoster(); goTop(); };
 
 /* ================= WIZARD ================= */
 let W = null, wStep = 0, lastStep = -1;
-const STEP_NAMES = ['Handle','Background','Stats','Jack in'];
+const STEP_NAMES = ['Handle','Background','Role','Stats','Jack in'];
+const ROLES = {
+  Netrunner: {k:'INT', d:'Lives in the Net. Breaks ICE, fries optics and turns enemy chrome against them.'},
+  Soldier: {k:'REF and STR', d:'Trained gun for hire. Holds the line and puts rounds where they count.'},
+  Technician: {k:'TEC and INT', d:'Builds it, fixes it, breaks it. Keeps the crew and their gear running.'},
+  Shinobi: {k:'REF', d:'Fast, quiet and gone before the body hits the floor.'},
+  Bruiser: {k:'STR and BOD', d:'Walks through the front door and stays standing when everyone else drops.'}
+};
 const HANDLES = ['Static','Ghostwire','Neon Jackal','Rook','Hex','Vandal','Cinder','Byte','Lockjaw','Mirage','Switchblade','Halogen','Kestrel','Rust','Glitch','Saint','Volt','Nomi','Razor','Echo'];
 function startWizard(){
-  W = {name:'', portrait:null, background:null, bgSkills:[], base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
+  W = {name:'', portrait:null, background:null, bgSkills:[], role:null, base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
   wStep = 0; lastStep = -1; show('wizard'); renderWizard(); goTop();
 }
+const statBox = (k, v) => `<div class="statbox"><div class="ab">${k}</div><div class="sc">${v}</div><div class="md">${sgn(mod(v))}</div><div class="nmx">${STATS[k].name}</div></div>`;
 const pbSpent = () => ORDER.reduce((n, k) => n + PB_COST[W.base[k]], 0);
 
 function renderWizard(){
@@ -1281,6 +1299,12 @@ function renderWizard(){
       <div class="chips">${BACKGROUNDS[W.background].skills.map(s => `<button class="chip ${W.bgSkills.includes(s) ? 'on' : ''}" data-sk="${s}">${s}</button>`).join('')}</div>` : ''}
       <div class="err" id="wErr"></div>`;
   } else if (wStep === 2){
+    h = `<h3>Pick your role</h3>
+      <p class="muted" style="margin:6px 0 0">Your role is what you do for the crew. It is flavor for now and does not change your stats or perks.</p>
+      <div class="bgs roles">${Object.entries(ROLES).map(([k, v]) =>
+        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span></button>`).join('')}</div>
+      <div class="err" id="wErr"></div>`;
+  } else if (wStep === 3){
     const left = PB_TOTAL - pbSpent();
     h = `<div class="row"><div><h3>Assign your stats</h3><p class="muted" style="margin:6px 0 0">5e point buy. Every stat starts at 8 and can go up to 15. A perk tree needs its stat at 10 to come online.</p></div>
       <span class="spacer"></span><div style="text-align:right"><span class="lbl">Points left</span><div class="big" id="pbLeft">${left} <small>/ ${PB_TOTAL}</small></div></div></div>
@@ -1298,13 +1322,13 @@ function renderWizard(){
       <div class="summary">
         <div><span class="lbl">Handle</span><div class="v">${esc(W.name)}</div></div>
         <div><span class="lbl">Background</span><div class="v">${W.background}</div><div class="muted" style="font-size:14px">${W.bgSkills.join(' and ')}</div></div>
-        <div><span class="lbl">Class</span><div class="v">Fighter</div></div>
+        <div><span class="lbl">Role</span><div class="v">${W.role}</div><div class="muted" style="font-size:14px">${ROLES[W.role].k}</div></div>
       </div>
-      <div class="mini-stats" style="margin-top:18px;font-size:12px">${ORDER.map(k => `<div><b style="font-size:20px">${W.base[k]}</b>${k} ${sgn(mod(W.base[k]))}</div>`).join('')}</div>
+      <div class="statgrid">${ORDER.map(k => statBox(k, W.base[k])).join('')}</div>
       <p class="muted" style="margin-top:16px">You start at level 1. You earn your first perk point when you hit level 2.</p>`;
   }
   const back = wStep > 0 ? `<button class="btn" id="wBack">Back</button>` : `<button class="btn" id="wCancel">Cancel</button>`;
-  const next = wStep < 3 ? `<button class="btn primary" id="wNext">Next</button>` : `<button class="btn primary" id="wDone">Jack in</button>`;
+  const next = wStep < 4 ? `<button class="btn primary" id="wNext">Next</button>` : `<button class="btn primary" id="wDone">Jack in</button>`;
   const anim = wStep !== lastStep; lastStep = wStep;
   b.innerHTML = `<div class="${anim ? 'wstep' : ''}">${h}<div class="wnav">${back}<span class="spacer"></span>${next}</div></div>`;
   const nm = $('#wName');
@@ -1317,7 +1341,8 @@ function wNext(){
     if (!W.background) return err('Pick a background first.');
     if (W.bgSkills.length !== 2) return err('Choose exactly two skills.');
   }
-  if (wStep === 2 && pbSpent() > PB_TOTAL) return err('You spent too many points.');
+  if (wStep === 2 && !W.role) return err('Pick a role first.');
+  if (wStep === 3 && pbSpent() > PB_TOTAL) return err('You spent too many points.');
   wStep++; renderWizard();
 }
 $('#wbody').addEventListener('change', async e => {
@@ -1330,6 +1355,7 @@ $('#wbody').addEventListener('click', e => {
   if (t.id === 'wBack'){ wStep--; return renderWizard(); }
   if (t.id === 'wCancel'){ show('roster'); return renderRoster(); }
   if (t.id === 'wRand'){ W.name = HANDLES[Math.floor(Math.random() * HANDLES.length)]; return renderWizard(); }
+  if (t.dataset.role){ W.role = t.dataset.role; return renderWizard(); }
   if (t.dataset.bg){ if (W.background !== t.dataset.bg){ W.background = t.dataset.bg; W.bgSkills = []; } return renderWizard(); }
   if (t.dataset.sk){
     const s = t.dataset.sk;
@@ -1379,7 +1405,7 @@ function renderSheetHead(){
   updateVignette(); updateHeat(); if (typeof updatePsy === 'function'){ updatePsy(); updateHack(); }
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
-    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · Fighter · ${C.bgSkills.join(' and ')}</div></div></div>
+    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'} · ${C.bgSkills.join(' and ')}</div></div></div>
     <div><span class="lbl">Level</span><div class="lvlbox stepper"><button id="lvDown" ${C.level <= 1 ? 'disabled' : ''} aria-label="Level down">−</button><span class="val big" id="lvVal">${C.level}</span><button id="lvUp" ${C.level >= 20 ? 'disabled' : ''} aria-label="Level up">+</button></div></div>
   </div>
   <div class="vitals">
@@ -1696,11 +1722,11 @@ function renderCS(){
   const ident = `<div class="ident">
       <div><span class="lbl">Handle</span><div class="v">${esc(C.name)}</div></div>
       <div><span class="lbl">Origin</span><div class="v">${C.background}</div></div>
-      <div><span class="lbl">Class</span><div class="v">Fighter</div></div>
+      <div><span class="lbl">Role</span><div class="v"><select data-field="role" aria-label="Role">${C.role ? '' : '<option value="">Pick a role</option>'}${Object.keys(ROLES).map(r => `<option ${C.role === r ? 'selected' : ''}>${r}</option>`).join('')}</select></div></div>
       <div><span class="lbl">Level</span><div class="v">${C.level}</div></div>
       <div><span class="lbl">Eddies</span><div class="v"><input type="number" min="0" data-field="eddies" value="${C.eddies}" aria-label="Eddies" style="width:120px"> €$</div></div>
     </div>
-    <div class="mini-stats" style="margin-top:16px">${ORDER.map(k => `<div><b>${score(k)}</b>${k} ${sgn(mod(score(k)))}</div>`).join('')}</div>
+    <div class="statgrid">${ORDER.map(k => statBox(k, score(k))).join('')}</div>
     <p class="muted" style="font-size:14px;margin-top:12px">Proficient in ${C.bgSkills.join(' and ')} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>`;
   const hpBlock = hm == null
     ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Roll your HP (10 + 1d10 ${sgn(mod(score('BOD')))} at level 1, plus your level ups) and enter your max.</p>
@@ -1955,6 +1981,7 @@ $('#vCS').addEventListener('change', async e => {
   }
   const f = t.dataset.field;
   if (f === 'notes'){ C.notes = t.value.slice(0, 5000); return saveC(); }
+  if (f === 'role'){ if (ROLES[t.value]){ C.role = t.value; saveC(); renderSheetHead && renderSheetHead(); } return; }
   if (f === 'eddies'){ C.eddies = Math.max(0, parseInt(t.value) || 0); t.value = C.eddies; return saveC(); }
   if (f === 'hpMax'){
     const v = parseInt(t.value);
