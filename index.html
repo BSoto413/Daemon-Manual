@@ -270,8 +270,8 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .eqslot{border:1px dashed rgba(47,230,240,.3);padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px}
 .eqslot.on{border-style:solid;border-color:var(--cyan);background:rgba(47,230,240,.05)}
 .eqn{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
-.inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 170px;gap:8px;align-items:center}
-.irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 170px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(47,230,240,.08)}
+.inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center}
+.irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(47,230,240,.08)}
 .irow.eq input[data-f=name]{border-color:var(--cyan);color:var(--cyan)}
 @media (max-width:760px){
   .inv-add,.irow{grid-template-columns:1fr 1fr}
@@ -469,6 +469,17 @@ body.overheat.fx #heatVig{animation:heatPulse 1.6s ease-in-out infinite}
 body.overheat.fx #sheetHead,body.overheat.fx #vCS,body.overheat.fx #treePanel{animation:shimmer 2.2s ease-in-out infinite}
 @keyframes shimmer{0%,100%{transform:none;filter:none}30%{transform:skewX(.4deg);filter:blur(.4px) saturate(1.3)}60%{transform:skewX(-.3deg);filter:none}}
 body.overheat .acts button,body.overheat .node,body.overheat [data-act^=fab],body.overheat select[data-hand]{opacity:.45}
+.cwpips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 10px;align-items:center}
+.cwp{width:16px;height:18px;clip-path:var(--hexp);background:rgba(47,230,240,.14)}
+.cwp.on{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+.cwp.ov{background:rgba(255,79,216,.16)}
+.cwp.ov.on{background:#ff4fd8}
+.cwsep{width:2px;height:20px;background:#ff4fd8;margin:0 4px;box-shadow:0 0 6px #ff4fd8}
+.cwpips.sm .cwp{width:11px;height:12px}
+.cwpips.sm .cwsep{height:14px}
+.ovtag{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1px;color:#ff4fd8;margin-left:8px}
+.tagb.cwb{background:rgba(47,230,240,.18);color:var(--cyan);border:1px solid var(--cyan-dim)}
+.cw .r input[type=number]{width:52px}
 footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 @media (max-width:560px){
   .wrap{padding:22px 16px 60px}
@@ -618,7 +629,11 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-chrome"><h2>Cyberware and RipperDocs</h2>
         <div class="panel">
-          <p>Chrome goes into body slots, and each piece can add to your max RAM. Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, in themselves or in anyone else. If nobody in the crew is a RipperDoc, you'll need the DM's ripper.</p>
+          <p>Chrome goes into body slots, and each piece can add to your max RAM.</p>
+          <h3 style="margin-top:18px">Cyberware threshold</h3>
+          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Past your <b>threshold</b> you're in the <b>overflow</b>, up to your <b>max</b>, and you can't install anything that would go over your max. Each point of overflow raises your Cyberpsychosis DC by 2.</p>
+          <p class="muted" style="font-size:14px;margin-top:6px">Example. Threshold 10, max 15. A tally of 12 is 2 points of overflow, so your Cyberpsychosis DC is +4.</p>
+          <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, in themselves or in anyone else. If nobody in the crew is a RipperDoc, you'll need the DM's ripper.</p>
           <p>During a live session a RipperDoc sees an install panel on every party member's card. The part has to be in the patient's bag, so hand it over first. Any merc can hand items and eddies to the rest of the crew.</p>
           <h3 style="margin-top:18px">Hot-swappable parts</h3>
           <p style="margin-top:8px">For an extra fee, a RipperDoc can make a part hot-swappable. Anyone can swap a hot part in or out of themselves without a RipperDoc, but it comes with a cost.</p>
@@ -993,11 +1008,11 @@ function normalize0(c){
     inv: (Array.isArray(c.inv) ? c.inv : []).filter(i => i && i.name).map(i => ({
       id: i.id || uid(), name: String(i.name).slice(0, 60), type: ITEM_TYPES.includes(i.type) ? i.type : 'Gear',
       qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
-      tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort
+      tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0)
     })),
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null},
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
-      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), hot: !!x.hot
+      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
     })),
     hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
     hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram),
@@ -1006,6 +1021,7 @@ function normalize0(c){
     psycho: !!c.psycho,
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
+    cwT: Math.max(0, numOrNull(c.cwT) ?? 10), cwMax: Math.max(1, numOrNull(c.cwMax) ?? 15), cwAdj: parseInt(c.cwAdj) || 0,
     portrait: typeof c.portrait === 'string' && c.portrait.length < 300000 && PORTRAIT_RE.test(c.portrait) ? c.portrait : null
   };
 }
@@ -1577,6 +1593,15 @@ function toast(msg, good){
 }
 
 /* ================= CHARACTER SHEET TAB ================= */
+const cwLoad = (c = C) => Math.max(0, c.cyber.reduce((n, x) => n + (x.cw || 0), 0) + (c.cwAdj || 0));
+const cwOver = (c = C) => Math.max(0, cwLoad(c) - c.cwT);
+const cwMaxOf = c => Math.max(c.cwMax, c.cwT);
+function cwPips(c, small){
+  const mx = cwMaxOf(c), load = cwLoad(c);
+  const pip = i => `<i class="cwp ${i < c.cwT ? '' : 'ov'} ${i < load ? 'on' : ''}"></i>`;
+  const base = Array.from({length: c.cwT}, (_, i) => pip(i)).join(''), over = Array.from({length: mx - c.cwT}, (_, i) => pip(c.cwT + i)).join('');
+  return `<div class="cwpips ${small ? 'sm' : ''}">${base}${mx > c.cwT ? `<span class="cwsep"></span>${over}` : ''}</div>`;
+}
 const RIPPER = 'TEC.B.l', HOTSWAP_COST = 500, HOTSWAP_RAM = 2;
 const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200};
 const MK = ['', 'Mk II', 'Mk III', 'Mk IV'];
@@ -1639,6 +1664,12 @@ function renderCS(){
      <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool</span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
+  const cwl = cwLoad(), cwo = cwOver();
+  const cwBlock = `<div class="track cwtrack"><div class="head"><span class="lbl" style="margin:0">Cyberware threshold</span><span class="muted" style="font-size:12px">Threshold ${C.cwT} · Max ${cwMaxOf(C)}</span></div>
+      <div class="num">${cwl} <small>/ ${C.cwT}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} · Cyberpsychosis DC +${cwo * 2}</span>` : ''}</div>
+      ${cwPips(C)}
+      <div class="row"><button class="btn small" data-act="cw-">−1</button><button class="btn small" data-act="cw+">+1</button><span class="muted" style="font-size:12px">Installed chrome fills this on its own. The DM sets your threshold and max.</span></div>
+      ${hasPerk('TEC.A.l') ? '<p class="muted" style="font-size:12px;margin:8px 0 0">Limit Setter: the first piece that pushes you past your threshold won\'t make you a Cyberpsycho.</p>' : ''}</div>`;
   const ramBlock = `<div class="track"><div class="head"><span class="lbl" style="margin:0">RAM</span><span class="muted" style="font-size:12px">4 base ${sgn(mod(score('INT')))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
       <div class="num">${rc} <small>/ ${rm}</small></div>
       <div class="pips">${Array.from({length: rm}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
@@ -1652,7 +1683,7 @@ function renderCS(){
       <input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Stats or notes" aria-label="Item stats">
       <div class="acts">
         ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="primary" data-i="${i.id}" title="Equip as primary">P</button><button class="btn small ${s2 ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="secondary" data-i="${i.id}" title="Equip as secondary">S</button>` : ''}
-        ${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}
+        ${i.type === 'Cyberware' ? `<span class="tagb cwb" title="Cyberware threshold cost">CW ${i.cw}</span>` : ''}${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}
         ${i.type === 'Cyberware' && (canRip() || i.hot) ? `<select data-install="${i.id}" aria-label="Install into slot"><option value="">${canRip() ? 'Install…' : 'Swap in (−' + HOTSWAP_RAM + ' RAM)…'}</option>${CYBER_SLOTS.map(([k, n, cap]) => `<option value="${k}" ${C.cyber.filter(x => x.slot === k).length >= cap ? 'disabled' : ''}>${n}</option>`).join('')}</select>` : ''}
         ${i.type === 'Cyberware' && canRip() && !i.hot ? `<button class="btn small" data-hot="${i.id}" title="Make one hot-swappable for ${HOTSWAP_COST} €$">Hot-swap</button>` : ''}
         ${liveMe() && players.some(p => p.id !== liveApi.uid) ? `<select data-hand="${i.id}" aria-label="Hand to a party member"><option value="">Hand to…</option>${players.filter(p => p.id !== liveApi.uid).map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>` : ''}
@@ -1670,6 +1701,7 @@ function renderCS(){
       <p class="muted" style="font-size:13px;margin:0 0 12px">Create ${FAB_COST.create} €$ · Upgrade ${FAB_COST.upgrade} €$ per Mk level · Fortify ${FAB_COST.fortify} €$. Draft prices until the GM sets them.</p>
       <span class="lbl">Create an item</span>
       <div class="libadd"><input type="text" class="f" id="fbName" placeholder="What are you building?" aria-label="New item name"><select id="fbType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="fbQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="fbStats" placeholder="Stats, agreed with the DM" aria-label="Stats"></div>
+      <div class="row gap"><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="fbCw" value="1" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters when you build Cyberware</span></div>
       <div class="row gap"><button class="btn small primary" data-act="fabCreate">Fabricate · ${FAB_COST.create} €$</button></div>
       <span class="lbl" style="margin-top:18px">Work on an item</span>
       ${workable.length ? `<div class="row"><select id="fbItem" aria-label="Item to work on" style="flex:1">${workable.map(i => `<option value="${i.id}">${esc(i.name)}${i.tier ? ' ' + MK[i.tier] : ''}${i.fort ? ' · Fortified' : ''}</option>`).join('')}</select>
@@ -1681,15 +1713,16 @@ function renderCS(){
     const form = !rip ? '' : cyberForm === k
       ? `<div class="cform"><input type="text" class="f" id="cfName" placeholder="Cyberware name" aria-label="Cyberware name">
          <label class="muted" style="font-size:12px">RAM bonus <input type="number" id="cfRam" value="0"></label>
+         <label class="muted" style="font-size:12px">Threshold cost <input type="number" id="cfCw" value="1" min="0"></label>
          <input type="text" class="f" id="cfEff" placeholder="What it does" aria-label="Effect">
          <div class="row"><button class="btn small primary" data-act="cfSave" data-slot="${k}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div>`
       : (list.length < cap ? `<button class="btn small" data-act="cfOpen" data-slot="${k}" style="margin-top:8px">+ Install</button>` : '');
     return `<div class="cslot ${list.length >= cap ? 'full' : ''}"><div class="h"><b>${n}</b><span class="cap">${list.length} / ${cap}</span></div>
       ${list.map(x => rip ? `<div class="cw ${x.hot ? 'hot' : ''}"><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}" aria-label="Cyberware name">
-        <div class="r"><span class="muted">RAM</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}" aria-label="RAM bonus">${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span><button class="btn small" data-uninstall="${x.id}">Remove</button></div>
+        <div class="r"><span class="muted">RAM</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}" aria-label="RAM bonus"><span class="muted">Cost</span><input type="number" min="0" data-c="${x.id}" data-cf="cw" value="${x.cw}" aria-label="Threshold cost">${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span><button class="btn small" data-uninstall="${x.id}">Remove</button></div>
         <input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}" placeholder="What it does" aria-label="Effect"></div>`
       : `<div class="cw ${x.hot ? 'hot' : ''}"><div style="color:#fff">${esc(x.name)}</div>
-        <div class="r"><span class="muted">RAM ${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)}</span>${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span>${x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out (−${HOTSWAP_RAM} RAM)</button>` : ''}</div>
+        <div class="r"><span class="muted">RAM ${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)} · Cost ${x.cw}</span>${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span>${x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out (−${HOTSWAP_RAM} RAM)</button>` : ''}</div>
         ${x.effect ? `<div class="muted" style="font-size:13px">${esc(x.effect)}</div>` : ''}</div>`).join('')}
       ${form}</div>`;
   }).join('');
@@ -1698,7 +1731,7 @@ function renderCS(){
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
     <div class="cs-grid">
-      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}${psyBlock}</div>
+      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}${cwBlock}${psyBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}</div></div>
     </div>
     <div class="panel gap"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
@@ -1741,7 +1774,7 @@ $('#vCS').addEventListener('click', e => {
         C.ram = ramCur() - HOTSWAP_RAM;
       }
       C.cyber = C.cyber.filter(y => y !== x);
-      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
+      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
       toast(`${x.name} moved to inventory.`, true);
     }
     return csSave();
@@ -1768,7 +1801,7 @@ $('#vCS').addEventListener('click', e => {
       const name = ($('#fbName').value || '').trim(); if (!name){ $('#fbName').focus(); return toast('Name what you are building.'); }
       if (C.eddies < FAB_COST.create) return toast(`Fabricating costs ${FAB_COST.create} €$. You have ${C.eddies}.`);
       C.eddies -= FAB_COST.create;
-      C.inv.push({id:uid(), name:name.slice(0, 60), type:$('#fbType').value, qty:Math.max(1, parseInt($('#fbQty').value) || 1), stats:($('#fbStats').value || '').trim().slice(0, 120), hot:false, tier:0, fort:false});
+      C.inv.push({id:uid(), name:name.slice(0, 60), type:$('#fbType').value, qty:Math.max(1, parseInt($('#fbQty').value) || 1), stats:($('#fbStats').value || '').trim().slice(0, 120), hot:false, tier:0, fort:false, cw:$('#fbType').value === 'Cyberware' ? Math.max(0, parseInt($('#fbCw').value) || 0) : 0});
       sfx('perk'); toast(`Fabricated ${name}. −${FAB_COST.create} €$.`, true); return csSave();
     }
     case 'fabUp': case 'fabFort': {
@@ -1792,6 +1825,14 @@ $('#vCS').addEventListener('click', e => {
     case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
     case 'ram+1': C.ram = Math.min(ramMax(), ramCur() + 1); return csSave();
     case 'ramFull': C.ram = null; return csSave();
+    case 'cw+': case 'cw-': {
+      const d = t.dataset.act === 'cw+' ? 1 : -1, nl = cwLoad() + d;
+      if (nl < 0) return;
+      if (nl > cwMaxOf(C)) return toast(`You're at your max of ${cwMaxOf(C)}.`);
+      C.cwAdj += d; csSave();
+      if (d > 0 && nl > C.cwT) toast(`Overflow ${nl - C.cwT}. Cyberpsychosis DC is now +${(nl - C.cwT) * 2}.`);
+      return;
+    }
     case 'rmPortrait': C.portrait = null; return csSave();
     case 'addItem': {
       const name = $('#niName').value.trim();
@@ -1808,7 +1849,9 @@ $('#vCS').addEventListener('click', e => {
     case 'cfSave': {
       if (!canRip()) return;
       const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the cyberware first.'); }
-      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), ram:parseInt($('#cfRam').value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
+      const cwc = Math.max(0, parseInt($('#cfCw').value) || 0);
+      if (cwLoad() + cwc > cwMaxOf(C)) return toast(`That would push you past your cyberware max of ${cwMaxOf(C)}.`);
+      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), cw:cwc, ram:parseInt($('#cfRam').value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
       toast(`${name} installed in ${SLOTMAP[t.dataset.slot][1]}.`, true);
       cyberForm = null; return csSave();
     }
@@ -1826,7 +1869,7 @@ $('#vCS').addEventListener('change', async e => {
     if (stunned()) return renderCS();
     const i = C.inv.find(x => x.id === t.dataset.hand); if (!i || !liveMe()) return renderCS();
     const target = players.find(p => p.id === to);
-    const ok = await sendPlayerOp(to, {kind:'item', item:{name:i.name, type:i.type, qty:1, stats:i.stats, hot:i.hot, tier:i.tier, fort:i.fort}});
+    const ok = await sendPlayerOp(to, {kind:'item', item:{name:i.name, type:i.type, qty:1, stats:i.stats, hot:i.hot, tier:i.tier, fort:i.fort, cw:i.cw}});
     if (ok){
       if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
       toast(`Handed ${i.name} to ${target ? target.name : 'them'}.`, true);
@@ -1838,13 +1881,14 @@ $('#vCS').addEventListener('change', async e => {
     if (stunned() || blocked('cyber')) return renderCS();
     const i = C.inv.find(x => x.id === t.dataset.install); if (!i) return;
     if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return renderCS(); }
+    if (cwLoad() + (i.cw || 0) > cwMaxOf(C)){ toast(`${i.name} costs ${i.cw} and would push you past your max of ${cwMaxOf(C)}.`); return renderCS(); }
     if (!canRip()){
       if (!i.hot){ toast('Only a RipperDoc can install that.'); return renderCS(); }
       if (ramCur() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return renderCS(); }
       C.ram = ramCur() - HOTSWAP_RAM;
     }
     const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
-    C.cyber.push({id:uid(), slot, name:i.name, hot:i.hot, ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
+    C.cyber.push({id:uid(), slot, name:i.name, hot:i.hot, cw:i.cw || 0, ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
     if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
     toast(`${i.name} installed in ${SLOTMAP[slot][1]}.`, true);
     return csSave();
@@ -1858,6 +1902,7 @@ $('#vCS').addEventListener('change', async e => {
   if (t.dataset.c && t.dataset.cf){
     const x = C.cyber.find(y => y.id === t.dataset.c); if (!x) return;
     if (t.dataset.cf === 'ram'){ x.ram = parseInt(t.value) || 0; return csSave(); }
+    if (t.dataset.cf === 'cw'){ x.cw = Math.max(0, parseInt(t.value) || 0); return csSave(); }
     if (t.dataset.cf === 'name'){ const v = t.value.trim(); if (v) x.name = v.slice(0, 60); else t.value = x.name; return saveC(); }
     x.effect = t.value.slice(0, 200); return saveC();
   }
@@ -2030,9 +2075,9 @@ function applyOp(op){
   let msg = '', sound = 'up', good = true;
   if (op.kind === 'item' && op.item && op.item.name){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
-    const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort;
-    const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort);
-    if (same) same.qty += q; else m.inv.push({id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort});
+    const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
+    const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
+    if (same) same.qty += q; else m.inv.push({id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw});
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
@@ -2060,6 +2105,13 @@ function applyOp(op){
     m.netHp = Math.max(0, Math.min(m.hpMax, cur + n));
     msg = n < 0 ? `The DM dealt ${-n} NET damage.` : `The DM restored ${n} NET HP.`; sound = n < 0 ? 'damage' : 'heal';
     if (cur > 0 && m.netHp === 0) setTimeout(() => flatline('net'), 50);
+  } else if (op.kind === 'cwDelta'){
+    const n = parseInt(op.amount) || 0, nl = Math.max(0, Math.min(cwMaxOf(m), cwLoad(m) + n));
+    m.cwAdj += nl - cwLoad(m);
+    msg = `The DM ${n > 0 ? 'added to' : 'lowered'} your cyberware tally. ${nl} / ${m.cwT}${nl > m.cwT ? `, Cyberpsychosis DC +${(nl - m.cwT) * 2}` : ''}.`; sound = n > 0 ? 'down' : 'up';
+  } else if (op.kind === 'cwSet'){
+    m.cwT = Math.max(0, parseInt(op.t) || 0); m.cwMax = Math.max(m.cwT, parseInt(op.max) || m.cwT);
+    msg = `The DM set your cyberware threshold to ${m.cwT}, max ${m.cwMax}.`; sound = 'select';
   } else if (op.kind === 'ramDelta'){
     const n = parseInt(op.amount) || 0, mx = ramMax(m), cur = ramNow(m);
     m.ram = Math.max(0, Math.min(mx, cur + n));
@@ -2070,17 +2122,18 @@ function applyOp(op){
     const i = m.inv.find(x => x.id === op.itemId), slot = SLOTMAP[op.slot];
     if (!i || i.type !== 'Cyberware' || !slot){ msg = `${who} tried to install something that isn't in your bag anymore.`; good = false; sound = 'deny'; }
     else if (m.cyber.filter(x => x.slot === op.slot).length >= slot[2]){ msg = `${who} couldn't install ${i.name}. Your ${slot[1]} slot is full.`; good = false; sound = 'deny'; }
+    else if (cwLoad(m) + (i.cw || 0) > cwMaxOf(m)){ msg = `${who} couldn't install ${i.name}. It would push you past your cyberware max of ${cwMaxOf(m)}.`; good = false; sound = 'deny'; }
     else {
       const r = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
-      m.cyber.push({id:uid(), slot:op.slot, name:i.name, hot:i.hot, ram:r ? parseInt(r[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
+      m.cyber.push({id:uid(), slot:op.slot, name:i.name, hot:i.hot, cw:i.cw || 0, ram:r ? parseInt(r[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
       if (i.qty > 1) i.qty--; else { m.inv = m.inv.filter(x => x !== i); fixEq(m); }
-      msg = `${who} installed ${i.name} in your ${slot[1]}.`; sound = 'equip';
+      msg = `${who} installed ${i.name} in your ${slot[1]}.${cwOver(m) ? ` Overflow ${cwOver(m)}, Cyberpsychosis DC +${cwOver(m) * 2}.` : ''}`; sound = 'equip';
     }
   } else if (op.kind === 'uninstall'){
     const x = m.cyber.find(y => y.id === op.cyberId);
     if (!x) return;
     m.cyber = m.cyber.filter(y => y !== x);
-    m.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
+    m.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
     msg = `${who} removed your ${x.name}. It's in your bag.`; sound = 'unequip';
   } else return;
   if (good && sound) sfx(sound);
@@ -2221,6 +2274,8 @@ function partyCard(p, dm){
         <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
         <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
         <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
+        <span class="ctl">Chrome</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button>
+          <span class="muted" style="font-size:11px">Thresh</span><input type="number" min="0" id="cwt-${k}" value="${m.cwT}" title="Threshold" aria-label="Threshold" style="width:54px"><span class="muted" style="font-size:11px">Max</span><input type="number" min="1" id="cwm-${k}" value="${cwMaxOf(m)}" title="Max" aria-label="Max" style="width:54px"><button class="btn small" data-live="cwset" data-u="${k}">Set</button></div>
         <span class="ctl">Eddies</span><div class="row"><button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button></div>
       </div>
       <div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
@@ -2238,6 +2293,7 @@ function partyCard(p, dm){
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
+        <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${m.cwT}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
         <div class="stat"><span>Cool bonuses</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}${dm ? ` <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button>` : ''}</span>`).join('')}</div>` : ''}
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
@@ -2289,7 +2345,7 @@ function liveHTML(){
     : `<div class="panel"><p>No one has joined yet. Share the code and have players hit Join on their own device.</p></div>`;
   const opts = sel => ITEM_TYPES.map(t => `<option ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
   const giveTargets = `<option value="">Library only</option><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}`;
-  const libRows = lib.length ? lib.map(i => `<div class="lrow"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${i.type}</span><span class="muted">${esc(i.stats || '')}</span>
+  const libRows = lib.length ? lib.map(i => `<div class="lrow"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
       <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
       <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
     : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
@@ -2305,6 +2361,7 @@ function liveHTML(){
       <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account on this browser and carries over between sessions.</p>
       ${libImport ? `<textarea id="libImpTxt" placeholder="Paste a copied library here"></textarea><div class="row gap"><button class="btn small primary" data-live="libimpgo">Import</button></div>` : ''}
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
+      <div class="row gap"><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
       <div style="margin-top:10px">${libRows}</div>
     </div>`;
@@ -2391,10 +2448,17 @@ $('#liveBody').addEventListener('click', async e => {
     if (await sendOp(u, {kind:'ramDelta', amount: a === 'ramd-' ? -n : n})) toast(`${a === 'ramd-' ? 'Drained ' + n + ' RAM from' : 'Added ' + n + ' RAM for'} ${pname(u)}.`, true);
     return;
   }
+  if (a === 'cw+' || a === 'cw-'){ if (await sendOp(u, {kind:'cwDelta', amount: a === 'cw+' ? 1 : -1})) toast(`Cyberware tally ${a === 'cw+' ? '+1' : '−1'} for ${pname(u)}.`, true); return; }
+  if (a === 'cwset'){
+    const tv = parseInt(($('#cwt-' + u) || {}).value), mv = parseInt(($('#cwm-' + u) || {}).value);
+    if (!(tv >= 0) || !(mv >= 1)) return toast('Enter a threshold and a max.');
+    if (await sendOp(u, {kind:'cwSet', t:tv, max:Math.max(mv, tv)})) toast(`Threshold ${tv}, max ${Math.max(mv, tv)} for ${pname(u)}.`, true);
+    return;
+  }
   if (a === 'ram'){ if (await sendOp(u, {kind:'ram'})) toast(`Restored RAM for ${pname(u)}.`, true); return; }
   if (a === 'give'){
     const it = lib.find(x => x.id === ($('#give-' + u) || {}).value); if (!it) return;
-    if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || ''}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
+    if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
     return;
   }
   if ((a === 'install' || a === 'uninstall') && LS.role === 'player'){
@@ -2448,13 +2512,13 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'starter'){ for (const [name, type, stats] of STARTER) await liveApi.setLibItem({id:uid(), name, type, qty:1, stats}).catch(() => {}); toast('Starter pack loaded.', true); return; }
   if (a === 'libadd'){
     const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
-    const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120)};
+    const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0)};
     const to = $('#liTo').value;
     try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
     $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
     if (to){
       const targets = to === '*' ? players.map(p => p.id) : [to];
-      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats}});
+      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats, cw:item.cw || 0}});
       toast(`${item.name} saved and sent to ${to === '*' ? 'everyone' : pname(to)}.`, true);
     } else toast(`${item.name} saved to your library.`, true);
     $('#liName').focus();
@@ -2464,7 +2528,7 @@ $('#liveBody').addEventListener('click', async e => {
     const it = lib.find(x => x.id === t.dataset.i); if (!it) return;
     const to = ($('#lg-' + it.id) || {}).value || '*';
     const targets = to === '*' ? players.map(p => p.id) : [to];
-    for (const id of targets) await sendOp(id, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || ''}});
+    for (const id of targets) await sendOp(id, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0}});
     toast(`Sent ${it.name} to ${to === '*' ? 'everyone' : pname(to)}.`, true);
     return;
   }
@@ -2476,7 +2540,7 @@ $('#liveBody').addEventListener('click', async e => {
       const arr = JSON.parse($('#libImpTxt').value);
       if (!Array.isArray(arr)) throw 0;
       let n = 0;
-      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120)}); n++; }
+      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0)}); n++; }
       libImport = false; toast(`Imported ${n} items.`, true); renderLive();
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
@@ -2622,6 +2686,8 @@ function classify(b){
     if (a === 'hack') return 'damage';
     if (/^(unhack|unhack1)$/.test(a)) return 'heal';
     if (a === 'cool+') return 'up';
+    if (a === 'cw+') return 'down';
+    if (a === 'cw-') return 'up';
   }
   if (b.matches('.tab, .vtabs button, #topnav a, .toc a')) return 'tab';
   if (txt === '+') return 'up';
