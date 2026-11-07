@@ -25,6 +25,9 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Copy save code gives a `DMN1.` code to paste into Import on another device or in Discord
 - Copy for DM gives one merc as readable JSON
 - Party database (on the roster) copies or downloads every merc on the device as one JSON file
+- Deleted mercs go to Recently deleted on the roster for 30 days, with Restore and Delete forever
+- Cloud saves (optional). Sign in with Google from the roster or the Live page. It links the browser's anonymous Firebase ID to the Google account, so nothing already saved is lost. After that every merc (notes included), portrait, hosted session and joined session lives under `users/{uid}` and follows you to any device you sign in on. Newest change wins per merc
+- Turn it on in Firebase under Authentication > Sign-in method > Google. Your site's domain has to be on the Authorized domains list
 
 ## Database format (for the DM)
 ```json
@@ -67,6 +70,9 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Disconnect keeps a player's merc in the party (shown offline). Next week they hit Rejoin. Leave party removes them
 - Anything the DM sends while a player is offline lands on their sheet when they reconnect
 - New device? Enter the code and hit Restore to pull your merc (and portrait) from the session. The DM's dashboard drops the old copy on its own
+- Activity log. Every change to a merc in a session (HP, NET HP, RAM, eddies, items, gear, perks, levels, stats, cyberware, hacks, Cool, notes) is written to `sessions/{code}/log`, newest first, grouped by day. Changes from the DM or another player are tagged. Edits made between sessions are logged when the player reconnects. The DM can filter by merc or clear it
+- Party backups. The DM's page keeps a copy of every merc that plays in `dms/{uid}/party`. Send back (or Restore merc on the party card) puts a deleted merc back on the player's roster. Copy save code works for players who left the party
+- Session notes for the DM, private, saved per session in `dms/{uid}/notes/{code}`
 - Players see a live party view with everyone's portrait, HP, NET HP, RAM, eddies, weapons and items
 - Portraits are cropped to 256x256 JPEGs and stored in Firestore (no Firebase Storage needed, so it stays on the free plan)
 - Only a merc with the TEC Legend perk RipperDoc (`TEC.B.l`) can install or remove cyberware, in themselves or (in a live session) in other players. The DM can too. The rules enforce this server-side

@@ -33,6 +33,14 @@ service cloud.firestore {
         allow write: if isDM();
       }
 
+      // Change log. Players add entries about their own merc, the DM can add or clear them.
+      match /log/{id} {
+        allow read: if signedIn();
+        allow create: if (isDM() || (isMember() && request.resource.data.uid == request.auth.uid))
+          && request.resource.data.lines is list && request.resource.data.lines.size() <= 20;
+        allow delete: if isDM();
+      }
+
       // Each player writes only their own merc. The DM can remove players.
       match /players/{uid} {
         allow read: if signedIn();
@@ -62,6 +70,22 @@ service cloud.firestore {
     // Each DM's private NPC stats (HP, advantage, notes). DM only.
     match /dms/{uid}/npcs/{id} {
       allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Each DM's party backups and session notes. DM only.
+    match /dms/{uid}/party/{id} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+    match /dms/{uid}/notes/{code} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Cloud saves. Each account reads and writes only its own mercs, portraits and session lists.
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+      match /{rest=**} {
+        allow read, write: if signedIn() && request.auth.uid == uid;
+      }
     }
   }
 }

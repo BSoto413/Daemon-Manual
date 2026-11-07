@@ -85,6 +85,19 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 @keyframes stepin{0%{opacity:0;transform:translateX(14px);filter:hue-rotate(120deg) brightness(1.8)}40%{filter:none}100%{opacity:1;transform:none}}
 .wnav{display:flex;gap:10px;margin-top:18px}
 .bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.acct{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;border:1px solid rgba(47,230,240,.2);background:rgba(10,10,18,.75)}
+.acct .t{flex:1;min-width:220px;font-size:14px}.acct .t b{color:#fff;font-family:Orbitron,sans-serif;font-weight:500;letter-spacing:.06em;font-size:13px}
+.acct .on{color:var(--cyan)}
+.trow{grid-template-columns:auto 1fr 2fr auto!important;align-items:center}
+@media (max-width:720px){.trow{grid-template-columns:auto 1fr!important}}
+.logday{font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:.14em;color:var(--yellow);margin:16px 0 6px;text-transform:uppercase}
+.logrow{display:grid;grid-template-columns:64px auto 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid rgba(47,230,240,.12)}
+.logrow .tm{font-size:12px;color:var(--muted);padding-top:4px}
+.logrow .who{color:#fff}.logrow .via{font-size:11px;color:var(--yellow);margin-left:6px;letter-spacing:.06em}
+.logrow ul{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.logrow li{font-size:13px;padding:2px 8px;border:1px solid rgba(47,230,240,.22);background:rgba(47,230,240,.05)}
+.logrow li.bad{border-color:rgba(255,74,94,.45);color:#ffb3bd}.logrow li.good{border-color:rgba(255,230,0,.4);color:#fff6a8}
+.loglist{max-height:520px;overflow:auto;padding-right:6px}
 .bgs.roles{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 .bg .rk{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:.12em;color:var(--yellow)}
 .statgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:18px}
@@ -764,7 +777,9 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
     <!-- ROSTER -->
     <div id="vRoster">
+      <div id="acctBar"></div>
       <div class="roster" id="roster"></div>
+      <div id="trashBox"></div>
       <div class="panel gap" id="dbPanel">
         <div class="row"><div style="flex:1;min-width:220px"><h3>Party database</h3><p class="muted" style="margin-top:6px;font-size:14px">Every merc on this device as one JSON file. The DM can update inventory, cyberware or HP in it, then import it back here to apply the changes.</p></div>
         <button class="btn" id="dbCopy">Copy database</button><button class="btn" id="dbDl">Download database</button></div>
@@ -1024,7 +1039,9 @@ const glyph = p => p.unknown ? '?' : p.n.split(/\s+/).filter(w => /^[A-Za-z]/.te
 const KEY = 'daemon-mercs-v1';
 let DB = {chars:[], current:null};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
-function persist(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); }
+if (!Array.isArray(DB.trash)) DB.trash = [];
+DB.trash = DB.trash.filter(x => x && x.merc && Date.now() - (x.at || 0) < 30 * 864e5);
+function persist(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
 let C = null;       // current character
@@ -1055,6 +1072,7 @@ function normalize0(c){
     name: String(c.name || 'Unnamed Merc').slice(0, 32),
     background: bg,
     role: ROLES[c.role] ? c.role : '',
+    savedAt: +c.savedAt || 0,
     bgSkills: (c.bgSkills || []).filter(s => BACKGROUNDS[bg].skills.includes(s)).slice(0, 2),
     base,
     asi: (c.asi || []).filter(k => ORDER.includes(k)),
@@ -1165,7 +1183,29 @@ function renderRoster(){
   }).join('');
   r.innerHTML = `<button class="card new" id="newMerc"><span class="plus">+</span><span class="nm" style="font-size:15px">Create a merc</span><span class="sub">Name, background, stats, then jack in</span></button>` + cards +
     `<button class="card new" id="openImport"><span class="plus">⇣</span><span class="nm" style="font-size:15px">Import a merc</span><span class="sub">From a save code or file</span></button>`;
+  const tb = $('#trashBox');
+  if (tb) tb.innerHTML = DB.trash.length ? `<div class="panel gap"><div class="row"><h3>Recently deleted</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Deleted mercs wait here for 30 days in case you change your mind.</span></div>
+    ${DB.trash.map(x => { const m = normalize(x.merc); return `<div class="lrow trow">${avatar(m, 'av sm')}<span class="n">${esc(m.name)}</span><span class="muted">${m.background}${m.role ? ' · ' + m.role : ''} · Level ${m.level} · deleted ${ago(x.at)}</span>
+      <div class="row" style="justify-content:flex-end"><button class="btn small primary" data-untrash="${m.id}">Restore</button><button class="btn small ${pendingPurge === m.id ? 'danger' : ''}" data-purge="${m.id}">${pendingPurge === m.id ? 'Confirm' : 'Delete forever'}</button></div></div>`; }).join('')}</div>` : '';
+  renderAcct();
 }
+let pendingPurge = null;
+$('#trashBox').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.untrash){
+    const x = DB.trash.find(y => y.merc.id === t.dataset.untrash); if (!x) return;
+    const m = normalize(x.merc); m.savedAt = Date.now();
+    DB.trash = DB.trash.filter(y => y !== x);
+    if (!DB.chars.some(c => c.id === m.id)) DB.chars.push(m);
+    persist(); renderRoster(); sfx('up'); toast(`${m.name} is back.`, true);
+  }
+  if (t.dataset.purge){
+    if (pendingPurge !== t.dataset.purge){ pendingPurge = t.dataset.purge; return renderRoster(); }
+    const id = t.dataset.purge; pendingPurge = null;
+    DB.trash = DB.trash.filter(y => y.merc.id !== id);
+    persist(); cloudPurge(id); renderRoster();
+  }
+});
 $('#roster').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.id === 'newMerc') return startWizard();
@@ -1176,9 +1216,10 @@ $('#roster').addEventListener('click', e => {
     if (pendingDelete === t.dataset.del){
       const c = DB.chars.find(x => x.id === t.dataset.del);
       DB.chars = DB.chars.filter(x => x.id !== t.dataset.del);
+      if (c) DB.trash = [{merc:normalize(c), at:Date.now()}, ...DB.trash.filter(x => x.merc.id !== c.id)].slice(0, 15);
       if (DB.current === t.dataset.del) DB.current = null;
       pendingDelete = null; persist(); renderRoster();
-      toast(`${c ? c.name : 'Merc'} flatlined.`);
+      toast(`${c ? c.name : 'Merc'} moved to Recently deleted.`);
     } else { pendingDelete = t.dataset.del; renderRoster(); }
   }
 });
@@ -2027,7 +2068,7 @@ const npcCrit = n => n.hpMax > 0 && n.hp > 0 && n.hp / n.hpMax < .3;
 const npcDown = n => n.hpMax > 0 && n.hp <= 0;
 const JOINED_KEY = 'daemon-joined';
 const joined = () => { try { return JSON.parse(localStorage.getItem(JOINED_KEY)) || []; } catch(e){ return []; } };
-const saveJoined = j => { try { localStorage.setItem(JOINED_KEY, JSON.stringify(j.slice(0, 6))); } catch(e){} };
+const saveJoined = j => { try { localStorage.setItem(JOINED_KEY, JSON.stringify(j.slice(0, 6))); } catch(e){} pushUser(); };
 const isOnline = p => Date.now() - (p.seen || 0) < 150000;
 function dedupe(list){
   const best = {}, stale = [];
@@ -2042,7 +2083,7 @@ function dedupe(list){
 const seenOps = new Set();
 const saveLS = () => { try { LS ? localStorage.setItem(LS_KEY, JSON.stringify(LS)) : localStorage.removeItem(LS_KEY); } catch(e){} };
 const hosted = () => { try { return JSON.parse(localStorage.getItem(HOSTED_KEY)) || []; } catch(e){ return []; } };
-const saveHosted = h => { try { localStorage.setItem(HOSTED_KEY, JSON.stringify(h.slice(0, 8))); } catch(e){} };
+const saveHosted = h => { try { localStorage.setItem(HOSTED_KEY, JSON.stringify(h.slice(0, 8))); } catch(e){} pushUser(); };
 const genCode = () => { const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)]; return c; };
 const ago = t => { if (!t) return 'never'; const s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'just now' : s < 3600 ? Math.round(s / 60) + ' min ago' : Math.round(s / 3600) + ' h ago'; };
 
@@ -2088,7 +2129,35 @@ async function firebaseLive(){
     setPortrait: (code, u, data) => F.setDoc(d('sessions', code, 'portraits', u), data),
     removePortrait: (code, u) => F.deleteDoc(d('sessions', code, 'portraits', u)),
     setLibItem: it => F.setDoc(d('dms', uid, 'library', it.id), it),
-    delLibItem: id => F.deleteDoc(d('dms', uid, 'library', id))
+    delLibItem: id => F.deleteDoc(d('dms', uid, 'library', id)),
+    account(){ const u = auth.currentUser, g = u && u.providerData.find(x => x.providerId === 'google.com'); return {google:!!g, email:g ? g.email || '' : '', name:g ? g.displayName || '' : ''}; },
+    async linkGoogle(){
+      const prov = new A.GoogleAuthProvider();
+      try { await A.linkWithPopup(auth.currentUser, prov); return {switched:false}; }
+      catch(e){
+        if (e.code !== 'auth/credential-already-in-use' && e.code !== 'auth/email-already-in-use') throw e;
+        const cred = A.GoogleAuthProvider.credentialFromError(e); if (!cred) throw e;
+        await A.signInWithCredential(auth, cred); return {switched:true};
+      }
+    },
+    signOut: () => A.signOut(auth),
+    watchUser: cb => F.onSnapshot(d('users', uid), s => cb(s.exists() ? s.data() : null), onErr),
+    setUser: data => F.setDoc(d('users', uid), data, {merge:true}),
+    watchMercsCloud: cb => F.onSnapshot(c('users', uid, 'mercs'), q => cb(list(q)), onErr),
+    setMercCloud: (id, data) => F.setDoc(d('users', uid, 'mercs', id), data),
+    delMercCloud: id => F.deleteDoc(d('users', uid, 'mercs', id)),
+    watchPicsCloud: cb => F.onSnapshot(c('users', uid, 'pics'), q => cb(list(q)), onErr),
+    setPicCloud: (id, img) => F.setDoc(d('users', uid, 'pics', id), {img}),
+    delPicCloud: id => F.deleteDoc(d('users', uid, 'pics', id)),
+    async getPlayer(code, u){ const s = await F.getDoc(d('sessions', code, 'players', u)); return s.exists() ? s.data() : null; },
+    watchLog: (code, cb) => F.onSnapshot(F.query(c('sessions', code, 'log'), F.orderBy('at', 'desc'), F.limit(150)), q => cb(list(q)), onErr),
+    addLog: (code, e) => F.addDoc(c('sessions', code, 'log'), e),
+    async clearLog(code){ const q = await F.getDocs(c('sessions', code, 'log')); await Promise.all(q.docs.map(x => F.deleteDoc(x.ref))); },
+    watchBackups: cb => F.onSnapshot(c('dms', uid, 'party'), q => cb(list(q)), onErr),
+    setBackup: (id, data) => F.setDoc(d('dms', uid, 'party', id), data),
+    delBackup: id => F.deleteDoc(d('dms', uid, 'party', id)),
+    watchSessNotes: (code, cb) => F.onSnapshot(d('dms', uid, 'notes', code), s => cb(s.exists() ? s.data() : null), onErr),
+    setSessNotes: (code, data) => F.setDoc(d('dms', uid, 'notes', code), data)
   };
 }
 function mockLive(){
@@ -2101,6 +2170,7 @@ function mockLive(){
   const coll = pre => { const db = read(); return Object.keys(db).filter(k => k.startsWith(pre + '/') && !k.slice(pre.length + 1).includes('/')).map(k => ({id:k.slice(pre.length + 1), ...db[k]})); };
   const watch = (get, cb) => { const f = () => cb(get()); subs.add(f); setTimeout(f, 0); return () => subs.delete(f); };
   const mut = fn => { const db = read(); fn(db); write(db); };
+  const GK = 'daemon-mock-google', gmap = () => { try { return JSON.parse(localStorage.getItem(GK)) || {}; } catch(e){ return {}; } };
   return {
     uid,
     async createSession(code, data){ const db = read(); if (db['sessions/' + code]) throw new Error('exists'); db['sessions/' + code] = data; write(db); },
@@ -2129,15 +2199,308 @@ function mockLive(){
     async setPortrait(code, u, data){ mut(db => db[`sessions/${code}/portraits/${u}`] = data); },
     async removePortrait(code, u){ mut(db => delete db[`sessions/${code}/portraits/${u}`]); },
     async setLibItem(it){ mut(db => db[`dms/${uid}/library/${it.id}`] = it); },
-    async delLibItem(id){ mut(db => delete db[`dms/${uid}/library/${id}`]); }
+    async delLibItem(id){ mut(db => delete db[`dms/${uid}/library/${id}`]); },
+    account(){ const m = gmap(), e = Object.keys(m).find(k => m[k] === uid); return {google:!!e, email:e || '', name:e ? e.split('@')[0] : ''}; },
+    async linkGoogle(){
+      const email = localStorage.getItem('daemon-mock-email') || 'boog@test.dev', m = gmap();
+      if (m[email] && m[email] !== uid){ sessionStorage.setItem('mock-uid', m[email]); return {switched:true}; }
+      m[email] = uid; localStorage.setItem(GK, JSON.stringify(m)); return {switched:false};
+    },
+    async signOut(){ sessionStorage.removeItem('mock-uid'); },
+    watchUser: cb => watch(() => read()['users/' + uid] || null, cb),
+    async setUser(data){ mut(db => db['users/' + uid] = {...(db['users/' + uid] || {}), ...data}); },
+    watchMercsCloud: cb => watch(() => coll(`users/${uid}/mercs`), cb),
+    async setMercCloud(id, data){ mut(db => db[`users/${uid}/mercs/${id}`] = data); },
+    async delMercCloud(id){ mut(db => delete db[`users/${uid}/mercs/${id}`]); },
+    watchPicsCloud: cb => watch(() => coll(`users/${uid}/pics`), cb),
+    async setPicCloud(id, img){ mut(db => db[`users/${uid}/pics/${id}`] = {img}); },
+    async delPicCloud(id){ mut(db => delete db[`users/${uid}/pics/${id}`]); },
+    async getPlayer(code, u){ return read()[`sessions/${code}/players/${u}`] || null; },
+    watchLog: (code, cb) => watch(() => coll(`sessions/${code}/log`).sort((a, b) => b.at - a.at).slice(0, 150), cb),
+    async addLog(code, e){ mut(db => db[`sessions/${code}/log/${Math.random().toString(36).slice(2)}`] = e); },
+    async clearLog(code){ mut(db => Object.keys(db).filter(k => k.startsWith(`sessions/${code}/log/`)).forEach(k => delete db[k])); },
+    watchBackups: cb => watch(() => coll(`dms/${uid}/party`), cb),
+    async setBackup(id, data){ mut(db => db[`dms/${uid}/party/${id}`] = data); },
+    async delBackup(id){ mut(db => delete db[`dms/${uid}/party/${id}`]); },
+    watchSessNotes: (code, cb) => watch(() => read()[`dms/${uid}/notes/${code}`] || null, cb),
+    async setSessNotes(code, data){ mut(db => db[`dms/${uid}/notes/${code}`] = data); }
   };
 }
 let apiPromise = null;
 function getLive(){
-  if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).catch(e => { apiPromise = null; throw e; });
+  if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).then(acctReady).catch(e => { apiPromise = null; throw e; });
   return apiPromise;
 }
-function stopAll(){ npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+function stopAll(){ logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+
+/* ---- account + cloud saves ---- */
+const ACCT_KEY = 'daemon-acct';
+let ACCT = {google:false, email:'', name:''}, acctBusy = false, acctErr = '', acctOut = false, cloudApi = null, cloudUnsubs = [];
+let cloudReady = false, picsReady = false, cloudT = null, userT = null;
+const cloudSeen = {}, picSeen = {}, picsCloud = {};
+const acctFlag = () => { try { return localStorage.getItem(ACCT_KEY) === '1'; } catch(e){ return false; } };
+const picHash = p => p ? p.length + ':' + p.slice(-48) : '';
+const mercSig = c => { const n = normalize(c); delete n.savedAt; n.portrait = null; return JSON.stringify(n); };
+function writeLocal(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} }
+function acctReady(api){
+  ACCT = api.account();
+  try { ACCT.google ? localStorage.setItem(ACCT_KEY, '1') : localStorage.removeItem(ACCT_KEY); } catch(e){}
+  if (ACCT.google) cloudStart(api);
+  renderAcct(); return api;
+}
+function acctHTML(){
+  if (!LIVE_OK) return '';
+  const err = acctErr ? `<p class="err" style="width:100%;margin:0">${esc(acctErr)}</p>` : '';
+  if (acctBusy) return `<div class="acct"><div class="t"><b>CLOUD SAVES</b> <span class="muted">Connecting…</span></div></div>`;
+  if (ACCT.google) return `<div class="acct"><div class="t"><b class="on">CLOUD SAVES ON</b> <span class="muted">Signed in as ${esc(ACCT.email || ACCT.name)}. Your mercs, notes, sessions and DM library follow you to any device you sign in on.</span></div>
+    <button class="btn small ${acctOut ? 'danger' : ''}" data-acct="out">${acctOut ? 'Confirm sign out' : 'Sign out'}</button>${err}</div>`;
+  return `<div class="acct"><div class="t"><b>CLOUD SAVES</b> <span class="muted">Sign in with Google to keep your mercs, notes, sessions and DM library on every device. Without it everything stays in this browser.</span></div>
+    <button class="btn small primary" data-acct="in">Sign in with Google</button>${err}</div>`;
+}
+function renderAcct(){
+  const h = acctHTML(), a = $('#acctBar'), b = $('#acctLive');
+  if (a) a.innerHTML = h; if (b) b.innerHTML = h;
+}
+document.addEventListener('click', async e => {
+  const t = e.target.closest('[data-acct]'); if (!t) return;
+  if (t.dataset.acct === 'in'){
+    acctBusy = true; acctErr = ''; renderAcct();
+    try {
+      const api = await getLive();
+      const r = await api.linkGoogle();
+      try { localStorage.setItem(ACCT_KEY, '1'); } catch(err){}
+      if (r.switched){ toast('Signed in. Pulling your saves…', true); setTimeout(() => location.reload(), 700); return; }
+      acctBusy = false; acctReady(api); toast('Cloud saves are on.', true); sfx('up');
+    } catch(err){
+      console.error(err); acctBusy = false;
+      const c = err && err.code || '';
+      acctErr = c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request' ? ''
+        : c === 'auth/operation-not-allowed' ? "Google sign-in isn't turned on in Firebase yet."
+        : c === 'auth/unauthorized-domain' ? "This web address isn't on Firebase's authorized domains list."
+        : c === 'auth/popup-blocked' ? 'Your browser blocked the sign-in popup. Allow popups for this site and try again.'
+        : "Couldn't sign in. Try again.";
+      renderAcct();
+    }
+  }
+  if (t.dataset.acct === 'out'){
+    if (!acctOut){ acctOut = true; return renderAcct(); }
+    acctOut = false;
+    try { if (LS) await leaveLive(false); const api = await getLive(); await api.signOut(); } catch(err){ console.error(err); }
+    try { localStorage.removeItem(ACCT_KEY); } catch(err){}
+    toast('Signed out. Your mercs stay on this device.'); setTimeout(() => location.reload(), 700);
+  }
+});
+function cloudStart(api){
+  if (cloudApi) return;
+  cloudApi = api;
+  cloudUnsubs.push(api.watchPicsCloud(list => cloudPics(list)));
+  cloudUnsubs.push(api.watchMercsCloud(list => cloudMerge(list)));
+  cloudUnsubs.push(api.watchUser(u => userMerge(u)));
+}
+function refreshOpen(){
+  if (!C) return;
+  const fresh = DB.chars.find(x => x.id === C.id);
+  if (!fresh){ C = null; if (!$('#vSheet').hidden){ show('roster'); renderRoster(); } return; }
+  if (fresh !== C){ C = normalize(fresh); DB.chars[DB.chars.indexOf(fresh)] = C; if (!$('#vSheet').hidden) requestAnimationFrame(build); }
+}
+function cloudPics(list){
+  let changed = false;
+  list.forEach(x => {
+    const h = picHash(x.img); picsCloud[x.id] = x.img; picSeen[x.id] = h;
+    const m = DB.chars.find(c => c.id === x.id);
+    if (m && picHash(m.portrait) !== h){ m.portrait = x.img; changed = true; }
+  });
+  picsReady = true;
+  if (changed){ writeLocal(); renderRoster(); refreshOpen(); }
+  scheduleCloud();
+}
+function cloudMerge(list){
+  let changed = false;
+  list.forEach(doc => {
+    const lc = DB.chars.find(x => x.id === doc.id), lt = DB.trash.find(x => x.merc.id === doc.id);
+    if (doc.deleted){
+      cloudSeen[doc.id] = 'deleted:' + (doc.deletedAt || 0);
+      if (lc && (doc.deletedAt || 0) > (+lc.savedAt || 0)){
+        DB.chars = DB.chars.filter(x => x !== lc);
+        if (!lt) DB.trash.unshift({merc:normalize(lc), at:doc.deletedAt});
+        if (DB.current === lc.id) DB.current = null;
+        changed = true;
+      } else if (!lc && !lt && doc.merc){ DB.trash.unshift({merc:normalize(doc.merc), at:doc.deletedAt}); changed = true; }
+      return;
+    }
+    if (!doc.merc) return;
+    const cm = normalize({...doc.merc, savedAt:doc.savedAt || doc.merc.savedAt});
+    cloudSeen[doc.id] = mercSig(cm);
+    cm.portrait = picsCloud[cm.id] || (lc && lc.portrait) || (lt && lt.merc.portrait) || null;
+    if (!lc){
+      if (lt && (lt.at || 0) > (cm.savedAt || 0)) return;
+      DB.chars.push(cm); DB.trash = DB.trash.filter(x => x.merc.id !== cm.id); changed = true; return;
+    }
+    if (mercSig(lc) === cloudSeen[doc.id]) return;
+    if ((cm.savedAt || 0) > (+lc.savedAt || 0)){ DB.chars[DB.chars.indexOf(lc)] = cm; changed = true; }
+  });
+  DB.trash.sort((a, b) => (b.at || 0) - (a.at || 0));
+  cloudReady = true;
+  if (changed){ writeLocal(); renderRoster(); refreshOpen(); }
+  scheduleCloud();
+}
+function scheduleCloud(){
+  if (!cloudApi || !cloudReady) return;
+  clearTimeout(cloudT); cloudT = setTimeout(cloudPush, 1200);
+}
+function cloudPush(){
+  if (!cloudApi || !cloudReady) return;
+  const api = cloudApi, now = Date.now(), jobs = [];
+  DB.chars.forEach((raw, i) => {
+    const sig = mercSig(raw);
+    if (cloudSeen[raw.id] !== sig){
+      const m = normalize(raw); m.savedAt = now; raw.savedAt = now;
+      if (C && C.id === raw.id) C.savedAt = now;
+      cloudSeen[raw.id] = sig;
+      jobs.push(api.setMercCloud(m.id, {merc:{...m, portrait:null}, savedAt:now, name:m.name}));
+    }
+    if (picsReady){
+      const h = picHash(raw.portrait);
+      if (picSeen[raw.id] !== h && (h || picSeen[raw.id])){
+        picSeen[raw.id] = h;
+        jobs.push(h ? api.setPicCloud(raw.id, raw.portrait) : api.delPicCloud(raw.id));
+      }
+    }
+  });
+  DB.trash.forEach(x => {
+    const k = 'deleted:' + (x.at || 0);
+    if (cloudSeen[x.merc.id] !== k && !DB.chars.some(c => c.id === x.merc.id)){
+      cloudSeen[x.merc.id] = k;
+      jobs.push(api.setMercCloud(x.merc.id, {deleted:true, deletedAt:x.at || now, merc:{...normalize(x.merc), portrait:null}, name:x.merc.name}));
+    }
+  });
+  if (jobs.length){ writeLocal(); Promise.all(jobs).catch(e => { console.error(e); toast("Couldn't save to the cloud. It'll try again on your next change."); Object.keys(cloudSeen).forEach(k => delete cloudSeen[k]); }); }
+}
+function cloudPurge(id){
+  if (!cloudApi) return;
+  delete cloudSeen[id];
+  cloudApi.delMercCloud(id).catch(() => {}); cloudApi.delPicCloud(id).catch(() => {});
+}
+function userMerge(u){
+  u = u || {};
+  const hs = hosted(), js = joined();
+  const H = [...hs, ...(u.hosted || []).filter(h => !hs.some(x => x.code === h.code))];
+  const J = [...js, ...(u.joined || []).filter(j => !js.some(x => x.code === j.code && x.mercId === j.mercId))];
+  try { localStorage.setItem(HOSTED_KEY, JSON.stringify(H.slice(0, 8))); localStorage.setItem(JOINED_KEY, JSON.stringify(J.slice(0, 6))); } catch(e){}
+  if (JSON.stringify(H.slice(0, 8)) !== JSON.stringify(u.hosted || []) || JSON.stringify(J.slice(0, 6)) !== JSON.stringify(u.joined || [])) pushUser();
+  if (liveState !== 'on') renderLive();
+}
+function pushUser(){
+  if (!cloudApi) return;
+  clearTimeout(userT); userT = setTimeout(() => cloudApi.setUser({hosted:hosted(), joined:joined(), updatedAt:Date.now()}).catch(() => {}), 800);
+}
+
+/* ---- change log ---- */
+let logs = [], logFilter = '', logBase = null, logT = null, logClear = false;
+const hpOf = c => c.hpMax ? (c.hp == null ? c.hpMax : c.hp) : null;
+const netOf = c => c.hpMax ? (c.netHp == null ? c.hpMax : c.netHp) : null;
+const itemLabel = i => i.name + (i.tier ? ' ' + MK[i.tier] : '') + (i.fort ? ' (fortified)' : '');
+function diffMerc(a, b){
+  const L = [], add = (t, k) => L.push(k ? {t, k} : {t});
+  if (a.name !== b.name) add(`Renamed to ${b.name}`);
+  if (a.role !== b.role) add(`Role ${b.role || 'cleared'}`);
+  if (a.level !== b.level) add(`Level ${a.level} → ${b.level}`, b.level > a.level ? 'good' : '');
+  ORDER.forEach(k => { const x = score(k, a), y = score(k, b); if (x !== y) add(`${k} ${x} → ${y}`, y > x ? 'good' : ''); });
+  if (a.hpMax !== b.hpMax) add(`Max HP ${a.hpMax ?? 'unset'} → ${b.hpMax ?? 'unset'}`);
+  const h1 = hpOf(a), h2 = hpOf(b);
+  if (h1 != null && h2 != null && h1 !== h2 && a.hpMax === b.hpMax) add(`HP ${h1} → ${h2}${h2 === 0 ? ' · FLATLINED' : ''}`, h2 < h1 ? 'bad' : 'good');
+  const n1 = netOf(a), n2 = netOf(b);
+  if (n1 != null && n2 != null && n1 !== n2 && a.hpMax === b.hpMax) add(`NET HP ${n1} → ${n2}`, n2 < n1 ? 'bad' : 'good');
+  const r1 = ramNow(a), r2 = ramNow(b), m1 = ramMax(a), m2 = ramMax(b);
+  if (r1 !== r2 || m1 !== m2) add(`RAM ${r1}/${m1} → ${r2}/${m2}${isOverheated(b) && !isOverheated(a) ? ' · OVERHEATED' : ''}`, r2 < r1 ? 'bad' : 'good');
+  if (a.eddies !== b.eddies) add(`${b.eddies > a.eddies ? '+' : '−'}${Math.abs(b.eddies - a.eddies)} €$ (now ${b.eddies})`, b.eddies > a.eddies ? 'good' : '');
+  if (a.cool !== b.cool) add(`Cool bonuses ${a.cool} → ${b.cool}`, b.cool > a.cool ? 'good' : '');
+  if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
+  b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
+  a.hacks.filter(h => !b.hacks.includes(h)).forEach(h => add(`${HACKS[h].n} cleared`, 'good'));
+  const ps = k => { const [st, ...sl] = k.split('.'); return perk(st, sl.join('.')).n; };
+  b.unlocked.filter(k => !a.unlocked.includes(k)).forEach(k => add(`Unlocked ${ps(k)}`, 'good'));
+  a.unlocked.filter(k => !b.unlocked.includes(k)).forEach(k => add(`Refunded ${ps(k)}`));
+  const cnt = c => { const o = {}; c.inv.forEach(i => { const l = itemLabel(i); o[l] = (o[l] || 0) + (i.qty || 0); }); return o; };
+  const ia = cnt(a), ib = cnt(b);
+  [...new Set([...Object.keys(ia), ...Object.keys(ib)])].forEach(l => {
+    const d = (ib[l] || 0) - (ia[l] || 0);
+    if (d > 0) add(`+${d > 1 ? d + ' ' : ''}${l}`, 'good'); else if (d < 0) add(`−${d < -1 ? -d + ' ' : ''}${l}`);
+  });
+  const eqn = (c, k) => { const i = c.inv.find(x => x.id === c.eq[k]); return i ? itemLabel(i) : ''; };
+  ['primary', 'secondary'].forEach(k => { const x = eqn(a, k), y = eqn(b, k); if (x !== y) add(y ? `Equipped ${y} as ${k}` : `Unequipped ${k}`); });
+  b.cyber.filter(x => !a.cyber.some(y => y.id === x.id)).forEach(x => add(`Installed ${x.name}${x.hot ? ' (hot)' : ''}`, 'good'));
+  a.cyber.filter(x => !b.cyber.some(y => y.id === x.id)).forEach(x => add(`Removed ${x.name}`));
+  const w1 = cwLoad(a), w2 = cwLoad(b);
+  if (w1 !== w2) add(`Cyberware ${w1} → ${w2} of ${b.cwT}${cwOver(b) ? ` · DC +${cwOver(b) * 2}` : ''}`, w2 > w1 ? 'bad' : '');
+  if (a.cwT !== b.cwT || a.cwMax !== b.cwMax) add(`Cyberware threshold ${b.cwT}, max ${b.cwMax}`);
+  if (a.notes !== b.notes) add('Updated notes');
+  return L;
+}
+function scheduleLog(){ clearTimeout(logT); logT = setTimeout(() => flushLog(''), 3000); }
+function flushLog(via){
+  clearTimeout(logT);
+  if (!LS || LS.role !== 'player' || !liveApi || liveState !== 'on' || !logBase) return;
+  const raw = DB.chars.find(x => x.id === LS.mercId); if (!raw) return;
+  const cur = normalize(raw);
+  if (cur.id !== logBase.id){ logBase = cur; return; }
+  const lines = diffMerc(logBase, cur); logBase = cur;
+  if (!lines.length) return;
+  liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:cur.id, name:cur.name, via:via || '', lines:lines.slice(0, 20)}).catch(e => console.error(e));
+}
+function logHTML(dm){
+  const who = [...new Map(logs.map(l => [l.mercId, l.name])).entries()];
+  const shown = logs.filter(l => !logFilter || l.mercId === logFilter);
+  let day = '';
+  const rows = shown.map(l => {
+    const d = new Date(l.at || 0), dl = d.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
+    const head = dl !== day ? `<div class="logday">${esc(dl)}</div>` : ''; day = dl;
+    const p = players.find(x => x.mercId === l.mercId);
+    return `${head}<div class="logrow"><span class="tm">${d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>${avatar({name:l.name || '?', portrait:null}, 'av sm', p ? portraits[p.id] : null)}
+      <div><span class="who">${esc(l.name || 'Merc')}</span>${l.via ? `<span class="via">${esc(l.via.toUpperCase())}</span>` : ''}<ul>${(l.lines || []).map(x => `<li class="${x.k === 'bad' ? 'bad' : x.k === 'good' ? 'good' : ''}">${esc(x.t)}</li>`).join('')}</ul></div></div>`;
+  }).join('');
+  return `<div class="panel gap"><div class="row"><h3>Activity</h3><span class="spacer"></span>
+      <select id="logWho" aria-label="Filter by merc"><option value="">Everyone</option>${who.map(([id, n]) => `<option value="${esc(id)}" ${logFilter === id ? 'selected' : ''}>${esc(n || 'Merc')}</option>`).join('')}</select>
+      ${dm && logs.length ? `<button class="btn small ${logClear ? 'danger' : ''}" data-live="logclear">${logClear ? 'Confirm clear' : 'Clear log'}</button>` : ''}</div>
+    <p class="muted" style="font-size:13px;margin:6px 0 4px">Every change to a merc in this session, newest first. It stays with the session week to week, and changes made between sessions show up when the player reconnects.</p>
+    <div class="loglist">${rows || '<p class="muted" style="margin-top:10px">Nothing yet. Changes show up here as people play.</p>'}</div></div>`;
+}
+$('#liveBody').addEventListener('change', e => {
+  if (e.target.id === 'logWho'){ logFilter = e.target.value; renderLive(); }
+});
+
+/* ---- DM party backups + session notes ---- */
+let backups = [], backupsReady = false, backupT = null, bkDel = null, sessNotes = '', notesT2 = null;
+const bkSeen = {};
+const bkSig = m => { const n = normalize(m); delete n.savedAt; n.portrait = null; return JSON.stringify(n); };
+function scheduleBackup(){ clearTimeout(backupT); backupT = setTimeout(doBackup, 4000); }
+function doBackup(){
+  if (!LS || LS.role !== 'dm' || !liveApi || !backupsReady) return;
+  players.forEach(p => {
+    if (!p.merc || !p.mercId) return;
+    const sig = bkSig(p.merc);
+    if (bkSeen[p.mercId] === sig) return;
+    bkSeen[p.mercId] = sig;
+    liveApi.setBackup(p.mercId, {merc:{...normalize(p.merc), portrait:null}, name:p.merc.name, playerUid:p.id, code:LS.code, sname:sessMeta && sessMeta.name || '', at:Date.now()}).catch(e => console.error(e));
+  });
+}
+function backupHTML(){
+  const list = backups.slice().sort((a, b) => (b.at || 0) - (a.at || 0));
+  return `<div class="panel gap"><div class="row"><h3>Party backups</h3><span class="spacer"></span><span class="muted" style="font-size:13px">A copy of every merc that has played in your sessions, updated as they play.</span></div>
+    <p class="muted" style="font-size:13px;margin:6px 0 8px">If a player deletes their merc, hit Send back and it reappears on their roster, even if they're offline. If they left the party or are on a new device, copy the save code and have them use Import a merc.</p>
+    ${list.length ? list.map(b => { const m = normalize(b.merc || {}); const here = b.code === LS.code; return `<div class="lrow trow">${avatar(m, 'av sm', portraits[b.playerUid])}<span class="n">${esc(m.name)}</span><span class="muted">Level ${m.level} · ${m.background}${m.role ? ' · ' + m.role : ''} · ${esc(b.code || '')}${b.sname ? ' ' + esc(b.sname) : ''} · saved ${ago(b.at)}</span>
+      <div class="row" style="justify-content:flex-end"><button class="btn small primary" data-live="bksend" data-b="${esc(b.id)}" ${here ? '' : 'disabled title="Only for players in this session"'}>Send back</button><button class="btn small" data-live="bkcode" data-b="${esc(b.id)}">Copy save code</button><button class="btn small ${bkDel === b.id ? 'danger' : ''}" data-live="bkdel" data-b="${esc(b.id)}">${bkDel === b.id ? 'Confirm' : '✕'}</button></div></div>`; }).join('')
+      : '<p class="muted">No backups yet. They fill in as players join.</p>'}</div>`;
+}
+function sessNotesHTML(){
+  return `<div class="panel gap"><div class="row"><h3>Session notes</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Private to you. Saved to the session, so they're here next week.</span></div>
+    <textarea id="dmNotes" class="notes" placeholder="Plot threads, who owes who, what happens next week" aria-label="Session notes" style="margin-top:10px">${esc(sessNotes)}</textarea></div>`;
+}
+$('#liveBody').addEventListener('input', e => {
+  if (e.target.id !== 'dmNotes' || !LS || LS.role !== 'dm') return;
+  const v = e.target.value.slice(0, 20000), code = LS.code;
+  clearTimeout(notesT2); notesT2 = setTimeout(() => { sessNotes = v; liveApi.setSessNotes(code, {text:v, at:Date.now()}).catch(() => toast("Couldn't save your session notes.")); }, 600);
+});
 
 /* ---- player side ---- */
 let pushT = null;
@@ -2157,10 +2520,19 @@ function pushNow(){
     lastPortrait = ph;
     jobs.push(pic ? liveApi.setPortrait(LS.code, liveApi.uid, {img:pic, mercId:m.id}) : liveApi.removePortrait(LS.code, liveApi.uid));
   }
+  scheduleLog();
   return Promise.all(jobs).catch(e => { console.error(e); toast("Couldn't sync your merc to the session."); });
 }
 setInterval(() => { if (LS && LS.role === 'player' && liveApi && liveState === 'on') liveApi.touchPlayer(LS.code, liveApi.uid, {seen:Date.now()}).catch(() => {}); }, 60000);
 function applyOp(op){
+  if (op.kind === 'restore' && op.merc){
+    const m = normalize({...op.merc, portrait:op.portrait || op.merc.portrait || null}); m.savedAt = Date.now();
+    if (DB.chars.some(x => x.id === m.id)){ toast(`The DM sent a backup of ${m.name}. You still have it, so nothing changed.`); return; }
+    DB.chars.push(m); DB.trash = DB.trash.filter(x => x.merc.id !== m.id);
+    persist(); renderRoster(); sfx('receive'); toast(`The DM restored ${m.name} to your roster.`, true);
+    return;
+  }
+  flushLog('');
   const isOpen = C && C.id === LS.mercId;
   const raw = isOpen ? C : DB.chars.find(x => x.id === LS.mercId);
   if (!raw) return;
@@ -2234,6 +2606,7 @@ function applyOp(op){
   if (!good && op.kind === 'hack') sfx('breach');
   if (isOpen){ saveC(); update(false); flashSheet(); }
   else { const i = DB.chars.findIndex(x => x.id === m.id); DB.chars[i] = m; persist(); }
+  flushLog(op.fromName ? 'from ' + op.fromName : 'by the DM');
   if (op.kind === 'hack') { toast(msg, false); return; }
   toast(msg, good);
 }
@@ -2265,8 +2638,13 @@ async function startPlayer(){
       api.deleteInbox(LS.code, api.uid, op.id).catch(() => {});
     });
   }));
+  unsubs.push(api.watchLog(LS.code, list => { logs = list; renderLive(); }));
   lastPortrait = null;
+  const prev = await api.getPlayer(LS.code, api.uid).catch(() => null);
+  const mine = DB.chars.find(x => x.id === LS.mercId);
+  logBase = prev && prev.merc && mine && prev.merc.id === mine.id ? normalize(prev.merc) : mine ? normalize(mine) : null;
   await pushNow();
+  flushLog('between sessions');
   const m = DB.chars.find(x => x.id === LS.mercId);
   saveJoined([{code:LS.code, mercId:LS.mercId, name:m ? m.name : 'Merc', sname:sessMeta && sessMeta.name || ''}, ...joined().filter(j => !(j.code === LS.code && j.mercId === LS.mercId))]);
 }
@@ -2280,8 +2658,15 @@ function startDM(){
   unsubs.push(api.watchPlayers(LS.code, list => {
     const {keep, stale} = dedupe(list);
     stale.forEach(p => { api.removePlayer(LS.code, p.id).catch(() => {}); api.removePortrait(LS.code, p.id).catch(() => {}); });
-    players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
+    players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); scheduleBackup();
   }));
+  unsubs.push(api.watchLog(LS.code, list => { logs = list; renderLive(); }));
+  unsubs.push(api.watchBackups(list => {
+    backups = list;
+    if (!backupsReady){ list.forEach(b => { if (b.merc) bkSeen[b.id] = bkSig(b.merc); }); backupsReady = true; scheduleBackup(); }
+    renderLive();
+  }));
+  unsubs.push(api.watchSessNotes(LS.code, d => { sessNotes = d && d.text || ''; renderLive(); }));
   unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
   unsubs.push(api.watchLibrary(list => { lib = list.sort((a, b) => (a.type + a.name).localeCompare(b.type + b.name)); codexLib = list; saveCodex(); renderLive(); renderCodex(); }));
 }
@@ -2310,7 +2695,7 @@ async function connect(){
     liveApi = await getLive();
     const s = await liveApi.getSession(LS.code);
     if (!s){ liveErr = `Session ${LS.code} doesn't exist anymore.`; if (LS.role === 'dm') saveHosted(hosted().filter(h => h.code !== LS.code)); LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
-    if (LS.role === 'dm' && s.dmUid !== liveApi.uid){ liveErr = 'That session was hosted from a different browser, so only that browser can run it.'; LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
+    if (LS.role === 'dm' && s.dmUid !== liveApi.uid){ liveErr = 'That session was hosted from a different browser or account. Sign in with Google on both devices with the same account to run it from here.'; LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
     sessMeta = s; liveState = 'on'; setTimeout(renderCodex, 0);
     if (LS.role === 'dm') startDM(); else await startPlayer();
     renderLive(); if (C) renderSheetHead();
@@ -2342,6 +2727,7 @@ function keepInputs(root, fn){
   fn();
   Object.entries(vals).forEach(([id, v]) => {
     const el = document.getElementById(id); if (!el || !root.contains(el)) return;
+    if (id === 'dmNotes' && id !== actId) return;
     if (el.tagName === 'SELECT' && !v) return;
     if (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v && !o.disabled)) return;
     el.value = v;
@@ -2382,7 +2768,7 @@ function partyCard(p, dm){
       <div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 Cool bonus</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div>
       <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
         <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
-      <div class="row"><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
+      <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''}">
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
         ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
@@ -2413,7 +2799,7 @@ function liveHTML(){
   if (!LS || liveState !== 'on'){
     const mercs = DB.chars.map(c => normalize(c));
     const hs = hosted();
-    return `${err}<div class="live-grid">
+    return `${err}<div id="acctLive">${acctHTML()}</div><div class="live-grid">
       <div class="panel"><h3>Join a session</h3>
         <p class="muted" style="margin:6px 0 14px">Get the code from your DM and pick the merc you're bringing. Your sheet updates for the DM as you play, and anything the DM sends you shows up on its own.</p>
         <input type="text" id="joinCode" maxlength="6" placeholder="CODE" autocomplete="off" style="text-transform:uppercase;letter-spacing:4px">
@@ -2437,7 +2823,8 @@ function liveHTML(){
       <button class="btn primary" data-live="opensheet">Open my sheet</button><button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
       <h3 style="margin:22px 0 0">Your party</h3>
-      <div class="players">${players.map(p => partyCard(p, false)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>`;
+      <div class="players">${players.map(p => partyCard(p, false)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
+      ${logHTML(false)}`;
   }
   const playerCards = players.length ? players.map(p => partyCard(p, true)).join('')
     : `<div class="panel"><p>No one has joined yet. Share the code and have players hit Join on their own device.</p></div>`;
@@ -2469,11 +2856,14 @@ function liveHTML(){
       <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard keeps the session running so you can come back. End session kicks everyone and deletes it.</p></div>
     <h3 style="margin:22px 0 0">Players</h3>
     <div class="players">${playerCards}</div>
+    ${logHTML(true)}
+    ${sessNotesHTML()}
     ${npcPanel}
+    ${backupHTML()}
     <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
       ${lib.length ? '' : '<button class="btn small" data-live="starter">Load starter pack</button>'}
       <button class="btn small" data-live="libcopy">Copy library</button><button class="btn small" data-live="libimp">${libImport ? 'Cancel import' : 'Import library'}</button></div>
-      <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account on this browser and carries over between sessions. Everything here shows up in the players' Codex unless you set it to Hidden.</p>
+      <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account and carries over between sessions${ACCT.google ? ' and devices' : '. Sign in with Google to use it on other devices too'}. Everything here shows up in the players' Codex unless you set it to Hidden.</p>
       ${libImport ? `<textarea id="libImpTxt" placeholder="Paste a copied library here"></textarea><div class="row gap"><button class="btn small primary" data-live="libimpgo">Import</button></div>` : ''}
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
@@ -2531,6 +2921,28 @@ $('#liveBody').addEventListener('click', async e => {
     const code = restoreList.code; restoreList = null;
     toast(`${c.name} restored to this device.`, true);
     LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
+  }
+  if (a === 'logclear'){
+    if (!logClear){ logClear = true; return renderLive(); }
+    logClear = false;
+    try { await liveApi.clearLog(LS.code); toast('Log cleared.'); } catch(err){ console.error(err); toast("Couldn't clear the log."); }
+    return renderLive();
+  }
+  if (a === 'prestore' || a === 'bksend'){
+    let target, merc;
+    if (a === 'prestore'){ const p = players.find(x => x.id === u); if (!p || !p.merc) return; target = p.id; merc = p.merc; }
+    else { const b = backups.find(x => x.id === t.dataset.b); if (!b || !b.merc) return; target = b.playerUid; merc = b.merc; }
+    const m = normalize(merc);
+    if (await sendOp(target, {kind:'restore', merc:{...m, portrait:null}, portrait:portraits[target] || null})) toast(`Sent ${m.name} back. If they deleted it, it'll pop back onto their roster.`, true);
+    return;
+  }
+  if (a === 'bkcode'){ const b = backups.find(x => x.id === t.dataset.b); if (b && b.merc) copyText(encode(normalize(b.merc)), null, 'Save code'); return; }
+  if (a === 'bkdel'){
+    const id = t.dataset.b;
+    if (bkDel !== id){ bkDel = id; return renderLive(); }
+    bkDel = null; delete bkSeen[id];
+    try { await liveApi.delBackup(id); } catch(err){ console.error(err); }
+    return renderLive();
   }
   if (a === 'leave') return leaveLive(false);
   if (a === 'leaveparty'){ if (!leaveConfirm){ leaveConfirm = true; return renderLive(); } return leaveLive(false, true); }
@@ -3182,6 +3594,7 @@ else { show('roster'); renderRoster(); }
 renderLive();
 route();
 if (LS && LIVE_OK) connect();
+else if (LIVE_OK && acctFlag()) getLive().catch(e => console.error(e));
 })();
 </script>
 </body>
