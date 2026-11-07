@@ -20,6 +20,9 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Max HP is entered by hand since it's rolled. NET HP uses the same max
 - Perk trees are shaped like a fork or a "W". The middle branch opens from either Rookie perk and ends at Phenom. Each Legend opens only from its own branch's Phenom
 
+## Settings
+- The SETTINGS button (bottom right, next to SFX and FX) opens a panel with six color presets and pickers for the background glow, board traces, lights and accent lights. Saved per device in `daemon-theme`. Add presets in `PRESETS` in the script
+
 ## Saving
 - Mercs save automatically in the browser
 - Copy save code gives a `DMN1.` code to paste into Import on another device or in Discord

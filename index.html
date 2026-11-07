@@ -17,7 +17,7 @@
 html,body{margin:0}
 body{
   min-height:100vh; color:var(--cyan); font-family:'Exo 2',sans-serif; line-height:1.5; font-size:16px;
-  background:#0b0a12 linear-gradient(180deg,#b3213a 0,#5a1222 280px,#1a0910 760px,#0b0a12 1300px) no-repeat;
+  background:#0b0a12 linear-gradient(180deg,var(--bgc,#b3213a) 0,color-mix(in srgb,var(--bgc,#b3213a) 48%,#0b0a12) 280px,color-mix(in srgb,var(--bgc,#b3213a) 12%,#0b0a12) 760px,#0b0a12 1300px) no-repeat;
 }
 #circuit{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.55}
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:30px 28px 70px}
@@ -405,6 +405,15 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 @keyframes heartbeat{0%,100%{opacity:var(--vmin,.3)}14%{opacity:var(--vmax,.7)}28%{opacity:var(--vmin,.3)}42%{opacity:calc(var(--vmax,.7) * .8)}60%{opacity:var(--vmin,.3)}}
 .dock{position:fixed;right:14px;bottom:14px;z-index:6;display:flex;gap:6px}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
+.setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:auto;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.setp h3{margin:0 0 4px}
+.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 14px}
+.presets button{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.2px;color:#fff;background:#08080f;border:1px solid rgba(47,230,240,.2);padding:8px 4px 7px;cursor:pointer;text-transform:uppercase}
+.presets button.on{border-color:var(--cyan);box-shadow:inset 0 0 0 1px var(--cyan)}
+.presets .sw{display:flex;height:8px;margin-bottom:6px}.presets .sw i{flex:1}
+.crow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(47,230,240,.1)}
+.crow span{font-size:14px;color:#fff}.crow small{display:block;color:var(--muted);font-size:12px}
+.crow input[type=color]{width:52px;height:32px;padding:0;border:1px solid var(--cyan-dim);background:transparent;cursor:pointer}
 .dock button[aria-pressed=false]{color:var(--muted);text-decoration:line-through}
 .cw .r .muted{white-space:nowrap}
 .hotb{white-space:nowrap;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;color:#1a1600;background:var(--yellow);padding:3px 6px;align-self:center}
@@ -904,7 +913,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div id="flatline" hidden role="alert"><div class="fl-inner"><div class="fl-text gl" data-text="FLATLINED">FLATLINED</div>
   <svg class="ekg" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 H170 L185 40 L195 12 L208 70 L220 30 L232 40 H600"/></svg>
   <div class="fl-sub" id="flSub">Unconscious. Critical condition.</div><div class="fl-hint">Click to continue</div></div></div>
-<div class="dock"><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
+<div class="setp" id="setPanel" hidden></div>
+<div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
 (() => {
@@ -3641,6 +3651,20 @@ function updateVignette(){
   else v.classList.add('on');
 }
 
+const THEME_KEY = 'daemon-theme';
+const THEME_DEF = {bg:'#b3213a', trace:'#a3283a', light:'#ff4a5e', accent:'#2fe6f0'};
+const PRESETS = [
+  ['Night City', THEME_DEF],
+  ['Neon Ice', {bg:'#13607a', trace:'#1f7f99', light:'#2fe6f0', accent:'#ffffff'}],
+  ['Toxic', {bg:'#1e6b2c', trace:'#2f8a3c', light:'#7dff6a', accent:'#ffe600'}],
+  ['Synthwave', {bg:'#5b1f8a', trace:'#7a2fa8', light:'#ff4fd8', accent:'#2fe6f0'}],
+  ['Corpo Gold', {bg:'#7a5a12', trace:'#8f6d1c', light:'#ffd04a', accent:'#ffffff'}],
+  ['Blackout', {bg:'#26262e', trace:'#4a4a58', light:'#d0d4e0', accent:'#ff4a5e'}]
+];
+let THEME = {...THEME_DEF};
+try { const t = JSON.parse(localStorage.getItem(THEME_KEY)); if (t) THEME = {...THEME_DEF, ...t}; } catch(e){}
+const hexRgb = h => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ''); if (!m) return '255,74,94'; const n = parseInt(m[1], 16); return `${n >> 16},${(n >> 8) & 255},${n & 255}`; };
+
 /* ================= LIVING CIRCUIT BACKGROUND ================= */
 const cv = $('#circuit'), cx = cv.getContext('2d');
 const TW = 1100, TH = 800;
@@ -3671,7 +3695,7 @@ function buildLayer(L){
   }
   const t = document.createElement('canvas'); t.width = TW * DPR; t.height = TH * DPR;
   const g = t.getContext('2d'); g.scale(DPR, DPR);
-  g.strokeStyle = g.fillStyle = `rgba(163,40,58,${L.alpha})`; g.lineWidth = L.width; g.lineCap = g.lineJoin = 'round';
+  g.strokeStyle = g.fillStyle = `rgba(${hexRgb(THEME.trace)},${L.alpha})`; g.lineWidth = L.width; g.lineCap = g.lineJoin = 'round';
   L.traces.forEach(tr => {
     g.beginPath(); g.arc(tr.pts[0][0], tr.pts[0][1], L.dot, 0, 7); g.stroke();
     g.beginPath(); tr.pts.forEach(([px, py], j) => j ? g.lineTo(px, py) : g.moveTo(px, py)); g.stroke();
@@ -3735,7 +3759,7 @@ function frame(now){
       const p = pulses[k]; p.s += p.speed * dt;
       if (p.s > p.tr.total){ pulses.splice(k, 1); continue; }
       const [ox, oy] = offset(p.L, t), bx = ox + p.ix * TW, by = oy + p.iy * TH;
-      const spr = glowSprite(p.cyan ? '47,230,240' : '255,74,94');
+      const spr = glowSprite(hexRgb(p.cyan ? THEME.accent : THEME.light));
       const fade = Math.min(1, p.s / 30, (p.tr.total - p.s) / 30);
       for (let q = 0; q < 5; q++){
         const ss = p.s - q * 7; if (ss < 0) break;
@@ -3755,6 +3779,45 @@ addEventListener('scroll', () => { if (!FXS.motion) drawStatic(); }, {passive:tr
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { sizeCanvas(); FXS.motion ? startBg() : drawStatic(); }, 120); });
 sizeCanvas();
 FXS.motion ? startBg() : drawStatic();
+
+/* ================= SETTINGS / THEME ================= */
+function applyTheme(rebuild){
+  document.documentElement.style.setProperty('--bgc', THEME.bg);
+  if (rebuild){ LAYERS.forEach(buildLayer); if (!FXS.motion) drawStatic(); }
+}
+function saveTheme(){ try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME)); } catch(e){} }
+function renderSettings(){
+  const same = t => ['bg', 'trace', 'light', 'accent'].every(k => t[k].toLowerCase() === THEME[k].toLowerCase());
+  const row = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="color" data-theme="${k}" value="${THEME[k]}" aria-label="${label}"></label>`;
+  $('#setPanel').innerHTML = `<div class="row"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
+    <p class="muted" style="font-size:13px;margin:0">Make the page yours. Only changes how it looks on this device.</p>
+    <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}"><span class="sw"><i style="background:${t.bg}"></i><i style="background:${t.trace}"></i><i style="background:${t.light}"></i><i style="background:${t.accent}"></i></span>${n}</button>`).join('')}</div>
+    ${row('bg', 'Background', 'The glow at the top of the page')}
+    ${row('trace', 'Board traces', 'The circuit lines')}
+    ${row('light', 'Lights', 'Most of the pulses running the traces')}
+    ${row('accent', 'Accent lights', 'The rarer second pulse color')}
+    <div class="row gap"><button class="btn small" data-set="reset">Reset to default</button></div>`;
+}
+function toggleSettings(open){
+  const p = $('#setPanel'); open = open ?? p.hidden;
+  p.hidden = !open; $('#tSet').setAttribute('aria-expanded', open);
+  if (open) renderSettings();
+}
+$('#tSet').onclick = () => { sfx('select'); toggleSettings(); };
+$('#setPanel').addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.set === 'close') return toggleSettings(false);
+  if (t.dataset.set === 'reset'){ THEME = {...THEME_DEF}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
+  if (t.dataset.preset){ THEME = {...PRESETS[+t.dataset.preset][1]}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
+});
+let themeT;
+$('#setPanel').addEventListener('input', e => {
+  const k = e.target.dataset.theme; if (!k) return;
+  THEME[k] = e.target.value;
+  clearTimeout(themeT); themeT = setTimeout(() => { saveTheme(); applyTheme(k === 'trace'); $('#setPanel').querySelectorAll('[data-preset]').forEach(b => b.classList.remove('on')); }, 60);
+});
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#setPanel').hidden) toggleSettings(false); });
+applyTheme(false);
 
 function syncDock(){
   $('#tSfx').setAttribute('aria-pressed', FXS.sfx); $('#tFx').setAttribute('aria-pressed', FXS.motion);
