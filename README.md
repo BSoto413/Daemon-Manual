@@ -25,6 +25,12 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Four animated backgrounds. Circuit (the original), Nomad (sunset desert with drifting dunes, blowing dust and drifter headlights on the far ridge), Corpo (glass shards on an angular grid with light sweeps and data blips) and Streetkid (Night City skyline in the rain with flickering neon, spotlights and flying cars). Each has its own four colors, labeled for that scene, plus the six color presets. They live in `STYLES` and `SCENES` in the script. FX off freezes them
 
 - Settings has four tabs. Look (background, colors, background brightness). Comfort (text size, compact sheet, color-blind friendly bars, reduce flashing, battery saver). Sound (volume, plus toggles for UI clicks, game sounds and big moments). Controls (keyboard shortcuts). Stored in `daemon-theme` and `daemon-prefs`, and synced through the Google account when signed in
+- Themes. A fifth background, The Net (data rain, a perspective grid, an ICE wall and floating nodes). Time of day (scene default, follow the clock, dawn, day, dusk, night) and weather (scene default, clear, rain, fog, sandstorm) work on every background. Nomad gets a moon at night and a rare Badlands sandstorm that rolls through every several minutes
+- Match my origin switches to the merc's Nomad, Corpo or Streetkid background when their sheet is open. React to my merc drains the color and slows everything at low HP, goes red for cyberpsychosis, green for hacks and ripples with heat when overheated
+- Jack in on the NET HP track swaps to The Net until you jack out
+- The DM's Party mood panel pushes a background, time and weather to everyone in the session (stored as `mood` on the session doc). Players can turn off Let the DM set the mood
+- Unlockable color presets in `UNLOCKS`. Iconic Gold (any Legend perk), Veteran (level 10), Black ICE (INT Phenom perk), Cyberpsycho (any merc snaps) and Chromed Out (6 pieces of chrome). Once unlocked they stay unlocked
+- Site accent recolors the cyan text, panel edges and buttons through `--cyan` and `--crgb`
 - Keyboard shortcuts. 1 to 4 jump to Rules, Your Mercs, Live Session and Codex. P and C switch sheet tabs. D and H damage or heal using the amount box. R spends a Reaction. S opens settings. ? lists them all
 
 ## Saving

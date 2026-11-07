@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --yellow:#ffe600; --cyan:#2fe6f0; --cyan-dim:rgba(47,230,240,.3);
+  --yellow:#ffe600; --cyan:#2fe6f0; --crgb:47,230,240; --cyan-dim:rgba(var(--crgb),.3);
   --red:#ff4a5e; --panel:rgba(10,10,18,.88); --muted:#7f8c96;
   --hexp:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
 }
@@ -48,7 +48,7 @@ h3{font-family:Orbitron,sans-serif;font-weight:400;color:#fff;font-size:17px;mar
 
 .btn{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--cyan);border:1px solid var(--cyan);padding:10px 16px;cursor:pointer;clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,0 100%)}
 a.btn{text-decoration:none;display:inline-block}
-.btn:hover{background:rgba(47,230,240,.1)}
+.btn:hover{background:rgba(var(--crgb),.1)}
 .btn.primary{background:var(--cyan);color:#03161a}
 .btn.primary:hover{background:#7ff3f8}
 .btn.danger{color:var(--red);border-color:var(--red)}
@@ -66,7 +66,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 
 /* ---------- roster ---------- */
 .roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-.card{background:var(--panel);border:1px solid rgba(47,230,240,.18);padding:16px 18px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);display:flex;flex-direction:column;gap:10px}
+.card{background:var(--panel);border:1px solid rgba(var(--crgb),.18);padding:16px 18px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);display:flex;flex-direction:column;gap:10px}
 .card .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:19px;word-break:break-word}
 .card .sub{font-size:13px;color:var(--muted)}
 .mini-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;text-align:center;font-size:11px}
@@ -77,40 +77,40 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 
 /* ---------- wizard ---------- */
 .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
-.stepdot{border-top:3px solid rgba(47,230,240,.18);padding-top:8px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
-.stepdot.done{border-color:rgba(47,230,240,.55);color:var(--cyan)}
+.stepdot{border-top:3px solid rgba(var(--crgb),.18);padding-top:8px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.stepdot.done{border-color:rgba(var(--crgb),.55);color:var(--cyan)}
 .stepdot.on{border-color:var(--yellow);color:var(--yellow)}
 .stepdot b{display:block;font-size:18px;font-weight:500}
 .wstep{animation:stepin .45s ease both}
 @keyframes stepin{0%{opacity:0;transform:translateX(14px);filter:hue-rotate(120deg) brightness(1.8)}40%{filter:none}100%{opacity:1;transform:none}}
 .wnav{display:flex;gap:10px;margin-top:18px}
 .bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-.acct{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;border:1px solid rgba(47,230,240,.2);background:rgba(10,10,18,.75)}
+.acct{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;border:1px solid rgba(var(--crgb),.2);background:rgba(10,10,18,.75)}
 .acct .t{flex:1;min-width:220px;font-size:14px}.acct .t b{color:#fff;font-family:Orbitron,sans-serif;font-weight:500;letter-spacing:.06em;font-size:13px}
 .acct .on{color:var(--cyan)}
 .trow{grid-template-columns:auto 1fr 2fr auto!important;align-items:center}
 @media (max-width:720px){.trow{grid-template-columns:auto 1fr!important}}
 .logday{font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:.14em;color:var(--yellow);margin:16px 0 6px;text-transform:uppercase}
-.logrow{display:grid;grid-template-columns:64px auto 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid rgba(47,230,240,.12)}
+.logrow{display:grid;grid-template-columns:64px auto 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid rgba(var(--crgb),.12)}
 .logrow .tm{font-size:12px;color:var(--muted);padding-top:4px}
 .logrow .who{color:#fff}.logrow .via{font-size:11px;color:var(--yellow);margin-left:6px;letter-spacing:.06em}
 .logrow ul{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
-.logrow li{font-size:13px;padding:2px 8px;border:1px solid rgba(47,230,240,.22);background:rgba(47,230,240,.05)}
+.logrow li{font-size:13px;padding:2px 8px;border:1px solid rgba(var(--crgb),.22);background:rgba(var(--crgb),.05)}
 .logrow li.bad{border-color:rgba(255,74,94,.45);color:#ffb3bd}.logrow li.good{border-color:rgba(255,230,0,.4);color:#fff6a8}
 .loglist{max-height:520px;overflow:auto;padding-right:6px}
 .bgs.roles{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 .bg .rk{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:.12em;color:var(--yellow)}
 .statgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:18px}
-.statbox{background:#08080f;border:1px solid rgba(47,230,240,.25);border-top:3px solid var(--cyan);padding:12px 6px 10px;text-align:center;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
+.statbox{background:#08080f;border:1px solid rgba(var(--crgb),.25);border-top:3px solid var(--cyan);padding:12px 6px 10px;text-align:center;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
 .statbox .ab{font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:.14em;color:var(--cyan)}
 .statbox .sc{font-family:Orbitron,sans-serif;font-size:34px;color:#fff;line-height:1.15;margin:4px 0 2px}
 .statbox .md{font-family:Orbitron,sans-serif;font-size:15px;color:var(--yellow)}
 .statbox .nmx{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
 @media (max-width:720px){.statgrid{grid-template-columns:repeat(3,1fr)}.statbox .sc{font-size:30px}}
 @media (max-width:720px){.bgs{grid-template-columns:1fr}}
-.bg{background:#08080f;border:1px solid rgba(47,230,240,.2);padding:16px;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:border-color .2s,background .2s}
-.bg:hover{border-color:rgba(47,230,240,.6)}
-.bg.on{border-color:var(--cyan);background:rgba(47,230,240,.08);box-shadow:inset 3px 0 0 var(--cyan)}
+.bg{background:#08080f;border:1px solid rgba(var(--crgb),.2);padding:16px;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:border-color .2s,background .2s}
+.bg:hover{border-color:rgba(var(--crgb),.6)}
+.bg.on{border-color:var(--cyan);background:rgba(var(--crgb),.08);box-shadow:inset 3px 0 0 var(--cyan)}
 .bg .t{font-family:Orbitron,sans-serif;color:#fff;font-size:18px;display:block;margin-bottom:6px}
 .bg .d{font-size:14px;color:var(--muted);display:block;margin-bottom:10px}
 .bg .sk{font-size:13px}
@@ -118,7 +118,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 .chip{border:1px solid var(--cyan-dim);background:transparent;color:var(--cyan);padding:9px 14px;cursor:pointer;font:inherit;font-size:14px}
 .chip.on{background:var(--cyan);color:#03161a;border-color:var(--cyan)}
 .pb{display:grid;gap:8px;margin-top:14px}
-.pbrow{display:grid;grid-template-columns:110px minmax(0,1fr) auto 64px 64px;gap:12px;align-items:center;background:#08080f;border:1px solid rgba(47,230,240,.12);padding:10px 14px}
+.pbrow{display:grid;grid-template-columns:110px minmax(0,1fr) auto 64px 64px;gap:12px;align-items:center;background:#08080f;border:1px solid rgba(var(--crgb),.12);padding:10px 14px}
 .pbrow .ab{font-family:Orbitron,sans-serif;color:#fff;font-size:17px}
 .pbrow .ab small{display:block;font-family:'Exo 2',sans-serif;font-size:12px;color:var(--muted);letter-spacing:0}
 .pbrow .aff{font-size:13px;color:var(--muted)}
@@ -128,7 +128,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 @media (max-width:640px){.pbrow{grid-template-columns:72px auto 1fr 50px}.pbrow .aff{display:none}.pbrow .cost{display:none}}
 .stepper{display:flex;align-items:center;gap:10px}
 .stepper button{width:32px;height:32px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);font-family:Orbitron,sans-serif;font-size:16px;cursor:pointer}
-.stepper button:hover:not(:disabled){background:rgba(47,230,240,.12)}
+.stepper button:hover:not(:disabled){background:rgba(var(--crgb),.12)}
 .stepper button:disabled{opacity:.25;cursor:not-allowed}
 .stepper .val{font-family:Orbitron,sans-serif;font-size:22px;min-width:34px;text-align:center;color:#fff}
 .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:10px}
@@ -144,7 +144,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 .lvlbox .val{font-size:30px;color:var(--yellow);min-width:44px}
 .vitals{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px}
 @media (max-width:760px){.vitals{grid-template-columns:repeat(2,1fr)}}
-.vital{background:#08080f;border:1px solid rgba(47,230,240,.14);padding:10px 12px}
+.vital{background:#08080f;border:1px solid rgba(var(--crgb),.14);padding:10px 12px}
 .vital .lbl{font-size:10px;color:var(--muted)}
 .vital .v{font-family:Orbitron,sans-serif;font-size:20px;color:#fff}
 .vital .v small{font-size:12px;color:var(--muted);font-family:'Exo 2',sans-serif}
@@ -155,8 +155,8 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 
 .tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0}
 @media (max-width:760px){.tabs{grid-template-columns:repeat(3,1fr)}}
-.tab{background:var(--panel);border:1px solid rgba(47,230,240,.14);border-bottom:3px solid transparent;color:var(--muted);padding:10px 12px;text-align:left;cursor:pointer;font:inherit;transition:border-color .2s,color .2s}
-.tab:hover{border-color:rgba(47,230,240,.4)}
+.tab{background:var(--panel);border:1px solid rgba(var(--crgb),.14);border-bottom:3px solid transparent;color:var(--muted);padding:10px 12px;text-align:left;cursor:pointer;font:inherit;transition:border-color .2s,color .2s}
+.tab:hover{border-color:rgba(var(--crgb),.4)}
 .tab .top{display:flex;justify-content:space-between;align-items:baseline}
 .tab .ab{font-family:Orbitron,sans-serif;font-size:18px;color:#fff}
 .tab .sc{font-family:Orbitron,sans-serif;font-size:18px;color:var(--cyan)}
@@ -164,7 +164,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 .tab.off .sc{color:var(--red)}
 .tab .nm{font-size:12px;display:block}
 .tab .ct{font-size:11px;letter-spacing:1px}
-.tab.active{border-bottom-color:var(--cyan);color:var(--cyan);border-color:rgba(47,230,240,.5)}
+.tab.active{border-bottom-color:var(--cyan);color:var(--cyan);border-color:rgba(var(--crgb),.5)}
 
 .sim-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
 @media (max-width:880px){.sim-grid{grid-template-columns:1fr}}
@@ -184,7 +184,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 #tree{position:relative;height:560px}
 #edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .tierline{stroke:rgba(255,74,94,.22);stroke-dasharray:3 7;stroke-width:1}
-.tierline.open{stroke:rgba(47,230,240,.2)}
+.tierline.open{stroke:rgba(var(--crgb),.2)}
 g.e{opacity:0;transition:opacity .3s}
 g.e.vis{opacity:1}
 .edge-base{fill:none;stroke:var(--cyan);stroke-width:2;opacity:.5}
@@ -208,13 +208,13 @@ g.e.live .edge-live{opacity:.9}
 .available .hex::before{background:#06181c}
 .available .glyph,.available .label{color:var(--cyan)}
 .available .hexwrap{animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{filter:drop-shadow(0 0 2px rgba(47,230,240,.3))}50%{filter:drop-shadow(0 0 12px rgba(47,230,240,.9))}}
-.nopoints .hex{background:rgba(47,230,240,.35)}
-.nopoints .glyph,.nopoints .label{color:rgba(47,230,240,.55)}
+@keyframes pulse{0%,100%{filter:drop-shadow(0 0 2px rgba(var(--crgb),.3))}50%{filter:drop-shadow(0 0 12px rgba(var(--crgb),.9))}}
+.nopoints .hex{background:rgba(var(--crgb),.35)}
+.nopoints .glyph,.nopoints .label{color:rgba(var(--crgb),.55)}
 .unlocked .hex,.unlocked .hex::before{background:var(--cyan)}
 .unlocked .glyph{color:#03161a}
 .unlocked .label{color:#fff}
-.unlocked .hexwrap{filter:drop-shadow(0 0 12px rgba(47,230,240,.75))}
+.unlocked .hexwrap{filter:drop-shadow(0 0 12px rgba(var(--crgb),.75))}
 .node.selected .hexwrap::after{content:'';position:absolute;inset:-8px -10px;pointer-events:none;background:
   linear-gradient(var(--yellow),var(--yellow)) left top/12px 2px no-repeat,linear-gradient(var(--yellow),var(--yellow)) left top/2px 12px no-repeat,
   linear-gradient(var(--yellow),var(--yellow)) right top/12px 2px no-repeat,linear-gradient(var(--yellow),var(--yellow)) right top/2px 12px no-repeat,
@@ -243,13 +243,13 @@ g.e.live .edge-live{opacity:.9}
 .detail .tag{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
 .detail h3{font-size:20px;margin-bottom:10px}
 .detail ul{list-style:none;padding:0;margin:14px 0;font-size:14px}
-.detail li{padding:6px 0;border-top:1px solid rgba(47,230,240,.12)}
+.detail li{padding:6px 0;border-top:1px solid rgba(var(--crgb),.12)}
 .detail li b{color:#fff;font-weight:500}
 .detail .status{font-size:14px;margin:0 0 14px;color:#fff}
 .detail .status.bad{color:var(--red)}
 
 .skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 24px;margin-top:10px}
-.skill{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(47,230,240,.08);font-size:14px;color:var(--muted)}
+.skill{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(var(--crgb),.08);font-size:14px;color:var(--muted)}
 .skill .s{color:#d5f9fb}
 .skill .s small{color:var(--muted);font-size:11px;margin-left:6px}
 .skill .m{font-family:Orbitron,sans-serif;font-size:13px;color:#fff}
@@ -265,7 +265,7 @@ g.e.live .edge-live{opacity:.9}
 .toast.good{border-left-color:var(--cyan)}
 
 /* ---------- character sheet ---------- */
-.vtabs{display:flex;gap:4px;margin:14px 0 0;border-bottom:1px solid rgba(47,230,240,.2)}
+.vtabs{display:flex;gap:4px;margin:14px 0 0;border-bottom:1px solid rgba(var(--crgb),.2)}
 .vtabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px 18px;cursor:pointer}
 .vtabs button:hover{color:#fff}
 .vtabs button.on{color:var(--cyan);border-bottom-color:var(--cyan)}
@@ -289,11 +289,11 @@ select{background:#06060c;border:1px solid var(--cyan-dim);color:var(--cyan);pad
 input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10px;letter-spacing:0}
 .eqslots{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:480px){.eqslots{grid-template-columns:1fr}}
-.eqslot{border:1px dashed rgba(47,230,240,.3);padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px}
-.eqslot.on{border-style:solid;border-color:var(--cyan);background:rgba(47,230,240,.05)}
+.eqslot{border:1px dashed rgba(var(--crgb),.3);padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px}
+.eqslot.on{border-style:solid;border-color:var(--cyan);background:rgba(var(--crgb),.05)}
 .eqn{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
 .inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 150px auto;gap:8px;align-items:center}
-.irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(47,230,240,.08)}
+.irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(var(--crgb),.08)}
 .irow.eq input[data-f=name]{border-color:var(--cyan);color:var(--cyan)}
 @media (max-width:760px){
   .inv-add,.irow{grid-template-columns:1fr 1fr}
@@ -307,12 +307,12 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .inv-add .btn{justify-self:end}
 .btn.small.on{background:var(--cyan);color:#03161a}
 .cyber{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:12px}
-.cslot{background:#08080f;border:1px solid rgba(47,230,240,.14);padding:12px}
+.cslot{background:#08080f;border:1px solid rgba(var(--crgb),.14);padding:12px}
 .cslot .h{display:flex;justify-content:space-between;align-items:baseline}
 .cslot .h b{font-family:Orbitron,sans-serif;font-weight:500;color:#fff;font-size:12px;letter-spacing:1px;text-transform:uppercase}
 .cslot .cap{font-size:12px;color:var(--muted)}
 .cslot.full .cap{color:var(--yellow)}
-.cw{border-left:2px solid var(--cyan);padding:8px;margin-top:8px;background:rgba(47,230,240,.05);display:grid;gap:6px}
+.cw{border-left:2px solid var(--cyan);padding:8px;margin-top:8px;background:rgba(var(--crgb),.05);display:grid;gap:6px}
 .cw .r{display:flex;gap:6px;align-items:center;font-size:12px}
 .cw input[type=number]{width:60px;padding:5px 6px}
 .cform{display:grid;gap:6px;margin-top:8px}
@@ -327,7 +327,7 @@ textarea.notes{font-family:'Exo 2',sans-serif;font-size:15px;color:#fff;min-heig
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted);margin-right:6px}
 .dot.on{background:#3ee08a;box-shadow:0 0 8px #3ee08a}
 .players{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-top:14px}
-.pcard{background:var(--panel);border:1px solid rgba(47,230,240,.2);padding:16px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);display:grid;gap:10px}
+.pcard{background:var(--panel);border:1px solid rgba(var(--crgb),.2);padding:16px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);display:grid;gap:10px}
 .pcard .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:18px;word-break:break-word}
 .pcard .sub{font-size:13px;color:var(--muted)}
 .pcard .bar{margin:4px 0}
@@ -336,12 +336,12 @@ textarea.notes{font-family:'Exo 2',sans-serif;font-size:15px;color:#fff;min-heig
 .pcard .pips{margin:2px 0}
 .pcard .pip{width:11px;height:12px}
 .chips2{display:flex;flex-wrap:wrap;gap:6px}
-.chips2 span{font-size:12px;border:1px solid rgba(47,230,240,.25);padding:3px 8px;color:#d5f9fb}
+.chips2 span{font-size:12px;border:1px solid rgba(var(--crgb),.25);padding:3px 8px;color:#d5f9fb}
 .chips2 span.w{border-color:var(--cyan);color:var(--cyan)}
 .pcard .row input[type=number]{width:70px}
 .libadd{display:grid;grid-template-columns:minmax(0,2fr) 130px 70px minmax(0,2fr);gap:8px}
 @media (max-width:760px){.libadd{grid-template-columns:1fr 1fr}.libadd > :first-child,.libadd > :nth-child(4){grid-column:1 / -1}}
-.lrow{display:grid;grid-template-columns:minmax(0,1.4fr) 100px minmax(0,2fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(47,230,240,.08);font-size:14px}
+.lrow{display:grid;grid-template-columns:minmax(0,1.4fr) 100px minmax(0,2fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(var(--crgb),.08);font-size:14px}
 .lrow .n{color:#fff}
 .lrow .t{color:var(--muted);font-size:12px;letter-spacing:1px;text-transform:uppercase}
 @media (max-width:760px){.lrow{grid-template-columns:1fr 1fr}.lrow > :nth-child(3),.lrow > :nth-child(4){grid-column:1 / -1}}
@@ -359,7 +359,7 @@ textarea.notes{font-family:'Exo 2',sans-serif;font-size:15px;color:#fff;min-heig
 .pcard .head{display:flex;gap:12px;align-items:center}
 .pcard.me{border-color:var(--yellow)}
 .restore{margin-top:12px;display:grid;gap:8px}
-.restore .r{display:flex;gap:10px;align-items:center;background:#08080f;border:1px solid rgba(47,230,240,.14);padding:8px}
+.restore .r{display:flex;gap:10px;align-items:center;background:#08080f;border:1px solid rgba(var(--crgb),.14);padding:8px}
 /* ---------- rules page ---------- */
 nav a.on{opacity:1;color:var(--cyan)}
 .rules-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;margin-top:10px}
@@ -367,19 +367,19 @@ nav a.on{opacity:1;color:var(--cyan)}
 .toc input{margin-bottom:10px}
 .toc a{color:var(--muted);text-decoration:none;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 10px;border-left:2px solid transparent}
 .toc a:hover{color:#fff}
-.toc a.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(47,230,240,.06)}
+.toc a.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(var(--crgb),.06)}
 @media (max-width:860px){
   .rules-layout{grid-template-columns:minmax(0,1fr)}
   .toc{position:static;max-height:none;padding-top:20px;display:flex;flex-wrap:wrap;gap:6px}
   .toc input{flex:1 1 100%}
-  .toc a{border:1px solid rgba(47,230,240,.2);padding:6px 9px;font-size:10px}
+  .toc a{border:1px solid rgba(var(--crgb),.2);padding:6px 9px;font-size:10px}
 }
 .rules-layout > *{min-width:0}
 .rules h2{scroll-margin-top:16px}
 .rsec{scroll-margin-top:12px}
 .rtable{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
 .rtable th{text-align:left;font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;padding:8px 10px;border-bottom:1px solid var(--cyan-dim)}
-.rtable td{padding:9px 10px;border-bottom:1px solid rgba(47,230,240,.08);vertical-align:top}
+.rtable td{padding:9px 10px;border-bottom:1px solid rgba(var(--crgb),.08);vertical-align:top}
 .rtable td b{color:#fff;font-weight:500}
 .rtable td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 .rtable td.none{color:#3a4048}
@@ -391,7 +391,7 @@ nav a.on{opacity:1;color:var(--cyan)}
 .rlist{margin:10px 0 0;padding-left:20px}
 .rlist li{margin:4px 0}
 .lvltrack{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:18px}
-.lvltrack div{text-align:center;font-family:Orbitron,sans-serif;font-size:10px;padding:8px 0;background:rgba(47,230,240,.08);color:var(--cyan)}
+.lvltrack div{text-align:center;font-family:Orbitron,sans-serif;font-size:10px;padding:8px 0;background:rgba(var(--crgb),.08);color:var(--cyan)}
 .lvltrack div.asi{background:var(--yellow);color:#1a1600}
 .lvltrack div.one{background:rgba(255,255,255,.04);color:var(--muted)}
 .wdiag{width:100%;max-width:320px;display:block;margin:16px auto 0}
@@ -407,12 +407,15 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
 .setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:auto;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
 .setp h3{margin:0 0 4px}
-.stabs{display:flex;gap:4px;margin:12px 0 4px;border-bottom:1px solid rgba(47,230,240,.18)}
+.moodrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}@media (max-width:620px){.moodrow{grid-template-columns:1fr}}
+.presets button.locked{opacity:.55;cursor:not-allowed}.presets button small{display:block;font-family:'Exo 2',sans-serif;letter-spacing:0;text-transform:none;font-size:10px;color:var(--muted);margin-top:3px;line-height:1.2}
+.selrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 6px}.selrow label{font-size:12px;color:var(--muted)}.selrow select{width:100%;margin-top:3px}
+.stabs{display:flex;gap:4px;margin:12px 0 4px;border-bottom:1px solid rgba(var(--crgb),.18)}
 .stabs button{flex:1;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 2px;cursor:pointer}
 .stabs button.on{color:var(--cyan);border-bottom-color:var(--cyan)}
 .crow input.sw2{appearance:none;-webkit-appearance:none;width:44px;height:22px;border:1px solid var(--cyan-dim);background:#08080f;position:relative;cursor:pointer;margin:0}
 .crow input.sw2::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;background:var(--muted);transition:left .15s,background .15s}
-.crow input.sw2:checked{border-color:var(--cyan);background:rgba(47,230,240,.12)}.crow input.sw2:checked::after{left:25px;background:var(--cyan)}
+.crow input.sw2:checked{border-color:var(--cyan);background:rgba(var(--crgb),.12)}.crow input.sw2:checked::after{left:25px;background:var(--cyan)}
 .crow.rng{grid-template-columns:1fr}.crow.rng b{color:var(--cyan);font-weight:500;font-size:13px;margin-left:4px}
 .crow input[type=range]{width:100%;accent-color:var(--cyan)}
 .keys{display:grid;gap:6px;margin-top:10px}.keys div{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center;font-size:13px}
@@ -435,31 +438,31 @@ body.calm .gl::before,body.calm .gl::after{display:none}
 body.calm #vignette.on{animation:none}
 body.calm .tear{display:none}
 .styles{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 12px}
-.styles button{text-align:left;background:#08080f;border:1px solid rgba(47,230,240,.2);padding:9px 10px;cursor:pointer;color:inherit;font:inherit}
+.styles button{text-align:left;background:#08080f;border:1px solid rgba(var(--crgb),.2);padding:9px 10px;cursor:pointer;color:inherit;font:inherit}
 .styles button b{display:block;font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#fff}
 .styles button small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3;margin-top:3px}
-.styles button.on{border-color:var(--cyan);box-shadow:inset 3px 0 0 var(--cyan);background:rgba(47,230,240,.07)}
+.styles button.on{border-color:var(--cyan);box-shadow:inset 3px 0 0 var(--cyan);background:rgba(var(--crgb),.07)}
 .presets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 14px}
-.presets button{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.2px;color:#fff;background:#08080f;border:1px solid rgba(47,230,240,.2);padding:8px 4px 7px;cursor:pointer;text-transform:uppercase}
+.presets button{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.2px;color:#fff;background:#08080f;border:1px solid rgba(var(--crgb),.2);padding:8px 4px 7px;cursor:pointer;text-transform:uppercase}
 .presets button.on{border-color:var(--cyan);box-shadow:inset 0 0 0 1px var(--cyan)}
 .presets .sw{display:flex;height:8px;margin-bottom:6px}.presets .sw i{flex:1}
-.crow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(47,230,240,.1)}
+.crow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(var(--crgb),.1)}
 .crow span{font-size:14px;color:#fff}.crow small{display:block;color:var(--muted);font-size:12px}
 .crow input[type=color]{width:52px;height:32px;padding:0;border:1px solid var(--cyan-dim);background:transparent;cursor:pointer}
 .dock button[aria-pressed=false]{color:var(--muted);text-decoration:line-through}
 .cw .r .muted{white-space:nowrap}
 .hotb{white-space:nowrap;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;color:#1a1600;background:var(--yellow);padding:3px 6px;align-self:center}
 .cw.hot{border-left-color:var(--yellow)}
-.surg{border-top:1px solid rgba(47,230,240,.15);padding-top:10px}
+.surg{border-top:1px solid rgba(var(--crgb),.15);padding-top:10px}
 .acts select{max-width:130px}
 /* ---------- glitch + flatline + psycho ---------- */
 .tagb.tier{background:transparent;border:1px solid currentColor}.tagb.t1{color:#9aa6b2}.tagb.t2{color:var(--cyan)}.tagb.t3{color:var(--yellow)}.tagb.t4{color:var(--red)}
 .gens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:12px}@media (max-width:900px){.gens{grid-template-columns:1fr}}
-.gen{background:#08080f;border:1px solid rgba(47,230,240,.2);padding:14px;display:flex;flex-direction:column;gap:10px}
-.gen .res{min-height:74px;border-left:3px solid var(--cyan);padding:8px 12px;background:rgba(47,230,240,.05)}
+.gen{background:#08080f;border:1px solid rgba(var(--crgb),.2);padding:14px;display:flex;flex-direction:column;gap:10px}
+.gen .res{min-height:74px;border-left:3px solid var(--cyan);padding:8px 12px;background:rgba(var(--crgb),.05)}
 .gnf{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center}.gnf input,.gnf select{width:100%}
 .gnf input[type=text]{font-size:15px;padding:9px 12px;letter-spacing:0;font-family:"Exo 2",sans-serif}
-.lock{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;padding:7px 8px;background:transparent;border:1px solid rgba(47,230,240,.3);color:var(--muted);cursor:pointer;min-width:70px}
+.lock{font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;padding:7px 8px;background:transparent;border:1px solid rgba(var(--crgb),.3);color:var(--muted);cursor:pointer;min-width:70px}
 .lock.on{color:var(--yellow);border-color:var(--yellow);background:rgba(255,230,0,.08)}
 .gen .res .nm{color:#fff;font-size:17px}.gen select{width:100%}
 .tagb{white-space:nowrap;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
@@ -479,7 +482,7 @@ body.calm .tear{display:none}
 .gl-title.glitching::after{opacity:1;color:#ff2a6d;animation:glB .32s steps(1) 1;animation-delay:-.45s}
 @keyframes jit{0%{transform:none}25%{transform:translate(-2px,1px) skewX(-6deg)}50%{transform:translate(3px,0)}75%{transform:translate(-1px,-1px) skewX(4deg)}100%{transform:none}}
 body.fx h2:hover{animation:jit .28s steps(2) 1}
-.tear{position:fixed;left:0;right:0;height:3px;z-index:7;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(47,230,240,.9) 20%,rgba(255,42,109,.9) 60%,transparent);box-shadow:0 0 12px rgba(255,42,109,.8);animation:tear .22s linear forwards}
+.tear{position:fixed;left:0;right:0;height:3px;z-index:7;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(var(--crgb),.9) 20%,rgba(255,42,109,.9) 60%,transparent);box-shadow:0 0 12px rgba(255,42,109,.8);animation:tear .22s linear forwards}
 @keyframes tear{0%{transform:translateX(-30%) scaleY(1);opacity:1}100%{transform:translateX(30%) scaleY(3);opacity:0}}
 #flatline{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(0,0,0,0);animation:flBg 4.8s ease forwards;cursor:pointer}
 #flatline[hidden]{display:none}
@@ -542,7 +545,7 @@ body.overheat.fx #sheetHead,body.overheat.fx #vCS,body.overheat.fx #treePanel{an
 @keyframes shimmer{0%,100%{transform:none;filter:none}30%{transform:skewX(.4deg);filter:blur(.4px) saturate(1.3)}60%{transform:skewX(-.3deg);filter:none}}
 body.overheat .acts button,body.overheat .node,body.overheat [data-act^=fab],body.overheat select[data-hand]{opacity:.45}
 .cwpips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 10px;align-items:center}
-.cwp{width:16px;height:18px;clip-path:var(--hexp);background:rgba(47,230,240,.14)}
+.cwp{width:16px;height:18px;clip-path:var(--hexp);background:rgba(var(--crgb),.14)}
 .cwp.on{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
 .cwp.ov{background:rgba(255,79,216,.16)}
 .cwp.ov.on{background:#ff4fd8}
@@ -550,15 +553,15 @@ body.overheat .acts button,body.overheat .node,body.overheat [data-act^=fab],bod
 .cwpips.sm .cwp{width:11px;height:12px}
 .cwpips.sm .cwsep{height:14px}
 .ovtag{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1px;color:#ff4fd8;margin-left:8px}
-.tagb.cwb{background:rgba(47,230,240,.18);color:var(--cyan);border:1px solid var(--cyan-dim)}
+.tagb.cwb{background:rgba(var(--crgb),.18);color:var(--cyan);border:1px solid var(--cyan-dim)}
 .cw .r input[type=number]{width:52px}
 /* ---------- npc id card + codex ---------- */
 #idcard{position:fixed;inset:0;z-index:22;display:grid;place-items:center;background:rgba(0,0,0,.35);cursor:pointer}
 #idcard[hidden]{display:none}
-.idc{position:relative;width:min(92vw,520px);background:linear-gradient(135deg,rgba(8,14,22,.96),rgba(14,6,18,.96));border:1px solid var(--cyan);box-shadow:0 0 30px rgba(47,230,240,.35),inset 0 0 40px rgba(47,230,240,.08);padding:18px 20px;clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px));overflow:hidden;animation:idIn .55s cubic-bezier(.2,1.3,.4,1)}
+.idc{position:relative;width:min(92vw,520px);background:linear-gradient(135deg,rgba(8,14,22,.96),rgba(14,6,18,.96));border:1px solid var(--cyan);box-shadow:0 0 30px rgba(var(--crgb),.35),inset 0 0 40px rgba(var(--crgb),.08);padding:18px 20px;clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px));overflow:hidden;animation:idIn .55s cubic-bezier(.2,1.3,.4,1)}
 @keyframes idIn{0%{transform:translateY(40px) scale(.9) skewX(-6deg);opacity:0;filter:hue-rotate(90deg)}60%{filter:none}100%{transform:none;opacity:1}}
-.idc::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(47,230,240,.05) 0 1px,transparent 1px 3px);pointer-events:none}
-.idc-scan{position:absolute;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(47,230,240,.25),transparent);animation:idScan 2.2s linear infinite;pointer-events:none}
+.idc::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(var(--crgb),.05) 0 1px,transparent 1px 3px);pointer-events:none}
+.idc-scan{position:absolute;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(var(--crgb),.25),transparent);animation:idScan 2.2s linear infinite;pointer-events:none}
 @keyframes idScan{from{top:-60px}to{top:100%}}
 .idc-top{display:flex;justify-content:space-between;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;color:var(--cyan);border-bottom:1px solid var(--cyan-dim);padding-bottom:8px;margin-bottom:14px}
 .idc-body{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
@@ -580,7 +583,7 @@ body.overheat .acts button,body.overheat .node,body.overheat [data-act^=fab],bod
 .cxtabs{margin-top:14px}
 .cxtabs button .muted{font-size:10px;margin-left:4px}
 .cxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
-.cxcard{background:var(--panel);border:1px solid rgba(47,230,240,.18);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;color:inherit;font:inherit;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.cxcard{background:var(--panel);border:1px solid rgba(var(--crgb),.18);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;color:inherit;font:inherit;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
 button.cxcard{cursor:pointer;text-align:left}
 button.cxcard:hover{border-color:var(--cyan)}
 .cxcard .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
@@ -1100,7 +1103,7 @@ let DB = {chars:[], current:null};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
 if (!Array.isArray(DB.trash)) DB.trash = [];
 DB.trash = DB.trash.filter(x => x && x.merc && Date.now() - (x.at || 0) < 30 * 864e5);
-function persist(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); }
+function persist(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
 let C = null;       // current character
@@ -1223,6 +1226,8 @@ function show(v){
   $('#vWizard').hidden = v !== 'wizard';
   $('#vSheet').hidden = v !== 'sheet';
   $('#mercsTitle').textContent = v === 'wizard' ? 'New Merc' : v === 'sheet' ? 'Merc Sheet' : 'Your Mercs';
+  if (v !== 'sheet') ENVS.jack = false;
+  refreshEnv();
 }
 function goTop(){ $('#mercs').scrollIntoView({behavior:'smooth', block:'start'}); }
 
@@ -1482,6 +1487,7 @@ $('#wbody').addEventListener('click', e => {
 /* ================= SHEET ================= */
 function openChar(id){
   const raw = DB.chars.find(x => x.id === id); if (!raw) return;
+  if (!C || C.id !== id) ENVS.jack = false;
   C = normalize(raw); validate(); saveC();
   sel = null; cyberForm = null; delItem = null; $('#codeOut').hidden = true;
   show('sheet'); setSheetTab(sheetTab); goTop();
@@ -1912,7 +1918,7 @@ function renderCS(){
     : `<div class="track"><div class="head"><span class="lbl" style="margin:0">HP</span><span class="muted" style="font-size:12px">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
-     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool</span></div>
+     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px">${ENVS.jack ? 'Jack out' : 'Jack in'}</button></span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
   const cwl = cwLoad(), cwo = cwOver();
@@ -2072,6 +2078,14 @@ $('#vCS').addEventListener('click', e => {
     }
     case 'netHeal': C.netHp = Math.min(hm, (C.netHp ?? hm) + amt('netAmt')); return csSave();
     case 'netFull': C.netHp = hm; return csSave();
+    case 'jack': {
+      ENVS.jack = !ENVS.jack;
+      if (FXS.sfx && PREFS.big){ ENVS.jack ? [220, 440, 880, 1760].forEach((f, i) => tone(f, f * 1.5, .12, 'sawtooth', .03, i * .05)) : [1760, 880, 440].forEach((f, i) => tone(f, f * .6, .1, 'square', .03, i * .05)); }
+      if (flashOK()) glitchBurst(450, ENVS.jack ? 'JACKED IN' : '', ['rgba(var(--crgb),.6)', 'rgba(0,0,0,.6)', 'rgba(255,255,255,.4)']);
+      setTimeout(refreshEnv, flashOK() ? 200 : 0);
+      toast(ENVS.jack ? 'Jacked in. Welcome to the Net.' : 'Jacked out.');
+      return renderCS();
+    }
     case 'ram-1': if (blocked('lockout')) return; C.ram = Math.max(0, ramCur() - 1); return csSave();
     case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
     case 'ram+1': C.ram = Math.min(ramMax(), ramCur() + 1); return csSave();
@@ -2613,6 +2627,27 @@ function genResult(x){
   if (!x) return `<div class="res"><p class="muted" style="margin:0">Hit Roll to generate one.</p></div>`;
   return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span></div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
 }
+let moodDraft = {style:'nomad', tod:'default', weather:'default'};
+const TODS = [['default', 'Scene default'], ['auto', 'Follow the clock'], ['dawn', 'Dawn'], ['day', 'Day'], ['dusk', 'Dusk'], ['night', 'Night']];
+const WEATHERS = [['default', 'Scene default'], ['clear', 'Clear'], ['rain', 'Rain'], ['fog', 'Fog'], ['sandstorm', 'Sandstorm']];
+function setMood(m, announce){
+  const prev = ENVS.mood;
+  m = m && STYLES[m.style] ? m : null;
+  if ((prev && prev.at) === (m && m.at)) return;
+  ENVS.mood = m; refreshEnv();
+  if (announce && PREFS.dmMood){
+    if (m) toast(`The DM set the mood. ${STYLES[m.style].n}${m.tod && m.tod !== 'default' ? ', ' + TODS.find(x => x[0] === m.tod)[1].toLowerCase() : ''}${m.weather && m.weather !== 'default' ? ', ' + m.weather : ''}.`);
+    else if (prev) toast('The DM cleared the mood.');
+  }
+}
+function moodHTML(){
+  const cur = sessMeta && sessMeta.mood;
+  const sel = (id, list, v) => `<select id="${id}" aria-label="${id}">${list.map(([k, n]) => `<option value="${k}" ${v === k ? 'selected' : ''}>${n}</option>`).join('')}</select>`;
+  return `<div class="panel gap"><div class="row"><h3>Party mood</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${cur ? `Live now · ${STYLES[cur.style].n}` : 'Off. Everyone sees their own background'}</span></div>
+    <p class="muted" style="font-size:13px;margin:6px 0 10px">Push a background to the whole party. Desert on the road, the city for a heist, Corpo for the boardroom. Players can opt out in their settings.</p>
+    <div class="moodrow">${sel('mdStyle', Object.entries(STYLES).map(([k, v]) => [k, v.n]), moodDraft.style)}${sel('mdTod', TODS, moodDraft.tod)}${sel('mdWx', WEATHERS, moodDraft.weather)}</div>
+    <div class="row gap"><button class="btn small primary" data-live="moodset">Set the mood</button>${cur ? '<button class="btn small" data-live="moodclear">Clear</button>' : ''}</div></div>`;
+}
 function npcGenFields(){
   if (!gN) gN = genNpcRoll();
   const lk = k => `<button class="lock ${gNLock[k] ? 'on' : ''}" data-live="glock" data-k="${k}" aria-pressed="${gNLock[k]}" title="${gNLock[k] ? 'Locked. Click to unlock' : 'Lock so it doesn\'t reroll'}">${gNLock[k] ? 'LOCKED' : 'LOCK'}</button>`;
@@ -2651,6 +2686,7 @@ function genHTML(){
 $('#liveBody').addEventListener('change', e => {
   const id = e.target.id;
   if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
+  if (id === 'mdStyle'){ moodDraft.style = e.target.value; return; } if (id === 'mdTod'){ moodDraft.tod = e.target.value; return; } if (id === 'mdWx'){ moodDraft.weather = e.target.value; return; }
   if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
   else if (id === 'giT') gIT = e.target.value; else if (id === 'giType') gIType = e.target.value;
 });
@@ -2839,7 +2875,7 @@ async function startPlayer(){
   const api = liveApi;
   unsubs.push(api.watchSession(LS.code, s => {
     if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
-    sessMeta = s; renderLive(); checkSpotlight();
+    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true);
   }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   if (sessMeta && sessMeta.dmUid) unsubs.push(api.watchLibraryOf(sessMeta.dmUid, list => { codexLib = list; saveCodex(); renderCodex(); }));
@@ -2871,7 +2907,7 @@ async function startPlayer(){
 /* ---- dm side ---- */
 function startDM(){
   const api = liveApi;
-  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else { renderLive(); checkSpotlight(); } }));
+  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else { renderLive(); checkSpotlight(); setMood(s.mood, false); } }));
   unsubs.push(api.watchDmNpcs(list => { npcsDM = list.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   unsubs.push(api.watchPlayers(LS.code, list => {
@@ -2933,7 +2969,7 @@ async function leaveLive(silent, forGood){
       saveJoined(joined().filter(j => !(j.code === was.code && j.mercId === was.mercId)));
     } else await liveApi.touchPlayer(was.code, liveApi.uid, {seen:0}).catch(() => {});
   }
-  stopAll();
+  stopAll(); setMood(null, false);
   LS = null; saveLS(); liveState = 'idle'; endConfirm = false;
   renderLive(); if (C) renderSheetHead();
 }
@@ -3077,6 +3113,7 @@ function liveHTML(){
     <div class="players">${playerCards}</div>
     ${logHTML(true)}
     ${sessNotesHTML()}
+    ${moodHTML()}
     ${genHTML()}
     ${npcPanel}
     ${backupHTML()}
@@ -3143,6 +3180,11 @@ $('#liveBody').addEventListener('click', async e => {
     LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
   }
   if (await genClick(a, t)) return;
+  if (a === 'moodset' || a === 'moodclear'){
+    const mood = a === 'moodset' ? {...moodDraft, at:Date.now()} : null;
+    try { await liveApi.updateSession(LS.code, {mood}); toast(mood ? `Mood set to ${STYLES[mood.style].n} for everyone.` : 'Mood cleared.', true); } catch(err){ toast("Couldn't set the mood."); }
+    return;
+  }
   if (a === 'logclear'){
     if (!logClear){ logClear = true; return renderLive(); }
     logClear = false;
@@ -3496,7 +3538,7 @@ const PREF = k => { try { return localStorage.getItem(k) !== '0'; } catch(e){ re
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FXS = {sfx: PREF('daemon-sfx'), motion: reducedMotion ? false : PREF('daemon-motion')};
 const PREFS_KEY = 'daemon-prefs';
-const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, cb:false, battery:false, compact:false, keys:true};
+const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', unl:[]};
 let PREFS = {...PREFS_DEF};
 try { const p = JSON.parse(localStorage.getItem(PREFS_KEY)); if (p) PREFS = {...PREFS_DEF, ...p}; } catch(e){}
 const flashOK = () => FXS.motion && !PREFS.calm;
@@ -3608,7 +3650,7 @@ function glitchBurst(ms, word, palette){
   const fx = $('#glitchFx'); if (!fx) return;
   if (!flashOK()){ fx.innerHTML = word ? `<div class="word">${word}</div>` : ''; fx.classList.add('on'); setTimeout(() => { fx.classList.remove('on'); fx.innerHTML = ''; }, 1200); return; }
   document.body.classList.add('psy-glitch'); fx.classList.add('on');
-  const colors = palette || ['rgba(194,27,255,.75)', 'rgba(47,230,240,.7)', 'rgba(255,42,109,.75)', 'rgba(255,255,255,.5)'];
+  const colors = palette || ['rgba(194,27,255,.75)', 'rgba(var(--crgb),.7)', 'rgba(255,42,109,.75)', 'rgba(255,255,255,.5)'];
   const tick = () => {
     fx.innerHTML = Array.from({length: 7 + Math.floor(Math.random() * 7)}, () => {
       const h = 2 + Math.random() * 40, top = Math.random() * 100;
@@ -3623,7 +3665,7 @@ function heatFx(){
   glitchBurst(1100, 'OVERHEATED', ['rgba(255,120,0,.6)', 'rgba(255,40,0,.55)', 'rgba(255,220,120,.45)', 'rgba(0,0,0,.5)']);
 }
 function hackFx(){
-  glitchBurst(1300, 'BREACH', ['rgba(0,255,140,.6)', 'rgba(47,230,240,.55)', 'rgba(0,0,0,.6)', 'rgba(160,255,200,.45)']);
+  glitchBurst(1300, 'BREACH', ['rgba(0,255,140,.6)', 'rgba(var(--crgb),.55)', 'rgba(0,0,0,.6)', 'rgba(160,255,200,.45)']);
   setTimeout(updateHack, 1200);
 }
 function coolFx(text, big){
@@ -3674,6 +3716,7 @@ document.body.classList.toggle('fx', flashOK());
 
 /* ================= NEAR DEATH VIGNETTE ================= */
 function updateVignette(){
+  if (!FXS.motion) setTimeout(drawStatic, 0);
   const v = $('#vignette'); if (!v) return;
   const show = C && C.hpMax && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
   if (!show){ v.classList.remove('on', 'dead'); v.style.opacity = 0; return; }
@@ -3700,8 +3743,17 @@ const STYLES = {
   corpo:{n:'Corpo', d:'Clean glass shards on an angular grid', pal:{bg:'#1d3b5c', trace:'#5a8fc2', light:'#8fdcff', accent:'#e8c56a'},
     lab:[['Glow', 'The backdrop tint'], ['Shards and grid', 'The glass panels and lines'], ['Light sweeps', 'The glint that runs across the glass'], ['Data blips', 'The little packets on the grid']]},
   streetkid:{n:'Streetkid', d:'Night City skyline in the rain', pal:{bg:'#3a1250', trace:'#2a1840', light:'#ffcf6b', accent:'#ff2fa8'},
-    lab:[['Sky haze', 'The smog over the city'], ['Buildings', 'The skyline'], ['Windows and rain', 'Lit windows, rain and spotlights'], ['Neon', 'Signs and flying cars']]}
+    lab:[['Sky haze', 'The smog over the city'], ['Buildings', 'The skyline'], ['Windows and rain', 'Lit windows, rain and spotlights'], ['Neon', 'Signs and flying cars']]},
+  net:{n:'The Net', d:'Data rain, ICE walls and floating nodes', pal:{bg:'#04202a', trace:'#0f6b7a', light:'#2fe6f0', accent:'#ff4a5e'},
+    lab:[['Void', 'The space around you'], ['Grid', 'The floor and ceiling lines'], ['Data', 'Falling code and nodes'], ['ICE', 'The wall on the horizon and packets']]}
 };
+const UNLOCKS = [
+  {id:'gold', n:'Iconic Gold', hint:'Any merc installs a Legend perk', pal:{bg:'#6b4e00', trace:'#a07a10', light:'#ffd700', accent:'#ffffff'}, test:c => c.unlocked.some(k => /\.l$/.test(k))},
+  {id:'vet', n:'Veteran', hint:'Any merc hits level 10', pal:{bg:'#2b3a2a', trace:'#4f6b45', light:'#c8ff8a', accent:'#ffe600'}, test:c => c.level >= 10},
+  {id:'ice', n:'Black ICE', hint:'Any merc installs an INT Phenom perk', pal:{bg:'#05050a', trace:'#24243a', light:'#ff1744', accent:'#7c4dff'}, test:c => c.unlocked.some(k => /^INT\.[^.]+\.(ph|l)$/.test(k))},
+  {id:'psy', n:'Cyberpsycho', hint:'Any merc goes cyberpsycho', pal:{bg:'#4a0018', trace:'#8a0030', light:'#ff2a6d', accent:'#c21bff'}, test:c => c.psycho},
+  {id:'chrome', n:'Chromed Out', hint:'Any merc has 6 pieces of chrome installed', pal:{bg:'#2a2f3a', trace:'#7a8699', light:'#e6f0ff', accent:'#2fe6f0'}, test:c => c.cyber.length >= 6}
+];
 const PRESETS = [
   ['Night City', THEME_DEF],
   ['Neon Ice', {bg:'#13607a', trace:'#1f7f99', light:'#2fe6f0', accent:'#ffffff'}],
@@ -3712,6 +3764,23 @@ const PRESETS = [
 ];
 let THEME = {...THEME_DEF};
 try { const t = JSON.parse(localStorage.getItem(THEME_KEY)); if (t) THEME = {...THEME_DEF, ...t}; } catch(e){}
+if (!STYLES[THEME.style]) THEME.style = 'circuit';
+let AT = {...THEME, tod:'default', weather:'default', src:'theme'};
+const ENVS = {jack:false, mood:null};
+const originStyle = bg => ({Nomad:'nomad', Corpo:'corpo', Streetkid:'streetkid'})[bg] || null;
+function envCompute(){
+  let style = THEME.style, src = 'theme';
+  const m = ENVS.mood && PREFS.dmMood ? ENVS.mood : null;
+  if (ENVS.jack){ style = 'net'; src = 'jack'; }
+  else if (m && STYLES[m.style]){ style = m.style; src = 'mood'; }
+  else if (PREFS.matchOrigin && C && !$('#vSheet').hidden){ const o = originStyle(C.background); if (o){ style = o; src = 'origin'; } }
+  const pal = style === THEME.style ? THEME : STYLES[style].pal;
+  return {style, bg:pal.bg, trace:pal.trace, light:pal.light, accent:pal.accent, tod:m && m.tod && m.tod !== 'default' ? m.tod : PREFS.tod, weather:m && m.weather && m.weather !== 'default' ? m.weather : PREFS.weather, src};
+}
+function refreshEnv(){
+  const n = envCompute();
+  if (['style', 'bg', 'trace', 'light', 'accent', 'tod', 'weather'].some(k => n[k] !== AT[k])) applyTheme(true);
+}
 const hexRgb = h => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ''); if (!m) return '255,74,94'; const n = parseInt(m[1], 16); return `${n >> 16},${(n >> 8) & 255},${n & 255}`; };
 
 /* ================= LIVING CIRCUIT BACKGROUND ================= */
@@ -3744,7 +3813,7 @@ function buildLayer(L){
   }
   const t = document.createElement('canvas'); t.width = TW * DPR; t.height = TH * DPR;
   const g = t.getContext('2d'); g.scale(DPR, DPR);
-  g.strokeStyle = g.fillStyle = `rgba(${hexRgb(THEME.trace)},${L.alpha})`; g.lineWidth = L.width; g.lineCap = g.lineJoin = 'round';
+  g.strokeStyle = g.fillStyle = `rgba(${hexRgb(AT.trace)},${L.alpha})`; g.lineWidth = L.width; g.lineCap = g.lineJoin = 'round';
   L.traces.forEach(tr => {
     g.beginPath(); g.arc(tr.pts[0][0], tr.pts[0][1], L.dot, 0, 7); g.stroke();
     g.beginPath(); tr.pts.forEach(([px, py], j) => j ? g.lineTo(px, py) : g.moveTo(px, py)); g.stroke();
@@ -3794,8 +3863,8 @@ const srnd = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
 const SCENES = {};
 let sceneKey = '';
 function ensureScene(){
-  const k = [THEME.style, THEME.bg, THEME.trace, THEME.light, THEME.accent, VW, VH, PREFS.battery].join('|');
-  if (k !== sceneKey){ sceneKey = k; SCENES[THEME.style].init(); }
+  const k = [AT.style, AT.bg, AT.trace, AT.light, AT.accent, VW, VH, PREFS.battery].join('|');
+  if (k !== sceneKey){ sceneKey = k; SCENES[AT.style].init(); }
 }
 
 /* Nomad. Sunset desert, drifting dunes, blowing dust, far off headlights */
@@ -3806,40 +3875,49 @@ SCENES.nomad = (() => {
   function init(){
     const r = srnd(41);
     dunes = [0, 1, 2, 3].map(i => ({i, f1:.0021 + r() * .001, f2:.006 + r() * .003, f3:.017 + r() * .006, p1:r() * 6, p2:r() * 6, p3:r() * 6,
-      amp:14 + i * 14, speed:3 + i * 7, mouse:4 + i * 10, scroll:.01 + i * .015, col:mixHex(mixHex(THEME.trace, THEME.bg, .55 - i * .17), '#000000', i * .16), base:0}));
+      amp:14 + i * 14, speed:3 + i * 7, mouse:4 + i * 10, scroll:.01 + i * .015, col:mixHex(mixHex(AT.trace, AT.bg, .55 - i * .17), '#000000', i * .16), base:0}));
     dust = Array.from({length:Math.round(VW * VH / (PREFS.battery ? 20000 : 9000))}, () => ({x:Math.random() * VW, y:VH * (.35 + Math.random() * .65), vx:40 + Math.random() * 120, s:.6 + Math.random() * 1.8, a:.08 + Math.random() * .3, w:Math.random() * 6}));
     stars = Array.from({length:70}, () => ({x:Math.random(), y:Math.random() * .4, a:.1 + Math.random() * .4}));
     const R = Math.round(Math.min(VW, VH) * .17), c = document.createElement('canvas'); c.width = c.height = R * 2 + 4;
     const g = c.getContext('2d'), gr = g.createLinearGradient(0, 0, 0, R * 2);
-    gr.addColorStop(0, mixHex(THEME.light, '#ffffff', .15)); gr.addColorStop(1, mixHex(THEME.light, THEME.bg, .6));
+    gr.addColorStop(0, mixHex(AT.light, '#ffffff', .15)); gr.addColorStop(1, mixHex(AT.light, AT.bg, .6));
     g.fillStyle = gr; g.beginPath(); g.arc(R + 2, R + 2, R, 0, 7); g.fill();
     g.globalCompositeOperation = 'destination-out';
     for (let k = 0; k < 7; k++){ const y = R + 2 + R * .15 + k * R * .13, h = 2 + k * 1.6; g.fillRect(0, y, R * 2 + 4, h); }
     sun = {c, R}; cars = []; nextCar = 0;
   }
   function draw(t, dt){
-    const H = horizon(), W = VW;
+    const H = horizon(), W = VW, tod = todNow();
+    const sb = tod === 'night' ? mixHex(AT.bg, '#0a1030', .78) : tod === 'day' ? mixHex(AT.bg, '#e3c08f', .4) : tod === 'dawn' ? mixHex(AT.bg, '#ff9c8c', .35) : AT.bg;
     const sky = cx.createLinearGradient(0, 0, 0, VH);
-    sky.addColorStop(0, mixHex(THEME.bg, '#05040a', .82)); sky.addColorStop(.45, mixHex(THEME.bg, '#05040a', .35));
-    sky.addColorStop(H / VH, mixHex(THEME.bg, THEME.light, .35)); sky.addColorStop(1, mixHex(THEME.trace, '#000000', .6));
+    sky.addColorStop(0, mixHex(sb, '#05040a', tod === 'day' ? .45 : .82)); sky.addColorStop(.45, mixHex(sb, '#05040a', tod === 'day' ? .1 : .35));
+    sky.addColorStop(H / VH, mixHex(sb, tod === 'night' ? '#30406a' : AT.light, .35)); sky.addColorStop(1, mixHex(AT.trace, '#000000', tod === 'night' ? .8 : .6));
     cx.fillStyle = sky; cx.fillRect(0, 0, W, VH);
-    stars.forEach(s => { cx.fillStyle = `rgba(255,240,220,${s.a * (FXS.motion ? .75 + .25 * Math.sin(t * 1.3 + s.x * 40) : 1)})`; cx.fillRect(s.x * W, s.y * VH, 1.4, 1.4); });
-    const sx = W * .7 - ptr.sx * 6, sy = H - sun.R * .55 - ptr.sy * 4;
-    cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = .45;
-    cx.drawImage(glowSprite(hexRgb(THEME.light)), sx - sun.R * 2.4, sy - sun.R * 2.4, sun.R * 4.8, sun.R * 4.8);
-    cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = .85;
-    cx.drawImage(sun.c, sx - sun.R - 2, sy - sun.R - 2); cx.globalAlpha = 1;
+    const sm = tod === 'night' ? 1.9 : tod === 'day' ? 0 : tod === 'dawn' ? .5 : 1;
+    if (sm) stars.forEach(s => { cx.fillStyle = `rgba(255,240,220,${Math.min(1, s.a * sm) * (FXS.motion ? .75 + .25 * Math.sin(t * 1.3 + s.x * 40) : 1)})`; cx.fillRect(s.x * W, s.y * VH, 1.4, 1.4); });
+    if (tod === 'night'){
+      const mx = W * .28 - ptr.sx * 6, my = VH * .18 - ptr.sy * 4, mr = sun.R * .42;
+      cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = .25; cx.drawImage(glowSprite('200,215,255'), mx - mr * 3, my - mr * 3, mr * 6, mr * 6);
+      cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = .9; cx.fillStyle = '#e6ecff'; cx.beginPath(); cx.arc(mx, my, mr, 0, 7); cx.fill();
+      cx.fillStyle = mixHex(sb, '#05040a', .7); cx.beginPath(); cx.arc(mx + mr * .38, my - mr * .12, mr * .92, 0, 7); cx.fill(); cx.globalAlpha = 1;
+    } else {
+      const sx = W * (tod === 'dawn' ? .24 : .7) - ptr.sx * 6, sy = (tod === 'day' ? H - sun.R * 2.6 : H - sun.R * .55) - ptr.sy * 4;
+      cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = tod === 'day' ? .3 : .45;
+      cx.drawImage(glowSprite(hexRgb(AT.light)), sx - sun.R * 2.4, sy - sun.R * 2.4, sun.R * 4.8, sun.R * 4.8);
+      cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = .85;
+      cx.drawImage(sun.c, sx - sun.R - 2, sy - sun.R - 2); cx.globalAlpha = 1;
+    }
     dunes.forEach(d => {
       d.base = H + d.i * VH * .085 - Math.min(scrollY, 3000) * d.scroll - ptr.sy * d.mouse * .3;
       const off = t * d.speed + ptr.sx * d.mouse;
       cx.fillStyle = d.col; cx.beginPath(); cx.moveTo(0, VH);
       for (let x = 0; x <= W + 8; x += 8) cx.lineTo(x, ridge(d, x + off));
       cx.lineTo(W, VH); cx.closePath(); cx.fill();
-      cx.strokeStyle = rgbA(THEME.light, .12 - d.i * .025); cx.lineWidth = 1.2; cx.beginPath();
+      cx.strokeStyle = rgbA(AT.light, .12 - d.i * .025); cx.lineWidth = 1.2; cx.beginPath();
       for (let x = 0; x <= W + 8; x += 8) x ? cx.lineTo(x, ridge(d, x + off)) : cx.moveTo(x, ridge(d, x + off));
       cx.stroke();
     });
-    if (FXS.motion && t > nextCar){ nextCar = t + 6 + Math.random() * 9; const dir = Math.random() < .5 ? 1 : -1; cars.push({x:dir > 0 ? -30 : W + 30, dir, v:35 + Math.random() * 45, trail:[]}); }
+    if (FXS.motion && t > nextCar){ nextCar = t + (tod === 'night' ? 3 + Math.random() * 5 : 6 + Math.random() * 9); const dir = Math.random() < .5 ? 1 : -1; cars.push({x:dir > 0 ? -30 : W + 30, dir, v:35 + Math.random() * 45, trail:[]}); }
     const far = dunes[0], fo = t * far.speed + ptr.sx * far.mouse;
     cx.globalCompositeOperation = 'lighter';
     for (let k = cars.length - 1; k >= 0; k--){
@@ -3849,12 +3927,12 @@ SCENES.nomad = (() => {
       if (Math.random() < .5) c.trail.push({x:c.x, y, a:.25, r:4});
       c.trail.forEach(p => { p.a -= dt * .18; p.r += dt * 9; p.y -= dt * 3; });
       c.trail = c.trail.filter(p => p.a > 0);
-      c.trail.forEach(p => { cx.fillStyle = rgbA(THEME.light, p.a * .35); cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fill(); });
-      cx.drawImage(glowSprite(hexRgb(THEME.accent)), c.x - 9, y - 9, 18, 18);
+      c.trail.forEach(p => { cx.fillStyle = rgbA(AT.light, p.a * .35); cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fill(); });
+      cx.drawImage(glowSprite(hexRgb(AT.accent)), c.x - 9, y - 9, 18, 18);
     }
-    dust.forEach(p => {
+    if (['default', 'sandstorm'].includes(AT.weather || 'default')) dust.forEach(p => {
       if (FXS.motion){ p.x += p.vx * dt; p.y += Math.sin(t * 1.7 + p.w) * 12 * dt; if (p.x > W + 10){ p.x = -10; p.y = VH * (.35 + Math.random() * .65); } }
-      cx.fillStyle = rgbA(THEME.light, p.a); cx.fillRect(p.x, p.y, p.s * (FXS.motion ? 3.5 : 1.4), p.s);
+      cx.fillStyle = rgbA(AT.light, p.a); cx.fillRect(p.x, p.y, p.s * (FXS.motion ? 3.5 : 1.4), p.s);
     });
     cx.globalCompositeOperation = 'source-over';
   }
@@ -3883,30 +3961,30 @@ SCENES.corpo = (() => {
   function draw(t, dt){
     const W = VW;
     const bg = cx.createLinearGradient(0, 0, W, VH);
-    bg.addColorStop(0, mixHex(THEME.bg, '#04050a', .55)); bg.addColorStop(.6, mixHex(THEME.bg, '#04050a', .85)); bg.addColorStop(1, mixHex(THEME.bg, '#04050a', .7));
+    bg.addColorStop(0, mixHex(AT.bg, '#04050a', .55)); bg.addColorStop(.6, mixHex(AT.bg, '#04050a', .85)); bg.addColorStop(1, mixHex(AT.bg, '#04050a', .7));
     cx.fillStyle = bg; cx.fillRect(0, 0, W, VH);
     const sp = 90, tan = Math.tan(Math.PI / 6), go = (t * 6 + Math.min(scrollY, 4000) * .05) % sp;
-    cx.strokeStyle = rgbA(THEME.trace, .08); cx.lineWidth = 1; cx.beginPath();
+    cx.strokeStyle = rgbA(AT.trace, .08); cx.lineWidth = 1; cx.beginPath();
     for (let x = -VH * 2; x < W + VH; x += sp){ cx.moveTo(x + go, 0); cx.lineTo(x + go + VH / tan, VH); cx.moveTo(x - go + VH / tan, 0); cx.lineTo(x - go, VH); }
     cx.stroke();
     shards.forEach(s => {
       cx.beginPath(); path(s, t);
       const [x, y] = place(s, t), g = cx.createLinearGradient(x - s.R, y - s.R, x + s.R, y + s.R);
-      g.addColorStop(0, rgbA(THEME.trace, .03 + s.z * .12)); g.addColorStop(1, rgbA(THEME.bg, .02 + s.z * .05));
+      g.addColorStop(0, rgbA(AT.trace, .03 + s.z * .12)); g.addColorStop(1, rgbA(AT.bg, .02 + s.z * .05));
       cx.fillStyle = g; cx.fill();
-      cx.strokeStyle = rgbA(THEME.trace, .15 + s.z * .4); cx.lineWidth = .6 + s.z; cx.stroke();
+      cx.strokeStyle = rgbA(AT.trace, .15 + s.z * .4); cx.lineWidth = .6 + s.z; cx.stroke();
     });
     const period = 7, ph = FXS.motion ? (t % period) / period : .45, band = (W + VH) * (ph * 1.6 - .3);
     cx.save(); cx.beginPath(); shards.forEach(s => path(s, t)); cx.clip();
     const g = cx.createLinearGradient(band - 160, 0, band + 160, VH * .4);
-    g.addColorStop(0, rgbA(THEME.light, 0)); g.addColorStop(.5, rgbA(THEME.light, .28)); g.addColorStop(1, rgbA(THEME.light, 0));
+    g.addColorStop(0, rgbA(AT.light, 0)); g.addColorStop(.5, rgbA(AT.light, .28)); g.addColorStop(1, rgbA(AT.light, 0));
     cx.globalCompositeOperation = 'lighter'; cx.fillStyle = g; cx.fillRect(0, 0, W, VH); cx.restore();
     cx.globalCompositeOperation = 'lighter';
     blips.forEach(b => {
       if (FXS.motion){ b.x += b.d * b.v * dt; b.y += b.v * dt * tan * 1.0; b.trail.unshift([b.x, b.y]); b.trail.length = Math.min(b.trail.length, 10);
         if (b.x < -20 || b.x > W + 20 || b.y > VH + 20){ b.x = Math.random() * W; b.y = -10; b.trail = []; } }
-      b.trail.forEach((p, i) => { cx.fillStyle = rgbA(THEME.accent, .5 * (1 - i / 10)); cx.fillRect(p[0] - 1.5, p[1] - 1.5, 3, 3); });
-      cx.fillStyle = rgbA(THEME.accent, .9); cx.fillRect(b.x - 2.5, b.y - 2.5, 5, 5);
+      b.trail.forEach((p, i) => { cx.fillStyle = rgbA(AT.accent, .5 * (1 - i / 10)); cx.fillRect(p[0] - 1.5, p[1] - 1.5, 3, 3); });
+      cx.fillStyle = rgbA(AT.accent, .9); cx.fillRect(b.x - 2.5, b.y - 2.5, 5, 5);
     });
     cx.globalCompositeOperation = 'source-over';
   }
@@ -3921,7 +3999,7 @@ SCENES.streetkid = (() => {
     const r = srnd(13), Hh = Math.min(1400, Math.max(600, VH));
     layers = [0, 1, 2].map(i => {
       const c = document.createElement('canvas'); c.width = TWc; c.height = Hh;
-      const g = c.getContext('2d'), col = mixHex(mixHex(THEME.trace, THEME.bg, .5 - i * .2), '#000000', .1 + i * .3), signs = [];
+      const g = c.getContext('2d'), col = mixHex(mixHex(AT.trace, AT.bg, .5 - i * .2), '#000000', .1 + i * .3), signs = [];
       let x = 0;
       while (x < TWc){
         const w = 40 + r() * (70 + i * 40), h = Hh * (.12 + i * .07 + r() * (.18 + i * .06)), top = Hh - h;
@@ -3932,7 +4010,7 @@ SCENES.streetkid = (() => {
         if (st > .9){ g.beginPath(); g.moveTo(x, top); g.lineTo(x + w / 2, top - w * .8); g.lineTo(x + w, top); g.fill(); }
         const ww = 3 + i, wh = 4 + i, gx = 6 + i * 2, gy = 8 + i * 2;
         for (let wy = top + 10; wy < Hh - 10; wy += gy) for (let wx = x + 5; wx < x + w - 5; wx += gx){
-          if (r() < .13 + i * .03){ g.fillStyle = rgbA(r() < .85 ? THEME.light : THEME.accent, .07 + r() * (.14 + i * .07)); g.fillRect(wx, wy, ww, wh); }
+          if (r() < .13 + i * .03){ g.fillStyle = rgbA(r() < .85 ? AT.light : AT.accent, .07 + r() * (.14 + i * .07)); g.fillRect(wx, wy, ww, wh); }
         }
         if (r() < .35) signs.push({x:x + w * (.15 + r() * .6), y:top + h * (.1 + r() * .35), h:22 + r() * 60, w:4 + i * 2, c:r() < .7 ? 'accent' : 'light', ph:r() * 10});
         x += w + r() * 14;
@@ -3946,13 +4024,13 @@ SCENES.streetkid = (() => {
   function draw(t, dt){
     const W = VW;
     const sky = cx.createLinearGradient(0, 0, 0, VH);
-    sky.addColorStop(0, mixHex(THEME.bg, '#020208', .88)); sky.addColorStop(.55, mixHex(THEME.bg, '#020208', .55)); sky.addColorStop(1, mixHex(THEME.bg, THEME.accent, .18));
+    sky.addColorStop(0, mixHex(AT.bg, '#020208', .88)); sky.addColorStop(.55, mixHex(AT.bg, '#020208', .55)); sky.addColorStop(1, mixHex(AT.bg, AT.accent, .18));
     cx.fillStyle = sky; cx.fillRect(0, 0, W, VH);
     cx.globalCompositeOperation = 'lighter';
     beams.forEach(b => {
       const a = Math.sin(t * .25 + b.ph) * .5, bx = b.x * W, L = VH * 1.2;
       const g = cx.createLinearGradient(bx, VH, bx + Math.sin(a) * L, VH - Math.cos(a) * L);
-      g.addColorStop(0, rgbA(THEME.light, .1)); g.addColorStop(1, rgbA(THEME.light, 0));
+      g.addColorStop(0, rgbA(AT.light, .1)); g.addColorStop(1, rgbA(AT.light, 0));
       cx.fillStyle = g; cx.beginPath(); cx.moveTo(bx - 6, VH); cx.lineTo(bx + Math.sin(a - .06) * L, VH - Math.cos(a - .06) * L); cx.lineTo(bx + Math.sin(a + .06) * L, VH - Math.cos(a + .06) * L); cx.lineTo(bx + 6, VH); cx.fill();
     });
     cx.globalCompositeOperation = 'source-over';
@@ -3962,8 +4040,8 @@ SCENES.streetkid = (() => {
       for (let x = sx; x < W; x += TWc) cx.drawImage(L.c, x, oy);
       cx.globalCompositeOperation = 'lighter';
       for (let x = sx; x < W; x += TWc) L.signs.forEach(s => {
-        const fl = FXS.motion ? (Math.sin(t * 3 + s.ph) > -.85 ? 1 : .2) * (.75 + .25 * Math.sin(t * 9 + s.ph * 3)) : 1;
-        const col = s.c === 'accent' ? THEME.accent : THEME.light;
+        const fl = (FXS.motion ? (Math.sin(t * 3 + s.ph) > -.85 ? 1 : .2) * (.75 + .25 * Math.sin(t * 9 + s.ph * 3)) : 1) * (todNow() === 'night' ? 1 : .45);
+        const col = s.c === 'accent' ? AT.accent : AT.light;
         cx.fillStyle = rgbA(col, .12 * fl); cx.fillRect(x + s.x - s.w * 2, oy + s.y - 6, s.w * 5, s.h + 12);
         cx.fillStyle = rgbA(col, .8 * fl); cx.fillRect(x + s.x, oy + s.y, s.w, s.h);
       });
@@ -3972,14 +4050,21 @@ SCENES.streetkid = (() => {
         cx.globalCompositeOperation = 'lighter';
         cars.forEach(c => {
           if (FXS.motion){ c.x += c.v * dt; if (c.x > W + 40) c.x = -40; if (c.x < -40) c.x = W + 40; }
-          const col = c.c === 'accent' ? THEME.accent : THEME.light;
+          const col = c.c === 'accent' ? AT.accent : AT.light;
           cx.fillStyle = rgbA(col, .25); cx.fillRect(c.v > 0 ? c.x - 28 : c.x, c.y, 28, 1.5);
           cx.drawImage(glowSprite(hexRgb(col)), c.x - 7, c.y - 6, 14, 14);
         });
         cx.globalCompositeOperation = 'source-over';
       }
     });
-    cx.strokeStyle = rgbA(THEME.light, .14); cx.lineWidth = 1; cx.beginPath();
+    const tod = todNow();
+    if (tod !== 'night'){
+      const sm = tod === 'day' ? '#a9a49a' : tod === 'dawn' ? '#c89a8a' : '#c0704a';
+      const g = cx.createLinearGradient(0, 0, 0, VH); g.addColorStop(0, rgbA(sm, tod === 'day' ? .45 : .3)); g.addColorStop(1, rgbA(sm, tod === 'day' ? .3 : .18));
+      cx.fillStyle = g; cx.fillRect(0, 0, W, VH);
+    }
+    if (!['default', 'rain'].includes(AT.weather || 'default')) return;
+    cx.strokeStyle = rgbA(AT.light, .14); cx.lineWidth = 1; cx.beginPath();
     rain.forEach(d => {
       if (FXS.motion){ d.y += d.v * dt; d.x -= d.v * dt * .18; if (d.y > VH){ d.y = -20; d.x = Math.random() * (W + 100); } }
       cx.moveTo(d.x, d.y); cx.lineTo(d.x + d.l * .18, d.y - d.l);
@@ -3989,22 +4074,183 @@ SCENES.streetkid = (() => {
   return {init, draw};
 })();
 
+
+/* Net. Inside the Net, a perspective grid, data rain, ICE and floating nodes */
+SCENES.net = (() => {
+  let cols = [], nodes = [], links = [], packets = [];
+  const GLY = '01アイウエオカキクケコ0123456789ABCDEF#$%&<>/';
+  function init(){
+    const fs = 14, n = Math.ceil(VW / (PREFS.battery ? 34 : 22));
+    cols = Array.from({length:n}, (_, i) => ({x:i * VW / n + 6, y:Math.random() * VH, v:40 + Math.random() * 120, len:8 + Math.floor(Math.random() * 14), ch:Array.from({length:26}, () => GLY[Math.floor(Math.random() * GLY.length)]), fs}));
+    nodes = Array.from({length:9}, () => ({x:Math.random(), y:.08 + Math.random() * .45, z:.4 + Math.random() * .6, s:14 + Math.random() * 18, r:Math.random() * 6, vr:.2 + Math.random() * .6}));
+    links = []; nodes.forEach((a, i) => { const b = nodes[(i + 1 + Math.floor(Math.random() * 3)) % nodes.length]; links.push([a, b]); });
+    packets = links.map(l => ({l, s:Math.random(), v:.15 + Math.random() * .3}));
+  }
+  const cube = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]], edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  function draw(t, dt){
+    const W = VW, H = VH, hz = H * .5 - Math.min(scrollY, 3000) * .03;
+    const bg = cx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, mixHex(AT.bg, '#000000', .55)); bg.addColorStop(hz / H, mixHex(AT.bg, AT.light, .12)); bg.addColorStop(1, mixHex(AT.bg, '#000000', .3));
+    cx.fillStyle = bg; cx.fillRect(0, 0, W, H);
+    // floor grid
+    const vx = W / 2 + ptr.sx * 40;
+    cx.strokeStyle = rgbA(AT.trace, .55); cx.lineWidth = 1; cx.beginPath();
+    for (let i = -24; i <= 24; i++){ cx.moveTo(vx + i * 8, hz); cx.lineTo(vx + i * W * .12, H); }
+    const sp = (t * .6) % 1;
+    for (let k = 0; k < 18; k++){ const d = Math.pow((k + sp) / 18, 2.2), y = hz + (H - hz) * d; cx.moveTo(0, y); cx.lineTo(W, y); }
+    cx.stroke();
+    // ceiling grid, fainter
+    cx.strokeStyle = rgbA(AT.trace, .18); cx.beginPath();
+    for (let k = 0; k < 10; k++){ const d = Math.pow((k + sp) / 10, 2.2), y = hz - hz * d; cx.moveTo(0, y); cx.lineTo(W, y); }
+    cx.stroke();
+    // ICE wall at the horizon
+    const iw = Math.min(W * .5, 520), ih = hz * .5, ix = vx - iw / 2, iy = hz - ih, pulse = .35 + .25 * Math.sin(t * 2.4), hs = 18;
+    cx.strokeStyle = rgbA(AT.accent, .35 * pulse + .1); cx.lineWidth = 1; cx.beginPath();
+    for (let r = 0, y = iy; y < hz; r++, y += hs * .86) for (let x = ix + (r % 2) * hs / 2; x < ix + iw; x += hs){
+      for (let a = 0; a < 6; a++){ const A = a / 6 * 6.283 + .52, B = (a + 1) / 6 * 6.283 + .52; cx.moveTo(x + Math.cos(A) * hs / 2, y + Math.sin(A) * hs / 2); cx.lineTo(x + Math.cos(B) * hs / 2, y + Math.sin(B) * hs / 2); }
+    }
+    cx.stroke();
+    cx.fillStyle = rgbA(AT.accent, .05 * pulse); cx.fillRect(ix, iy, iw, ih);
+    // data rain
+    cx.font = '14px monospace'; cx.textBaseline = 'top';
+    cols.forEach(c => {
+      if (FXS.motion){ c.y += c.v * dt; if (c.y - c.len * c.fs > H) c.y = -Math.random() * 200; if (Math.random() < .03) c.ch[Math.floor(Math.random() * c.ch.length)] = GLY[Math.floor(Math.random() * GLY.length)]; }
+      for (let j = 0; j < c.len; j++){
+        const y = c.y - j * c.fs; if (y < -20 || y > H) continue;
+        cx.fillStyle = j === 0 ? rgbA('#ffffff', .55) : rgbA(AT.light, .32 * (1 - j / c.len));
+        cx.fillText(c.ch[j % c.ch.length], c.x, y);
+      }
+    });
+    // nodes and links
+    const P = n => [n.x * W - ptr.sx * 30 * n.z, n.y * H - Math.min(scrollY, 3000) * .04 * n.z - ptr.sy * 20 * n.z];
+    cx.strokeStyle = rgbA(AT.light, .22); cx.beginPath();
+    links.forEach(([a, b]) => { const [x1, y1] = P(a), [x2, y2] = P(b); cx.moveTo(x1, y1); cx.lineTo(x2, y2); });
+    cx.stroke();
+    nodes.forEach(n => {
+      const [x, y] = P(n), a = n.r + t * n.vr, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(a * .7), sb = Math.sin(a * .7), s = n.s * n.z;
+      const pr = cube.map(([X, Y, Z]) => { const x1 = X * ca - Z * sa, z1 = X * sa + Z * ca, y1 = Y * cb - z1 * sb; return [x + x1 * s, y + y1 * s]; });
+      cx.strokeStyle = rgbA(AT.light, .35 + .5 * n.z); cx.lineWidth = 1; cx.beginPath();
+      edges.forEach(([i, j]) => { cx.moveTo(pr[i][0], pr[i][1]); cx.lineTo(pr[j][0], pr[j][1]); });
+      cx.stroke();
+    });
+    cx.globalCompositeOperation = 'lighter';
+    packets.forEach(p => {
+      if (FXS.motion){ p.s += p.v * dt; if (p.s > 1) p.s -= 1; }
+      const [x1, y1] = P(p.l[0]), [x2, y2] = P(p.l[1]);
+      cx.drawImage(glowSprite(hexRgb(AT.accent)), x1 + (x2 - x1) * p.s - 7, y1 + (y2 - y1) * p.s - 7, 14, 14);
+    });
+    cx.globalCompositeOperation = 'source-over';
+  }
+  return {init, draw};
+})();
+
+/* ---- environment: time of day, weather, merc reactions ---- */
+const SCENE_TOD = {circuit:'night', corpo:'night', nomad:'dusk', streetkid:'night', net:'night'};
+function todNow(){
+  let t = AT.tod || 'default';
+  if (t === 'auto'){ const h = new Date().getHours(); t = h >= 5 && h < 8 ? 'dawn' : h >= 8 && h < 17 ? 'day' : h >= 17 && h < 20 ? 'dusk' : 'night'; }
+  return t === 'default' ? SCENE_TOD[AT.style] || 'night' : t;
+}
+function todOverlay(){
+  const tod = todNow(); if (tod === (SCENE_TOD[AT.style] || 'night') || AT.style === 'nomad' || AT.style === 'streetkid') return;
+  const f = (op, col, a) => { cx.globalCompositeOperation = op; cx.globalAlpha = a; cx.fillStyle = col; cx.fillRect(0, 0, VW, VH); };
+  if (tod === 'night') f('source-over', '#040618', .38);
+  else if (tod === 'dawn'){ f('lighter', '#ff8c78', .07); f('source-over', '#ffd0c0', .05); }
+  else if (tod === 'day'){ f('screen', '#9fb2c6', .2); }
+  else if (tod === 'dusk'){ f('lighter', '#ff6428', .08); }
+  cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1;
+}
+let WX = {key:'', rain:[], fog:[], sand:[]}, storm = {next:0, start:-1, toastAt:-1};
+const wxBuiltin = (scene, kind) => { const w = AT.weather || 'default'; return w === 'default' || w === kind; };
+function wxInit(){
+  const k = [VW, VH, PREFS.battery].join('|'); if (k === WX.key) return; WX.key = k;
+  const d = PREFS.battery ? .45 : 1;
+  WX.rain = Array.from({length:Math.round(VW * VH / 8000 * d)}, () => ({x:Math.random() * VW, y:Math.random() * VH, v:650 + Math.random() * 450, l:10 + Math.random() * 18, a:.06 + Math.random() * .16}));
+  WX.fog = Array.from({length:7}, () => ({x:Math.random() * VW, y:VH * (.2 + Math.random() * .8), r:300 + Math.random() * 450, v:6 + Math.random() * 16, a:.08 + Math.random() * .12}));
+  WX.sand = Array.from({length:Math.round(320 * d)}, () => ({x:Math.random() * VW, y:Math.random() * VH, v:500 + Math.random() * 700, l:8 + Math.random() * 26, a:.1 + Math.random() * .35, w:Math.random() * 6}));
+}
+const blob = (() => { const c = {}; return col => { if (c[col]) return c[col]; const e = document.createElement('canvas'); e.width = e.height = 256; const g = e.getContext('2d'), gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, `rgba(${col},1)`); gr.addColorStop(.6, `rgba(${col},.4)`); gr.addColorStop(1, `rgba(${col},0)`); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); return c[col] = e; }; })();
+function wxRain(dt){
+  cx.strokeStyle = 'rgba(200,220,255,.16)'; cx.lineWidth = 1; cx.beginPath();
+  WX.rain.forEach(d => { if (FXS.motion){ d.y += d.v * dt; d.x -= d.v * dt * .15; if (d.y > VH){ d.y = -20; d.x = Math.random() * (VW + 80); } } cx.moveTo(d.x, d.y); cx.lineTo(d.x + d.l * .15, d.y - d.l); });
+  cx.stroke();
+}
+function wxFog(dt){
+  const spr = blob('205,210,220');
+  WX.fog.forEach(f => { if (FXS.motion){ f.x += f.v * dt; if (f.x - f.r > VW) f.x = -f.r; } cx.globalAlpha = f.a; cx.drawImage(spr, f.x - f.r, f.y - f.r * .6, f.r * 2, f.r * 1.2); });
+  cx.globalAlpha = .07; cx.fillStyle = '#c8ccd4'; cx.fillRect(0, 0, VW, VH); cx.globalAlpha = 1;
+}
+function wxSand(t, dt, I){
+  if (I <= 0) return;
+  cx.globalAlpha = .26 * I; cx.fillStyle = '#b8692c'; cx.fillRect(0, 0, VW, VH);
+  const spr = blob('214,140,72');
+  WX.fog.forEach(f => { if (FXS.motion) f.x += f.v * dt * 6; if (f.x - f.r > VW) f.x = -f.r; cx.globalAlpha = f.a * 1.6 * I; cx.drawImage(spr, f.x - f.r, f.y - f.r * .5, f.r * 2, f.r); });
+  cx.globalAlpha = 1; cx.lineWidth = 1.2; cx.beginPath();
+  const n = Math.round(WX.sand.length * I);
+  for (let i = 0; i < n; i++){ const p = WX.sand[i]; if (FXS.motion){ p.x += p.v * dt; p.y += Math.sin(t * 2 + p.w) * 30 * dt; if (p.x > VW + 30){ p.x = -30; p.y = Math.random() * VH; } } cx.moveTo(p.x, p.y); cx.lineTo(p.x - p.l, p.y + p.l * .08); }
+  cx.strokeStyle = `rgba(255,205,150,${.28 * I})`; cx.stroke();
+}
+function stormLevel(t){
+  if (AT.style !== 'nomad' || (AT.weather || 'default') !== 'default' || !FXS.motion) return 0;
+  if (!storm.next) storm.next = t + 150 + Math.random() * 240;
+  if (storm.start < 0 && t > storm.next){ storm.start = t; toast('Sandstorm rolling in off the badlands.'); }
+  if (storm.start < 0) return 0;
+  const e = t - storm.start, L = 60;
+  if (e > L){ storm.start = -1; storm.next = t + 360 + Math.random() * 420; return 0; }
+  return Math.min(1, e / 10, (L - e) / 10);
+}
+function drawWeather(t, dt){
+  wxInit();
+  const w = AT.weather || 'default';
+  if (w === 'rain' && AT.style !== 'streetkid') wxRain(dt);
+  if (w === 'fog') wxFog(dt);
+  if (w === 'sandstorm') wxSand(t, dt, 1);
+  else { const s = stormLevel(t); if (s > 0) wxSand(t, dt, s); }
+}
+function reactNow(){
+  if (!PREFS.react || !C || $('#vSheet').hidden || document.body.classList.contains('on-rules')) return {};
+  const hm = C.hpMax; let low = false;
+  if (hm){ const hp = C.hp == null ? hm : C.hp, net = C.netHp == null ? hm : C.netHp; low = Math.min(hp, net) / hm < .3; }
+  return {low, psy:!!C.psycho, hack:(C.hacks || []).length > 0, heat:isOverheated()};
+}
+function tint(col, a){ cx.globalCompositeOperation = 'color'; cx.globalAlpha = a; cx.fillStyle = col; cx.fillRect(0, 0, VW, VH); cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1; }
+function slices(n, maxH){ for (let i = 0; i < n; i++){ const y = Math.random() * VH, h = 4 + Math.random() * maxH; cx.drawImage(cv, 0, Math.floor(y * DPR), cv.width, Math.ceil(h * DPR), (Math.random() - .5) * 70, y, VW, h); } }
+function haze(t){ const st = PREFS.battery ? 12 : 6; for (let y = 0; y < VH; y += st) cx.drawImage(cv, 0, Math.floor(y * DPR), cv.width, Math.ceil(st * DPR), Math.sin(y * .035 + t * 3.4) * 3.5, y, VW, st); }
+let vRate = 1, VT = 0;
+function post(t, dt, RS){
+  drawWeather(t, dt);
+  todOverlay();
+  let twitch = false;
+  if (RS.low){ cx.globalCompositeOperation = 'saturation'; cx.globalAlpha = .8; cx.fillStyle = 'hsl(0,0%,40%)'; cx.fillRect(0, 0, VW, VH); cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = .25; cx.fillStyle = '#000'; cx.fillRect(0, 0, VW, VH); cx.globalAlpha = 1; }
+  if (RS.hack){ tint('#00ff8c', .5); if (flashOK() && FXS.motion && Math.random() < .18) slices(4, 40); }
+  if (RS.heat){ if (flashOK() && FXS.motion) haze(t); tint('#ff6a00', .4); cx.globalCompositeOperation = 'lighter'; cx.globalAlpha = .06; cx.fillStyle = '#ff5a00'; cx.fillRect(0, 0, VW, VH); cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1; }
+  if (RS.psy){ tint('#ff1030', .55); if (flashOK() && FXS.motion){ if (Math.random() < .06) twitch = true; if (Math.random() < .08) slices(2, 80); } }
+  cv.style.transform = twitch ? `translate(${((Math.random() - .5) * 14).toFixed(1)}px,${((Math.random() - .5) * 6).toFixed(1)}px)` : '';
+}
+
 let lastT = performance.now(), running = false;
 function frame(now){
   if (PREFS.battery && FXS.motion && now - lastT < 31){ requestAnimationFrame(frame); return; }
-  const t = now / 1000, dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
+  const rdt = Math.min(.05, (now - lastT) / 1000); lastT = now;
+  const RS = reactNow();
+  vRate += ((RS.low ? .35 : 1) - vRate) * .05;
+  if (FXS.motion) VT += rdt * vRate;
+  const t = FXS.motion ? VT : 0, dt = FXS.motion ? rdt * vRate : 0;
   ptr.sx += (ptr.x - ptr.sx) * .04; ptr.sy += (ptr.y - ptr.sy) * .04;
   cx.setTransform(DPR, 0, 0, DPR, 0, 0);
   cx.clearRect(0, 0, VW, VH);
-  cx.globalCompositeOperation = 'source-over';
-  if (SCENES[THEME.style]){
+  cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1;
+  if (SCENES[AT.style]){
     ensureScene();
-    cx.globalAlpha = 1;
-    SCENES[THEME.style].draw(FXS.motion ? t : 0, FXS.motion ? dt : 0);
+    SCENES[AT.style].draw(t, dt);
     cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+    post(t, dt, RS);
     if (FXS.motion) requestAnimationFrame(frame); else running = false;
     return;
   }
+  const bgr = cx.createLinearGradient(0, -scrollY, 0, 1300 - scrollY);
+  bgr.addColorStop(0, AT.bg); bgr.addColorStop(280 / 1300, mixHex(AT.bg, '#0b0a12', .52)); bgr.addColorStop(760 / 1300, mixHex(AT.bg, '#0b0a12', .88)); bgr.addColorStop(1, '#0b0a12');
+  cx.fillStyle = bgr; cx.fillRect(0, 0, VW, VH);
   LAYERS.forEach((L, i) => {
     const [ox, oy] = offset(L, FXS.motion ? t : 0);
     cx.globalAlpha = FXS.motion ? .82 + .18 * Math.sin(t * .7 + i * 2.1) : 1;
@@ -4019,7 +4265,7 @@ function frame(now){
       const p = pulses[k]; p.s += p.speed * dt;
       if (p.s > p.tr.total){ pulses.splice(k, 1); continue; }
       const [ox, oy] = offset(p.L, t), bx = ox + p.ix * TW, by = oy + p.iy * TH;
-      const spr = glowSprite(hexRgb(p.cyan ? THEME.accent : THEME.light));
+      const spr = glowSprite(hexRgb(p.cyan ? AT.accent : AT.light));
       const fade = Math.min(1, p.s / 30, (p.tr.total - p.s) / 30);
       for (let q = 0; q < 5; q++){
         const ss = p.s - q * 7; if (ss < 0) break;
@@ -4030,8 +4276,9 @@ function frame(now){
       }
     }
     cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
-    requestAnimationFrame(frame);
-  } else running = false;
+  }
+  post(t, dt, RS);
+  if (FXS.motion) requestAnimationFrame(frame); else running = false;
 }
 function startBg(){ if (running) return; running = true; lastT = performance.now(); requestAnimationFrame(frame); }
 function drawStatic(){ frame(performance.now()); }
@@ -4042,8 +4289,9 @@ FXS.motion ? startBg() : drawStatic();
 
 /* ================= SETTINGS / THEME ================= */
 function applyTheme(rebuild){
-  document.documentElement.style.setProperty('--bgc', THEME.bg);
-  document.body.dataset.bg = THEME.style;
+  AT = envCompute();
+  document.documentElement.style.setProperty('--bgc', AT.bg);
+  document.body.dataset.bg = AT.style;
   if (rebuild){ LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; if (!FXS.motion) drawStatic(); }
 }
 const SET_AT_KEY = 'daemon-settings-at';
@@ -4053,7 +4301,10 @@ function saveTheme(){ try { localStorage.setItem(THEME_KEY, JSON.stringify(THEME
 function savePrefs(){ try { localStorage.setItem(PREFS_KEY, JSON.stringify(PREFS)); } catch(e){} touchSettings(); }
 function applyPrefs(prev){
   prev = prev || {};
-  const b = document.body;
+  const b = document.body, root = document.documentElement.style;
+  if (PREFS.accent && /^#[0-9a-f]{6}$/i.test(PREFS.accent)){ root.setProperty('--cyan', PREFS.accent); root.setProperty('--crgb', hexRgb(PREFS.accent)); }
+  else { root.removeProperty('--cyan'); root.removeProperty('--crgb'); }
+  if (['matchOrigin', 'dmMood', 'tod', 'weather'].some(k => prev[k] !== undefined && prev[k] !== PREFS[k])) refreshEnv();
   $('.wrap').style.zoom = PREFS.text === 100 ? '' : PREFS.text / 100;
   cv.style.opacity = PREFS.dim / 100;
   b.classList.toggle('cb', PREFS.cb); b.classList.toggle('compact', PREFS.compact); b.classList.toggle('calm', PREFS.calm);
@@ -4074,11 +4325,22 @@ function renderSettings(){
     const same = t => ['bg', 'trace', 'light', 'accent'].every(k => t[k].toLowerCase() === THEME[k].toLowerCase());
     const row = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="color" data-theme="${k}" value="${THEME[k]}" aria-label="${label}"></label>`;
     const S = STYLES[THEME.style] || STYLES.circuit, keys = ['bg', 'trace', 'light', 'accent'];
+    const sw = t => `<span class="sw"><i style="background:${t.bg}"></i><i style="background:${t.trace}"></i><i style="background:${t.light}"></i><i style="background:${t.accent}"></i></span>`;
+    const psel = (k, list, label) => `<label>${label}<select data-pref="${k}" aria-label="${label}">${list.map(([v, n]) => `<option value="${v}" ${PREFS[k] === v ? 'selected' : ''}>${n}</option>`).join('')}</select></label>`;
+    const override = AT.src === 'jack' ? 'You are jacked in, so the Net is showing. Jack out on your sheet to go back.' : AT.src === 'mood' ? `The DM set the mood to ${STYLES[AT.style].n}. Turn off Let the DM set the mood to use your own.` : AT.src === 'origin' ? `Matching ${C ? esc(C.name) : 'your merc'}'s origin right now.` : '';
     body = `<span class="lbl" style="margin-top:12px;display:block">Background</span>
+    ${override ? `<p class="muted" style="font-size:12px;margin:6px 0 0;color:var(--yellow)">${override}</p>` : ''}
     <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}</div>
-    <span class="lbl" style="margin-top:6px;display:block">Color presets</span>
-    <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}"><span class="sw"><i style="background:${t.bg}"></i><i style="background:${t.trace}"></i><i style="background:${t.light}"></i><i style="background:${t.accent}"></i></span>${n}</button>`).join('')}</div>
+    <div class="selrow">${psel('tod', TODS, 'Time of day')}${psel('weather', WEATHERS, 'Weather')}</div>
+    ${tog('matchOrigin', 'Match my origin', 'Opening a merc switches to their Nomad, Corpo or Streetkid background')}
+    ${tog('react', 'React to my merc', 'Low HP drains the color, cyberpsychosis goes red, hacks go green, overheating ripples')}
+    ${tog('dmMood', 'Let the DM set the mood', 'In a live session the DM can push a background to the party')}
+    <span class="lbl" style="margin-top:10px;display:block">Color presets</span>
+    <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}">${sw(t)}${n}</button>`).join('')}
+      ${UNLOCKS.map(u => PREFS.unl.includes(u.id) ? `<button data-unlock="${u.id}" class="${same(u.pal) ? 'on' : ''}">${sw(u.pal)}${u.n}</button>` : `<button class="locked" disabled title="${esc(u.hint)}">🔒 ${u.n}<small>${esc(u.hint)}</small></button>`).join('')}</div>
     ${keys.map((k, i) => row(k, S.lab[i][0], S.lab[i][1])).join('')}
+    <label class="crow"><span>Site accent<small>Text, panel edges and buttons. Default is cyan</small></span><input type="color" data-accent="1" value="${PREFS.accent || '#2fe6f0'}" aria-label="Site accent"></label>
+    <div class="row" style="gap:6px"><button class="btn small" data-set="accLights">Use my lights color</button><button class="btn small" data-set="accReset">Cyan</button></div>
     ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
     <div class="row gap"><button class="btn small" data-set="reset">Reset colors</button></div>`;
   } else if (setTab === 'comfort'){
@@ -4117,6 +4379,8 @@ $('#setPanel').addEventListener('click', e => {
   if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
   if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); return; }
   if (t.dataset.preset){ THEME = {...THEME, ...PRESETS[+t.dataset.preset][1], style:THEME.style}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
+  if (t.dataset.unlock){ const u = UNLOCKS.find(x => x.id === t.dataset.unlock); if (u){ THEME = {...THEME, ...u.pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('cool'); } }
+  if (t.dataset.set === 'accLights' || t.dataset.set === 'accReset'){ const prev = {...PREFS}; PREFS.accent = t.dataset.set === 'accReset' ? '' : AT.light; applyPrefs(prev); savePrefs(); renderSettings(); }
 });
 let themeT, prefT;
 $('#setPanel').addEventListener('input', e => {
@@ -4126,13 +4390,26 @@ $('#setPanel').addEventListener('input', e => {
     clearTimeout(themeT); themeT = setTimeout(() => { saveTheme(); applyTheme(k === 'trace'); $('#setPanel').querySelectorAll('[data-preset]').forEach(b => b.classList.remove('on')); }, 60);
     return;
   }
+  if (e.target.dataset.accent){ const prev = {...PREFS}; PREFS.accent = e.target.value; applyPrefs(prev); clearTimeout(prefT); prefT = setTimeout(savePrefs, 300); return; }
   const pk = e.target.dataset.pref; if (!pk) return;
   const prev = {...PREFS};
-  PREFS[pk] = e.target.type === 'checkbox' ? e.target.checked : +e.target.value;
+  PREFS[pk] = e.target.type === 'checkbox' ? e.target.checked : e.target.tagName === 'SELECT' ? e.target.value : +e.target.value;
   const lab = $('#pv-' + pk); if (lab) lab.textContent = PREFS[pk] + '%';
   applyPrefs(prev);
+  if (['matchOrigin', 'dmMood'].includes(pk)) renderSettings();
   clearTimeout(prefT); prefT = setTimeout(savePrefs, 300);
 });
+/* unlockable color presets */
+let unlT;
+function checkUnlocks(){
+  clearTimeout(unlT); unlT = setTimeout(() => {
+    const mercs = DB.chars.map(c => normalize(c)), fresh = UNLOCKS.filter(u => !PREFS.unl.includes(u.id) && mercs.some(m => { try { return u.test(m); } catch(e){ return false; } }));
+    if (!fresh.length) return;
+    PREFS.unl = [...PREFS.unl, ...fresh.map(u => u.id)]; savePrefs();
+    fresh.forEach((u, i) => setTimeout(() => { toast(`Theme unlocked. ${u.n} is in Settings.`, true); if (flashOK()) coolFx('THEME UNLOCKED', false); sfx('cool'); }, 2600 + i * 1800));
+    if (!$('#setPanel').hidden) renderSettings();
+  }, 1200);
+}
 function remoteSettings(st){
   if (!st || !(st.at > settingsAt())) return;
   const prev = {...PREFS};
