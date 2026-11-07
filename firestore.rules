@@ -26,6 +26,13 @@ service cloud.firestore {
         allow delete: if signedIn() && (request.auth.uid == uid || isDM());
       }
 
+      // NPC ID cards. Everyone in the session can see them, only the DM writes.
+      // These only hold the name, origin, portrait and a critical/flatlined flag. HP stays private.
+      match /npcs/{id} {
+        allow read: if signedIn();
+        allow write: if isDM();
+      }
+
       // Each player writes only their own merc. The DM can remove players.
       match /players/{uid} {
         allow read: if signedIn();
@@ -46,8 +53,14 @@ service cloud.firestore {
       }
     }
 
-    // Each DM's private item library.
+    // Each DM's item library. Players can read it so their Codex stays in sync. Only the DM writes.
     match /dms/{uid}/library/{item} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Each DM's private NPC stats (HP, advantage, notes). DM only.
+    match /dms/{uid}/npcs/{id} {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
   }

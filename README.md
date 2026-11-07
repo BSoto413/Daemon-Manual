@@ -79,6 +79,8 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - The DM can damage or heal NET HP and drain or add RAM, not just restore it
 - Cyberware threshold. Each cyberware item has a cost (`cw`), set in the DM library or by the Fabricator. Installed costs plus manual tallies (`cwAdj`) fill the tally. Threshold (`cwT`, default 10) and max (`cwMax`, default 15) are set by the DM. Each point past the threshold is +2 to the Cyberpsychosis DC, and nothing can be installed past the max
 - Cool bonuses (`cool`). The DM awards them like inspiration, the player spends them from the sheet header
+- NPCs. The DM keeps private NPCs (`dms/{uid}/npcs`, HP, advantage, notes, portrait). Show ID card publishes a public card to `sessions/{code}/npcs` (name, origin, portrait, critical, down) and pops it up for everyone via `spotlight` on the session doc. Under 30% HP the card shows CRITICAL, at 0 FLATLINED. Players never see HP
+- Codex (`#codex`). Tabs for NPCs, Weapons, Vehicles, Items and Cyberware, built from NPCs the crew has met and the DM's library (anything not set to Hidden). It's cached in the browser so it works between sessions and offline
 - The DM's item library lives under that browser's DM account and carries between sessions. Copy library and Import library move it to another browser
 - Firestore layout
   - `sessions/{code}` holds dmUid, name, created

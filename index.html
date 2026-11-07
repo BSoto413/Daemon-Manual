@@ -480,6 +480,40 @@ body.overheat .acts button,body.overheat .node,body.overheat [data-act^=fab],bod
 .ovtag{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1px;color:#ff4fd8;margin-left:8px}
 .tagb.cwb{background:rgba(47,230,240,.18);color:var(--cyan);border:1px solid var(--cyan-dim)}
 .cw .r input[type=number]{width:52px}
+/* ---------- npc id card + codex ---------- */
+#idcard{position:fixed;inset:0;z-index:22;display:grid;place-items:center;background:rgba(0,0,0,.35);cursor:pointer}
+#idcard[hidden]{display:none}
+.idc{position:relative;width:min(92vw,520px);background:linear-gradient(135deg,rgba(8,14,22,.96),rgba(14,6,18,.96));border:1px solid var(--cyan);box-shadow:0 0 30px rgba(47,230,240,.35),inset 0 0 40px rgba(47,230,240,.08);padding:18px 20px;clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px));overflow:hidden;animation:idIn .55s cubic-bezier(.2,1.3,.4,1)}
+@keyframes idIn{0%{transform:translateY(40px) scale(.9) skewX(-6deg);opacity:0;filter:hue-rotate(90deg)}60%{filter:none}100%{transform:none;opacity:1}}
+.idc::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(47,230,240,.05) 0 1px,transparent 1px 3px);pointer-events:none}
+.idc-scan{position:absolute;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(47,230,240,.25),transparent);animation:idScan 2.2s linear infinite;pointer-events:none}
+@keyframes idScan{from{top:-60px}to{top:100%}}
+.idc-top{display:flex;justify-content:space-between;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;color:var(--cyan);border-bottom:1px solid var(--cyan-dim);padding-bottom:8px;margin-bottom:14px}
+.idc-body{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.idc-name{font-family:Orbitron,sans-serif;color:#fff;font-size:clamp(20px,4vw,28px);min-height:1.3em;word-break:break-word}
+.idc-origin{font-family:Orbitron,sans-serif;color:var(--yellow);font-size:16px;letter-spacing:2px;min-height:1.3em;text-transform:uppercase}
+.idc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:3px;color:var(--cyan)}
+.idc-stamp{position:absolute;right:18px;top:64px;transform:rotate(-12deg);font-family:Orbitron,sans-serif;font-size:28px;letter-spacing:4px;color:var(--red);border:3px solid var(--red);padding:4px 12px;text-shadow:0 0 14px rgba(255,74,94,.8);animation:stampPulse 1s ease-in-out infinite}
+@keyframes stampPulse{50%{opacity:.55}}
+#idcard.crit .idc{border-color:var(--red);box-shadow:0 0 34px rgba(255,74,94,.5),inset 0 0 40px rgba(255,74,94,.12);animation:idIn .55s cubic-bezier(.2,1.3,.4,1),idFlick 2.6s steps(1) infinite .6s}
+@keyframes idFlick{0%,100%{opacity:1}47%{opacity:.6;transform:translateX(-2px)}48%{opacity:1;transform:none}82%{opacity:.75}83%{opacity:1}}
+.pcard.npc.crit{border-color:rgba(255,74,94,.6)}
+.seg{display:flex;border:1px solid var(--cyan-dim)}
+.seg button{flex:1;background:transparent;border:0;color:var(--muted);font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 4px;cursor:pointer}
+.seg button.on{background:var(--cyan);color:#03161a}
+.seg button[data-v=dis].on{background:var(--red);color:#1a0004}
+.lrow.hid{opacity:.5}
+.npadd{display:grid;grid-template-columns:minmax(0,2fr) 140px 110px auto;gap:8px;align-items:center}
+@media (max-width:640px){.npadd{grid-template-columns:1fr 1fr}.npadd > :first-child{grid-column:1 / -1}}
+.cxtabs{margin-top:14px}
+.cxtabs button .muted{font-size:10px;margin-left:4px}
+.cxgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:14px}
+.cxcard{background:var(--panel);border:1px solid rgba(47,230,240,.18);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;color:inherit;font:inherit;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+button.cxcard{cursor:pointer;text-align:left}
+button.cxcard:hover{border-color:var(--cyan)}
+.cxcard .nm{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
+.cxcard .sub{font-size:13px;color:var(--muted)}
+.cxcard.crit{border-color:rgba(255,74,94,.6)}
 footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 @media (max-width:560px){
   .wrap{padding:22px 16px 60px}
@@ -503,7 +537,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   <header>
     <h1 class="gl-title" data-text="Daemon Manual V0.1">Daemon Manual V0.1</h1>
     <div class="rule"></div>
-    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a></nav>
+    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a></nav>
   </header>
 
   <div id="pgRules" hidden>
@@ -709,6 +743,11 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   </div>
   </div>
 
+  <div id="pgCodex" hidden>
+    <h2>Codex</h2>
+    <div id="codexBody"></div>
+  </div>
+
   <div id="pgApp">
 
   <section id="mercs">
@@ -810,6 +849,14 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div class="toast" id="toast" role="status"></div>
 <div id="vignette" aria-hidden="true"></div>
 <div id="psyVig" aria-hidden="true"></div>
+<div id="idcard" hidden role="dialog" aria-label="NPC ID card"><div class="idc">
+  <div class="idc-scan"></div>
+  <div class="idc-top"><span>NIGHT CITY // CITIZEN ID</span><span id="idcNo"></span></div>
+  <div class="idc-body"><div class="av lg idc-av" id="idcAv"></div>
+    <div style="min-width:0"><span class="lbl">Name</span><div class="idc-name" id="idcName"></div><span class="lbl" style="margin-top:12px">Origin</span><div class="idc-origin" id="idcOrigin"></div></div></div>
+  <div class="idc-stamp gl" id="idcStamp" data-text="CRITICAL" hidden>CRITICAL</div>
+  <div class="idc-foot"><span class="gl" data-text="IDENTITY SCANNED">IDENTITY SCANNED</span><button class="btn small" id="idcCodex">Open codex</button></div>
+</div></div>
 <div id="hackVig" aria-hidden="true"></div>
 <div id="heatVig" aria-hidden="true"></div>
 <div id="glitchFx" aria-hidden="true"></div>
@@ -981,7 +1028,7 @@ const HACKS = {
   cyber:   {n:'Cyberware Malfunction', d:"Cyberware is offline. Its RAM bonuses are gone and nothing can be swapped."},
   short:   {n:'Short Circuit', d:'Disadvantage on every roll.'}
 };
-const ITEM_TYPES = ['Weapon','Armor','Consumable','Ammo','Gear','Cyberware'];
+const ITEM_TYPES = ['Weapon','Vehicle','Armor','Consumable','Ammo','Gear','Cyberware'];
 const CYBER_SLOTS = [
   ['os','Operating System',1],['cortex','Frontal Cortex',3],['ocular','Ocular',1],['circ','Circulatory',3],
   ['immune','Immune',2],['nervous','Nervous',2],['integ','Integumentary',3],['skeleton','Skeleton',2],
@@ -1947,6 +1994,10 @@ const LS_KEY = 'daemon-live', HOSTED_KEY = 'daemon-hosted';
 let LS = null; try { LS = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){}
 let liveApi = null, liveState = 'idle', liveErr = '', unsubs = [], players = [], lib = [], sessMeta = null, endConfirm = false, libImport = false;
 let portraits = {}, lastPortrait = null, restoreList = null, leaveConfirm = false;
+let npcsDM = [], npcsPub = [], npcDel = null, codexLib = [];
+const ORIGINS = ['Nomad', 'Corpo', 'Streetkid', 'Unknown'];
+const npcCrit = n => n.hpMax > 0 && n.hp > 0 && n.hp / n.hpMax < .3;
+const npcDown = n => n.hpMax > 0 && n.hp <= 0;
 const JOINED_KEY = 'daemon-joined';
 const joined = () => { try { return JSON.parse(localStorage.getItem(JOINED_KEY)) || []; } catch(e){ return []; } };
 const saveJoined = j => { try { localStorage.setItem(JOINED_KEY, JSON.stringify(j.slice(0, 6))); } catch(e){} };
@@ -1996,6 +2047,14 @@ async function firebaseLive(){
     deleteInbox: (code, u, id) => F.deleteDoc(d('sessions', code, 'players', u, 'inbox', id)),
     watchLibrary: cb => F.onSnapshot(c('dms', uid, 'library'), q => cb(list(q)), onErr),
     async getPlayers(code){ return list(await F.getDocs(c('sessions', code, 'players'))); },
+    watchDmNpcs: cb => F.onSnapshot(c('dms', uid, 'npcs'), q => cb(list(q)), onErr),
+    setDmNpc: n => F.setDoc(d('dms', uid, 'npcs', n.id), n),
+    delDmNpc: id => F.deleteDoc(d('dms', uid, 'npcs', id)),
+    watchNpcs: (code, cb) => F.onSnapshot(c('sessions', code, 'npcs'), q => cb(list(q)), onErr),
+    setNpc: (code, id, data) => F.setDoc(d('sessions', code, 'npcs', id), data),
+    delNpc: (code, id) => F.deleteDoc(d('sessions', code, 'npcs', id)),
+    updateSession: (code, data) => F.setDoc(d('sessions', code), data, {merge:true}),
+    watchLibraryOf: (du, cb) => F.onSnapshot(c('dms', du, 'library'), q => cb(list(q)), onErr),
     async getPortrait(code, u){ const s = await F.getDoc(d('sessions', code, 'portraits', u)); return s.exists() ? s.data() : null; },
     touchPlayer: (code, u, data) => F.setDoc(d('sessions', code, 'players', u), data, {merge:true}),
     watchPortraits: (code, cb) => F.onSnapshot(c('sessions', code, 'portraits'), q => cb(list(q)), onErr),
@@ -2029,6 +2088,14 @@ function mockLive(){
     async deleteInbox(code, u, id){ mut(db => delete db[`sessions/${code}/players/${u}/inbox/${id}`]); },
     watchLibrary: cb => watch(() => coll(`dms/${uid}/library`), cb),
     async getPlayers(code){ return coll(`sessions/${code}/players`); },
+    watchDmNpcs: cb => watch(() => coll(`dms/${uid}/npcs`), cb),
+    async setDmNpc(n){ mut(db => db[`dms/${uid}/npcs/${n.id}`] = n); },
+    async delDmNpc(id){ mut(db => delete db[`dms/${uid}/npcs/${id}`]); },
+    watchNpcs: (code, cb) => watch(() => coll(`sessions/${code}/npcs`), cb),
+    async setNpc(code, id, data){ mut(db => db[`sessions/${code}/npcs/${id}`] = data); },
+    async delNpc(code, id){ mut(db => delete db[`sessions/${code}/npcs/${id}`]); },
+    async updateSession(code, data){ mut(db => db['sessions/' + code] = {...(db['sessions/' + code] || {}), ...data}); },
+    watchLibraryOf: (du, cb) => watch(() => coll(`dms/${du}/library`), cb),
     async getPortrait(code, u){ return read()[`sessions/${code}/portraits/${u}`] || null; },
     async touchPlayer(code, u, data){ mut(db => { const k = `sessions/${code}/players/${u}`; db[k] = {...(db[k] || {}), ...data}; }); },
     watchPortraits: (code, cb) => watch(() => coll(`sessions/${code}/portraits`), cb),
@@ -2043,7 +2110,7 @@ function getLive(){
   if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).catch(e => { apiPromise = null; throw e; });
   return apiPromise;
 }
-function stopAll(){ unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+function stopAll(){ npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
 
 /* ---- player side ---- */
 let pushT = null;
@@ -2153,8 +2220,10 @@ async function startPlayer(){
   const api = liveApi;
   unsubs.push(api.watchSession(LS.code, s => {
     if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
-    sessMeta = s; renderLive();
+    sessMeta = s; renderLive(); checkSpotlight();
   }));
+  unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
+  if (sessMeta && sessMeta.dmUid) unsubs.push(api.watchLibraryOf(sessMeta.dmUid, list => { codexLib = list; saveCodex(); renderCodex(); }));
   unsubs.push(api.watchPlayers(LS.code, list => {
     const before = players.map(p => p.id).join();
     players = dedupe(list).keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
@@ -2178,14 +2247,16 @@ async function startPlayer(){
 /* ---- dm side ---- */
 function startDM(){
   const api = liveApi;
-  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else renderLive(); }));
+  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else { renderLive(); checkSpotlight(); } }));
+  unsubs.push(api.watchDmNpcs(list => { npcsDM = list.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
+  unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   unsubs.push(api.watchPlayers(LS.code, list => {
     const {keep, stale} = dedupe(list);
     stale.forEach(p => { api.removePlayer(LS.code, p.id).catch(() => {}); api.removePortrait(LS.code, p.id).catch(() => {}); });
     players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
   }));
   unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
-  unsubs.push(api.watchLibrary(list => { lib = list.sort((a, b) => (a.type + a.name).localeCompare(b.type + b.name)); renderLive(); }));
+  unsubs.push(api.watchLibrary(list => { lib = list.sort((a, b) => (a.type + a.name).localeCompare(b.type + b.name)); codexLib = list; saveCodex(); renderLive(); renderCodex(); }));
 }
 const STARTER = [
   ['Light Pistol','Weapon','1d8 piercing, range 60 ft'],['Heavy Pistol','Weapon','2d6 piercing, range 60 ft'],
@@ -2213,7 +2284,7 @@ async function connect(){
     const s = await liveApi.getSession(LS.code);
     if (!s){ liveErr = `Session ${LS.code} doesn't exist anymore.`; if (LS.role === 'dm') saveHosted(hosted().filter(h => h.code !== LS.code)); LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
     if (LS.role === 'dm' && s.dmUid !== liveApi.uid){ liveErr = 'That session was hosted from a different browser, so only that browser can run it.'; LS = null; saveLS(); liveState = 'idle'; return renderLive(); }
-    sessMeta = s; liveState = 'on';
+    sessMeta = s; liveState = 'on'; setTimeout(renderCodex, 0);
     if (LS.role === 'dm') startDM(); else await startPlayer();
     renderLive(); if (C) renderSheetHead();
   } catch(e){
@@ -2345,9 +2416,25 @@ function liveHTML(){
     : `<div class="panel"><p>No one has joined yet. Share the code and have players hit Join on their own device.</p></div>`;
   const opts = sel => ITEM_TYPES.map(t => `<option ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
   const giveTargets = `<option value="">Library only</option><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}`;
-  const libRows = lib.length ? lib.map(i => `<div class="lrow"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
+  const npcCards = npcsDM.map(n => {
+    const pub = npcsPub.find(x => x.id === n.id), hm = n.hpMax || 0, hp = n.hp ?? hm, pct = hm ? Math.max(0, Math.min(100, hp / hm * 100)) : 0;
+    return `<div class="pcard npc ${npcCrit(n) ? 'crit' : ''}">
+      <div class="head">${avatar(n, 'av md')}<div style="min-width:0"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}${pub ? ' · in the codex' : ' · not met yet'}</div>
+        ${npcDown(n) ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : npcCrit(n) ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></div>
+      <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}</div>
+      <div class="row"><input type="number" min="0" id="na-${n.id}" placeholder="Amt" aria-label="Amount for ${esc(n.name)}"><button class="btn small danger" data-live="nhp-" data-n="${n.id}">Damage</button><button class="btn small" data-live="nhp+" data-n="${n.id}">Heal</button><button class="btn small" data-live="nfull" data-n="${n.id}">Full</button></div>
+      <div class="seg">${['adv', 'norm', 'dis'].map(v => `<button class="${(n.adv || 'norm') === v ? 'on' : ''}" data-live="nadv" data-v="${v}" data-n="${n.id}">${v === 'adv' ? 'Advantage' : v === 'dis' ? 'Disadvantage' : 'Normal'}</button>`).join('')}</div>
+      <textarea id="nn-${n.id}" data-nnote="${n.id}" placeholder="DM notes, stats, motives" aria-label="Notes for ${esc(n.name)}" style="min-height:60px;font-family:'Exo 2',sans-serif;font-size:13px">${esc(n.notes || '')}</textarea>
+      <div class="row"><button class="btn small primary" data-live="nshow" data-n="${n.id}">Show ID card</button><label class="btn small" style="display:inline-block">Portrait<input type="file" accept="image/*" data-npic="${n.id}" hidden></label><span class="spacer"></span><button class="btn small ${npcDel === n.id ? 'danger' : ''}" data-live="ndel" data-n="${n.id}">${npcDel === n.id ? 'Confirm delete' : 'Delete'}</button></div>
+    </div>`;
+  }).join('');
+  const npcPanel = `<div class="panel gap"><div class="row"><h3>NPCs</h3><span class="spacer"></span><span class="muted" style="font-size:13px">HP, advantage and notes stay private to you. Players only ever see a CRITICAL or FLATLINED stamp.</span></div>
+      <div class="npadd gap"><input type="text" class="f" id="npName" placeholder="NPC name" aria-label="NPC name"><select id="npOrigin" aria-label="Origin">${ORIGINS.map(o => `<option>${o}</option>`).join('')}</select><input type="number" id="npHp" min="1" placeholder="Max HP" aria-label="Max HP"><label class="btn small" style="display:inline-block;align-self:center">Portrait<input type="file" accept="image/*" id="npPic" hidden></label></div>
+      <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
+      <div class="players">${npcCards || '<p class="muted">No NPCs yet.</p>'}</div></div>`;
+  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
       <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
-      <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
+      <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libhide" data-i="${i.id}" title="${i.hidden ? 'Hidden from the codex' : 'Shown in the codex'}">${i.hidden ? 'Hidden' : 'Codex'}</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
     : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
   return `${err}<div class="panel"><div class="row"><div style="flex:1;min-width:220px"><span class="lbl">Session code</span><div class="code">${esc(LS.code)}</div>
       <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · ${players.length} player${players.length === 1 ? '' : 's'} connected</p></div>
@@ -2355,10 +2442,11 @@ function liveHTML(){
       <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard keeps the session running so you can come back. End session kicks everyone and deletes it.</p></div>
     <h3 style="margin:22px 0 0">Players</h3>
     <div class="players">${playerCards}</div>
+    ${npcPanel}
     <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
       ${lib.length ? '' : '<button class="btn small" data-live="starter">Load starter pack</button>'}
       <button class="btn small" data-live="libcopy">Copy library</button><button class="btn small" data-live="libimp">${libImport ? 'Cancel import' : 'Import library'}</button></div>
-      <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account on this browser and carries over between sessions.</p>
+      <p class="muted" style="font-size:13px;margin:6px 0 12px">Your master list. It's saved to your DM account on this browser and carries over between sessions. Everything here shows up in the players' Codex unless you set it to Hidden.</p>
       ${libImport ? `<textarea id="libImpTxt" placeholder="Paste a copied library here"></textarea><div class="row gap"><button class="btn small primary" data-live="libimpgo">Import</button></div>` : ''}
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
@@ -2508,6 +2596,31 @@ $('#liveBody').addEventListener('click', async e => {
     if (await sendOp(u, {kind:'psycho', on:onv})) toast(`${pname(u)} ${onv ? 'snapped. Cyberpsychosis.' : 'pulled back.'}`, true);
     return;
   }
+  if (a === 'nadd'){
+    const name = ($('#npName').value || '').trim(); if (!name){ $('#npName').focus(); return toast('Give the NPC a name.'); }
+    const hm = Math.max(0, parseInt($('#npHp').value) || 0);
+    const n = {id:uid(), name:name.slice(0, 40), origin:$('#npOrigin').value, hpMax:hm, hp:hm, adv:'norm', notes:'', portrait:npDraftPic || null};
+    await liveApi.setDmNpc(n).catch(() => toast("Couldn't save the NPC."));
+    npDraftPic = null; $('#npName').value = ''; $('#npHp').value = ''; toast(`${n.name} added.`, true); return;
+  }
+  if (a && a.startsWith('n') && t.dataset.n){
+    const n = npcsDM.find(x => x.id === t.dataset.n); if (!n) return;
+    const na = () => Math.max(0, parseInt(($('#na-' + n.id) || {}).value) || 0);
+    if (a === 'nhp-' || a === 'nhp+'){ const v = na(); if (!v) return toast('Enter an amount first.'); n.hp = Math.max(0, Math.min(n.hpMax, (n.hp ?? n.hpMax) + (a === 'nhp-' ? -v : v))); }
+    else if (a === 'nfull') n.hp = n.hpMax;
+    else if (a === 'nadv') n.adv = t.dataset.v;
+    else if (a === 'ndel'){
+      if (npcDel !== n.id){ npcDel = n.id; return renderLive(); }
+      npcDel = null; await liveApi.delDmNpc(n.id).catch(() => {}); await liveApi.delNpc(LS.code, n.id).catch(() => {}); return;
+    }
+    else if (a === 'nshow'){
+      await publishNpc(n, true);
+      await liveApi.updateSession(LS.code, {spotlight:{npcId:n.id, at:Date.now()}}).catch(() => {});
+      toast(`${n.name}'s ID card is on everyone's screen.`, true); return;
+    }
+    await liveApi.setDmNpc(n).catch(() => {}); await publishNpc(n, false); return;
+  }
+  if (a === 'libhide'){ const it = lib.find(x => x.id === t.dataset.i); if (it) await liveApi.setLibItem({...it, hidden:!it.hidden}).catch(() => {}); return; }
   if (a === 'kick'){ await liveApi.removePlayer(LS.code, u).catch(() => {}); await liveApi.removePortrait(LS.code, u).catch(() => {}); return; }
   if (a === 'starter'){ for (const [name, type, stats] of STARTER) await liveApi.setLibItem({id:uid(), name, type, qty:1, stats}).catch(() => {}); toast('Starter pack loaded.', true); return; }
   if (a === 'libadd'){
@@ -2545,6 +2658,22 @@ $('#liveBody').addEventListener('click', async e => {
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
 });
+let npDraftPic = null;
+$('#liveBody').addEventListener('change', async e => {
+  const t = e.target;
+  if (t.id === 'npPic'){ try { npDraftPic = await readPortrait(t.files[0]); renderLive(); } catch(err){ toast("That image didn't load."); } return; }
+  if (t.dataset.npic){
+    const n = npcsDM.find(x => x.id === t.dataset.npic); if (!n) return;
+    try { n.portrait = await readPortrait(t.files[0]); await liveApi.setDmNpc(n); await publishNpc(n, false); toast('Portrait updated.', true); } catch(err){ toast("That image didn't load."); }
+    return;
+  }
+  if (t.dataset.nnote){ const n = npcsDM.find(x => x.id === t.dataset.nnote); if (n){ n.notes = t.value.slice(0, 2000); liveApi.setDmNpc(n).catch(() => {}); } }
+});
+async function publishNpc(n, force){
+  const pub = npcsPub.find(x => x.id === n.id);
+  if (!pub && !force) return;
+  await liveApi.setNpc(LS.code, n.id, {name:n.name, origin:n.origin || 'Unknown', portrait:n.portrait || null, critical:npcCrit(n), down:npcDown(n), metAt:(pub && pub.metAt) || Date.now()}).catch(() => {});
+}
 $('#liveBody').addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
   if (e.target.id === 'joinCode'){ e.preventDefault(); $('[data-live=join]').click(); }
@@ -2552,6 +2681,93 @@ $('#liveBody').addEventListener('keydown', e => {
   if (['liName','liStats','liQty'].includes(e.target.id)){ e.preventDefault(); $('[data-live=libadd]').click(); }
 });
 setInterval(() => { if (LS && LS.role === 'dm' && liveState === 'on') renderLive(); }, 30000);
+
+/* ================= NPC ID CARD + CODEX ================= */
+let spotShown = 0, idcTimer = null, idcNpc = null;
+try { spotShown = +localStorage.getItem('daemon-spot') || 0; } catch(e){}
+function onPubNpcs(list){
+  const prev = Object.fromEntries(npcsPub.map(n => [n.id, n]));
+  npcsPub = list;
+  list.forEach(n => {
+    const o = prev[n.id]; if (!o) return;
+    if (!o.critical && n.critical && !n.down) toast(`${n.name} is barely standing.`, true);
+    if (!o.down && n.down) toast(`${n.name} flatlined.`, true);
+  });
+  if (idcNpc){ const cur = list.find(n => n.id === idcNpc); if (cur) fillIdCard(cur, false); }
+  saveCodex(); renderCodex(); renderLive(); checkSpotlight();
+}
+function checkSpotlight(){
+  const sp = sessMeta && sessMeta.spotlight; if (!sp || !sp.at || sp.at <= spotShown) return;
+  const n = npcsPub.find(x => x.id === sp.npcId); if (!n) return;
+  spotShown = sp.at; try { localStorage.setItem('daemon-spot', spotShown); } catch(e){}
+  if (Date.now() - sp.at < 5 * 60000) showIdCard(n);
+}
+const idNo = id => { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return 'NC-' + (h % 900000 + 100000) + '-' + String.fromCharCode(65 + h % 26); };
+function fillIdCard(n, typing){
+  $('#idcAv').outerHTML = avatar(n, 'av lg idc-av').replace('class="av lg idc-av"', 'class="av lg idc-av" id="idcAv"');
+  $('#idcNo').textContent = idNo(n.id);
+  const nm = $('#idcName'), og = $('#idcOrigin');
+  if (typing && FXS.motion){
+    nm.textContent = ''; og.textContent = '';
+    let i = 0; const full = n.name, fo = n.origin || 'Unknown';
+    clearInterval(fillIdCard.t);
+    fillIdCard.t = setInterval(() => { i++; nm.textContent = full.slice(0, i); og.textContent = fo.slice(0, Math.max(0, i - 3)); if (i > Math.max(full.length, fo.length + 3)) clearInterval(fillIdCard.t); }, 45);
+  } else { nm.textContent = n.name; og.textContent = n.origin || 'Unknown'; }
+  const st = $('#idcStamp');
+  st.hidden = !(n.critical || n.down);
+  st.textContent = n.down ? 'FLATLINED' : 'CRITICAL'; st.dataset.text = st.textContent;
+  $('#idcard').classList.toggle('crit', !!(n.critical || n.down));
+}
+function showIdCard(n){
+  idcNpc = n.id;
+  const el = $('#idcard'); el.hidden = true; void el.offsetWidth; el.hidden = false;
+  fillIdCard(n, true);
+  if (FXS.sfx){ [1800, 2400, 1800, 3000].forEach((f, i) => tone(f, f, .05, 'square', .03, i * .07)); noise(.4, .03, .1, 7000, 3); }
+  clearTimeout(idcTimer); idcTimer = setTimeout(hideIdCard, 9000);
+}
+function hideIdCard(){ $('#idcard').hidden = true; idcNpc = null; }
+$('#idcard').addEventListener('click', e => { if (e.target.id === 'idcCodex'){ hideIdCard(); location.hash = 'codex'; return; } hideIdCard(); });
+
+const CODEX_KEY = 'daemon-codex';
+let codexTab = 'npcs', codexQ = '';
+function codexData(){
+  if (LS && liveState === 'on') return {code:LS.code, sname:sessMeta && sessMeta.name || '', npcs:npcsPub, items:codexLib.filter(i => !i.hidden), at:Date.now(), live:true};
+  try { const c = JSON.parse(localStorage.getItem(CODEX_KEY)); if (c) return c; } catch(e){}
+  return null;
+}
+function saveCodex(){
+  if (!LS || liveState !== 'on') return;
+  try { localStorage.setItem(CODEX_KEY, JSON.stringify({code:LS.code, sname:sessMeta && sessMeta.name || '', npcs:npcsPub, items:codexLib.filter(i => !i.hidden), at:Date.now()})); } catch(e){}
+}
+const CODEX_TABS = [['npcs', 'NPCs'], ['weapons', 'Weapons'], ['vehicles', 'Vehicles'], ['items', 'Items'], ['cyber', 'Cyberware']];
+const codexOf = (k, d) => k === 'npcs' ? d.npcs.slice().sort((a, b) => (b.metAt || 0) - (a.metAt || 0))
+  : d.items.filter(i => k === 'weapons' ? i.type === 'Weapon' : k === 'vehicles' ? i.type === 'Vehicle' : k === 'cyber' ? i.type === 'Cyberware' : !['Weapon', 'Vehicle', 'Cyberware'].includes(i.type)).sort((a, b) => a.name.localeCompare(b.name));
+function renderCodex(){
+  const body = $('#codexBody'); if (!body || $('#pgCodex').hidden) return;
+  const d = codexData();
+  if (!d){ body.innerHTML = `<div class="panel"><h3>Nothing logged yet</h3><p style="margin-top:8px">Your codex fills in during live sessions, with every NPC your crew meets and everything in the DM's library. Join a session from the Live Session page and it'll start logging. It stays here between sessions, even offline.</p><div class="row gap"><a class="btn primary" href="#live">Go to Live Session</a></div></div>`; return; }
+  const q = codexQ.toLowerCase();
+  const match = x => !q || [x.name, x.origin, x.stats, x.type].some(v => v && String(v).toLowerCase().includes(q));
+  const list = codexOf(codexTab, d).filter(match);
+  const cards = codexTab === 'npcs'
+    ? list.map(n => `<button class="cxcard npc ${n.critical || n.down ? 'crit' : ''}" data-cx="${n.id}">${avatar(n, 'av md')}<div style="min-width:0;text-align:left"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}</div>
+        <div class="sub">${idNo(n.id)}</div>${n.down ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : n.critical ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></button>`).join('')
+    : list.map(i => `<div class="cxcard"><div style="min-width:0"><div class="nm">${esc(i.name)}</div><div class="sub">${esc(i.type)}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</div>${i.stats ? `<p style="margin:8px 0 0;font-size:14px">${esc(i.stats)}</p>` : ''}</div></div>`).join('');
+  body.innerHTML = `<div class="panel"><div class="row"><div style="flex:1;min-width:200px"><span class="lbl">${d.live ? 'Live from session' : 'Last synced from session'}</span><div style="font-family:Orbitron,sans-serif;color:#fff;font-size:18px">${esc(d.code)}${d.sname ? ' · ' + esc(d.sname) : ''}</div>${d.live ? '' : `<p class="muted" style="font-size:13px;margin:4px 0 0">Updated ${ago(d.at)}. Join the session to get the latest.</p>`}</div>
+      <input type="text" class="f" id="cxSearch" placeholder="Search the codex" value="${esc(codexQ)}" aria-label="Search the codex" style="max-width:280px"></div></div>
+    <div class="vtabs cxtabs">${CODEX_TABS.map(([k, l]) => `<button data-cxt="${k}" class="${codexTab === k ? 'on' : ''}">${l} <span class="muted">${codexOf(k, d).length}</span></button>`).join('')}</div>
+    <div class="cxgrid">${cards || `<p class="muted">${q ? 'Nothing matches that search.' : codexTab === 'npcs' ? 'No NPCs met yet.' : 'Nothing logged here yet.'}</p>`}</div>`;
+  const si = $('#cxSearch'); if (si && document.activeElement === document.body && codexQ) { si.focus(); si.setSelectionRange(codexQ.length, codexQ.length); }
+}
+$('#codexBody').addEventListener('click', e => {
+  const t = e.target.closest('[data-cxt]'); if (t){ codexTab = t.dataset.cxt; return renderCodex(); }
+  const c = e.target.closest('[data-cx]'); if (c){ const d = codexData(); const n = d && d.npcs.find(x => x.id === c.dataset.cx); if (n) showIdCard(n); }
+});
+$('#codexBody').addEventListener('input', e => {
+  if (e.target.id !== 'cxSearch') return;
+  codexQ = e.target.value; const pos = e.target.selectionStart; renderCodex();
+  const si = $('#cxSearch'); si.focus(); si.setSelectionRange(pos, pos);
+});
 
 /* ================= RULES PAGE + ROUTING ================= */
 function renderRulePerks(){
@@ -2594,11 +2810,12 @@ $('#rSearch').addEventListener('input', e => {
 
 function route(){
   const h = location.hash.replace('#', '');
-  const rules = h === 'rules' || h.startsWith('r-');
-  document.body.classList.toggle('on-rules', rules);
+  const rules = h === 'rules' || h.startsWith('r-'), codex = h === 'codex';
+  document.body.classList.toggle('on-rules', rules || codex);
   setTimeout(() => { updateVignette(); updatePsy(); updateHack(); updateHeat(); }, 0);
-  $('#pgRules').hidden = !rules; $('#pgApp').hidden = rules;
-  document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : a.getAttribute('href') === '#' + (h || 'mercs')));
+  $('#pgRules').hidden = !rules; $('#pgCodex').hidden = !codex; $('#pgApp').hidden = rules || codex;
+  document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : codex ? a.dataset.pg === 'codex' : a.getAttribute('href') === '#' + (h || 'mercs')));
+  if (codex){ renderCodex(); window.scrollTo(0, 0); return; }
   if (rules){
     const el = h.startsWith('r-') && document.getElementById(h);
     requestAnimationFrame(() => el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0));
