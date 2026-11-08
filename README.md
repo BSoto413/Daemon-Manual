@@ -42,7 +42,8 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Print or PDF prints a clean black and white one page sheet
 
 ## DM tools
-- Encounters. Build a group of Black ICE and custom NPCs (or save the current board), then Deploy drops them all on the board, numbered
+- The dashboard has four tabs. Party (player cards, progress, activity log), NPCs (master list, Black ICE, NPC generator), Items (library and generators) and Session (handouts, mood, notes, recap, backups)
+- NPCs only reach the players' Codex once the DM hits Add to codex or Show ID card
 - Party progress. Milestone levels up the whole party. Award XP to everyone or one player
 - Handouts. Upload an image (compressed under 1 MB), then Show to everyone pops it up on every player's screen. Players can reopen any handout from the Live page
 - Session recap turns a day's activity log into a summary to paste in Discord
@@ -107,7 +108,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Item tiers. Every item is Tier 1 to 4 (`tier` 0 to 3 in the data). Tier names, buffs and effects are placeholders in `ITEM_TIERS` and show on the Rules page under Item Tiers. Fabricator upgrades raise an item one tier
 - Quickhacks. The list lives in `QUICKHACKS` and fills the Quickhacks chapter. The Character sheet has a Quickhacks panel where tapping one spends its RAM (Automation takes 1 off), greys out what you can't afford and logs it for the party. The RAM Cooldown round button brings all RAM back
 - Black ICE. Stats live in `BLACK_ICE` and fill the table in the Netrunning chapter. The DM's NPC panel has Deploy Black ICE buttons that add a program as an NPC with its HP and stat line in the notes. The party card has Force jack-out (Ogre) and Lock jack-out (Kraken), which go through the inbox as `jackout` and `jacklock` and show on the player's sheet
-- COOL Tokens. The DM hands them out from the party card, no cap. Use on the sheet opens a picker (my roll, each party member, each Black ICE or NPC on the board, or another enemy) and adds your COO mod to that d20 roll. In a session it lands in the activity log
+- COOL Tokens. The DM hands them out from the party card, no cap. Use on the sheet opens a picker (my roll, each party member, each Black ICE or NPC in the session, or another enemy) and adds your COO mod to that d20 roll. In a session it lands in the activity log
 - Session notes for the DM, private, saved per session in `dms/{uid}/notes/{code}`
 - Players see a live party view with everyone's portrait, HP, NET HP, RAM, eddies, weapons and items
 - Portraits are cropped to 256x256 JPEGs and stored in Firestore (no Firebase Storage needed, so it stays on the free plan)

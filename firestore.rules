@@ -83,9 +83,6 @@ service cloud.firestore {
     match /dms/{uid}/party/{id} {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
-    match /dms/{uid}/encounters/{id} {
-      allow read, write: if signedIn() && request.auth.uid == uid;
-    }
     match /dms/{uid}/notes/{code} {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
