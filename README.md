@@ -52,6 +52,15 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Search everything with the Search link, / or Ctrl K. Covers rules, perks, skills, Black ICE, mercs, gear, notes, the Codex and achievements
 - Installable app. `manifest.json` and `sw.js` sit next to `index.html`. Pages load network first so pushes show up right away, and everything is cached for offline. Icons go in an `icons` folder as `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `apple-touch-icon.png`. Bump `V` in `sw.js` to force every device to drop its old cache
 
+## Inventory, chrome and vitals
+
+- The backpack is a grid. Always 6 wide, with 4 rows plus the STR mod. Items have a size (`w`, `h`) and a spot (`gx`, `gy`). `gx: -1` means the floor, which makes the merc Encumbered.
+- Equipped weapons, worn armor (`eq.armor`), installed chrome and vehicles don't use bag space.
+- Cyberware installs onto a body map. Shards are their own item type and go in the two Shard Slots. Anyone can slot or pull a shard, and it never counts against the cyberware threshold.
+- AC is 10 + REF mod + TEC mod + chrome AC (`cyber[].ac`) + temporary AC (`acTemp`).
+- Death saves live in `ds: {p, f}` and `dead`. Three passes brings a merc back with 1 HP. Three fails sets `dead` and plays the afterlife screen. Healing above 0 HP resets both.
+- Status effects live in `status: [{id, r, v}]`. `r` is rounds left (null means until removed) and `v` is the Exhaustion level. The DM applies them from the party card and ends rounds for everyone.
+
 ## Saving
 - Mercs save automatically in the browser
 - Copy save code gives a `DMN1.` code to paste into Import on another device or in Discord

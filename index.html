@@ -725,6 +725,29 @@ body.fx h2:hover{animation:jit .28s steps(2) 1}
 .fl-inner{text-align:center;width:min(92vw,820px);animation:flIn 4.8s ease forwards}
 @keyframes flIn{0%{opacity:0;transform:scale(.96)}14%{opacity:1}85%{opacity:1;transform:scale(1.04)}100%{opacity:0;transform:scale(1.06)}}
 .fl-text{font-family:Orbitron,sans-serif;font-weight:500;color:var(--red);font-size:clamp(44px,10vw,112px);letter-spacing:.12em;text-shadow:0 0 24px rgba(255,74,94,.8),0 0 60px rgba(255,20,40,.5);animation:flSpread 4.8s ease forwards}
+/* ---- death saves and statuses ---- */
+.seesaw{width:100%;max-width:340px;display:block;margin:4px auto 6px}
+.seesaw.sm{max-width:180px;margin:4px 0}
+.seesaw .beam{fill:rgba(var(--crgb),.35)}.seesaw.down .beam{fill:#c9d3dc}.seesaw.dead .beam{fill:var(--red)}
+.seesaw .pivot{fill:rgba(var(--crgb),.25);stroke:rgba(var(--crgb),.6)}
+.seesaw g[transform^=rotate]{transition:transform .5s cubic-bezier(.3,1.5,.5,1)}
+.seesaw .sl{font:600 10px Orbitron,sans-serif;fill:var(--muted);text-anchor:middle;letter-spacing:2px}
+.sk path{stroke-width:1.6;stroke-linejoin:round}.sk .eye{stroke:none}
+.sk.hollow path{fill:none;stroke:rgba(var(--crgb),.55)}.sk.hollow .eye{fill:rgba(var(--crgb),.35)}
+.sk.full path{fill:#e8eef3;stroke:#fff}.sk.full .eye{fill:#0b0d16}
+.sk.pass path{fill:var(--cyan);stroke:#fff;filter:drop-shadow(0 0 4px var(--cyan))}.sk.pass .eye{fill:#0b0d16}
+.sk.fail path{fill:var(--red);stroke:#ffb3bd;filter:drop-shadow(0 0 5px var(--red))}.sk.fail .eye{fill:#14060a}
+.dsbox.down{border-color:var(--red)!important;background:rgba(255,60,90,.05)}
+.deadtag{display:block;width:100%;padding-left:.3em;font:600 28px Orbitron,sans-serif;letter-spacing:.3em;color:var(--red);text-align:center;text-shadow:0 0 18px rgba(255,60,90,.7)}
+.schips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.schip{display:inline-flex;align-items:center;gap:6px;border:1px solid #ffb347;color:#ffcf8a;background:rgba(255,179,71,.08);padding:4px 8px;font-size:13px}
+.schip.cy{border-color:#c21bff;color:#e4a5ff;background:rgba(194,27,255,.08)}
+.schip.shard{border-color:var(--cyan);color:var(--cyan);background:rgba(var(--crgb),.08)}
+.schip b{font-weight:600}.schip i{font-style:normal;font-family:Orbitron,sans-serif;font-size:10px;opacity:.85}
+.schip .sx{background:none;border:0;color:inherit;cursor:pointer;font-size:14px;padding:0 0 0 2px;min-width:22px;min-height:22px}
+.stdesc,.stadd{margin-top:8px;font-size:13px}.stdesc summary,.stadd summary{cursor:pointer;color:var(--muted);font-size:12px}
+.stdesc p{margin:6px 0 0}
+.fl-text.afl{font-size:clamp(26px,6.4vw,76px);text-align:center;line-height:1.15;padding:0 12px}
 .fl-text::before{animation:glA .9s steps(1) infinite}
 .fl-text::after{animation:glB .7s steps(1) infinite}
 @keyframes flSpread{0%{letter-spacing:.04em}100%{letter-spacing:.2em}}
@@ -857,7 +880,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
-      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -992,6 +1015,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-chrome"><h2>Cyberware and RipperDocs</h2>
         <div class="panel">
           <p>Chrome goes into body slots, and each piece can add to your max RAM.</p>
+          <h3 style="margin-top:18px">Shards</h3>
+          <p style="margin-top:8px">Shards are data sticks you slot into one of your two Shard Slots. The DM decides what each one does, like a skill boost, a language or intel. Anyone can slot or pull a shard without a RipperDoc, and it doesn't count against your cyberware threshold. The effect lasts while it's slotted. Pull it out and the effect ends and the shard goes back in your bag.</p>
           <h3 style="margin-top:18px">Cyberware threshold</h3>
           <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Anything past your <b>threshold</b> is <b>overflow</b>. You can't install anything that would push you past your <b>max</b>. Each point of overflow raises your Cyberpsychosis DC by 2.</p>
           <p class="muted" style="font-size:14px;margin-top:6px">Example. Threshold 10, max 15. A tally of 12 is 2 points of overflow, so your Cyberpsychosis DC is +4.</p>
@@ -1017,6 +1042,18 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Fortify</b></td><td>150 €$</td><td>The item is reinforced and tagged FORT</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:10px">The Maintenance Crew perk lets you repair items with your Craft score. These prices are a draft until the GM sets them.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-status"><h2>Status Effects and Death Saves</h2>
+        <div class="panel">
+          <p>The DM can put status effects on your merc from the Live Session. They show in your Vitals with a round countdown if they have one. When a round ends, the DM hits End round and every timer ticks down.</p>
+          <h3 style="margin-top:14px">Death saves</h3>
+          <p>At 0 HP you start rolling death saves. Roll a d20. A 10 or higher passes. Three passes and you're back up with 1 HP. Three fails and you're dead.</p>
+          <p>Your Vitals show it as a seesaw. Three live skulls sit on the left and three dead skulls on the right. Each pass lights a live skull cyan, each fail turns a dead skull red, and the beam tips toward whichever side is winning. Any healing above 0 HP resets them.</p>
+          <h3 style="margin-top:14px">The effects</h3>
+          <div id="rStatus"></div>
+          <p class="muted" style="font-size:13px">The 5e conditions work like 5e. The cyber ones are drafts until the GM writes them.</p>
         </div>
       </section>
 
@@ -1375,7 +1412,7 @@ let DB = {chars:[], current:null};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
 if (!Array.isArray(DB.trash)) DB.trash = [];
 DB.trash = DB.trash.filter(x => x && x.merc && Date.now() - (x.at || 0) < 30 * 864e5);
-function persist(){ DB.chars.forEach(m => { if (m && m.inv && m.eq) packInv(m); }); trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
+function persist(){ DB.chars.forEach(m => { if (m && m.inv && m.eq){ packInv(m); if (m.ds) vitalFix(m); } }); trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
 let C = null;       // current character
@@ -1388,11 +1425,35 @@ const HACKS = {
   cyber:   {n:'Cyberware Malfunction', d:"Cyberware is offline. Its RAM bonuses are gone and nothing can be swapped."},
   short:   {n:'Short Circuit', d:'Disadvantage on every roll.'}
 };
-const ITEM_TYPES = ['Weapon','Vehicle','Armor','Consumable','Ammo','Gear','Cyberware'];
+const ITEM_TYPES = ['Weapon','Vehicle','Armor','Consumable','Ammo','Gear','Cyberware','Shard'];
+// Status effects the DM can put on a merc. The 5e ones follow 5e. The cyber ones are drafts until the GM writes them.
+const STATUS = [
+  {id:'blinded', n:'Blinded', d:"Can't see. Fails anything that needs sight. Attacks against you have advantage, and yours have disadvantage."},
+  {id:'charmed', n:'Charmed', d:"Can't attack the one who charmed you or target them with harmful effects. They have advantage on social checks against you."},
+  {id:'deafened', n:'Deafened', d:"Can't hear. Fails anything that needs hearing."},
+  {id:'exhaustion', n:'Exhaustion', d:'Stacks in levels from 1 to 6. Each level adds a worse penalty, from disadvantage on checks up to death at level 6. A long rest removes one level.', lvl:true},
+  {id:'frightened', n:'Frightened', d:"Disadvantage on checks and attacks while you can see the source. You can't willingly move closer to it."},
+  {id:'grappled', n:'Grappled', d:'Your speed is 0. Ends if the grappler is incapacitated or you get moved out of reach.'},
+  {id:'incapacitated', n:'Incapacitated', d:"Can't take actions or reactions."},
+  {id:'invisible', n:'Invisible', d:"Can't be seen without special senses. Your attacks have advantage, and attacks against you have disadvantage."},
+  {id:'paralyzed', n:'Paralyzed', d:'Incapacitated and can\'t move or speak. Fails STR and REF saves. Attacks against you have advantage, and hits from within 5 ft are crits.'},
+  {id:'petrified', n:'Petrified', d:'Turned to a solid, inanimate substance. Incapacitated, resistant to all damage and immune to poison and disease.'},
+  {id:'poisoned', n:'Poisoned', d:'Disadvantage on attack rolls and ability checks.'},
+  {id:'prone', n:'Prone', d:'You can only crawl until you stand, which costs half your movement. Your attacks have disadvantage. Attacks within 5 ft have advantage against you, and attacks from farther away have disadvantage.'},
+  {id:'restrained', n:'Restrained', d:'Your speed is 0. Attacks against you have advantage, yours have disadvantage, and you have disadvantage on REF saves.'},
+  {id:'stunned', n:'Stunned', d:"Incapacitated, can't move and can barely speak. Fails STR and REF saves. Attacks against you have advantage."},
+  {id:'unconscious', n:'Unconscious', d:'Incapacitated, can\'t move or speak and unaware of your surroundings. You drop what you\'re holding and fall prone. Hits from within 5 ft are crits.'},
+  {id:'burning', n:'Burning', d:'Takes fire damage at the start of each turn until put out. Damage and how to put it out are TBD.', cyber:true},
+  {id:'bleeding', n:'Bleeding', d:'Loses HP at the start of each turn until treated. Amount and treatment are TBD.', cyber:true},
+  {id:'shocked', n:'Shocked', d:'Electrical damage scrambles your systems. Effect TBD.', cyber:true},
+  {id:'emp', n:"EMP'd", d:'Cyberware goes offline. Which effects stop working, and for how long, is TBD.', cyber:true},
+  {id:'concussed', n:'Concussed', d:'Rattled from a heavy hit. Effect TBD.', cyber:true}
+];
+const STATUSMAP = Object.fromEntries(STATUS.map(x => [x.id, x]));
 const CYBER_SLOTS = [
   ['os','Operating System',1],['cortex','Frontal Cortex',3],['ocular','Ocular',1],['circ','Circulatory',3],
   ['immune','Immune',2],['nervous','Nervous',2],['integ','Integumentary',3],['skeleton','Skeleton',2],
-  ['hands','Hands',2],['arms','Arms',1],['legs','Legs',1]
+  ['hands','Hands',2],['arms','Arms',1],['legs','Legs',1],['shard','Shard Slots',2]
 ];
 const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
 // AC is 10 + REF mod + TEC mod. Installed chrome can add to it, and meds or consumables can add a temporary bonus.
@@ -1402,7 +1463,9 @@ const acBase = m => 10 + mod(score('REF', m)) + mod(score('TEC', m));
 const acOf = m => acBase(m) + acChrome(m) + (m.acTemp || 0);
 const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
 const numOrNull = v => (v === null || v === undefined || v === '' || isNaN(+v)) ? null : +v;
-function normalize(c){ return packInv(fixEq(normalize0(c))); }
+function normalize(c){ return vitalFix(packInv(fixEq(normalize0(c)))); }
+// Death saves only matter at 0 HP. Any healing clears them.
+function vitalFix(m){ if (!m.hpMax || (m.hp == null ? m.hpMax : m.hp) > 0){ m.ds = {p:0, f:0}; m.dead = false; } return m; }
 function normalize0(c){
   const base = {}; ORDER.forEach(k => base[k] = Math.min(15, Math.max(8, +((c.base||{})[k]) || 8)));
   const bg = BACKGROUNDS[c.background] ? c.background : 'Streetkid';
@@ -1431,6 +1494,8 @@ function normalize0(c){
     })),
     hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
     hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram), acTemp: parseInt(c.acTemp) || 0,
+    ds: {p: Math.max(0, Math.min(3, parseInt((c.ds || {}).p) || 0)), f: Math.max(0, Math.min(3, parseInt((c.ds || {}).f) || 0))}, dead: !!c.dead,
+    status: (Array.isArray(c.status) ? c.status : []).filter(x => x && STATUSMAP[x.id]).map(x => ({id:x.id, r: x.r == null || x.r === '' ? null : Math.max(0, parseInt(x.r) || 0), v: Math.max(1, Math.min(6, parseInt(x.v) || 1))})),
     eddies: Math.max(0, parseInt(c.eddies) || 0),
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
@@ -1467,7 +1532,7 @@ const SIZE_RULES = [
   [/medkit|toolkit|tool kit|laptop|deck|drone|grapple|case/i, '', [2, 1]],
   [/arm blade|mantis|launcher|gorilla/i, 'Cyberware', [2, 1]]
 ];
-const TYPE_SIZE = {Weapon:[3, 1], Armor:[2, 2], Consumable:[1, 1], Ammo:[1, 1], Gear:[1, 1], Cyberware:[1, 1], Vehicle:[1, 1]};
+const TYPE_SIZE = {Shard:[1, 1], Weapon:[3, 1], Armor:[2, 2], Consumable:[1, 1], Ammo:[1, 1], Gear:[1, 1], Cyberware:[1, 1], Vehicle:[1, 1]};
 function defSize(type, name){
   for (const [re, t, sz] of SIZE_RULES) if ((!t || t === type) && re.test(name || '')) return sz;
   return TYPE_SIZE[type] || [1, 1];
@@ -1743,7 +1808,7 @@ function dmSheetHTML(p){
         <span>XP</span><b>${(m.xp || 0).toLocaleString()}</b>
         <span>Achievements</span><b>${ach} of ${ACH.length}</b>
       </div>
-      ${m.hacks.length || m.psycho || m.jackLock || encumbered(m) ? `<h4>Status</h4><div class="list">${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${encumbered(m) ? '<div><b>Encumbered</b> · stuff on the floor</div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
+      ${hm && isDown(m) ? `<h4>Death saves</h4>${seesawSVG(m)}` : ''}${m.status.length ? `<h4>Status effects</h4><div class="schips">${statusChips(m)}</div>` : ''}${m.hacks.length || m.psycho || m.jackLock || encumbered(m) || m.dead ? `<h4>Status</h4><div class="list">${m.dead ? '<div><b style="color:var(--red)">DEAD</b> · three failed death saves</div>' : ''}${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${encumbered(m) ? '<div><b>Encumbered</b> · stuff on the floor</div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
       <h4>Equipped</h4><div class="kv"><span>Primary</span><span>${eqd('primary')}</span><span>Secondary</span><span>${eqd('secondary')}</span><span>Armor</span><span>${eqd('armor')}</span></div>
       <h4>Skills</h4><p class="muted" style="font-size:13px;margin:0 0 6px">Proficient in ${profs.join(', ') || 'nothing yet'}. ◆ adds proficiency, ◆◆ doubles it.</p><div class="sk">${sk}</div>
     </div><div>
@@ -1781,6 +1846,7 @@ function artKind(i){
   if (i.type === 'Armor') return /helmet|mask|goggles/.test(n) ? 'helmet' : 'vest';
   if (i.type === 'Ammo') return 'ammo';
   if (i.type === 'Cyberware') return /blade|mantis/.test(n) ? 'blade' : 'chip';
+  if (i.type === 'Shard') return 'shard';
   if (i.type === 'Vehicle') return 'car';
   if (/grenade|frag|emp|smoke/.test(n)) return 'grenade';
   if (/inject|stim|syringe|booster|dose/.test(n)) return 'syringe';
@@ -1813,6 +1879,7 @@ function artShapes(k, L, S){
     case 'device': return r(.26, .08, .48, .84, 'rx="3"') + r(.32, .16, .36, .56, 'class="vis"') + c(.5, .82, .05);
     case 'rope': return `<circle class="ln" cx="${.42 * L}" cy="${.5 * S}" r="${.3 * Math.min(L, S)}"/><circle class="ln" cx="${.42 * L}" cy="${.5 * S}" r="${.18 * Math.min(L, S)}"/>` + `<path class="ln" d="M${.62 * L} ${.5 * S} H ${.86 * L} q ${.1 * L} 0 ${.1 * L} ${-.16 * S}"/>`;
     case 'vial': return r(.36, .1, .28, .14) + r(.3, .24, .4, .68, 'rx="3"') + r(.34, .5, .32, .38, 'class="vis"');
+    case 'shard': return r(.36, .1, .28, .62, 'rx="2"') + p([[.36, .72], [.64, .72], [.56, .92], [.44, .92]]) + r(.42, .2, .16, .06, 'class="vis"') + r(.42, .32, .16, .06, 'class="vis"') + r(.42, .44, .16, .06, 'class="vis"');
     case 'car': return p([[.04, .6], [.2, .34], [.66, .3], [.84, .5], [.96, .56], [.96, .74], [.04, .74]]) + c(.24, .76, .14) + c(.76, .76, .14);
     default: return r(.1, .18, .8, .72, 'rx="2"') + `<path class="ln" d="M${.1 * L} ${.18 * S} L ${.9 * L} ${.9 * S} M ${.9 * L} ${.18 * S} L ${.1 * L} ${.9 * S}"/>`;
   }
@@ -2561,6 +2628,7 @@ const GEN = {
     Gear: [['Lockpick Kit','Advantage to pick mechanical locks'],['Handheld Scanner','Scan a target in 30 ft'],['Grapple Line','50 ft climb in one action'],['Burner Phone','Untraceable for one call'],['Data Shard','Holds one stolen file'],['Medkit','Stabilize a dying merc'],['Night Optics','Darkvision 60 ft while worn']],
     Armor: [['Armored Jacket','+1 AC'],['Ballistic Vest','+2 AC, disadvantage on Stealth'],['Riot Plate','+3 AC, heavy'],['Padded Hoodie','+1 AC, concealed'],['Combat Helmet','+1 AC vs ranged']],
     Ammo: [['Pistol Rounds','20 rounds'],['Rifle Rounds','30 rounds'],['Shotgun Shells','12 shells'],['Sniper Rounds','10 rounds']],
+    Shard: [['Combat Data Shard','+1 to hit for one fight (TBD)'],['Language Shard','Understand one language while slotted'],['Skill Shard','Proficiency in one skill while slotted (TBD)'],['Braindance Shard','Relive a recorded memory'],['Black Market Intel','Map and guard routes for one location'],['Netwatch Decoy','Black ICE ignores you for 1 round (TBD)']],
     Cyberware: [['Optic Scanner','RAM +1 · Scan targets in 60 ft',1],['Reflex Booster','Bonus action Dash once per rest',3],['Subdermal Plating','+1 AC',2],['Grip Servos','Advantage on grapples',1],['Arm Blades','1d8 slashing melee weapon',2],['Neural Deck','RAM +2',2],['Toxin Filter','Advantage vs poison',1],['Leg Pistons','Jump distance doubled',2]]
   }
 };
@@ -2594,6 +2662,10 @@ function genItemRoll(t, type){
 }
 const tierTag = (t, small) => `<span class="tagb tier t${(t || 0) + 1}" title="${esc(ITEM_TIERS[t || 0].name + '. ' + ITEM_TIERS[t || 0].buff)}">${small ? 'T' + ((t || 0) + 1) : ITEM_TIERS[t || 0].n}</span>`;
 const tierOpts = (sel, any) => (any ? `<option value="">Any tier</option>` : '') + ITEM_TIERS.map((x, i) => `<option value="${i}" ${String(sel) === String(i) ? 'selected' : ''}>${x.n} · ${x.name}</option>`).join('');
+function renderRuleStatus(){
+  const el = $('#rStatus'); if (!el) return;
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Effect</th><th>What it does</th></tr></thead><tbody>${STATUS.map(x => `<tr><td><b>${x.n}</b>${x.cyber ? ' <span class="muted" style="font-size:11px">DRAFT</span>' : ''}</td><td>${esc(x.d)}</td></tr>`).join('')}</tbody></table>`;
+}
 function renderRuleTiers(){
   const el = $('#rTiers'); if (!el) return;
   el.innerHTML = `<table class="rtable"><thead><tr><th>Tier</th><th>Grade</th><th>Buff</th><th>Effects</th></tr></thead><tbody>${ITEM_TIERS.map(x => `<tr><td><b>${x.n}</b></td><td>${x.name}</td><td>${esc(x.buff)}</td><td>${esc(x.effect)}</td></tr>`).join('')}</tbody></table>
@@ -2668,6 +2740,17 @@ function renderCS(){
       <div class="acrow"><div class="acshield" aria-label="Armor class ${acOf(C)}"><svg viewBox="0 0 40 46" aria-hidden="true"><path d="M20 2 L37 8 V22 C37 33 29 41 20 44 C11 41 3 33 3 22 V8 Z"/></svg><b>${acOf(C)}</b></div>
       <div class="actemp"><span class="lbl" style="margin:0">Temporary AC</span><div class="q"><button data-act="acT-" aria-label="Lower temporary AC">−</button><span>${sgn(act)}</span><button data-act="acT+" aria-label="Raise temporary AC">+</button>${act ? '<button class="btn small" data-act="acT0" style="width:auto;height:auto">Clear</button>' : ''}</div>
       <span class="muted" style="font-size:12px">From meds or consumables. Clear it when it wears off.</span></div></div></div>`;
+  const down = isDown(C), slotted = C.cyber.filter(x => x.slot === 'shard');
+  const dsBlock = hm == null ? '' : `<div class="track dsbox ${down ? 'down' : ''} ${C.dead ? 'dead' : ''}"><div class="head"><span class="lbl" style="margin:0">Death saves</span><span class="muted" style="font-size:12px">${C.dead ? '' : down ? `${C.ds.p} pass · ${C.ds.f} fail · first side to fill wins` : 'Only at 0 HP'}</span></div>
+      ${seesawSVG(C)}
+      ${C.dead ? `<div class="deadtag gl" data-text="DEAD">DEAD</div><p class="muted" style="font-size:12px;margin:4px 0 0">Healing above 0 HP brings them back, if the GM allows it.</p>`
+        : down ? `<div class="row" style="gap:8px;justify-content:center"><button class="btn small primary" data-act="dsRoll">Roll d20</button><button class="btn small" data-act="dsPass">Pass</button><button class="btn small danger" data-act="dsFail">Fail</button></div><p class="muted" style="font-size:12px;margin:6px 0 0;text-align:center">10 or higher passes. Three passes and you're back with 1 HP. Three fails and you're dead.</p>`
+        : `<p class="muted" style="font-size:12px;margin:0;text-align:center">Hit 0 HP and these start counting.</p>`}</div>`;
+  const stBlock = `<div class="track stbox"><div class="head"><span class="lbl" style="margin:0">Status effects</span>${C.status.some(x => x.r != null) ? '<button class="btn small" data-act="stTick">End round</button>' : ''}</div>
+      <div class="schips">${statusChips(C, x => `<button class="sx" data-strm="${x.id}" aria-label="Remove ${STATUSMAP[x.id].n}">✕</button>`) || '<span class="muted" style="font-size:13px">None right now.</span>'}${slotted.map(x => `<span class="schip shard" title="${esc(x.effect || '')}"><b>Shard · ${esc(x.name)}</b></span>`).join('')}</div>
+      ${C.status.length ? `<details class="stdesc"><summary>What these do</summary>${C.status.map(x => `<p><b>${STATUSMAP[x.id].n}</b> ${esc(STATUSMAP[x.id].d)}</p>`).join('')}</details>` : ''}
+      <details class="stadd"><summary>Add one yourself</summary><div class="row" style="gap:6px;margin-top:6px"><select id="stSel" aria-label="Status effect">${statusOpts()}</select><input type="number" id="stR" min="1" placeholder="Rounds" aria-label="Rounds, blank means until removed" style="width:90px"><button class="btn small" data-act="stAdd">Add</button></div>
+      <p class="muted" style="font-size:12px;margin:4px 0 0">Usually the DM applies these. Leave rounds blank if it lasts until removed. For Exhaustion, adding it again raises the level.</p></details></div>`;
   const cwl = cwLoad(), cwo = cwOver();
   const cwBlock = `<div class="track cwtrack"><div class="head"><span class="lbl" style="margin:0">Cyberware threshold</span><span class="muted" style="font-size:12px">Threshold ${C.cwT} · Max ${cwMaxOf(C)}</span></div>
       <div class="num">${cwl} <small>/ ${C.cwT}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} · Cyberpsychosis DC +${cwo * 2}</span>` : ''}</div>
@@ -2693,7 +2776,7 @@ function renderCS(){
         ${others.length ? `<label class="fl"><span>Hand to</span><select data-hand="${i.id}"><option value="">Pick a crewmate</option>${others.map(x => `<option value="${x.id}">${esc(x.name || 'Player')}</option>`).join('')}</select></label>` : ''}
         <button class="btn small ${delItem === i.id ? 'danger' : ''}" data-del-item="${i.id}">${delItem === i.id ? 'Tap again to delete' : 'Delete'}</button>
       </div>
-      ${i.type === 'Cyberware' ? `<p class="muted wide" style="font-size:12px;margin:0">${canRip() || i.hot ? 'Drag it onto a slot on the body below, or tap an open slot while this is picked up.' : 'Only a RipperDoc can install this. Hand it to one in a live session.'}</p>` : ''}
+      ${i.type === 'Shard' ? '<p class="muted wide" style="font-size:12px;margin:0">Drag it onto a Shard Slot on the body below, or tap an open shard slot while this is picked up. Anyone can slot a shard.</p>' : ''}${i.type === 'Cyberware' ? `<p class="muted wide" style="font-size:12px;margin:0">${canRip() || i.hot ? 'Drag it onto a slot on the body below, or tap an open slot while this is picked up.' : 'Only a RipperDoc can install this. Hand it to one in a live session.'}</p>` : ''}
     </div>`;
   };
   if (selItem && !C.inv.some(i => i.id === selItem)) selItem = null;
@@ -2738,7 +2821,7 @@ function renderCS(){
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
     <div class="cs-grid">
-      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${ramBlock}${cwBlock}${psyBlock}</div>
+      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}${cwBlock}${psyBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div></div>
     </div>
     <div class="panel gap" id="invPanel"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
@@ -2759,9 +2842,51 @@ function renderCS(){
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
 const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
+/* ---- Death saves. 3 live skulls vs 3 dead skulls on a seesaw. ---- */
+const SKULL = 'M12 2C6.5 2 3 5.8 3 10.4c0 2.7 1.2 4.6 3 5.8V19a1 1 0 0 0 1 1h1.5v-2h2v2h3v-2h2v2H17a1 1 0 0 0 1-1v-2.8c1.8-1.2 3-3.1 3-5.8C21 5.8 17.5 2 12 2z';
+const skull = (x, y, st) => `<g class="sk ${st}" transform="translate(${x - 12} ${y - 24})"><path d="${SKULL}"/><circle cx="8.6" cy="11" r="2.2" class="eye"/><circle cx="15.4" cy="11" r="2.2" class="eye"/></g>`;
+const isDown = m => !!m.hpMax && (m.hp == null ? m.hpMax : m.hp) <= 0;
+function seesawSVG(m, small){
+  const down = isDown(m), p = m.ds.p, f = m.ds.f, tilt = m.dead ? 12 : down ? (f - p) * 4 : 0;
+  const L = [0, 1, 2].map(i => skull(36 + i * 34, 0, !down ? 'hollow' : i < p ? 'pass' : 'full'));
+  const R = [0, 1, 2].map(i => skull(196 + i * 34, 0, !down ? 'hollow' : m.dead || i < f ? 'fail' : 'full'));
+  return `<svg class="seesaw ${small ? 'sm' : ''} ${down ? 'down' : ''} ${m.dead ? 'dead' : ''}" viewBox="0 0 300 92" aria-hidden="true">
+    <g transform="rotate(${tilt} 150 58)"><rect x="8" y="56" width="284" height="5" rx="2" class="beam"/><g transform="translate(0 52)">${L.join('')}${R.join('')}</g></g>
+    <path d="M150 61 L136 86 H164 Z" class="pivot"/>${small ? '' : `<text x="70" y="88" class="sl">LIVE</text><text x="230" y="88" class="sl">DEAD</text>`}</svg>`;
+}
+function deathSave(m, pass){
+  if (!isDown(m) || m.dead) return '';
+  if (pass){ m.ds.p++; if (m.ds.p >= 3){ m.hp = 1; m.ds = {p:0, f:0}; return 'up'; } return 'pass'; }
+  m.ds.f++; if (m.ds.f >= 3){ m.dead = true; return 'dead'; } return 'fail';
+}
+function afterlife(){
+  const el = $('#flatline'); if (!el) return;
+  const tx = el.querySelector('.fl-text');
+  tx.textContent = 'SEE YOU IN THE AFTERLIFE'; tx.dataset.text = tx.textContent; tx.classList.add('afl');
+  $('#flSub').textContent = 'Three failed death saves. The GM decides if anyone can bring you back.';
+  el.hidden = true; void el.offsetWidth; el.hidden = false;
+  sfxFlatline();
+  clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; tx.textContent = 'FLATLINED'; tx.dataset.text = 'FLATLINED'; tx.classList.remove('afl'); }, flashOK() ? 6500 : 4000);
+}
+const statusChips = (m, ctl) => (m.status || []).map(x => { const s = STATUSMAP[x.id]; return `<span class="schip ${s.cyber ? 'cy' : ''}" title="${esc(s.d)}"><b>${s.n}${s.lvl ? ' ' + x.v : ''}</b>${x.r != null ? `<i>${x.r} rd${x.r === 1 ? '' : 's'}</i>` : ''}${ctl ? ctl(x) : ''}</span>`; }).join('');
+const statusOpts = () => `<optgroup label="5e conditions">${STATUS.filter(s => !s.cyber).map(s => `<option value="${s.id}">${s.n}</option>`).join('')}</optgroup><optgroup label="Cyber (drafts)">${STATUS.filter(s => s.cyber).map(s => `<option value="${s.id}">${s.n}</option>`).join('')}</optgroup>`;
+function addStatus(m, id, r, v){
+  const s = STATUSMAP[id]; if (!s) return;
+  const ex = m.status.find(x => x.id === id), rr = r == null || r === '' || isNaN(+r) ? null : Math.max(1, parseInt(r));
+  if (ex){ if (s.lvl) ex.v = Math.min(6, ex.v + Math.max(1, parseInt(v) || 1)); ex.r = rr ?? ex.r; }
+  else m.status.push({id, r:rr, v:Math.max(1, Math.min(6, parseInt(v) || 1))});
+}
+function tickStatus(m){
+  const gone = [];
+  m.status.forEach(x => { if (x.r != null){ x.r--; if (x.r <= 0) gone.push(x.id); } });
+  m.status = m.status.filter(x => !(x.r != null && x.r <= 0));
+  return gone;
+}
+
 /* ---- Cyberware body map. Installed chrome lives here, not in the backpack. ---- */
-const CY_LEFT = ['cortex', 'ocular', 'circ', 'immune', 'nervous', 'integ'], CY_RIGHT = ['os', 'skeleton', 'hands', 'arms', 'legs'];
+const CY_LEFT = ['cortex', 'ocular', 'circ', 'immune', 'nervous', 'integ'], CY_RIGHT = ['os', 'shard', 'skeleton', 'hands', 'arms', 'legs'];
 const CY_ICON = {
+  shard:'<path d="M8 3h8v13l-4 5-4-5z"/><path class="ln" d="M10 6h4M10 9h4M10 12h4"/>',
   os:'<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" class="vis"/><path class="ln" d="M8 2v3M12 2v3M16 2v3M8 19v3M12 19v3M16 19v3M2 8h3M2 12h3M2 16h3M19 8h3M19 12h3M19 16h3"/>',
   cortex:'<path d="M12 4c-3-2-8 0-8 4-2 1-2 6 1 7 0 3 4 5 7 3 3 2 7 0 7-3 3-1 3-6 1-7 0-4-5-6-8-4z"/><path class="ln" d="M12 4v14M8 9c2 0 2 2 4 2M16 9c-2 0-2 2-4 2"/>',
   ocular:'<path d="M2 12c4-6 16-6 20 0-4 6-16 6-20 0z"/><circle cx="12" cy="12" r="3.5" class="vis"/>',
@@ -2788,6 +2913,7 @@ function bodySVG(m, hl){
     </g>
     <path ${p('cortex')} d="M100 24c-6-4-16 0-16 8-4 2-4 11 2 13 0 6 8 9 14 6 6 3 14 0 14-6 6-2 6-11 2-13 0-8-10-12-16-8z"/>
     <rect ${p('os')} x="113" y="18" width="12" height="9" rx="1.5"/>
+    <g ${p('shard')}><rect x="70" y="40" width="5" height="12" rx="1"/><rect x="125" y="40" width="5" height="12" rx="1"/></g>
     <g ${p('ocular')}><ellipse cx="90" cy="56" rx="6" ry="3.4"/><ellipse cx="110" cy="56" rx="6" ry="3.4"/></g>
     <path ${p('skeleton')} class-extra d="M78 110 Q100 104 122 110 M76 124 Q100 118 124 124 M77 138 Q100 132 123 138 M80 152 Q100 146 120 152"/>
     <path ${p('nervous')} d="M100 92 V218 M100 120 L84 112 M100 120 L116 112 M100 160 L82 168 M100 160 L118 168"/>
@@ -2818,22 +2944,32 @@ function cyberMapHTML(m, ro){
         <div class="acts wide"><button class="btn small primary" data-act="cfSave" data-slot="${cyberForm}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div></div>`;
   } else if (x){
     detail = `<div class="cydetail t${(x.tier || 0) + 1}"><div class="row" style="gap:8px">${cyIcon(x.slot)}<b style="color:#fff">${esc(x.name)}</b><span class="muted" style="font-size:12px">${SLOTMAP[x.slot][1]}</span>${x.hot ? '<span class="hotb">HOT</span>' : ''}</div>
-      ${rip ? `<div class="iedit" style="border:0;padding-top:4px">
+      ${rip && x.slot !== 'shard' ? `<div class="iedit" style="border:0;padding-top:4px">
         <label class="fl wide"><span>Name</span><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}"></label>
         <label class="fl"><span>RAM bonus</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}"></label>
         <label class="fl"><span>AC bonus</span><input type="number" data-c="${x.id}" data-cf="ac" value="${x.ac || 0}"></label>
         <label class="fl"><span>Threshold cost</span><input type="number" min="0" data-c="${x.id}" data-cf="cw" value="${x.cw}"></label>
         <label class="fl wide"><span>What it does</span><input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}"></label></div>`
+      : x.slot === 'shard' ? `<p class="muted" style="font-size:13px;margin:6px 0 0">Active while slotted. Pull it to end the effect and put it back in your bag.</p>`
       : `<div class="kvs"><span>RAM</span><b>${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)}${x.hot ? ' (half, hot-swap)' : ''}</b><span>AC</span><b>${sgn(x.ac || 0)}</b><span>Threshold cost</span><b>${x.cw}</b></div>${x.effect ? `<p style="font-size:14px;margin:8px 0 0">${esc(x.effect)}</p>` : ''}`}
-      <div class="row" style="gap:8px;margin-top:10px">${rip ? `<button class="btn small" data-uninstall="${x.id}">Remove to bag</button>` : x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out · ${HOTSWAP_RAM} RAM</button>` : '<span class="muted" style="font-size:13px">Only a RipperDoc can take this out.</span>'}<button class="btn small" data-act="cyDesel">Done</button></div></div>`;
+      <div class="row" style="gap:8px;margin-top:10px">${x.slot === 'shard' ? `<button class="btn small" data-uninstall="${x.id}">Pull shard</button>` : rip ? `<button class="btn small" data-uninstall="${x.id}">Remove to bag</button>` : x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out · ${HOTSWAP_RAM} RAM</button>` : '<span class="muted" style="font-size:13px">Only a RipperDoc can take this out.</span>'}<button class="btn small" data-act="cyDesel">Done</button></div></div>`;
   } else if (!ro){
-    const held = C.inv.find(i => i.id === selItem && i.type === 'Cyberware');
+    const held = C.inv.find(i => i.id === selItem && (i.type === 'Cyberware' || i.type === 'Shard'));
     detail = `<div class="cydetail empty"><p class="muted" style="margin:0;font-size:13px">${held ? `Holding <b style="color:#fff">${esc(held.name)}</b>. Tap an open slot to install it.` : `Tap installed chrome to see it. ${rip ? 'Tap an open slot to install by hand, or drag cyberware from your bag onto a slot.' : 'Drag hot-swap parts from your bag onto a slot. Everything else needs a RipperDoc.'}`}</p></div>`;
   }
   return `<div class="cymap ${ro ? 'ro' : ''}"><div class="cycol">${CY_LEFT.map(slot).join('')}</div><div class="cybody">${bodySVG(m, ro ? null : (x ? x.slot : cyberForm || hlSlot))}</div><div class="cycol">${CY_RIGHT.map(slot).join('')}</div></div>${detail}`;
 }
 function installItem(i, slot){
   if (stunned() || blocked('cyber')) return false;
+  const shard = i.type === 'Shard';
+  if (shard !== (slot === 'shard')){ toast(shard ? 'Shards go in the Shard Slots.' : 'Only shards go in the Shard Slots.'); return false; }
+  if (shard){
+    if (C.cyber.filter(x => x.slot === 'shard').length >= SLOTMAP.shard[2]){ toast('Both shard slots are full. Pull one out first.'); return false; }
+    const x = {id:uid(), slot, name:i.name, cw:0, tier:i.tier || 0, ac:acIn(i.stats), ram:0, effect:(i.stats || '').trim(), hot:false};
+    C.cyber.push(x);
+    if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(z => z !== i); if (selItem === i.id) selItem = null; }
+    selCy = x.id; sfx('equip'); toast(`${i.name} slotted.`, true); return true;
+  }
   if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return false; }
   if (cwLoad() + (i.cw || 0) > cwMaxOf(C)){ toast(`${i.name} costs ${i.cw} and would push you past your max of ${cwMaxOf(C)}.`); return false; }
   if (!canRip()){
@@ -2940,7 +3076,7 @@ function dragOver(px, py){
   }
   markCells(null);
   const el = document.elementFromPoint(px, py), fl = el && el.closest('#floor, .floorwrap'), slot = el && el.closest('[data-eqslot]'), cy = el && el.closest('.cymap:not(.ro) [data-cyslot]');
-  if (cy){ const it = C.inv.find(z => z.id === dragS.id); if (it && it.type === 'Cyberware'){ cy.classList.add('droph'); dragS.target = {kind:'cy', k:cy.dataset.cyslot}; } }
+  if (cy){ const it = C.inv.find(z => z.id === dragS.id); if (it && (it.type === 'Cyberware' || it.type === 'Shard')){ cy.classList.add('droph'); dragS.target = {kind:'cy', k:cy.dataset.cyslot}; } }
   else if (fl){ fl.closest('.floorwrap').classList.add('droph'); dragS.target = {kind:'floor'}; }
   else if (slot){ slot.classList.add('droph'); dragS.target = {kind:'eq', k:slot.dataset.eqslot}; }
 }
@@ -3000,12 +3136,14 @@ $('#vCS').addEventListener('click', e => {
   const hm = C.hpMax;
   if (t.dataset.cyid){ selCy = selCy === t.dataset.cyid ? null : t.dataset.cyid; cyberForm = null; sfx('select'); return renderCS(); }
   if (t.dataset.cyopen){
-    const k = t.dataset.cyopen, held = C.inv.find(i => i.id === selItem && i.type === 'Cyberware');
+    const k = t.dataset.cyopen, held = C.inv.find(i => i.id === selItem && (i.type === 'Cyberware' || i.type === 'Shard'));
     if (held){ installItem(held, k); return csSave(); }
+    if (k === 'shard'){ hlSlot = k; renderCS(); return toast('Pick up a shard in your bag, then tap this slot. Anyone can slot one.'); }
     if (canRip()){ cyberForm = k; selCy = null; renderCS(); const f = $('#cfName'); if (f){ f.focus({preventScroll:true}); f.scrollIntoView({block:'center', behavior:'smooth'}); } return; }
     hlSlot = k; renderCS(); return toast('Pick up a hot-swap part in your bag first, then tap this slot. Anything else needs a RipperDoc.');
   }
   if (t.dataset.act === 'cyDesel'){ selCy = null; return renderCS(); }
+  if (t.dataset.strm){ C.status = C.status.filter(x => x.id !== t.dataset.strm); sfx('heal'); return csSave(); }
   if ((t.dataset.equip || t.dataset.unequip || t.dataset.uninstall || t.dataset.hot) && stunned()) return;
   if (/^(fabCreate|fabUp|fabFort|cfOpen|cfSave)$/.test(t.dataset.act || '') && stunned()) return;
   if ((t.dataset.equip || t.dataset.unequip) && blocked('weapons')) return;
@@ -3026,6 +3164,13 @@ $('#vCS').addEventListener('click', e => {
   }
   if (t.dataset.uninstall){
     const x = C.cyber.find(y => y.id === t.dataset.uninstall);
+    if (x && x.slot === 'shard'){
+      C.cyber = C.cyber.filter(y => y !== x);
+      C.inv.push({id:uid(), name:x.name, type:'Shard', qty:1, tier:x.tier || 0, gx:null, gy:null, stats:[x.ac && !acIn(x.effect) ? sgn(x.ac) + ' AC' : '', x.effect].filter(Boolean).join(' · ')});
+      selCy = null; packInv(C); bagNote(); sfx('unequip');
+      toast(onFloor(C, C.inv[C.inv.length - 1]) ? `${x.name} pulled. No room in the bag, so it's on the floor.` : `${x.name} pulled and back in your bag.`, true);
+      return csSave();
+    }
     if (x){
       if (!canRip()){
         if (!x.hot) return toast('Only a RipperDoc can take that out.');
@@ -3135,6 +3280,16 @@ $('#vCS').addEventListener('click', e => {
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
+    case 'dsRoll': case 'dsPass': case 'dsFail': {
+      let pass = t.dataset.act === 'dsPass';
+      if (t.dataset.act === 'dsRoll'){ const r = 1 + Math.floor(Math.random() * 20); pass = r >= 10; toast(`Death save · rolled ${r} · ${pass ? 'pass' : 'fail'}`, pass); }
+      const res = deathSave(C, pass); sfx(pass ? 'heal' : 'damage'); csSave();
+      if (res === 'up') toast(`${C.name} pulls through with 1 HP.`, true);
+      if (res === 'dead') afterlife();
+      return;
+    }
+    case 'stAdd': addStatus(C, $('#stSel').value, $('#stR').value, 1); sfx('damage'); return csSave();
+    case 'stTick': { const g = tickStatus(C); if (g.length) toast(`${g.map(id => STATUSMAP[id].n).join(', ')} wore off.`, true); sfx('tab'); return csSave(); }
     case 'acT+': C.acTemp = Math.min(20, (C.acTemp || 0) + 1); sfx('up'); return csSave();
     case 'acT-': C.acTemp = Math.max(-20, (C.acTemp || 0) - 1); sfx('down'); return csSave();
     case 'acT0': C.acTemp = 0; sfx('down'); return csSave();
@@ -3630,6 +3785,15 @@ function diffMerc(a, b){
   if (a.eddies !== b.eddies) add(`${b.eddies > a.eddies ? '+' : '−'}${Math.abs(b.eddies - a.eddies)} €$ (now ${b.eddies})`, b.eddies > a.eddies ? 'good' : '');
   if (a.cool !== b.cool) add(`COOL Tokens ${a.cool} → ${b.cool}`, b.cool > a.cool ? 'good' : '');
   if (acOf(a) !== acOf(b)) add(`AC ${acOf(a)} → ${acOf(b)}`, acOf(b) > acOf(a) ? 'good' : '');
+  const ds1 = a.ds || {p:0, f:0}, ds2 = b.ds || {p:0, f:0};
+  if (ds2.p > ds1.p) add(`Death save passed (${ds2.p} of 3)`, 'good');
+  if (ds2.f > ds1.f) add(`Death save failed (${ds2.f} of 3)`, 'bad');
+  if (!a.dead && b.dead) add('DEAD · three failed death saves', 'bad'); else if (a.dead && !b.dead) add('Back from the dead', 'good');
+  const sn = (c, id) => (c.status || []).find(x => x.id === id);
+  (b.status || []).forEach(x => { const o = sn(a, x.id); if (!o) add(`${STATUSMAP[x.id].n}${STATUSMAP[x.id].lvl ? ' ' + x.v : ''}${x.r != null ? ' · ' + x.r + ' rds' : ''}`, 'bad'); else if (STATUSMAP[x.id].lvl && o.v !== x.v) add(`${STATUSMAP[x.id].n} ${o.v} → ${x.v}`, x.v > o.v ? 'bad' : 'good'); });
+  (a.status || []).forEach(x => { if (!sn(b, x.id)) add(`${STATUSMAP[x.id].n} ended`, 'good'); });
+  const sh = c => c.cyber.filter(x => x.slot === 'shard').map(x => x.name);
+  sh(b).filter(n => !sh(a).includes(n)).forEach(n => add(`Slotted ${n}`, 'good')); sh(a).filter(n => !sh(b).includes(n)).forEach(n => add(`Pulled ${n}`));
   if (a.jackLock !== b.jackLock) add(b.jackLock ? 'Jack-out locked by Black ICE' : 'Jack-out unlocked', b.jackLock ? 'bad' : 'good');
   if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
   b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
@@ -4050,6 +4214,17 @@ function applyOp(op){
     msg = op.on ? "Black ICE locked your jack-out. You can't leave the Net safely." : 'Your safe jack-out is back online.';
   } else if (op.kind === 'unhack'){
     m.hacks = []; msg = 'Your systems are clean again.'; sound = 'heal';
+  } else if (op.kind === 'status' && STATUSMAP[op.sid]){
+    addStatus(m, op.sid, op.r, op.v); const x = m.status.find(y => y.id === op.sid);
+    msg = `The DM put you under ${STATUSMAP[op.sid].n}${STATUSMAP[op.sid].lvl ? ' ' + x.v : ''}${x.r != null ? ' for ' + x.r + ' round' + (x.r === 1 ? '' : 's') : ''}.`; sound = 'damage'; good = false;
+  } else if (op.kind === 'unstatus' && STATUSMAP[op.sid]){
+    m.status = m.status.filter(x => x.id !== op.sid); msg = `${STATUSMAP[op.sid].n} cleared by the DM.`; sound = 'heal';
+  } else if (op.kind === 'tick'){
+    const g = tickStatus(m); msg = g.length ? `Round over. ${g.map(id => STATUSMAP[id].n).join(', ')} wore off.` : ''; sound = 'tab';
+  } else if (op.kind === 'ds'){
+    const res = deathSave(m, !!op.pass);
+    msg = res === 'up' ? 'Three passes. You pull through with 1 HP.' : res === 'dead' ? 'Three failed death saves.' : res ? `The DM logged a ${op.pass ? 'passed' : 'failed'} death save.` : ''; sound = op.pass ? 'heal' : 'damage'; good = !!op.pass;
+    if (res === 'dead') setTimeout(afterlife, 60);
   } else if (op.kind === 'cool'){
     const n = parseInt(op.amount) || 0; m.cool = Math.max(0, m.cool + n);
     msg = n > 0 ? `+${n} COOL Token from the DM.` : 'The DM took back a COOL Token.'; sound = n > 0 ? 'cool' : 'down';
@@ -4257,6 +4432,8 @@ function partyCard(p, dm){
       <div class="row"><button class="btn small primary" data-live="viewsheet" data-u="${k}">View sheet</button><span class="muted" style="font-size:12px">Stats, skills, perks and inventory</span></div>
       <div class="ctlgrid">
         <span class="ctl">Amount</span><div class="row"><input type="number" min="0" id="amt-${k}" placeholder="Amt" aria-label="Amount for ${esc(m.name)}"></div>
+        <span class="ctl">Status</span><div class="row"><select id="sts-${k}" aria-label="Status effect for ${esc(m.name)}">${statusOpts()}</select><input type="number" min="1" id="str-${k}" placeholder="Rds" aria-label="Rounds, blank means until removed" style="width:70px"><button class="btn small" data-live="stApply" data-u="${k}">Apply</button></div>
+        ${isDown(m) && !m.dead ? `<span class="ctl">Death save</span><div class="row"><button class="btn small" data-live="dsP" data-u="${k}">Pass</button><button class="btn small danger" data-live="dsF" data-u="${k}">Fail</button></div>` : ''}
         <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
         <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
         <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
@@ -4274,9 +4451,10 @@ function partyCard(p, dm){
       <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''}">
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
-        ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
+        ${m.dead ? '<span class="stagb red gl" data-text="DEAD">DEAD</span>' : hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
       <div><div class="stat"><span>AC</span><b>${acOf(m)}${m.acTemp ? ` <span class="muted" style="font-size:12px">(${sgn(m.acTemp)} temp)</span>` : ''}</b></div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
+        ${hm && isDown(m) ? seesawSVG(m, true) : ''}${(m.status || []).length ? `<div class="schips" style="margin:2px 0 8px">${statusChips(m, dm ? x => `<button class="sx" data-live="stRm" data-u="${k}" data-s="${x.id}" aria-label="Clear ${STATUSMAP[x.id].n}">✕</button>` : null)}</div>` : ''}
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
@@ -4362,7 +4540,7 @@ function liveHTML(){
       <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard saves everything as Session ${curPlay()}. Reopen it later to keep going or start Session ${curPlay() + 1}. Delete live game kicks everyone and erases it for good.</p></div>
     ${reopenAsk ? playAskHTML() : ''}
     <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
-    ${dmTab === 'party' ? `<div class="players" style="margin-top:14px">${playerCards}</div>${progressHTML()}${logHTML(true)}` : ''}
+    ${dmTab === 'party' ? `${players.some(p => p.merc && (p.merc.status || []).some(x => x.r != null)) ? `<div class="row" style="margin-top:14px;gap:10px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down every timed status effect by one round</span></div>` : ''}<div class="players" style="margin-top:14px">${playerCards}</div>${progressHTML()}${logHTML(true)}` : ''}
     ${dmTab === 'npcs' ? `${npcPanel}${genHTML('npc')}` : ''}
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
     ${dmTab === 'items' ? `${genHTML('items')}
@@ -4502,6 +4680,10 @@ $('#liveBody').addEventListener('click', async e => {
     saveHosted(hosted().filter(h => h.code !== code));
     return leaveLive(true);
   }
+  if (a === 'tickAll'){ for (const p of players) await sendOp(p.id, {kind:'tick'}); toast('Round over. Timed status effects counted down.', true); return; }
+  if (a === 'stApply'){ const id = ($('#sts-' + u) || {}).value, r = ($('#str-' + u) || {}).value; if (id && await sendOp(u, {kind:'status', sid:id, r:r || null, v:1})) toast(`${STATUSMAP[id].n} on ${pname(u)}.`, true); return; }
+  if (a === 'stRm'){ if (await sendOp(u, {kind:'unstatus', sid:t.dataset.s})) toast(`Cleared ${STATUSMAP[t.dataset.s].n} for ${pname(u)}.`, true); return; }
+  if (a === 'dsP' || a === 'dsF'){ if (await sendOp(u, {kind:'ds', pass:a === 'dsP'})) toast(`${a === 'dsP' ? 'Pass' : 'Fail'} logged for ${pname(u)}.`, true); return; }
   if (a === 'hp-' || a === 'hp+'){
     const n = amt(); if (!n) return toast('Enter an amount first.');
     if (await sendOp(u, {kind:'hp', amount: a === 'hp-' ? -n : n})) toast(`${a === 'hp-' ? 'Dealt ' + n + ' damage to' : 'Healed ' + n + ' for'} ${pname(u)}.`, true);
@@ -4776,7 +4958,7 @@ function renderRulePerks(){
   }).join('');
   $('#lvlTrack').innerHTML = Array.from({length:20}, (_, i) => `<div class="${i === 0 ? 'one' : ASI_LEVELS.includes(i + 1) ? 'asi' : ''}">${i + 1}</div>`).join('');
 }
-renderRulePerks(); renderRuleTiers(); renderRuleIce(); renderRuleQh();
+renderRulePerks(); renderRuleTiers(); renderRuleStatus(); renderRuleIce(); renderRuleQh();
 
 let rIndex = null;
 function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }
