@@ -406,8 +406,15 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 @keyframes heartbeat{0%,100%{opacity:var(--vmin,.3)}14%{opacity:var(--vmax,.7)}28%{opacity:var(--vmin,.3)}42%{opacity:calc(var(--vmax,.7) * .8)}60%{opacity:var(--vmin,.3)}}
 .dock{position:fixed;right:14px;bottom:14px;z-index:6;display:flex;gap:6px}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
-.setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:auto;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);max-height:calc(100dvh - 80px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:0 18px 16px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.sethead{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;background:rgba(10,10,18,.98);padding:14px 0 8px;margin-bottom:2px}
+.setback{position:fixed;inset:0;z-index:6;background:rgba(0,0,0,.35);touch-action:none}
+html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
+@media (max-width:640px){
+  .setp{left:10px;right:10px;width:auto;top:calc(env(safe-area-inset-top,0px) + 10px);bottom:calc(env(safe-area-inset-bottom,0px) + 58px);max-height:none}
+}
 .setp h3{margin:0 0 4px}
+.coolpick{margin-top:12px;padding:12px 14px;border:1px solid rgba(255,230,0,.35);background:rgba(255,230,0,.05);font-size:14px}.coolpick b{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;margin-right:6px}
 .moodrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}@media (max-width:620px){.moodrow{grid-template-columns:1fr}}
 .presets button.locked{opacity:.55;cursor:not-allowed}.presets button small{display:block;font-family:'Exo 2',sans-serif;letter-spacing:0;text-transform:none;font-size:10px;color:var(--muted);margin-top:3px;line-height:1.2}
 .selrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 6px}.selrow label{font-size:12px;color:var(--muted)}.selrow select{width:100%;margin-top:3px}
@@ -782,7 +789,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         </div>
       </section>
 
-      <section class="rsec" id="r-hacks"><h2>Hacks and Cool Bonuses</h2>
+      <section class="rsec" id="r-hacks"><h2>Hacks and COOL Tokens</h2>
         <div class="panel">
           <p>The DM can push hacks onto a merc. A hacked merc's sheet glitches and locks up until the DM clears it. Hacks stack.</p>
           <table class="rtable"><thead><tr><th>Hack</th><th>Effect</th></tr></thead><tbody>
@@ -792,8 +799,12 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Cyberware Malfunction</b></td><td>Cyberware is offline. Its RAM bonuses are gone and nothing can be swapped</td></tr>
             <tr><td><b>Short Circuit</b></td><td>Disadvantage on every roll</td></tr>
           </tbody></table>
-          <h3 style="margin-top:18px">Cool bonuses</h3>
-          <p style="margin-top:8px">The DM hands out Cool bonuses for great play, like inspiration in 5e. Spend one from your sheet to take advantage or a reroll. If you have the COO perk You Ready to Rock?!, spending one also gives every ally COOL buffs and a free ACTION.</p>
+          <h3 style="margin-top:18px" id="r-cool">COOL Tokens</h3>
+          <p style="margin-top:8px">The DM hands out COOL Tokens whenever they want, like inspiration in 5e. There's no cap on how many you can hold, and using one is free.</p>
+          <p>Whenever anyone rolls a d20, you can spend a COOL Token to help or hinder that roll. The token adds <b>your</b> COOL mod to the roll, whether it's yours, an ally's or an enemy's.</p>
+          <ul class="rlist"><li>With a positive COOL mod you can turn a failure into a success for you or your allies.</li><li>With a negative COOL mod you can turn an enemy's success into a failure.</li></ul>
+          <p><b>Example.</b> The team's Netrunner has +3 COOL. An ally rolls to hit and misses by 2. The Netrunner spends a COOL Token and adds +3 to the attack, and it hits.</p>
+          <p>If you have the COO perk You Ready to Rock?!, spending a token also gives every ally its COOL buffs and one free ACTION.</p>
           <p class="muted" style="font-size:13px;margin-top:10px">The hack list is a draft until the GM finalizes hacking rules.</p>
         </div>
       </section>
@@ -826,7 +837,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-coming"><h2>In the Works</h2>
         <div class="panel">
           <p>The GM is still building these. They'll land here as they're posted.</p>
-          <ul class="rlist"><li>Cyberpsychosis rules</li><li>COOL Tokens and the COO buff and debuff mechanics</li><li>Full RAM and hacking rules, including the CODE score</li><li>The final HP per level formula</li></ul>
+          <ul class="rlist"><li>Cyberpsychosis rules</li><li>Full RAM and hacking rules, including the CODE score</li><li>The final HP per level formula</li></ul>
         </div>
       </section>
     </div>
@@ -955,7 +966,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div id="flatline" hidden role="alert"><div class="fl-inner"><div class="fl-text gl" data-text="FLATLINED">FLATLINED</div>
   <svg class="ekg" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 H170 L185 40 L195 12 L208 70 L220 30 L232 40 H600"/></svg>
   <div class="fl-sub" id="flSub">Unconscious. Critical condition.</div><div class="fl-hint">Click to continue</div></div></div>
-<div class="setp" id="setPanel" hidden></div>
+<div class="setback" id="setBack" hidden></div>
+<div class="setp" id="setPanel" role="dialog" aria-label="Settings" hidden></div>
 <div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
@@ -1519,7 +1531,7 @@ function renderSheetHead(){
   updateVignette(); updateHeat(); if (typeof updatePsy === 'function'){ updatePsy(); updateHack(); }
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
-    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'} · ${C.bgSkills.join(' and ')}</div></div></div>
+    <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'}${C.bgSkills.length ? ' · ' + C.bgSkills.join(' and ') : ''}</div></div></div>
     <div><span class="lbl">Level</span><div class="lvlbox stepper"><button id="lvDown" ${C.level <= 1 ? 'disabled' : ''} aria-label="Level down">−</button><span class="val big" id="lvVal">${C.level}</span><button id="lvUp" ${C.level >= 20 ? 'disabled' : ''} aria-label="Level up">+</button></div></div>
   </div>
   <div class="vitals">
@@ -1528,19 +1540,47 @@ function renderSheetHead(){
     <div class="vital"><span class="lbl">RAM</span><div class="v">${4 + mod(score('INT'))}</div></div>
     <div class="vital"><span class="lbl">HP per level</span><div class="v">10 + d10 <small>${sgn(mod(score('BOD')))}</small></div></div>
     <div class="vital"><span class="lbl">Proficiency</span><div class="v">${sgn(p)}</div></div>
-    <div class="vital cool ${C.cool ? 'hot' : ''}"><span class="lbl">Cool bonus</span><div class="v">${C.cool}${C.cool ? ' <button class="btn small" id="coolSpend">Spend</button>' : ''}</div></div>
+    <div class="vital cool ${C.cool ? 'hot' : ''}"><span class="lbl">COOL Tokens</span><div class="v">${C.cool}${C.cool ? ` <button class="btn small" id="coolSpend" aria-expanded="${coolPick}">${coolPick ? 'Cancel' : 'Use'}</button>` : ''}</div></div>
   </div>
+  ${coolPick && C.cool ? coolPickHTML() : ''}
   ${isOverheated() ? `<div class="heatbar"><b class="gl" data-text="OVERHEATED">OVERHEATED</b><div>Your RAM hit 0 and your system cooked. You're stunned and can't do anything until your RAM comes back.</div></div>` : ''}
   ${C.hacks.length ? `<div class="hackbar"><b class="gl" data-text="HACKED">HACKED</b>${C.hacks.map(h => `<div><span>${HACKS[h].n}</span> ${HACKS[h].d}</div>`).join('')}<div class="muted" style="font-size:12px">Only the DM can clear this.</div></div>` : ''}`;
   const cs = $('#coolSpend');
-  if (cs) cs.onclick = () => {
-    if (stunned()) return;
-    C.cool = Math.max(0, C.cool - 1); saveC(); renderSheetHead(); renderCS();
-    coolFx('COOL BONUS SPENT', false); sfx('cool');
-    toast(hasPerk('COO.S.ph') ? 'Cool bonus spent. You Ready to Rock?! kicks in, so every ally gets COOL buffs and a free ACTION.' : 'Cool bonus spent. Take advantage or reroll, your call with the DM.', true);
-  };
+  if (cs) cs.onclick = () => { if (!coolPick && stunned()) return; coolPick = !coolPick; renderSheetHead(); };
+  $('#sheetHead').querySelectorAll('[data-cooluse]').forEach(b => b.onclick = () => useCool(b.dataset.cooluse, b.dataset.who));
   $('#lvUp').onclick = () => setLevel(C.level + 1);
   $('#lvDown').onclick = () => setLevel(C.level - 1);
+}
+let coolPick = false;
+function coolPickHTML(){
+  const cm = mod(score('COO')), s = sgn(cm);
+  const live = LS && liveApi && liveState === 'on';
+  const allies = live ? players.filter(p => p.merc && p.mercId !== C.id) : [];
+  const foes = live ? npcsPub.filter(n => !n.down) : [];
+  const btn = (k, who, label, cls) => `<button class="btn small ${cls || ''}" data-cooluse="${k}" data-who="${esc(who)}">${label}</button>`;
+  return `<div class="coolpick"><div><b>Spend a COOL Token</b> <span class="muted">Adds your COOL mod (${s}) to a d20 roll. ${cm > 0 ? 'Best on you or an ally who just missed.' : cm < 0 ? 'Your mod is negative, so use it to make an enemy fail.' : "Your COOL mod is +0, so it won't change the roll yet."}</span></div>
+    <div class="row" style="margin-top:8px">${btn('self', C.name, 'My roll', cm >= 0 ? 'primary' : '')}
+      ${allies.map(p => btn('ally', p.merc.name, esc(p.merc.name) + "'s roll", cm > 0 ? 'primary' : '')).join('')}
+      ${live ? '' : btn('ally', 'an ally', "An ally's roll", cm > 0 ? 'primary' : '')}
+      ${foes.map(n => btn('foe', n.name, esc(n.name) + "'s roll", cm < 0 ? 'danger' : '')).join('')}
+      ${btn('foe', 'an enemy', foes.length ? 'Another enemy' : "An enemy's roll", cm < 0 ? 'danger' : '')}</div></div>`;
+}
+function useCool(kind, who){
+  if (!C || !C.cool) return;
+  const cm = mod(score('COO')), s = sgn(cm);
+  const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
+  if (live) flushLog('');
+  C.cool = Math.max(0, C.cool - 1); coolPick = false; saveC();
+  const whose = kind === 'self' ? 'their own' : who + "'s";
+  if (live){
+    logBase = normalize(C);
+    liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:C.id, name:C.name, via:'COOL Token',
+      lines:[{t:`${s} to ${whose} d20 roll`, k:kind === 'foe' ? 'bad' : 'good'}, ...(hasPerk('COO.S.ph') ? [{t:'You Ready to Rock?! · every ally gets COOL buffs and a free ACTION', k:'good'}] : [])]}).catch(() => {});
+  }
+  renderSheetHead(); if (sheetTab === 'cs') renderCS();
+  if (flashOK()) coolFx(`${s} COOL`, true); sfx('cool');
+  const target = kind === 'self' ? 'your' : kind === 'ally' ? (who === 'an ally' ? "your ally's" : who + "'s") : (who === 'an enemy' ? "the enemy's" : who + "'s");
+  toast(`COOL Token used. Add ${s} to ${target} d20 roll.${hasPerk('COO.S.ph') ? ' You Ready to Rock?! kicks in, so every ally gets COOL buffs and a free ACTION.' : ''}`, true);
 }
 function setLevel(l){
   const up = l > C.level;
@@ -1796,10 +1836,10 @@ const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
 /* ================= ITEM TIERS + GENERATORS =================
    Placeholder tables. Swap these out when the GM posts the real ones. */
 const BLACK_ICE = [
-  {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 2 fire damage to IRL HP', fx:''},
+  {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:''},
   {id:'cobra', n:'Cobra', ac:12, hp:12, hit:6, per:4, dmg:'Drains 1d4+1 RAM', fx:''},
-  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner', fx:''},
-  {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:'−2 that slides with each hit', fx:''},
+  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, alerting other Black ICE', fx:''},
+  {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:'−2 that stacks with each hit', fx:''},
   {id:'scorpion', n:'Scorpion', ac:12, hp:15, hit:2, per:2, dmg:'Half movement and no Dash', fx:''},
   {id:'wisp', n:'Wisp', ac:10, hp:15, hit:4, per:4, dmg:'1d6 NET damage and −1 RAM', fx:''},
   {id:'liche', n:'Liche', ac:12, hp:25, hit:6, per:8, dmg:'Lowers the netrunner\'s INT, REF or TEC by 1d4. Roll 1d6 to pick the stat', fx:''},
@@ -2592,7 +2632,7 @@ function diffMerc(a, b){
   const r1 = ramNow(a), r2 = ramNow(b), m1 = ramMax(a), m2 = ramMax(b);
   if (r1 !== r2 || m1 !== m2) add(`RAM ${r1}/${m1} → ${r2}/${m2}${isOverheated(b) && !isOverheated(a) ? ' · OVERHEATED' : ''}`, r2 < r1 ? 'bad' : 'good');
   if (a.eddies !== b.eddies) add(`${b.eddies > a.eddies ? '+' : '−'}${Math.abs(b.eddies - a.eddies)} €$ (now ${b.eddies})`, b.eddies > a.eddies ? 'good' : '');
-  if (a.cool !== b.cool) add(`Cool bonuses ${a.cool} → ${b.cool}`, b.cool > a.cool ? 'good' : '');
+  if (a.cool !== b.cool) add(`COOL Tokens ${a.cool} → ${b.cool}`, b.cool > a.cool ? 'good' : '');
   if (a.jackLock !== b.jackLock) add(b.jackLock ? 'Jack-out locked by Black ICE' : 'Jack-out unlocked', b.jackLock ? 'bad' : 'good');
   if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
   b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
@@ -2843,8 +2883,8 @@ function applyOp(op){
     m.hacks = []; msg = 'Your systems are clean again.'; sound = 'heal';
   } else if (op.kind === 'cool'){
     const n = parseInt(op.amount) || 0; m.cool = Math.max(0, m.cool + n);
-    msg = n > 0 ? `+${n} Cool bonus from the DM.` : 'The DM took back a Cool bonus.'; sound = n > 0 ? 'cool' : 'down';
-    if (n > 0) setTimeout(() => coolFx(`+${n} COOL BONUS`, true), 30);
+    msg = n > 0 ? `+${n} COOL Token from the DM.` : 'The DM took back a COOL Token.'; sound = n > 0 ? 'cool' : 'down';
+    if (n > 0) setTimeout(() => coolFx(`+${n} COOL TOKEN`, true), 30);
   } else if (op.kind === 'psycho'){
     m.psycho = !!op.on;
     msg = op.on ? 'The DM says you snapped. Cyberpsychosis.' : 'The DM pulled you back from the edge.'; sound = op.on ? null : 'heal';
@@ -3054,7 +3094,7 @@ function partyCard(p, dm){
       <div class="row"><select id="hk-${k}" aria-label="Hack to apply" style="flex:1">${Object.entries(HACKS).map(([hk, h]) => `<option value="${hk}" ${m.hacks.includes(hk) ? 'disabled' : ''}>${h.n}</option>`).join('')}</select>
         <button class="btn small danger" data-live="hack" data-u="${k}">Hack</button>${m.hacks.length ? `<button class="btn small" data-live="unhack" data-u="${k}">Clear all</button>` : ''}</div>
       <div class="row"><span class="ctl" style="min-width:auto">Black ICE</span><button class="btn small danger" data-live="jackout" data-u="${k}">Force jack-out</button><button class="btn small ${m.jackLock ? '' : 'danger'}" data-live="jacklock" data-on="${m.jackLock ? '' : '1'}" data-u="${k}">${m.jackLock ? 'Unlock jack-out' : 'Lock jack-out'}</button></div>
-      <div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 Cool bonus</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div>
+      <div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 COOL Token</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div>
       <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
         <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
       <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
@@ -3067,7 +3107,7 @@ function partyCard(p, dm){
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
         <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${m.cwT}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
-        <div class="stat"><span>Cool bonuses</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
+        <div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}${dm ? ` <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button>` : ''}</span>`).join('')}</div>` : ''}
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
       <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
@@ -3337,7 +3377,7 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'unhack1'){ if (await sendOp(u, {kind:'hack', key:t.dataset.h, on:false})) toast(`Cleared ${HACKS[t.dataset.h].n} on ${pname(u)}.`, true); return; }
   if (a === 'unhack'){ if (await sendOp(u, {kind:'unhack'})) toast(`Cleared every hack on ${pname(u)}.`, true); return; }
   if (a === 'cool+' || a === 'cool-'){
-    if (await sendOp(u, {kind:'cool', amount: a === 'cool+' ? 1 : -1})) toast(a === 'cool+' ? `Awarded a Cool bonus to ${pname(u)}.` : `Took a Cool bonus from ${pname(u)}.`, true);
+    if (await sendOp(u, {kind:'cool', amount: a === 'cool+' ? 1 : -1})) toast(a === 'cool+' ? `Gave ${pname(u)} a COOL Token.` : `Took a COOL Token from ${pname(u)}.`, true);
     return;
   }
   if (a === 'psy'){
@@ -4401,22 +4441,26 @@ function renderSettings(){
     body = `${rng('vol', 'Volume', 'Master volume for every sound', 0, 100, 5, '%')}
     ${tog('ui', 'UI clicks', 'Buttons, tabs and steppers')}
     ${tog('game', 'Game sounds', 'Damage, healing, items, perks and chrome')}
-    ${tog('big', 'Big moments', 'Flatline, cyberpsychosis, overheat, hacks, level ups and Cool bonuses')}
+    ${tog('big', 'Big moments', 'Flatline, cyberpsychosis, overheat, hacks, level ups and COOL Tokens')}
     <div class="row gap"><button class="btn small" data-set="test">Test sound</button><span class="muted" style="font-size:12px">The SFX button still mutes everything.</span></div>`;
   } else {
     body = `${tog('keys', 'Keyboard shortcuts', 'Ignored while you are typing in a box')}
     <div class="keys">${SHORTCUTS.map(([k, d]) => `<div><kbd>${k}</kbd><span>${d}</span></div>`).join('')}</div>`;
   }
-  $('#setPanel').innerHTML = `<div class="row"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
+  const keepScroll = $('#setPanel').scrollTop;
+  $('#setPanel').innerHTML = `<div class="sethead"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
     <p class="muted" style="font-size:13px;margin:0">${ACCT.google ? 'Synced to your Google account, so they follow you to every device.' : 'Saved on this device. Sign in with Google to sync them.'}</p>
     <div class="stabs" role="tablist">${tabs.map(([k, n]) => `<button role="tab" aria-selected="${setTab === k}" class="${setTab === k ? 'on' : ''}" data-stab="${k}">${n}</button>`).join('')}</div>
     ${body}`;
+  $('#setPanel').scrollTop = keepScroll;
 }
 function toggleSettings(open){
   const p = $('#setPanel'); open = open ?? p.hidden;
-  p.hidden = !open; $('#tSet').setAttribute('aria-expanded', open);
-  if (open) renderSettings();
+  p.hidden = !open; $('#setBack').hidden = !open; $('#tSet').setAttribute('aria-expanded', open);
+  document.documentElement.classList.toggle('noscroll', open);
+  if (open){ p.scrollTop = 0; renderSettings(); }
 }
+$('#setBack').addEventListener('click', () => toggleSettings(false));
 $('#tSet').onclick = () => { sfx('select'); toggleSettings(); };
 $('#setPanel').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
