@@ -2657,32 +2657,41 @@ async function firebaseLive(){
   });
   const d = (...p) => F.doc(db, ...p), c = (...p) => F.collection(db, ...p);
   const list = q => q.docs.map(x => ({id:x.id, ...x.data()}));
-  const onErr = e => { console.error(e); toast('Live sync error. Check your connection.'); };
+  const errSeen = {};
+  const onErr = what => e => {
+    console.error('Live sync error on ' + what, e);
+    const code = (e && e.code) || 'unknown';
+    if (errSeen[what + code]) return; errSeen[what + code] = 1;
+    if (code === 'permission-denied') toast(`Firebase blocked ${what}. Paste the newest firestore.rules into Firebase and hit Publish.`);
+    else if (code === 'failed-precondition') toast(`Firebase needs an index for ${what}. Open the browser console for the link to create it.`);
+    else if (code === 'unavailable') toast(`Lost the connection while syncing ${what}. It will reconnect on its own.`);
+    else toast(`Live sync error on ${what} (${code}).`);
+  };
   return {
     uid,
     async createSession(code, data){ await F.runTransaction(db, async t => { const s = await t.get(d('sessions', code)); if (s.exists()) throw new Error('exists'); t.set(d('sessions', code), data); }); },
     async getSession(code){ const s = await F.getDoc(d('sessions', code)); return s.exists() ? s.data() : null; },
     deleteSession: code => F.deleteDoc(d('sessions', code)),
-    watchSession: (code, cb) => F.onSnapshot(d('sessions', code), s => cb(s.exists() ? s.data() : null), onErr),
-    watchPlayers: (code, cb) => F.onSnapshot(c('sessions', code, 'players'), q => cb(list(q)), onErr),
+    watchSession: (code, cb) => F.onSnapshot(d('sessions', code), s => cb(s.exists() ? s.data() : null), onErr('the session')),
+    watchPlayers: (code, cb) => F.onSnapshot(c('sessions', code, 'players'), q => cb(list(q)), onErr('the party list')),
     setPlayer: (code, u, data) => F.setDoc(d('sessions', code, 'players', u), data),
     removePlayer: (code, u) => F.deleteDoc(d('sessions', code, 'players', u)),
-    watchInbox: (code, u, cb) => F.onSnapshot(c('sessions', code, 'players', u, 'inbox'), q => cb(list(q)), onErr),
+    watchInbox: (code, u, cb) => F.onSnapshot(c('sessions', code, 'players', u, 'inbox'), q => cb(list(q)), onErr('your inbox')),
     sendInbox: (code, u, op) => F.addDoc(c('sessions', code, 'players', u, 'inbox'), op),
     deleteInbox: (code, u, id) => F.deleteDoc(d('sessions', code, 'players', u, 'inbox', id)),
-    watchLibrary: cb => F.onSnapshot(c('dms', uid, 'library'), q => cb(list(q)), onErr),
+    watchLibrary: cb => F.onSnapshot(c('dms', uid, 'library'), q => cb(list(q)), onErr('the item library')),
     async getPlayers(code){ return list(await F.getDocs(c('sessions', code, 'players'))); },
-    watchDmNpcs: cb => F.onSnapshot(c('dms', uid, 'npcs'), q => cb(list(q)), onErr),
+    watchDmNpcs: cb => F.onSnapshot(c('dms', uid, 'npcs'), q => cb(list(q)), onErr('your NPCs')),
     setDmNpc: n => F.setDoc(d('dms', uid, 'npcs', n.id), n),
     delDmNpc: id => F.deleteDoc(d('dms', uid, 'npcs', id)),
-    watchNpcs: (code, cb) => F.onSnapshot(c('sessions', code, 'npcs'), q => cb(list(q)), onErr),
+    watchNpcs: (code, cb) => F.onSnapshot(c('sessions', code, 'npcs'), q => cb(list(q)), onErr('NPC ID cards')),
     setNpc: (code, id, data) => F.setDoc(d('sessions', code, 'npcs', id), data),
     delNpc: (code, id) => F.deleteDoc(d('sessions', code, 'npcs', id)),
     updateSession: (code, data) => F.setDoc(d('sessions', code), data, {merge:true}),
-    watchLibraryOf: (du, cb) => F.onSnapshot(c('dms', du, 'library'), q => cb(list(q)), onErr),
+    watchLibraryOf: (du, cb) => F.onSnapshot(c('dms', du, 'library'), q => cb(list(q)), onErr('the Codex')),
     async getPortrait(code, u){ const s = await F.getDoc(d('sessions', code, 'portraits', u)); return s.exists() ? s.data() : null; },
     touchPlayer: (code, u, data) => F.setDoc(d('sessions', code, 'players', u), data, {merge:true}),
-    watchPortraits: (code, cb) => F.onSnapshot(c('sessions', code, 'portraits'), q => cb(list(q)), onErr),
+    watchPortraits: (code, cb) => F.onSnapshot(c('sessions', code, 'portraits'), q => cb(list(q)), onErr('portraits')),
     setPortrait: (code, u, data) => F.setDoc(d('sessions', code, 'portraits', u), data),
     removePortrait: (code, u) => F.deleteDoc(d('sessions', code, 'portraits', u)),
     setLibItem: it => F.setDoc(d('dms', uid, 'library', it.id), it),
@@ -2698,26 +2707,26 @@ async function firebaseLive(){
       }
     },
     signOut: () => A.signOut(auth),
-    watchUser: cb => F.onSnapshot(d('users', uid), s => cb(s.exists() ? s.data() : null), onErr),
+    watchUser: cb => F.onSnapshot(d('users', uid), s => cb(s.exists() ? s.data() : null), onErr('cloud settings')),
     setUser: data => F.setDoc(d('users', uid), data, {merge:true}),
-    watchMercsCloud: cb => F.onSnapshot(c('users', uid, 'mercs'), q => cb(list(q)), onErr),
+    watchMercsCloud: cb => F.onSnapshot(c('users', uid, 'mercs'), q => cb(list(q)), onErr('cloud saves')),
     setMercCloud: (id, data) => F.setDoc(d('users', uid, 'mercs', id), data),
     delMercCloud: id => F.deleteDoc(d('users', uid, 'mercs', id)),
-    watchPicsCloud: cb => F.onSnapshot(c('users', uid, 'pics'), q => cb(list(q)), onErr),
+    watchPicsCloud: cb => F.onSnapshot(c('users', uid, 'pics'), q => cb(list(q)), onErr('cloud portraits')),
     setPicCloud: (id, img) => F.setDoc(d('users', uid, 'pics', id), {img}),
     delPicCloud: id => F.deleteDoc(d('users', uid, 'pics', id)),
     async getPlayer(code, u){ const s = await F.getDoc(d('sessions', code, 'players', u)); return s.exists() ? s.data() : null; },
-    watchLog: (code, cb) => F.onSnapshot(F.query(c('sessions', code, 'log'), F.orderBy('at', 'desc'), F.limit(150)), q => cb(list(q)), onErr),
+    watchLog: (code, cb) => F.onSnapshot(F.query(c('sessions', code, 'log'), F.orderBy('at', 'desc'), F.limit(150)), q => cb(list(q)), onErr('the activity log')),
     addLog: (code, e) => F.addDoc(c('sessions', code, 'log'), e),
     async clearLog(code){ const q = await F.getDocs(c('sessions', code, 'log')); await Promise.all(q.docs.map(x => F.deleteDoc(x.ref))); },
-    watchBackups: cb => F.onSnapshot(c('dms', uid, 'party'), q => cb(list(q)), onErr),
+    watchBackups: cb => F.onSnapshot(c('dms', uid, 'party'), q => cb(list(q)), onErr('party backups')),
     setBackup: (id, data) => F.setDoc(d('dms', uid, 'party', id), data),
     delBackup: id => F.deleteDoc(d('dms', uid, 'party', id)),
-    watchSessNotes: (code, cb) => F.onSnapshot(d('dms', uid, 'notes', code), s => cb(s.exists() ? s.data() : null), onErr),
-    watchEncounters: cb => F.onSnapshot(c('dms', uid, 'encounters'), q => cb(list(q)), onErr),
+    watchSessNotes: (code, cb) => F.onSnapshot(d('dms', uid, 'notes', code), s => cb(s.exists() ? s.data() : null), onErr('session notes')),
+    watchEncounters: cb => F.onSnapshot(c('dms', uid, 'encounters'), q => cb(list(q)), onErr('encounters')),
     setEncounter: e => F.setDoc(d('dms', uid, 'encounters', e.id), e),
     delEncounter: id => F.deleteDoc(d('dms', uid, 'encounters', id)),
-    watchHandouts: (code, cb) => F.onSnapshot(c('sessions', code, 'handouts'), q => cb(list(q)), onErr),
+    watchHandouts: (code, cb) => F.onSnapshot(c('sessions', code, 'handouts'), q => cb(list(q)), onErr('handouts')),
     setHandout: (code, id, data) => F.setDoc(d('sessions', code, 'handouts', id), data),
     delHandout: (code, id) => F.deleteDoc(d('sessions', code, 'handouts', id)),
     async getLogs(code){ return list(await F.getDocs(c('sessions', code, 'log'))); },
