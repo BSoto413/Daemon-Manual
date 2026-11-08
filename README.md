@@ -33,6 +33,24 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Site accent recolors the cyan text, panel edges and buttons through `--cyan` and `--crgb`
 - Keyboard shortcuts. 1 to 4 jump to Rules, Your Mercs, Live Session and Codex. P and C switch sheet tabs. D and H damage or heal using the amount box. R spends a Reaction. S opens settings. ? lists them all
 
+## Merc tools
+- Undo (button on the sheet or Ctrl Z) steps back through your last 30 changes. Anything the DM sends clears the undo history so players can't undo damage
+- Eddies ledger on the Character sheet logs every payment in and out with a note and running balance. Got paid and Spent buttons add entries by hand
+- Achievements tab with 25 achievements, progress bars and lifetime stats. They unlock on their own and show up in the activity log. Definitions live in `ACH`
+- XP bar shows on the sheet once a merc has XP (5e table in `XP_TABLE`)
+- Merc ID card makes a 1200x675 PNG styled to the merc's origin, with download and copy
+- Print or PDF prints a clean black and white one page sheet
+
+## DM tools
+- Encounters. Build a group of Black ICE and custom NPCs (or save the current board), then Deploy drops them all on the board, numbered
+- Party progress. Milestone levels up the whole party. Award XP to everyone or one player
+- Handouts. Upload an image (compressed under 1 MB), then Show to everyone pops it up on every player's screen. Players can reopen any handout from the Live page
+- Session recap turns a day's activity log into a summary to paste in Discord
+
+## App and search
+- Search everything with the Search link, / or Ctrl K. Covers rules, perks, skills, Black ICE, mercs, gear, notes, the Codex and achievements
+- Installable app. `manifest.json` and `sw.js` sit next to `index.html`. Pages load network first so pushes show up right away, and everything is cached for offline. Icons go in an `icons` folder as `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` and `apple-touch-icon.png`. Bump `V` in `sw.js` to force every device to drop its old cache
+
 ## Saving
 - Mercs save automatically in the browser
 - Copy save code gives a `DMN1.` code to paste into Import on another device or in Discord

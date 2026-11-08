@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daemon Manual V0.77</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0a12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Daemon">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
@@ -415,6 +424,54 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
 }
 .setp h3{margin:0 0 4px}
 .lvhp{margin:8px 0 10px;padding:10px 12px;border:1px solid rgba(255,230,0,.35);background:rgba(255,230,0,.05);font-size:13px}.lvhp b{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1px;margin-right:6px}
+.encadd{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 120px 80px 70px auto;gap:8px;align-items:center}
+@media (max-width:760px){.encadd{grid-template-columns:1fr 1fr}}
+.hos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.ho{border:1px solid rgba(var(--crgb),.18);background:#08080f;padding:8px;display:flex;flex-direction:column;gap:6px}
+.ho.live{border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
+.ho b{color:#fff;font-size:13px;font-weight:500}.hoimg{padding:0;border:0;background:#000;cursor:zoom-in;display:block}.hoimg img{width:100%;height:110px;object-fit:cover;display:block}
+.mbox.wide{width:min(1200px,100%)}
+.hoview{overflow:auto;max-height:calc(100dvh - 120px);cursor:zoom-in;text-align:center}.hoview img{max-width:100%;max-height:calc(100dvh - 130px)}
+.hoview.zoom{cursor:zoom-out}.hoview.zoom img{max-width:none;max-height:none}
+.navsearch{margin-left:auto}
+.mbox.search{width:min(720px,100%);align-self:flex-start;margin-top:8vh}
+.mbox.search input[type=search]{flex:1;font-size:18px;padding:10px 12px}
+#srRes{max-height:calc(100dvh - 260px);overflow:auto}
+.srg{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;color:var(--yellow);margin:12px 2px 4px;text-transform:uppercase}
+.srhit{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-left:3px solid transparent;color:inherit;font:inherit;padding:8px 10px;cursor:pointer}
+.srhit:hover,.srhit.on{background:rgba(var(--crgb),.08);border-left-color:var(--cyan)}
+.srhit b{display:block;color:#fff;font-weight:500}.srhit span{display:block;font-size:13px;color:var(--muted)}.srhit small{display:block;font-size:12.5px;color:#cfe;margin-top:2px}
+.flashhit{animation:flashhit 1.6s ease-out 1}@keyframes flashhit{0%{box-shadow:0 0 0 2px var(--yellow)}100%{box-shadow:0 0 0 2px transparent}}
+.sheettools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}
+.xprow{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:13px}.xprow .ready{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1px}
+.bar.thin{height:5px;margin:4px 0}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.ach{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid rgba(var(--crgb),.15);background:#08080f;opacity:.62}
+.ach.on{opacity:1;border-color:rgba(255,230,0,.5);background:rgba(255,230,0,.05)}
+.ach .ic{font-size:24px;color:var(--muted);line-height:1}.ach.on .ic{color:var(--yellow);text-shadow:0 0 12px rgba(255,230,0,.6)}
+.ach b{display:block;color:#fff;font-family:Orbitron,sans-serif;font-weight:500;font-size:12.5px;letter-spacing:.5px}.ach span{display:block;font-size:13px;color:var(--muted)}.ach small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.ledger{margin-top:10px;max-height:340px;overflow:auto}
+.lrow2{display:grid;grid-template-columns:120px 1fr auto 80px;gap:10px;padding:6px 0;border-bottom:1px solid rgba(var(--crgb),.08);font-size:14px;align-items:center}
+.lrow2 b.in{color:#7dff9a;font-weight:500}.lrow2 b.out{color:#ff8a98;font-weight:500}.lrow2 > :last-child{text-align:right;font-size:12px}
+@media (max-width:620px){.lrow2{grid-template-columns:1fr auto}.lrow2 > :first-child,.lrow2 > :last-child{display:none}}
+.ledadd input[type=number]{width:110px}
+.modal{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:14px}
+.modal[hidden]{display:none!important}
+.mbox{background:rgba(10,10,18,.98);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:0 18px 16px;width:min(980px,100%);max-height:calc(100dvh - 28px);overflow:auto;overscroll-behavior:contain}
+#printSheet{display:none}
+@media print{
+  body{background:#fff!important;color:#000}
+  body > *:not(#printSheet){display:none!important}
+  #printSheet{display:block!important;color:#000;font-family:'Exo 2',Arial,sans-serif;font-size:11pt}
+  .ps h1,.ps h2,.ps b,.ps th{color:#000!important;text-shadow:none!important;animation:none!important}.ps h2::before,.ps h2::after{display:none!important}
+  .ps h1{font-family:Orbitron,Arial,sans-serif;font-size:24pt;margin:0}.ps h2{font-family:Orbitron,Arial,sans-serif;font-size:11pt;letter-spacing:1px;border-bottom:1.5px solid #000;margin:14px 0 6px;padding-bottom:2px;text-transform:uppercase}
+  .pshead{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #000;padding-bottom:6px}.pshead p{margin:4px 0 0}.psbrand{font-family:Orbitron,Arial,sans-serif;font-size:9pt;letter-spacing:2px}
+  .psgrid6{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}.psgrid6 div{border:1.5px solid #000;text-align:center;padding:4px}.psgrid6 b{display:block;font-size:9pt}.psgrid6 span{display:block;font-size:18pt;font-weight:700}.psgrid6 i{font-style:normal}
+  .pscols{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+  .ps table{width:100%;border-collapse:collapse}.ps td,.ps th{border-bottom:1px solid #bbb;padding:3px 4px;text-align:left;vertical-align:top;font-size:10pt}
+  .pssk td:first-child{width:22px}.psnotes{min-height:80px;border:1px solid #bbb;padding:6px}
+  @page{margin:12mm}
+}
 .coolpick{margin-top:12px;padding:12px 14px;border:1px solid rgba(255,230,0,.35);background:rgba(255,230,0,.05);font-size:14px}.coolpick b{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;margin-right:6px}
 .moodrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}@media (max-width:620px){.moodrow{grid-template-columns:1fr}}
 .presets button.locked{opacity:.55;cursor:not-allowed}.presets button small{display:block;font-family:'Exo 2',sans-serif;letter-spacing:0;text-transform:none;font-size:10px;color:var(--muted);margin-top:3px;line-height:1.2}
@@ -621,7 +678,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   <header>
     <h1 class="gl-title" data-text="Daemon Manual V0.77">Daemon Manual V0.77</h1>
     <div class="rule"></div>
-    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a></nav>
+    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a><a href="#" id="navSearch" class="navsearch" aria-label="Search everything">⌕ Search</a></nav>
   </header>
 
   <div id="pgRules" hidden>
@@ -883,7 +940,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
     <!-- SHEET -->
     <div id="vSheet" hidden>
       <div class="panel" id="sheetHead"></div>
-      <div class="vtabs" role="tablist"><button data-v="perks" class="on" role="tab">Perks and skills</button><button data-v="cs" role="tab">Character sheet</button></div>
+      <div class="vtabs" role="tablist"><button data-v="perks" class="on" role="tab">Perks and skills</button><button data-v="cs" role="tab">Character sheet</button><button data-v="ach" role="tab">Achievements</button></div>
       <div id="vPerks">
       <div class="tabs" id="tabs" role="tablist"></div>
       <div class="sim-grid">
@@ -925,6 +982,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <div class="panel"><p class="muted" id="skillNote"></p><div class="skills" id="skills"></div></div>
       </div>
       <div id="vCS" hidden></div>
+      <div id="vAch" hidden></div>
 
       <h2 style="margin-top:36px">Save</h2>
       <div class="panel">
@@ -968,6 +1026,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   <svg class="ekg" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 H170 L185 40 L195 12 L208 70 L220 30 L232 40 H600"/></svg>
   <div class="fl-sub" id="flSub">Unconscious. Critical condition.</div><div class="fl-hint">Click to continue</div></div></div>
 <div class="setback" id="setBack" hidden></div>
+<div class="modal" id="modal" hidden></div>
+<div id="printSheet" aria-hidden="true"></div>
 <div class="setp" id="setPanel" role="dialog" aria-label="Settings" hidden></div>
 <div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
@@ -1123,7 +1183,7 @@ let DB = {chars:[], current:null};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
 if (!Array.isArray(DB.trash)) DB.trash = [];
 DB.trash = DB.trash.filter(x => x && x.merc && Date.now() - (x.at || 0) < 30 * 864e5);
-function persist(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
+function persist(){ trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
 let C = null;       // current character
@@ -1177,6 +1237,10 @@ function normalize0(c){
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
     jackLock: !!c.jackLock,
+    xp: Math.max(0, parseInt(c.xp) || 0),
+    ledger: (Array.isArray(c.ledger) ? c.ledger : []).filter(e => e && typeof e.d === 'number').slice(0, 150).map(e => ({at:+e.at || 0, d:Math.round(e.d), bal:Math.max(0, parseInt(e.bal) || 0), note:String(e.note || '').slice(0, 60)})),
+    ctr: Object.fromEntries(CTR_KEYS.map(k => [k, Math.max(0, parseInt((c.ctr || {})[k]) || 0)])),
+    ach: Object.fromEntries(Object.entries(c.ach && typeof c.ach === 'object' ? c.ach : {}).filter(([k, v]) => typeof v === 'number').slice(0, 80)),
     hpLv: Math.max(1, parseInt(c.hpLv) || (numOrNull(c.hpMax) > 0 ? Math.max(1, +c.level || 1) : 1)),
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
@@ -1188,6 +1252,199 @@ function fixEq(c){
   ['primary','secondary'].forEach(k => { const i = c.inv.find(x => x.id === c.eq[k]); if (!i || i.type !== 'Weapon') c.eq[k] = null; });
   if (c.eq.primary && c.eq.primary === c.eq.secondary) c.eq.secondary = null;
   return c;
+}
+
+/* ================= PROGRESS: LEDGER, COUNTERS, ACHIEVEMENTS, UNDO, XP ================= */
+const XP_TABLE = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
+const CTR_KEYS = ['flat', 'surv', 'coolUsed', 'jack', 'fab', 'gifts', 'earned', 'spent', 'heat'];
+const ACH = [
+  {id:'welcome', n:'Welcome to Night City', d:'Make a merc', test:() => true},
+  {id:'lvl5', n:'Seasoned', d:'Reach level 5', test:m => m.level >= 5, prog:m => [m.level, 5]},
+  {id:'lvl10', n:'Veteran', d:'Reach level 10', test:m => m.level >= 10, prog:m => [m.level, 10]},
+  {id:'lvl20', n:'Living Legend', d:'Reach level 20', test:m => m.level >= 20, prog:m => [m.level, 20]},
+  {id:'phenom', n:'Phenom', d:'Install a Phenom perk', test:m => m.unlocked.some(k => /\.ph$/.test(k))},
+  {id:'legend', n:'Legendary', d:'Install a Legend perk', test:m => m.unlocked.some(k => /\.l$/.test(k))},
+  {id:'online', n:'Fully Online', d:'Get all six perk trees online', test:m => ORDER.every(k => score(k, m) >= 10), prog:m => [ORDER.filter(k => score(k, m) >= 10).length, 6]},
+  {id:'chrome1', n:'First Chrome', d:'Install your first cyberware', test:m => m.cyber.length >= 1},
+  {id:'chrome6', n:'Chromed Out', d:'Have 6 pieces of chrome installed', test:m => m.cyber.length >= 6, prog:m => [m.cyber.length, 6]},
+  {id:'psycho', n:'Snapped', d:'Go cyberpsycho', test:m => m.psycho},
+  {id:'hacked', n:'Got Got', d:'Get hacked', test:m => m.hacks.length > 0},
+  {id:'heat', n:'Overclocked', d:'Overheat by running out of RAM', test:(m, c) => c.heat >= 1},
+  {id:'flat', n:'Flatlined', d:'Drop to 0 HP or NET HP', test:(m, c) => c.flat >= 1},
+  {id:'surv', n:'Back from the Dead', d:'Come back after flatlining', test:(m, c) => c.surv >= 1},
+  {id:'flat5', n:'Frequent Flatliner', d:'Flatline 5 times', test:(m, c) => c.flat >= 5, prog:(m, c) => [c.flat, 5]},
+  {id:'dive', n:'First Dive', d:'Jack in to the Net', test:(m, c) => c.jack >= 1},
+  {id:'cool1', n:'Smooth Operator', d:'Spend a COOL Token', test:(m, c) => c.coolUsed >= 1},
+  {id:'cool10', n:'Ice Cold', d:'Spend 10 COOL Tokens', test:(m, c) => c.coolUsed >= 10, prog:(m, c) => [c.coolUsed, 10]},
+  {id:'payday', n:'Payday', d:'Earn 5,000 €$ in total', test:(m, c) => c.earned >= 5000, prog:(m, c) => [c.earned, 5000]},
+  {id:'baron', n:'Eddie Baron', d:'Hold 10,000 €$ at once', test:m => m.eddies >= 10000, prog:m => [m.eddies, 10000]},
+  {id:'spender', n:'Big Spender', d:'Spend 5,000 €$ in total', test:(m, c) => c.spent >= 5000, prog:(m, c) => [c.spent, 5000]},
+  {id:'maker', n:'Maker', d:'Fabricate an item', test:(m, c) => c.fab >= 1},
+  {id:'team', n:'Team Player', d:'Hand an item or eddies to a crewmate', test:(m, c) => c.gifts >= 1},
+  {id:'iconic', n:'Iconic Gear', d:'Own a Tier 4 item', test:m => m.inv.some(i => i.tier >= 3)},
+  {id:'arsenal', n:'Walking Arsenal', d:'Carry 5 weapons', test:m => m.inv.filter(i => i.type === 'Weapon').reduce((n, i) => n + (i.qty || 1), 0) >= 5, prog:m => [m.inv.filter(i => i.type === 'Weapon').reduce((n, i) => n + (i.qty || 1), 0), 5]}
+];
+let edNote = '', opBusy = false, undoBusy = false;
+const SNAP = {}, UNDO = {};
+const snapOf = c => JSON.stringify(c);
+DB.chars.forEach(c => { SNAP[c.id] = snapOf(c); });
+function trackAll(){
+  const unlocked = [];
+  DB.chars.forEach(raw => {
+    const now = snapOf(raw), prevS = SNAP[raw.id];
+    if (now === prevS) return;
+    const prev = prevS ? normalize(JSON.parse(prevS)) : null;
+    if (C && raw === C && prevS && !undoBusy){
+      if (opBusy) UNDO[raw.id] = [];
+      else { (UNDO[raw.id] = UNDO[raw.id] || []).push(prevS); if (UNDO[raw.id].length > 30) UNDO[raw.id].shift(); }
+    }
+    if (!undoBusy){
+      const got = track(raw, prev);
+      got.forEach(a => unlocked.push([raw, a]));
+    }
+    SNAP[raw.id] = snapOf(raw);
+  });
+  edNote = '';
+  if (unlocked.length) announceAch(unlocked);
+}
+function track(raw, prev){
+  const m = normalize(raw), ctr = {...m.ctr}, ach = {...m.ach}, t = Date.now();
+  let ledger = m.ledger.slice(), dirty = false;
+  if (prev && prev.id === m.id){
+    const d = m.eddies - prev.eddies;
+    if (d){ ledger.unshift({at:t, d, bal:m.eddies, note:(edNote || 'Edited by hand').slice(0, 60)}); ledger = ledger.slice(0, 150); if (d > 0) ctr.earned += d; else ctr.spent -= d; dirty = true; }
+    const hp = c => c.hpMax ? (c.hp == null ? c.hpMax : c.hp) : 1, nt = c => c.hpMax ? (c.netHp == null ? c.hpMax : c.netHp) : 1;
+    const wasDown = hp(prev) <= 0 || nt(prev) <= 0, down = hp(m) <= 0 || nt(m) <= 0;
+    if (!wasDown && down){ ctr.flat++; dirty = true; }
+    if (wasDown && !down){ ctr.surv++; dirty = true; }
+    if (!isOverheated(prev) && isOverheated(m)){ ctr.heat++; dirty = true; }
+  }
+  const got = ACH.filter(a => !ach[a.id] && (() => { try { return a.test(m, ctr); } catch(e){ return false; } })());
+  got.forEach(a => { ach[a.id] = t; });
+  if (dirty || got.length){ raw.ledger = ledger; raw.ctr = ctr; raw.ach = ach; }
+  return got;
+}
+let achQ = [];
+function announceAch(list){
+  const mine = list;
+  const show = mine.slice(0, 3);
+  show.forEach(([raw, a], i) => setTimeout(() => {
+    toast(`Achievement unlocked. ${a.n}${DB.chars.length > 1 ? ' · ' + raw.name : ''}.`, true);
+    if (flashOK()) coolFx('ACHIEVEMENT', false); sfx('levelup');
+  }, 900 + i * 2200));
+  if (mine.length > 3) setTimeout(() => toast(`And ${mine.length - 3} more. Check the Achievements tab.`, true), 900 + 3 * 2200);
+  if (C && sheetTab === 'ach') setTimeout(renderAch, 50);
+}
+function undo(){
+  if (!C) return;
+  const st = UNDO[C.id]; if (!st || !st.length) return toast('Nothing to undo.');
+  const prev = normalize(JSON.parse(st.pop()));
+  prev.ach = {...prev.ach, ...C.ach}; prev.ctr = {...C.ctr}; prev.savedAt = Date.now();
+  undoBusy = true; C = prev; saveC(); undoBusy = false;
+  update(false); renderSheetHead(); if (sheetTab === 'cs') renderCS();
+  sfx('down'); toast('Undid your last change.');
+}
+const xpNext = lvl => XP_TABLE[Math.min(19, lvl)] || null;
+function achHTML(){
+  const m = C, have = ACH.filter(a => m.ach[a.id]).length;
+  return `<div class="panel"><div class="row"><h3>Achievements</h3><span class="spacer"></span><span class="muted">${have} of ${ACH.length} unlocked</span></div>
+    <div class="bar" style="margin:10px 0 16px"><i style="width:${have / ACH.length * 100}%;background:var(--yellow)"></i></div>
+    <div class="achs">${ACH.map(a => {
+      const at = m.ach[a.id], pr = !at && a.prog ? a.prog(m, m.ctr) : null;
+      return `<div class="ach ${at ? 'on' : ''}"><div class="ic">${at ? '★' : '☆'}</div><div style="min-width:0"><b>${a.n}</b><span>${a.d}</span>
+        ${at ? `<small>Unlocked ${new Date(at).toLocaleDateString([], {month:'short', day:'numeric', year:'numeric'})}</small>` : pr ? `<div class="bar thin"><i style="width:${Math.min(100, pr[0] / pr[1] * 100)}%"></i></div><small>${Math.min(pr[0], pr[1]).toLocaleString()} / ${pr[1].toLocaleString()}</small>` : '<small>Locked</small>'}</div></div>`;
+    }).join('')}</div>
+    <p class="muted" style="font-size:13px;margin-top:14px">Lifetime stats · ${m.ctr.flat} flatlines · ${m.ctr.surv} comebacks · ${m.ctr.coolUsed} COOL Tokens spent · ${m.ctr.jack} dives · ${m.ctr.earned.toLocaleString()} €$ earned · ${m.ctr.spent.toLocaleString()} €$ spent</p></div>`;
+}
+function renderAch(){ const el = $('#vAch'); if (el && C) el.innerHTML = achHTML(); }
+let ledgerAll = false;
+function ledgerHTML(){
+  const L = C.ledger, rows = (ledgerAll ? L : L.slice(0, 12));
+  return `<div class="panel gap"><div class="row"><h3>Eddies ledger</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Every payment in and out, newest first</span></div>
+    <div class="ledadd row gap"><input type="number" id="lgAmt" placeholder="€$" aria-label="Amount"><input type="text" class="f" id="lgNote" maxlength="60" placeholder="What for, like Job from Padre" aria-label="What for" style="flex:1;min-width:160px"><button class="btn small primary" data-act="lgIn">Got paid</button><button class="btn small" data-act="lgOut">Spent</button></div>
+    ${L.length ? `<div class="ledger">${rows.map(e => `<div class="lrow2"><span class="muted">${new Date(e.at).toLocaleDateString([], {month:'short', day:'numeric'})} ${new Date(e.at).toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span><span>${esc(e.note)}</span><b class="${e.d > 0 ? 'in' : 'out'}">${e.d > 0 ? '+' : '−'}${Math.abs(e.d).toLocaleString()} €$</b><span class="muted">${e.bal.toLocaleString()}</span></div>`).join('')}</div>
+      ${L.length > 12 ? `<div class="row gap"><button class="btn small" data-act="lgAll">${ledgerAll ? 'Show less' : `Show all ${L.length}`}</button></div>` : ''}` : '<p class="muted" style="margin-top:10px">No payments yet. Changes to your eddies show up here on their own.</p>'}
+    <p class="muted" style="font-size:13px;margin-top:10px">Earned ${C.ctr.earned.toLocaleString()} €$ · Spent ${C.ctr.spent.toLocaleString()} €$</p></div>`;
+}
+
+/* ---- merc ID card ---- */
+function idCardCanvas(m){
+  const W = 1200, H = 675, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'), st = originStyle(m.background) || THEME.style, pal = STYLES[st] ? (st === THEME.style ? THEME : STYLES[st].pal) : THEME;
+  const bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, mixHex(pal.bg, '#000000', .25)); bg.addColorStop(1, mixHex(pal.bg, '#05040a', .85));
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const r = srnd(m.name.length * 97 + 13);
+  g.strokeStyle = rgbA(pal.trace, .45); g.lineWidth = 2;
+  for (let i = 0; i < 26; i++){ let x = r() * W, y = r() * H; g.beginPath(); g.moveTo(x, y); for (let k = 0; k < 3; k++){ const d = Math.floor(r() * 4), L = 40 + r() * 140; x += [L, 0, -L, 0][d]; y += [0, L, 0, -L][d]; g.lineTo(x, y); } g.stroke(); g.beginPath(); g.arc(x, y, 4, 0, 7); g.fillStyle = rgbA(pal.light, .7); g.fill(); }
+  g.fillStyle = 'rgba(8,8,14,.82)'; g.fillRect(40, 40, W - 80, H - 80);
+  g.fillStyle = '#ffe600'; g.fillRect(40, 40, 8, H - 80);
+  g.strokeStyle = rgbA(pal.light, .9); g.lineWidth = 2; g.strokeRect(40, 40, W - 80, H - 80);
+  const font = (w, s) => `${w} ${s}px Orbitron, "Exo 2", sans-serif`;
+  g.fillStyle = rgbA(pal.light, 1); g.font = font(500, 18); g.fillText('NIGHT CITY MERC ID', 90, 92);
+  g.fillStyle = 'rgba(255,255,255,.5)'; g.font = font(400, 15); g.fillText('ID ' + m.id.toUpperCase().slice(0, 10), W - 260, 92);
+  const px = 90, py = 130, ps = 300;
+  g.fillStyle = '#06181c'; g.fillRect(px, py, ps, ps);
+  const finish = () => {
+    g.strokeStyle = '#2fe6f0'; g.lineWidth = 3; g.strokeRect(px, py, ps, ps);
+    g.fillStyle = '#ffffff'; g.font = font(600, 58); g.fillText(m.name.toUpperCase().slice(0, 18), 430, 200);
+    g.fillStyle = '#ffe600'; g.font = font(500, 24); g.fillText(`${(m.role || 'MERC').toUpperCase()} · ${m.background.toUpperCase()} · LEVEL ${m.level}`, 432, 244);
+    ORDER.forEach((k, i) => { const x = 432 + (i % 3) * 210, y = 300 + Math.floor(i / 3) * 110;
+      g.strokeStyle = rgbA(pal.light, .6); g.lineWidth = 1.5; g.strokeRect(x, y, 190, 92);
+      g.fillStyle = '#2fe6f0'; g.font = font(500, 16); g.fillText(k, x + 14, y + 26);
+      g.fillStyle = '#ffffff'; g.font = font(600, 40); g.fillText(String(score(k, m)), x + 14, y + 74);
+      g.fillStyle = '#ffe600'; g.font = font(500, 20); g.fillText(sgn(mod(score(k, m))), x + 120, y + 74); });
+    const ach = ACH.filter(a => m.ach[a.id]).length;
+    g.fillStyle = 'rgba(255,255,255,.75)'; g.font = font(400, 18);
+    g.fillText(`${m.unlocked.length} PERK${m.unlocked.length === 1 ? '' : 'S'} · ${m.cyber.length} CHROME · ${ach} ACHIEVEMENT${ach === 1 ? '' : 'S'}`, 90, 500);
+    g.fillStyle = rgbA(pal.light, .9); g.font = font(400, 15); g.fillText('DAEMON MANUAL', 90, H - 74);
+    g.fillStyle = 'rgba(255,255,255,.35)'; g.fillText(new Date().toLocaleDateString(), W - 220, H - 74);
+    return c;
+  };
+  if (m.portrait) return new Promise(res => { const im = new Image(); im.onload = () => { g.drawImage(im, px, py, ps, ps); res(finish()); }; im.onerror = () => res(finish()); im.src = m.portrait; });
+  g.fillStyle = '#2fe6f0'; g.font = font(600, 140); g.textAlign = 'center'; g.fillText(initials(m.name), px + ps / 2, py + ps / 2 + 50); g.textAlign = 'start';
+  return Promise.resolve(finish());
+}
+async function showIdCardMerc(){
+  if (!C) return;
+  try { await document.fonts.load('600 40px Orbitron'); } catch(e){}
+  const c = await idCardCanvas(normalize(C));
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox"><div class="sethead"><h3>Merc ID card</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
+    <img src="${c.toDataURL('image/png')}" alt="${esc(C.name)} ID card" style="width:100%;display:block;border:1px solid var(--cyan-dim)">
+    <div class="row gap"><button class="btn primary small" data-m="dl">Download PNG</button><button class="btn small" data-m="copy">Copy image</button><span class="muted" style="font-size:13px">Styled to ${esc(C.name)}'s origin. Post it in Discord.</span></div></div>`;
+  m.onclick = async e => {
+    const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return;
+    if (b.dataset.m === 'close') return closeModal();
+    if (b.dataset.m === 'dl'){ const a = document.createElement('a'); a.href = c.toDataURL('image/png'); a.download = C.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase() + '-id.png'; document.body.appendChild(a); a.click(); a.remove(); }
+    if (b.dataset.m === 'copy'){ try { const blob2 = await new Promise(r => c.toBlob(r, 'image/png')); await navigator.clipboard.write([new ClipboardItem({'image/png':blob2})]); toast('ID card copied. Paste it anywhere.', true); } catch(err){ toast("Your browser won't copy images. Use Download instead."); } }
+  };
+}
+function closeModal(){ const m = $('#modal'); m.hidden = true; m.innerHTML = ''; if ($('#setPanel').hidden) document.documentElement.classList.remove('noscroll'); }
+
+/* ---- printable sheet ---- */
+function printSheet(){
+  if (!C) return;
+  const m = normalize(C), p = prof(m.level), it = id => m.inv.find(i => i.id === id);
+  const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<tr><td>${pf.level === 2 ? '◆◆' : pf.level ? '◆' : ''}</td><td>${n}</td><td>${st}</td><td>${sgn(mod(score(st, m)) + p * pf.level)}</td></tr>`; }).join('');
+  const hm = m.hpMax;
+  $('#printSheet').innerHTML = `<div class="ps">
+    <div class="pshead"><div><h1>${esc(m.name)}</h1><p>${m.background} · ${m.role || 'No role'} · Level ${m.level} · Proficiency ${sgn(p)}</p></div><div class="psbrand">DAEMON MANUAL</div></div>
+    <div class="psgrid6">${ORDER.map(k => `<div><b>${k}</b><span>${score(k, m)}</span><i>${sgn(mod(score(k, m)))}</i></div>`).join('')}</div>
+    <div class="pscols">
+      <div><h2>Vitals</h2><table>
+        <tr><td>HP</td><td>${hm ? (m.hp ?? hm) + ' / ' + hm : '____ / ____'}</td></tr><tr><td>NET HP</td><td>${hm ? (m.netHp ?? hm) + ' / ' + hm : '____ / ____'}</td></tr>
+        <tr><td>RAM</td><td>${ramNow(m)} / ${ramMax(m)}</td></tr><tr><td>Cyberware</td><td>${cwLoad(m)} / ${m.cwT} (max ${cwMaxOf(m)})</td></tr>
+        <tr><td>Eddies</td><td>${m.eddies.toLocaleString()} €$</td></tr><tr><td>COOL Tokens</td><td>${m.cool}</td></tr>${m.xp ? `<tr><td>XP</td><td>${m.xp.toLocaleString()}</td></tr>` : ''}</table>
+        <h2>Equipped</h2><p><b>Primary</b> ${it(m.eq.primary) ? esc(it(m.eq.primary).name) + ' · ' + esc(it(m.eq.primary).stats || '') : 'none'}<br><b>Secondary</b> ${it(m.eq.secondary) ? esc(it(m.eq.secondary).name) + ' · ' + esc(it(m.eq.secondary).stats || '') : 'none'}</p>
+        <h2>Cyberware</h2>${m.cyber.length ? `<table>${m.cyber.map(x => `<tr><td>${esc(x.name)}${x.hot ? ' (hot)' : ''}</td><td>${(SLOTMAP[x.slot] || [])[1] || x.slot}</td><td>${esc(x.effect || '')}</td></tr>`).join('')}</table>` : '<p>None</p>'}
+        <h2>Perks</h2>${m.unlocked.length ? `<table>${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<tr><td><b>${esc(pk.n)}</b> <small>${st}</small></td><td>${esc(pk.d || '')}</td></tr>`; }).join('')}</table>` : '<p>None yet</p>'}
+      </div>
+      <div><h2>Skills</h2><table class="pssk">${sk}</table></div>
+    </div>
+    <h2>Inventory</h2>${m.inv.length ? `<table><tr><th>Item</th><th>Type</th><th>Qty</th><th>Tier</th><th>Stats</th></tr>${m.inv.map(i => `<tr><td>${esc(i.name)}</td><td>${i.type}</td><td>${i.qty}</td><td>${(i.tier || 0) + 1}</td><td>${esc(i.stats || '')}</td></tr>`).join('')}</table>` : '<p>Empty</p>'}
+    <h2>Notes</h2><p class="psnotes">${esc(m.notes || '').replace(/\n/g, '<br>') || '&nbsp;'}</p>
+  </div>`;
+  setTimeout(() => window.print(), 60);
 }
 
 /* ================= CHARACTER MATH ================= */
@@ -1263,7 +1520,7 @@ function renderRoster(){
     const del = pendingDelete === c.id
       ? `<button class="btn danger small" data-del="${c.id}">Confirm delete</button><button class="btn small" data-keep="1">Keep</button>`
       : `<button class="btn small" data-del="${c.id}">Delete</button>`;
-    return `<div class="card"><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background}${c.role ? ' · ' + c.role : ''} · Level ${c.level} · ${c.unlocked.length} perks</div></div></div>
+    return `<div class="card"><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background}${c.role ? ' · ' + c.role : ''} · Level ${c.level} · ${c.unlocked.length} perks · ★ ${ACH.filter(a => c.ach[a.id]).length}</div></div></div>
       <div class="mini-stats">${stats}</div>
       <div class="row"><button class="btn primary small" data-open="${c.id}">Open</button><span class="spacer"></span>${del}</div></div>`;
   }).join('');
@@ -1545,11 +1802,14 @@ function renderSheetHead(){
     <div class="vital cool ${C.cool ? 'hot' : ''}"><span class="lbl">COOL Tokens</span><div class="v">${C.cool}${C.cool ? ` <button class="btn small" id="coolSpend" aria-expanded="${coolPick}">${coolPick ? 'Cancel' : 'Use'}</button>` : ''}</div></div>
   </div>
   ${coolPick && C.cool ? coolPickHTML() : ''}
+  ${C.xp ? (() => { const nx = xpNext(C.level), pv = XP_TABLE[C.level - 1] || 0, ready = nx && C.xp >= nx; return `<div class="xprow"><span class="lbl" style="margin:0">XP</span><div class="bar thin" style="flex:1;margin:0"><i style="width:${nx ? Math.min(100, (C.xp - pv) / (nx - pv) * 100) : 100}%;background:var(--yellow)"></i></div><span>${C.xp.toLocaleString()}${nx ? ' / ' + nx.toLocaleString() : ''}</span>${ready ? '<b class="ready">Ready to level up</b>' : ''}</div>`; })() : ''}
+  <div class="sheettools"><button class="btn small" id="stUndo" ${(UNDO[C.id] || []).length ? '' : 'disabled'} title="Ctrl+Z">Undo</button><button class="btn small" id="stCard">Merc ID card</button><button class="btn small" id="stPrint">Print or PDF</button><span class="spacer"></span><span class="muted" style="font-size:12px">★ ${ACH.filter(a => C.ach[a.id]).length} of ${ACH.length} achievements</span></div>
   ${isOverheated() ? `<div class="heatbar"><b class="gl" data-text="OVERHEATED">OVERHEATED</b><div>Your RAM hit 0 and your system cooked. You're stunned and can't do anything until your RAM comes back.</div></div>` : ''}
   ${C.hacks.length ? `<div class="hackbar"><b class="gl" data-text="HACKED">HACKED</b>${C.hacks.map(h => `<div><span>${HACKS[h].n}</span> ${HACKS[h].d}</div>`).join('')}<div class="muted" style="font-size:12px">Only the DM can clear this.</div></div>` : ''}`;
   const cs = $('#coolSpend');
   if (cs) cs.onclick = () => { if (!coolPick && stunned()) return; coolPick = !coolPick; renderSheetHead(); };
   $('#sheetHead').querySelectorAll('[data-cooluse]').forEach(b => b.onclick = () => useCool(b.dataset.cooluse, b.dataset.who));
+  $('#stUndo').onclick = undo; $('#stCard').onclick = showIdCardMerc; $('#stPrint').onclick = printSheet;
   $('#lvUp').onclick = () => setLevel(C.level + 1);
   $('#lvDown').onclick = () => setLevel(C.level - 1);
 }
@@ -1572,7 +1832,7 @@ function useCool(kind, who){
   const cm = mod(score('COO')), s = sgn(cm);
   const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
   if (live) flushLog('');
-  C.cool = Math.max(0, C.cool - 1); coolPick = false; saveC();
+  C.cool = Math.max(0, C.cool - 1); C.ctr.coolUsed++; coolPick = false; saveC();
   const whose = kind === 'self' ? 'their own' : who + "'s";
   if (live){
     logBase = normalize(C);
@@ -1952,9 +2212,10 @@ let sheetTab = 'perks', cyberForm = null, delItem = null, psyConfirm = false;
 function setSheetTab(t){
   sheetTab = t;
   $('#vPerks').hidden = t !== 'perks';
-  $('#vCS').hidden = t !== 'cs';
+  $('#vCS').hidden = t !== 'cs'; $('#vAch').hidden = t !== 'ach';
+  if (t === 'ach') renderAch();
   document.querySelectorAll('.vtabs button').forEach(b => { b.classList.toggle('on', b.dataset.v === t); b.setAttribute('aria-selected', b.dataset.v === t); });
-  if (t === 'cs') renderCS(); else requestAnimationFrame(layout);
+  if (t === 'cs') renderCS(); else if (t === 'perks') requestAnimationFrame(layout);
 }
 document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSheetTab(b.dataset.v); });
 
@@ -2069,6 +2330,7 @@ function renderCS(){
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
       <p class="muted" style="font-size:13px;margin-top:4px">Each install's RAM bonus adds to your max RAM. Hot-swap parts only give half (rounded down), and swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
       <div class="cyber">${cyber}</div></div>
+    ${ledgerHTML()}
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
 const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
@@ -2110,7 +2372,7 @@ $('#vCS').addEventListener('click', e => {
     if (!canRip()) return;
     const i = C.inv.find(x => x.id === t.dataset.hot); if (!i) return;
     if (C.eddies < HOTSWAP_COST) return toast(`Hot-swap work costs ${HOTSWAP_COST} €$. You have ${C.eddies}.`);
-    C.eddies -= HOTSWAP_COST;
+    C.eddies -= HOTSWAP_COST; edNote = 'Hot-swap work on ' + i.name;
     if (i.qty > 1){ i.qty--; C.inv.push({...i, id:uid(), qty:1, hot:true}); } else i.hot = true;
     sfx('perk'); toast(`${i.name} is now hot-swappable. −${HOTSWAP_COST} €$.`, true);
     return csSave();
@@ -2126,6 +2388,14 @@ $('#vCS').addEventListener('click', e => {
       sfx('heal'); toast(`${t.dataset.act === 'lvHpRoll' ? 'Rolled ' + d + '. ' : ''}+${gain} max HP (10 + ${d} ${sgn(mod(score('BOD')))}). Max HP is now ${C.hpMax}.`, true);
       return csSave();
     }
+    case 'lgIn': case 'lgOut': {
+      const n = Math.max(0, parseInt(($('#lgAmt') || {}).value) || 0); if (!n) return toast('Enter an amount first.');
+      if (t.dataset.act === 'lgOut' && n > C.eddies) return toast(`You only have ${C.eddies} €$.`);
+      const note = (($('#lgNote') || {}).value || '').trim();
+      C.eddies += t.dataset.act === 'lgIn' ? n : -n; edNote = note || (t.dataset.act === 'lgIn' ? 'Payment' : 'Expense');
+      sfx(t.dataset.act === 'lgIn' ? 'up' : 'down'); return csSave();
+    }
+    case 'lgAll': ledgerAll = !ledgerAll; return renderCS();
     case 'setHpMax': { const v = parseInt($('#setHpMax').value); if (v > 0){ C.hpMax = v; C.hp = v; C.netHp = v; C.hpLv = C.level; } else toast('Enter your max HP first.'); return csSave(); }
     case 'dmg': { const pv = C.hp ?? hm; C.hp = Math.max(0, pv - amt('hpAmt')); csSave(); if (pv > 0 && C.hp === 0) flatline('body'); return; }
     case 'heal': C.hp = Math.min(hm, (C.hp ?? hm) + amt('hpAmt')); return csSave();
@@ -2137,7 +2407,7 @@ $('#vCS').addEventListener('click', e => {
       if (!canFab()) return;
       const name = ($('#fbName').value || '').trim(); if (!name){ $('#fbName').focus(); return toast('Name what you are building.'); }
       if (C.eddies < FAB_COST.create) return toast(`Fabricating costs ${FAB_COST.create} €$. You have ${C.eddies}.`);
-      C.eddies -= FAB_COST.create;
+      C.eddies -= FAB_COST.create; edNote = 'Fabricated ' + name; C.ctr.fab++;
       C.inv.push({id:uid(), name:name.slice(0, 60), type:$('#fbType').value, qty:Math.max(1, parseInt($('#fbQty').value) || 1), stats:($('#fbStats').value || '').trim().slice(0, 120), hot:false, tier:0, fort:false, cw:$('#fbType').value === 'Cyberware' ? Math.max(0, parseInt($('#fbCw').value) || 0) : 0});
       sfx('perk'); toast(`Fabricated ${name}. −${FAB_COST.create} €$.`, true); return csSave();
     }
@@ -2149,7 +2419,7 @@ $('#vCS').addEventListener('click', e => {
       if (!up && i.fort) return toast(`${i.name} is already fortified.`);
       const cost = up ? upCost(i) : FAB_COST.fortify;
       if (C.eddies < cost) return toast(`That work costs ${cost} €$. You have ${C.eddies}.`);
-      C.eddies -= cost;
+      C.eddies -= cost; edNote = (up ? 'Upgraded ' : 'Fortified ') + i.name;
       let target = i;
       if (i.qty > 1){ i.qty--; target = {...i, id:uid(), qty:1}; C.inv.push(target); }
       if (up) target.tier++; else target.fort = true;
@@ -2161,6 +2431,7 @@ $('#vCS').addEventListener('click', e => {
     case 'jack': {
       if (ENVS.jack && C.jackLock) return toast("Black ICE locked your jack-out. The DM has to clear it.");
       ENVS.jack = !ENVS.jack;
+      if (ENVS.jack){ C.ctr.jack++; saveC(); }
       if (FXS.sfx && PREFS.big){ ENVS.jack ? [220, 440, 880, 1760].forEach((f, i) => tone(f, f * 1.5, .12, 'sawtooth', .03, i * .05)) : [1760, 880, 440].forEach((f, i) => tone(f, f * .6, .1, 'square', .03, i * .05)); }
       if (flashOK()) glitchBurst(450, ENVS.jack ? 'JACKED IN' : '', ['rgba(var(--crgb),.6)', 'rgba(0,0,0,.6)', 'rgba(255,255,255,.4)']);
       setTimeout(refreshEnv, flashOK() ? 200 : 0);
@@ -2218,6 +2489,7 @@ $('#vCS').addEventListener('change', async e => {
     const ok = await sendPlayerOp(to, {kind:'item', item:{name:i.name, type:i.type, qty:1, stats:i.stats, hot:i.hot, tier:i.tier, fort:i.fort, cw:i.cw}});
     if (ok){
       if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
+      C.ctr.gifts++;
       toast(`Handed ${i.name} to ${target ? target.name : 'them'}.`, true);
     }
     return csSave();
@@ -2255,7 +2527,7 @@ $('#vCS').addEventListener('change', async e => {
   const f = t.dataset.field;
   if (f === 'notes'){ C.notes = t.value.slice(0, 5000); return saveC(); }
   if (f === 'role'){ if (!C.role && ROLES[t.value]){ C.role = t.value; toast(`${C.name} is a ${C.role}. Proficient in ${ROLES[C.role].prof.join(' and ')}. Roles are locked from here on.`, true); sfx('perk'); csSave(); renderSkills(); } return; }
-  if (f === 'eddies'){ C.eddies = Math.max(0, parseInt(t.value) || 0); t.value = C.eddies; return saveC(); }
+  if (f === 'eddies'){ C.eddies = Math.max(0, parseInt(t.value) || 0); t.value = C.eddies; edNote = 'Edited by hand'; return csSave(); }
   if (f === 'hpMax'){
     const v = parseInt(t.value);
     if (v > 0){ C.hpMax = v; if (C.hp != null) C.hp = Math.min(C.hp, v); if (C.netHp != null) C.netHp = Math.min(C.netHp, v); }
@@ -2389,6 +2661,13 @@ async function firebaseLive(){
     setBackup: (id, data) => F.setDoc(d('dms', uid, 'party', id), data),
     delBackup: id => F.deleteDoc(d('dms', uid, 'party', id)),
     watchSessNotes: (code, cb) => F.onSnapshot(d('dms', uid, 'notes', code), s => cb(s.exists() ? s.data() : null), onErr),
+    watchEncounters: cb => F.onSnapshot(c('dms', uid, 'encounters'), q => cb(list(q)), onErr),
+    setEncounter: e => F.setDoc(d('dms', uid, 'encounters', e.id), e),
+    delEncounter: id => F.deleteDoc(d('dms', uid, 'encounters', id)),
+    watchHandouts: (code, cb) => F.onSnapshot(c('sessions', code, 'handouts'), q => cb(list(q)), onErr),
+    setHandout: (code, id, data) => F.setDoc(d('sessions', code, 'handouts', id), data),
+    delHandout: (code, id) => F.deleteDoc(d('sessions', code, 'handouts', id)),
+    async getLogs(code){ return list(await F.getDocs(c('sessions', code, 'log'))); },
     setSessNotes: (code, data) => F.setDoc(d('dms', uid, 'notes', code), data)
   };
 }
@@ -2455,6 +2734,13 @@ function mockLive(){
     async setBackup(id, data){ mut(db => db[`dms/${uid}/party/${id}`] = data); },
     async delBackup(id){ mut(db => delete db[`dms/${uid}/party/${id}`]); },
     watchSessNotes: (code, cb) => watch(() => read()[`dms/${uid}/notes/${code}`] || null, cb),
+    watchEncounters: cb => watch(() => coll(`dms/${uid}/encounters`), cb),
+    async setEncounter(e){ mut(db => db[`dms/${uid}/encounters/${e.id}`] = e); },
+    async delEncounter(id){ mut(db => delete db[`dms/${uid}/encounters/${id}`]); },
+    watchHandouts: (code, cb) => watch(() => coll(`sessions/${code}/handouts`), cb),
+    async setHandout(code, id, data){ mut(db => db[`sessions/${code}/handouts/${id}`] = data); },
+    async delHandout(code, id){ mut(db => delete db[`sessions/${code}/handouts/${id}`]); },
+    async getLogs(code){ return coll(`sessions/${code}/log`); },
     async setSessNotes(code, data){ mut(db => db[`dms/${uid}/notes/${code}`] = data); }
   };
 }
@@ -2463,7 +2749,7 @@ function getLive(){
   if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).then(acctReady).catch(e => { apiPromise = null; throw e; });
   return apiPromise;
 }
-function stopAll(){ logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+function stopAll(){ handouts = []; encounters = []; lastReveal = 0; recapText = ''; logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
 
 /* ---- account + cloud saves ---- */
 const ACCT_KEY = 'daemon-acct';
@@ -2473,7 +2759,7 @@ const cloudSeen = {}, picSeen = {}, picsCloud = {};
 const acctFlag = () => { try { return localStorage.getItem(ACCT_KEY) === '1'; } catch(e){ return false; } };
 const picHash = p => p ? p.length + ':' + p.slice(-48) : '';
 const mercSig = c => { const n = normalize(c); delete n.savedAt; n.portrait = null; return JSON.stringify(n); };
-function writeLocal(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} }
+function writeLocal(){ try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} DB.chars.forEach(c => { SNAP[c.id] = snapOf(c); }); }
 function acctReady(api){
   ACCT = api.account();
   try { ACCT.google ? localStorage.setItem(ACCT_KEY, '1') : localStorage.removeItem(ACCT_KEY); } catch(e){}
@@ -2669,6 +2955,8 @@ function diffMerc(a, b){
   if (w1 !== w2) add(`Cyberware ${w1} → ${w2} of ${b.cwT}${cwOver(b) ? ` · DC +${cwOver(b) * 2}` : ''}`, w2 > w1 ? 'bad' : '');
   if (a.cwT !== b.cwT || a.cwMax !== b.cwMax) add(`Cyberware threshold ${b.cwT}, max ${b.cwMax}`);
   if (a.notes !== b.notes) add('Updated notes');
+  if (a.xp !== b.xp) add(`${b.xp > a.xp ? '+' : '−'}${Math.abs(b.xp - a.xp).toLocaleString()} XP`, b.xp > a.xp ? 'good' : '');
+  ACH.filter(x => b.ach[x.id] && !a.ach[x.id]).forEach(x => add('★ ' + x.n, 'good'));
   return L;
 }
 function scheduleLog(){ clearTimeout(logT); logT = setTimeout(() => flushLog(''), 3000); }
@@ -2768,6 +3056,7 @@ function genHTML(){
 $('#liveBody').addEventListener('change', e => {
   const id = e.target.id;
   if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
+  if (id === 'rcDay'){ recapDay = e.target.value; return; }
   if (id === 'mdStyle'){ moodDraft.style = e.target.value; return; } if (id === 'mdTod'){ moodDraft.tod = e.target.value; return; } if (id === 'mdWx'){ moodDraft.weather = e.target.value; return; }
   if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
   else if (id === 'giT') gIT = e.target.value; else if (id === 'giType') gIType = e.target.value;
@@ -2803,6 +3092,191 @@ async function genClick(a, t){
     if (t.dataset.g === 'w') gW = null; else gI = null;
     renderLive(); return true;
   }
+  return false;
+}
+
+/* ---- DM: encounters ---- */
+let encounters = [], encDraft = [], encDel = null;
+function encHTML(){
+  const opt = [...BLACK_ICE.map(i => [`ice:${i.id}`, `Black ICE · ${i.n}`]), ['custom', 'Custom NPC']];
+  return `<div class="panel gap"><div class="row"><h3>Encounters</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Save a group of NPCs and Black ICE, then drop the whole thing on the board in one click.</span></div>
+    <div class="encadd"><select id="enType" aria-label="Unit">${opt.map(([v, n]) => `<option value="${v}">${n}</option>`).join('')}</select>
+      <input type="text" class="f" id="enName" placeholder="Custom name" aria-label="Custom name"><select id="enOrigin" aria-label="Origin">${ORIGINS.map(o => `<option>${o}</option>`).join('')}</select>
+      <input type="number" id="enHp" min="0" placeholder="HP" aria-label="HP"><input type="number" id="enCount" min="1" value="1" aria-label="How many"><button class="btn small" data-live="enAdd">Add</button></div>
+    ${encDraft.length ? `<div class="chips2" style="margin-top:10px">${encDraft.map((u, i) => `<span>${u.count > 1 ? u.count + '× ' : ''}${esc(u.name)}${u.hp ? ' · ' + u.hp + ' HP' : ''} <button class="x" data-live="enRm" data-i="${i}" aria-label="Remove">✕</button></span>`).join('')}</div>` : ''}
+    <div class="row gap"><input type="text" class="f" id="enTitle" placeholder="Encounter name, like Arasaka lobby" aria-label="Encounter name" style="flex:1;min-width:200px"><button class="btn small primary" data-live="enSave" ${encDraft.length ? '' : 'disabled'}>Save encounter</button><button class="btn small" data-live="enBoard" ${npcsDM.length ? '' : 'disabled'} title="Save every NPC on your board as an encounter">Save current board</button></div>
+    <div style="margin-top:12px">${encounters.length ? encounters.slice().sort((a, b) => (b.at || 0) - (a.at || 0)).map(e => `<div class="lrow"><span class="n">${esc(e.name)}</span><span class="t">${e.units.reduce((n, u) => n + u.count, 0)} units</span><span class="muted">${e.units.map(u => (u.count > 1 ? u.count + '× ' : '') + esc(u.name)).join(', ')}</span>
+      <div class="row" style="justify-content:flex-end"><button class="btn small primary" data-live="enDeploy" data-e="${e.id}">Deploy</button><button class="btn small ${encDel === e.id ? 'danger' : ''}" data-live="enDel" data-e="${e.id}">${encDel === e.id ? 'Confirm' : '✕'}</button></div></div>`).join('') : '<p class="muted">No saved encounters yet.</p>'}</div></div>`;
+}
+async function encClick(a, t){
+  if (a === 'enAdd'){
+    const ty = $('#enType').value, count = Math.max(1, Math.min(12, parseInt($('#enCount').value) || 1));
+    if (ty.startsWith('ice:')){ const ic = BLACK_ICE.find(x => 'ice:' + x.id === ty); encDraft.push({name:ic.n, origin:'Black ICE', hp:ic.hp || 0, ice:ic.id, count}); }
+    else { const name = ($('#enName').value || '').trim(); if (!name){ $('#enName').focus(); toast('Name the custom NPC.'); return true; }
+      encDraft.push({name:name.slice(0, 40), origin:$('#enOrigin').value, hp:Math.max(0, parseInt($('#enHp').value) || 0), count}); $('#enName').value = ''; $('#enHp').value = ''; }
+    $('#enCount').value = 1; renderLive(); return true;
+  }
+  if (a === 'enRm'){ encDraft.splice(+t.dataset.i, 1); renderLive(); return true; }
+  if (a === 'enSave' || a === 'enBoard'){
+    const name = ($('#enTitle').value || '').trim() || (a === 'enBoard' ? 'Board ' + new Date().toLocaleDateString() : 'Encounter ' + (encounters.length + 1));
+    const units = a === 'enBoard' ? npcsDM.map(n => ({name:n.name, origin:n.origin || 'Unknown', hp:n.hpMax || 0, notes:n.notes || '', count:1})) : encDraft;
+    try { await liveApi.setEncounter({id:uid(), name:name.slice(0, 50), units, at:Date.now()}); if (a === 'enSave') encDraft = []; $('#enTitle').value = ''; toast(`Saved ${name}.`, true); } catch(err){ toast("Couldn't save the encounter."); }
+    renderLive(); return true;
+  }
+  if (a === 'enDel'){ const id = t.dataset.e; if (encDel !== id){ encDel = id; renderLive(); return true; } encDel = null; await liveApi.delEncounter(id).catch(() => {}); return true; }
+  if (a === 'enDeploy'){
+    const e = encounters.find(x => x.id === t.dataset.e); if (!e) return true;
+    const jobs = [];
+    e.units.forEach(u => { const ic = u.ice && BLACK_ICE.find(x => x.id === u.ice);
+      for (let i = 0; i < u.count; i++) jobs.push(liveApi.setDmNpc({id:uid(), name:(u.name + (u.count > 1 ? ' ' + (i + 1) : '')).slice(0, 40), origin:u.origin, hpMax:u.hp || 0, hp:u.hp || 0, adv:'norm', portrait:null,
+        notes:u.notes || (ic ? `AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}\n${ic.dmg}${ic.fx ? '. ' + ic.fx : ''}` : '')})); });
+    try { await Promise.all(jobs); sfx('breach'); toast(`${e.name} deployed. ${jobs.length} on the board.`, true); } catch(err){ toast("Couldn't deploy it all."); }
+    return true;
+  }
+  return false;
+}
+
+/* ---- DM: party progress (milestones and XP) ---- */
+let msConfirm = false;
+function progressHTML(){
+  return `<div class="panel gap"><div class="row"><h3>Party progress</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Milestone leveling or XP, your call.</span></div>
+    <div class="row gap"><button class="btn small ${msConfirm ? 'danger' : 'primary'}" data-live="milestone" ${players.length ? '' : 'disabled'}>${msConfirm ? 'Confirm, level everyone up' : 'Milestone · level up the party'}</button></div>
+    <div class="row gap"><input type="number" id="xpAmt" min="1" placeholder="XP" aria-label="XP amount" style="width:110px"><select id="xpTo" aria-label="Give XP to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select><button class="btn small" data-live="xpGive" ${players.length ? '' : 'disabled'}>Award XP</button></div>
+    <p class="muted" style="font-size:13px;margin-top:8px">XP uses the 5e table. A merc's sheet shows an XP bar once they have any, and says when they're ready to level.</p></div>`;
+}
+async function progClick(a){
+  if (a === 'milestone'){
+    if (!msConfirm){ msConfirm = true; renderLive(); setTimeout(() => { msConfirm = false; renderLive(); }, 4000); return true; }
+    msConfirm = false;
+    for (const p of players) await sendOp(p.id, {kind:'levelup'});
+    sfx('levelup'); if (flashOK()) coolFx('MILESTONE', true); toast('Milestone. The whole party levels up.', true); renderLive(); return true;
+  }
+  if (a === 'xpGive'){
+    const n = parseInt($('#xpAmt').value) || 0; if (!n) { toast('Enter an XP amount.'); return true; }
+    const to = $('#xpTo').value, targets = to === '*' ? players.map(p => p.id) : [to];
+    for (const id of targets) await sendOp(id, {kind:'xp', amount:n});
+    $('#xpAmt').value = ''; toast(`+${n.toLocaleString()} XP for ${to === '*' ? 'everyone' : players.find(p => p.id === to).name}.`, true); return true;
+  }
+  return false;
+}
+
+/* ---- handouts (player view controls) ---- */
+let handouts = [], hoDel = null, lastReveal = 0, hoBusy = false;
+function compressImage(file, maxSide, maxLen){
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onload = () => { const im = new Image(); im.onload = () => {
+      let side = maxSide, q = .8, out = '';
+      for (let i = 0; i < 8; i++){
+        const k = Math.min(1, side / Math.max(im.width, im.height)), c = document.createElement('canvas');
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        out = c.toDataURL('image/jpeg', q); if (out.length < maxLen) return res(out);
+        q = Math.max(.45, q - .1); side = Math.round(side * .85);
+      }
+      out.length < maxLen ? res(out) : rej(new Error('too big'));
+    }; im.onerror = rej; im.src = fr.result; };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+function hoListHTML(dm){
+  const rv = sessMeta && sessMeta.reveal;
+  if (!handouts.length) return dm ? '<p class="muted">No handouts yet. Upload a map, a photo or a document.</p>' : '';
+  return `<div class="hos">${handouts.slice().sort((a, b) => (b.at || 0) - (a.at || 0)).map(h => `<div class="ho ${rv && rv.id === h.id ? 'live' : ''}"><button class="hoimg" data-live="hoOpen" data-h="${h.id}" aria-label="Open ${esc(h.title)}"><img src="${h.img}" alt=""></button><b>${esc(h.title)}</b>
+    ${dm ? `<div class="row">${rv && rv.id === h.id ? `<button class="btn small" data-live="hoHide">Stop showing</button>` : `<button class="btn small primary" data-live="hoShow" data-h="${h.id}">Show to everyone</button>`}<button class="btn small ${hoDel === h.id ? 'danger' : ''}" data-live="hoDel" data-h="${h.id}">${hoDel === h.id ? 'Confirm' : '✕'}</button></div>` : ''}</div>`).join('')}</div>`;
+}
+function handoutHTML(){
+  return `<div class="panel gap"><div class="row"><h3>Handouts</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Pop a map, photo or document up on everyone's screen.</span></div>
+    <div class="row gap"><input type="text" class="f" id="hoTitle" maxlength="60" placeholder="Title, like Floor 3 layout" aria-label="Handout title" style="flex:1;min-width:200px"><label class="btn small primary" style="display:inline-block">${hoBusy ? 'Uploading…' : 'Upload image'}<input type="file" accept="image/*" id="hoFile" hidden></label></div>
+    <div style="margin-top:12px">${hoListHTML(true)}</div></div>`;
+}
+function showHandout(h){
+  if (!h) return;
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox wide"><div class="sethead"><h3>${esc(h.title)}</h3><span class="spacer"></span><span class="muted" style="font-size:12px">Tap the image to zoom</span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
+    <div class="hoview"><img src="${h.img}" alt="${esc(h.title)}"></div></div>`;
+  m.onclick = e => { if (e.target.closest('[data-m=close]') || e.target === m) return closeModal(); const v = e.target.closest('.hoview'); if (v) v.classList.toggle('zoom'); };
+}
+function onReveal(s){
+  const rv = s && s.reveal;
+  if (!rv || !rv.at || rv.at === lastReveal) return;
+  const first = lastReveal === 0 && Date.now() - rv.at > 60000; lastReveal = rv.at;
+  if (first) return;
+  const h = handouts.find(x => x.id === rv.id);
+  if (h){ sfx('receive'); showHandout(h); } else setTimeout(() => { const h2 = handouts.find(x => x.id === rv.id); if (h2){ sfx('receive'); showHandout(h2); } }, 900);
+}
+$('#liveBody').addEventListener('change', async e => {
+  if (e.target.id !== 'hoFile' || !e.target.files[0]) return;
+  const title = (($('#hoTitle') || {}).value || '').trim() || e.target.files[0].name.replace(/\.[^.]+$/, '').slice(0, 60);
+  hoBusy = true; renderLive();
+  try { const img = await compressImage(e.target.files[0], 1600, 900000); await liveApi.setHandout(LS.code, uid(), {title, img, at:Date.now()}); toast(`${title} uploaded. Hit Show to everyone when you're ready.`, true); }
+  catch(err){ console.error(err); toast("That image didn't upload. Try a smaller JPG or PNG."); }
+  hoBusy = false; renderLive();
+});
+async function hoClick(a, t){
+  if (a === 'hoOpen'){ showHandout(handouts.find(x => x.id === t.dataset.h)); return true; }
+  if (a === 'hoShow'){ try { await liveApi.updateSession(LS.code, {reveal:{id:t.dataset.h, at:Date.now()}}); toast('Showing it to everyone.', true); } catch(err){ toast("Couldn't show it."); } return true; }
+  if (a === 'hoHide'){ await liveApi.updateSession(LS.code, {reveal:null}).catch(() => {}); return true; }
+  if (a === 'hoDel'){ const id = t.dataset.h; if (hoDel !== id){ hoDel = id; renderLive(); return true; } hoDel = null; if (sessMeta && sessMeta.reveal && sessMeta.reveal.id === id) await liveApi.updateSession(LS.code, {reveal:null}).catch(() => {}); await liveApi.delHandout(LS.code, id).catch(() => {}); return true; }
+  return false;
+}
+
+/* ---- session recap ---- */
+let recapDay = '', recapText = '';
+function recapHTML(){
+  const days = [...new Set(logs.map(l => new Date(l.at).toDateString()))];
+  return `<div class="panel gap"><div class="row"><h3>Session recap</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Turns the activity log into a summary you can paste in Discord.</span></div>
+    <div class="row gap"><select id="rcDay" aria-label="Which day">${days.length ? days.map(d => `<option value="${d}" ${recapDay === d ? 'selected' : ''}>${new Date(d).toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'})}</option>`).join('') : '<option value="">No activity yet</option>'}</select>
+      <button class="btn small primary" data-live="rcMake" ${days.length ? '' : 'disabled'}>Build recap</button>${recapText ? '<button class="btn small" data-live="rcCopy">Copy</button>' : ''}</div>
+    ${recapText ? `<textarea id="rcOut" class="notes" style="margin-top:10px;min-height:220px" aria-label="Recap">${esc(recapText)}</textarea>` : ''}</div>`;
+}
+function buildRecap(all, day){
+  const L = all.filter(l => new Date(l.at).toDateString() === day).sort((a, b) => a.at - b.at);
+  const by = {};
+  L.forEach(l => {
+    const r = by[l.mercId] = by[l.mercId] || {name:l.name, dmg:0, heal:0, net:0, ed:0, xp:0, lvl:null, cool:0, coolOn:[], got:[], lost:[], perks:[], ach:[], flat:0};
+    r.name = l.name;
+    (l.lines || []).forEach(x => {
+      const t = x.t || '', num = re => { const m = re.exec(t); return m ? [+m[1], +m[2]] : null; };
+      let v;
+      if ((v = num(/^HP (\d+) → (\d+)/))){ const d = v[1] - v[0]; if (d < 0) r.dmg -= d; else r.heal += d; if (v[1] === 0) r.flat++; }
+      else if ((v = num(/^NET HP (\d+) → (\d+)/))){ if (v[1] < v[0]) r.net += v[0] - v[1]; }
+      else if ((v = /^([+−])([\d,]+) €\$/.exec(t))) r.ed += (v[1] === '+' ? 1 : -1) * +v[2].replace(/,/g, '');
+      else if ((v = /^([+−])([\d,]+) XP/.exec(t))) r.xp += (v[1] === '+' ? 1 : -1) * +v[2].replace(/,/g, '');
+      else if ((v = /^Level \d+ → (\d+)/.exec(t))) r.lvl = +v[1];
+      else if (t.startsWith('Unlocked ')) r.perks.push(t.slice(9));
+      else if (t.startsWith('★ ')) r.ach.push(t.slice(2));
+      else if (l.via === 'COOL Token' && /d20 roll/.test(t)){ r.cool++; r.coolOn.push(t.replace(/ d20 roll$/, '')); }
+      else if (/^\+/.test(t) && !/€\$|XP/.test(t)) r.got.push(t.slice(1).trim());
+      else if (/^−/.test(t) && !/€\$|XP/.test(t)) r.lost.push(t.slice(1).trim());
+    });
+  });
+  const head = `${sessMeta && sessMeta.name || 'Session'} · ${new Date(day).toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'})}`;
+  const rows = Object.values(by).map(r => {
+    const bits = [];
+    if (r.dmg || r.heal) bits.push(`took ${r.dmg} damage${r.heal ? ', healed ' + r.heal : ''}`);
+    if (r.net) bits.push(`${r.net} NET damage`);
+    if (r.flat) bits.push(`flatlined${r.flat > 1 ? ' ' + r.flat + ' times' : ''}`);
+    if (r.ed) bits.push(`${r.ed > 0 ? '+' : '−'}${Math.abs(r.ed).toLocaleString()} €$`);
+    if (r.xp) bits.push(`+${r.xp.toLocaleString()} XP`);
+    if (r.lvl) bits.push(`hit level ${r.lvl}`);
+    if (r.perks.length) bits.push(`unlocked ${r.perks.join(', ')}`);
+    if (r.got.length) bits.push(`picked up ${r.got.slice(0, 6).join(', ')}${r.got.length > 6 ? ' and more' : ''}`);
+    if (r.lost.length) bits.push(`used or lost ${r.lost.slice(0, 4).join(', ')}${r.lost.length > 4 ? ' and more' : ''}`);
+    if (r.cool) bits.push(`spent ${r.cool} COOL Token${r.cool > 1 ? 's' : ''} (${r.coolOn.join('; ')})`);
+    if (r.ach.length) bits.push(`★ ${r.ach.join(', ')}`);
+    return `• ${r.name} · ${bits.length ? bits.join(' · ') : 'kept it quiet'}`;
+  });
+  const tot = Object.values(by).reduce((a, r) => ({dmg:a.dmg + r.dmg, ed:a.ed + Math.max(0, r.ed), flat:a.flat + r.flat}), {dmg:0, ed:0, flat:0});
+  return `${head}\n\n${rows.join('\n')}\n\nCrew totals · ${tot.dmg} damage taken · ${tot.ed.toLocaleString()} €$ earned · ${tot.flat} flatline${tot.flat === 1 ? '' : 's'}`;
+}
+async function recapClick(a){
+  if (a === 'rcMake'){
+    recapDay = ($('#rcDay') || {}).value || ''; if (!recapDay) return true;
+    let all = logs; try { all = await liveApi.getLogs(LS.code); } catch(err){}
+    recapText = buildRecap(all, recapDay); renderLive(); return true;
+  }
+  if (a === 'rcCopy'){ copyText(($('#rcOut') || {}).value || recapText, null, 'Recap'); return true; }
   return false;
 }
 
@@ -2884,10 +3358,21 @@ function applyOp(op){
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
+    edNote = n >= 0 ? (op.fromName ? 'From ' + op.fromName : 'From the DM') : 'Taken by the DM';
     msg = n >= 0 ? `+${n} €$ from ${op.fromName || 'the DM'}.` : `The DM took ${-n} €$.`; sound = n >= 0 ? 'up' : 'down';
   } else if (op.kind === 'hack' && HACKS[op.key]){
     if (op.on){ if (!m.hacks.includes(op.key)) m.hacks.push(op.key); msg = `BREACH. ${HACKS[op.key].n}. ${HACKS[op.key].d}`; good = false; sound = null; setTimeout(() => hackFx(), 30); }
     else { m.hacks = m.hacks.filter(h => h !== op.key); msg = `${HACKS[op.key].n} cleared.`; sound = 'heal'; }
+  } else if (op.kind === 'xp'){
+    const n = parseInt(op.amount) || 0; m.xp = Math.max(0, m.xp + n);
+    const nx = xpNext(m.level);
+    msg = `${n >= 0 ? '+' : ''}${n.toLocaleString()} XP from the DM.${nx && m.xp >= nx ? ' You have enough to level up.' : ''}`; sound = 'up';
+  } else if (op.kind === 'levelup'){
+    if (m.level >= 20){ msg = 'The DM called a milestone, but you are already level 20.'; sound = 'select'; }
+    else {
+      if (isOpen){ setTimeout(() => setLevel(C.level + 1), 40); toast('Milestone. The DM leveled up the party.', true); flushLog('by the DM'); return; }
+      m.level += 1; msg = `Milestone. ${m.name} is now level ${m.level}. Open the sheet to roll HP.`; sound = 'levelup';
+    }
   } else if (op.kind === 'jackout'){
     msg = 'Black ICE forced you out of the Net.'; good = false; sound = 'breach';
     setTimeout(() => { const was = ENVS.jack; ENVS.jack = false; refreshEnv(); if (was && flashOK()) glitchBurst(700, 'JACKED OUT', ['rgba(255,74,94,.6)', 'rgba(0,0,0,.6)', 'rgba(var(--crgb),.5)']); if (C && sheetTab === 'cs') renderCS(); }, 30);
@@ -2947,8 +3432,10 @@ function applyOp(op){
   } else return;
   if (good && sound) sfx(sound);
   if (!good && (op.kind === 'hack' || op.kind === 'jackout' || op.kind === 'jacklock')) sfx('breach');
+  opBusy = true;
   if (isOpen){ saveC(); update(false); flashSheet(); }
   else { const i = DB.chars.findIndex(x => x.id === m.id); DB.chars[i] = m; persist(); }
+  opBusy = false;
   flushLog(op.fromName ? 'from ' + op.fromName : 'by the DM');
   if (op.kind === 'hack') { toast(msg, false); return; }
   toast(msg, good);
@@ -2963,7 +3450,7 @@ async function startPlayer(){
   const api = liveApi;
   unsubs.push(api.watchSession(LS.code, s => {
     if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
-    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true);
+    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true); onReveal(s);
   }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   if (sessMeta && sessMeta.dmUid) unsubs.push(api.watchLibraryOf(sessMeta.dmUid, list => { codexLib = list; saveCodex(); renderCodex(); }));
@@ -2982,6 +3469,7 @@ async function startPlayer(){
     });
   }));
   unsubs.push(api.watchLog(LS.code, list => { logs = list; renderLive(); }));
+  unsubs.push(api.watchHandouts(LS.code, list => { handouts = list; renderLive(); }));
   lastPortrait = null;
   const prev = await api.getPlayer(LS.code, api.uid).catch(() => null);
   const mine = DB.chars.find(x => x.id === LS.mercId);
@@ -2995,7 +3483,7 @@ async function startPlayer(){
 /* ---- dm side ---- */
 function startDM(){
   const api = liveApi;
-  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else { renderLive(); checkSpotlight(); setMood(s.mood, false); } }));
+  unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else { renderLive(); checkSpotlight(); setMood(s.mood, false); if (s.reveal) lastReveal = s.reveal.at; } }));
   unsubs.push(api.watchDmNpcs(list => { npcsDM = list.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   unsubs.push(api.watchPlayers(LS.code, list => {
@@ -3010,6 +3498,8 @@ function startDM(){
     renderLive();
   }));
   unsubs.push(api.watchSessNotes(LS.code, d => { sessNotes = d && d.text || ''; renderLive(); }));
+  unsubs.push(api.watchEncounters(list => { encounters = list; renderLive(); }));
+  unsubs.push(api.watchHandouts(LS.code, list => { handouts = list; renderLive(); }));
   unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
   unsubs.push(api.watchLibrary(list => { lib = list.sort((a, b) => (a.type + a.name).localeCompare(b.type + b.name)); codexLib = list; saveCodex(); renderLive(); renderCodex(); }));
 }
@@ -3122,7 +3612,7 @@ function partyCard(p, dm){
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
         <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${m.cwT}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
-        <div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
+        ${m.xp ? `<div class="stat"><span>XP</span><b>${m.xp.toLocaleString()}</b></div>` : ''}<div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}${dm ? ` <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button>` : ''}</span>`).join('')}</div>` : ''}
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
       <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
@@ -3168,6 +3658,7 @@ function liveHTML(){
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
       <h3 style="margin:22px 0 0">Your party</h3>
       <div class="players">${players.map(p => partyCard(p, false)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
+      ${handouts.length ? `<div class="panel gap"><h3>Handouts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Everything the DM has shared this session. Tap one to open it.</p>${hoListHTML(false)}</div>` : ''}
       ${logHTML(false)}`;
   }
   const playerCards = players.length ? players.map(p => partyCard(p, true)).join('')
@@ -3202,10 +3693,14 @@ function liveHTML(){
     <h3 style="margin:22px 0 0">Players</h3>
     <div class="players">${playerCards}</div>
     ${logHTML(true)}
+    ${recapHTML()}
     ${sessNotesHTML()}
+    ${progressHTML()}
+    ${handoutHTML()}
     ${moodHTML()}
     ${genHTML()}
     ${npcPanel}
+    ${encHTML()}
     ${backupHTML()}
     <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
       ${lib.length ? '' : '<button class="btn small" data-live="starter">Load starter pack</button>'}
@@ -3270,6 +3765,7 @@ $('#liveBody').addEventListener('click', async e => {
     LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
   }
   if (await genClick(a, t)) return;
+  if (await encClick(a, t) || await progClick(a) || await hoClick(a, t) || await recapClick(a)) return;
   if (a === 'jackout' || a === 'jacklock'){
     const on = !!t.dataset.on;
     if (await sendOp(u, a === 'jackout' ? {kind:'jackout'} : {kind:'jacklock', on})) toast(a === 'jackout' ? `Forced ${pname(u)} out of the Net.` : on ? `Locked ${pname(u)}'s jack-out.` : `${pname(u)} can jack out again.`, true);
@@ -3378,7 +3874,7 @@ $('#liveBody').addEventListener('click', async e => {
     const isOpen = C && C.id === LS.mercId, me = isOpen ? C : normalize(DB.chars.find(x => x.id === LS.mercId));
     if (me.eddies < n) return toast(`You only have ${me.eddies} €$.`);
     if (await sendPlayerOp(u, {kind:'eddies', amount:n})){
-      me.eddies -= n;
+      me.eddies -= n; edNote = 'Sent to ' + pname(u); me.ctr.gifts++;
       if (isOpen){ saveC(); update(false); } else { DB.chars[DB.chars.findIndex(x => x.id === me.id)] = me; persist(); }
       $('#pe-' + u).value = ''; toast(`Sent ${n} €$ to ${pname(u)}.`, true);
     }
@@ -3634,6 +4130,78 @@ const tocObs = new IntersectionObserver(es => es.forEach(en => {
   if (en.isIntersecting) document.querySelectorAll('.toc a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
 }), {rootMargin:'-20% 0px -70% 0px'});
 document.querySelectorAll('.rsec').forEach(sec => tocObs.observe(sec));
+
+/* ================= SEARCH EVERYTHING ================= */
+let srHits = [], srIdx = 0;
+function textOf(el){ const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), out = []; let n; while ((n = w.nextNode())) out.push(n.nodeValue); return out.join(' ').replace(/\s+/g, ' ').trim(); }
+function searchIndex(){
+  const out = [];
+  document.querySelectorAll('#rulesBody .rsec').forEach(sec => { const h = sec.querySelector('h2'); out.push({g:'Rules', t:h ? h.textContent : sec.id, body:textOf(sec), go:() => { location.hash = '#' + sec.id; flashEl(sec); }}); });
+  ORDER.forEach(st => SLOTS.forEach(s => { const pk = perk(st, s.slot); if (pk.unknown) return;
+    out.push({g:'Perks', t:pk.n, sub:`${STATS[st].name} · ${TIERS[s.tier].name}`, body:pk.n + ' ' + (pk.d || ''), go:() => openPerk(st, s.slot)}); }));
+  SKILLS.forEach(([n, st, old]) => out.push({g:'Skills', t:n, sub:st + (old ? ' · was ' + old : ''), body:n + ' ' + (old || ''), go:() => { location.hash = '#r-skills'; }}));
+  BLACK_ICE.forEach(i => out.push({g:'Black ICE', t:i.n, sub:i.dmg, body:i.n + ' ' + i.dmg + ' ' + i.fx, go:() => { location.hash = '#r-net'; }}));
+  DB.chars.forEach(raw => { const m = normalize(raw);
+    out.push({g:'Your mercs', t:m.name, sub:`${m.background} · ${m.role || 'No role'} · Level ${m.level}`, body:[m.name, m.background, m.role, m.notes].join(' '), go:() => { location.hash = '#mercs'; openChar(m.id); }});
+    m.inv.forEach(i => out.push({g:'Inventory', t:i.name, sub:`${m.name} · ${i.type}${i.qty > 1 ? ' ×' + i.qty : ''}`, body:i.name + ' ' + i.type + ' ' + (i.stats || ''), go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }}));
+    m.cyber.forEach(x => out.push({g:'Inventory', t:x.name, sub:`${m.name} · installed chrome`, body:x.name + ' ' + (x.effect || ''), go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }}));
+    if (m.notes) out.push({g:'Notes', t:m.name + "'s notes", sub:'', body:m.notes, go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }});
+  });
+  const cd = codexData();
+  if (cd){
+    cd.npcs.forEach(n => out.push({g:'Codex', t:n.name, sub:'NPC · ' + (n.origin || 'Unknown'), body:n.name + ' ' + (n.origin || ''), go:() => { codexTab = 'npcs'; codexQ = n.name; location.hash = '#codex'; renderCodex(); }}));
+    cd.items.forEach(i => out.push({g:'Codex', t:i.name, sub:i.type + (i.stats ? ' · ' + i.stats : ''), body:[i.name, i.type, i.stats].join(' '), go:() => { codexTab = i.type === 'Weapon' ? 'weapons' : i.type === 'Vehicle' ? 'vehicles' : i.type === 'Cyberware' ? 'cyber' : 'items'; codexQ = i.name; location.hash = '#codex'; renderCodex(); }}));
+  }
+  if (C) ACH.forEach(a => out.push({g:'Achievements', t:a.n, sub:a.d + (C.ach[a.id] ? ' · unlocked' : ''), body:a.n + ' ' + a.d, go:() => { location.hash = '#mercs'; show('sheet'); setSheetTab('ach'); }}));
+  return out;
+}
+function openPerk(st, sl){
+  if (!C){ location.hash = '#r-perks'; return; }
+  location.hash = '#mercs'; show('sheet'); C.active = st; saveC(); setSheetTab('perks');
+  requestAnimationFrame(() => { build(); sel = sl; update(false); renderDetail(); const n = nodeEls[sl]; if (n) n.scrollIntoView({block:'center', behavior:'smooth'}); });
+}
+function flashEl(el){ el.classList.remove('flashhit'); void el.offsetWidth; el.classList.add('flashhit'); }
+function runSearch(q){
+  q = q.trim().toLowerCase();
+  if (!q){ srHits = []; return renderSearchResults(''); }
+  const words = q.split(/\s+/);
+  srHits = searchIndex().map(x => {
+    const t = x.t.toLowerCase(), b = (x.body || '').toLowerCase();
+    if (!words.every(w => t.includes(w) || b.includes(w))) return null;
+    const score = (t === q ? 100 : t.startsWith(q) ? 60 : t.includes(q) ? 40 : 0) + words.filter(w => t.includes(w)).length * 10;
+    let snip = '';
+    if (!t.includes(words[0])){ const i = b.indexOf(words[0]); if (i >= 0) snip = (i > 40 ? '…' : '') + x.body.slice(Math.max(0, i - 40), i + 80).trim() + '…'; }
+    return {...x, score, snip};
+  }).filter(Boolean).sort((a, b) => b.score - a.score).slice(0, 40);
+  srIdx = 0; renderSearchResults(q);
+}
+function hl(s, q){ const e = esc(s); if (!q) return e; const w = q.split(/\s+/).filter(Boolean).map(x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'); return w ? e.replace(new RegExp('(' + w + ')', 'gi'), '<mark>$1</mark>') : e; }
+function renderSearchResults(q){
+  const box = $('#srRes'); if (!box) return;
+  if (!q){ box.innerHTML = '<p class="muted" style="margin:10px 2px">Search the rules, every perk, skills, Black ICE, your mercs and their gear, notes, the Codex and achievements.</p>'; return; }
+  if (!srHits.length){ box.innerHTML = '<p class="muted" style="margin:10px 2px">Nothing matches that.</p>'; return; }
+  let g = '';
+  box.innerHTML = srHits.map((h, i) => { const head = h.g !== g ? `<div class="srg">${h.g}</div>` : ''; g = h.g;
+    return `${head}<button class="srhit ${i === srIdx ? 'on' : ''}" data-sr="${i}"><b>${hl(h.t, q)}</b>${h.sub ? `<span>${hl(h.sub, q)}</span>` : ''}${h.snip ? `<small>${hl(h.snip, q)}</small>` : ''}</button>`; }).join('');
+}
+function openSearch(){
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox search"><div class="sethead"><input type="search" id="srIn" placeholder="Search everything" aria-label="Search everything" autocomplete="off"><button class="btn small" data-m="close" aria-label="Close search">✕</button></div><div id="srRes"></div><p class="muted" style="font-size:12px;margin:10px 2px 0">↑ ↓ to move · Enter to open · Esc to close</p></div>`;
+  const inp = $('#srIn'); inp.focus(); runSearch('');
+  let st; inp.oninput = () => { clearTimeout(st); st = setTimeout(() => runSearch(inp.value), 80); };
+  inp.onkeydown = e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); if (!srHits.length) return; srIdx = (srIdx + (e.key === 'ArrowDown' ? 1 : -1) + srHits.length) % srHits.length; renderSearchResults(inp.value.trim().toLowerCase()); const on = $('#srRes .srhit.on'); if (on) on.scrollIntoView({block:'nearest'}); }
+    if (e.key === 'Enter' && srHits[srIdx]){ const h = srHits[srIdx]; closeModal(); h.go(); }
+    if (e.key === 'Escape'){ e.stopPropagation(); closeModal(); }
+  };
+  m.onclick = e => { const b = e.target.closest('[data-sr]'); if (b){ const h = srHits[+b.dataset.sr]; closeModal(); h.go(); return; } if (e.target.closest('[data-m=close]') || e.target === m) closeModal(); };
+}
+$('#navSearch').addEventListener('click', e => { e.preventDefault(); openSearch(); });
+addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#modal').hidden){ closeModal(); return; }
+  const tg = e.target, typing = tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName));
+  if (((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') || (!typing && e.key === '/' && PREFS.keys)){ e.preventDefault(); openSearch(); }
+});
 
 /* ================= SOUND ================= */
 const PREF = k => { try { return localStorage.getItem(k) !== '0'; } catch(e){ return true; } };
@@ -4554,8 +5122,13 @@ function applyPrefs(prev){
   if (prev.battery !== undefined && prev.battery !== PREFS.battery){ sizeCanvas(); LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; FXS.motion ? startBg() : drawStatic(); }
   if (prev.text !== undefined && prev.text !== PREFS.text && C && !$('#vSheet').hidden && sheetTab === 'perks') requestAnimationFrame(build);
 }
-let setTab = 'look';
-const SHORTCUTS = [['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
+let setTab = 'look', installEvt = null;
+const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if (!$('#setPanel').hidden) renderSettings(); });
+addEventListener('appinstalled', () => { installEvt = null; });
+if ('serviceWorker' in navigator && !framed && /^https?:$/.test(location.protocol) && !MOCK) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW', e)));
+const SHORTCUTS = [['/ or Ctrl K', 'Search everything'], ['Ctrl Z', 'Undo the last change to your merc'], ['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
 function renderSettings(){
   const tabs = [['look', 'Look'], ['comfort', 'Comfort'], ['sound', 'Sound'], ['controls', 'Controls']];
   const tog = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="checkbox" class="sw2" data-pref="${k}" ${PREFS[k] ? 'checked' : ''} aria-label="${label}"></label>`;
@@ -4597,7 +5170,9 @@ function renderSettings(){
     ${tog('big', 'Big moments', 'Flatline, cyberpsychosis, overheat, hacks, level ups and COOL Tokens')}
     <div class="row gap"><button class="btn small" data-set="test">Test sound</button><span class="muted" style="font-size:12px">The SFX button still mutes everything.</span></div>`;
   } else {
-    body = `${tog('keys', 'Keyboard shortcuts', 'Ignored while you are typing in a box')}
+    body = `<span class="lbl" style="margin-top:12px;display:block">App</span>
+    <div class="crow"><span>Install as an app<small>${isStandalone() ? 'Running as an app right now.' : installEvt ? 'Adds Daemon Manual to your home screen or desktop with its own icon. Works offline too.' : isIOS() ? 'On iPhone or iPad, tap Share, then Add to Home Screen.' : 'Open the site from its web address in Chrome or Edge to install it. On iPhone use Share, then Add to Home Screen.'}</small></span>${installEvt && !isStandalone() ? '<button class="btn small primary" data-set="install">Install</button>' : ''}</div>
+    ${tog('keys', 'Keyboard shortcuts', 'Ignored while you are typing in a box')}
     <div class="keys">${SHORTCUTS.map(([k, d]) => `<div><kbd>${k}</kbd><span>${d}</span></div>`).join('')}</div>`;
   }
   const keepScroll = $('#setPanel').scrollTop;
@@ -4619,6 +5194,7 @@ $('#setPanel').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.dataset.set === 'close') return toggleSettings(false);
   if (t.dataset.stab){ setTab = t.dataset.stab; return renderSettings(); }
+  if (t.dataset.set === 'install'){ if (installEvt){ installEvt.prompt(); installEvt.userChoice.then(c => { if (c.outcome === 'accepted') toast('Installed. Look for Daemon on your home screen.', true); installEvt = null; renderSettings(); }); } return; }
   if (t.dataset.set === 'test'){ const was = FXS.sfx; FXS.sfx = true; SOUNDS.perk(); FXS.sfx = was; return; }
   if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
   if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); return; }
@@ -4666,6 +5242,7 @@ function remoteSettings(st){
 /* keyboard shortcuts */
 addEventListener('keydown', e => {
   if (e.key === 'Escape' && !$('#setPanel').hidden) return toggleSettings(false);
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'z'){ const tg = e.target; if (!(tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) && C && !$('#vSheet').hidden){ e.preventDefault(); undo(); } return; }
   if (!PREFS.keys || e.ctrlKey || e.metaKey || e.altKey) return;
   const tg = e.target; if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
   const k = e.key.toLowerCase();

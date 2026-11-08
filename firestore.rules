@@ -33,6 +33,13 @@ service cloud.firestore {
         allow write: if isDM();
       }
 
+      // Handouts. Maps and images the DM shows to the party. Everyone in the session can see them.
+      match /handouts/{id} {
+        allow read: if signedIn();
+        allow create, update: if isDM() && request.resource.data.img is string && request.resource.data.img.size() < 1000000;
+        allow delete: if isDM();
+      }
+
       // Change log. Players add entries about their own merc, the DM can add or clear them.
       match /log/{id} {
         allow read: if signedIn();
@@ -74,6 +81,9 @@ service cloud.firestore {
 
     // Each DM's party backups and session notes. DM only.
     match /dms/{uid}/party/{id} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+    match /dms/{uid}/encounters/{id} {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
     match /dms/{uid}/notes/{code} {
