@@ -414,6 +414,7 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
   .setp{left:10px;right:10px;width:auto;top:calc(env(safe-area-inset-top,0px) + 10px);bottom:calc(env(safe-area-inset-bottom,0px) + 58px);max-height:none}
 }
 .setp h3{margin:0 0 4px}
+.lvhp{margin:8px 0 10px;padding:10px 12px;border:1px solid rgba(255,230,0,.35);background:rgba(255,230,0,.05);font-size:13px}.lvhp b{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1px;margin-right:6px}
 .coolpick{margin-top:12px;padding:12px 14px;border:1px solid rgba(255,230,0,.35);background:rgba(255,230,0,.05);font-size:14px}.coolpick b{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;margin-right:6px}
 .moodrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}@media (max-width:620px){.moodrow{grid-template-columns:1fr}}
 .presets button.locked{opacity:.55;cursor:not-allowed}.presets button small{display:block;font-family:'Exo 2',sans-serif;letter-spacing:0;text-transform:none;font-size:10px;color:var(--muted);margin-top:3px;line-height:1.2}
@@ -700,8 +701,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Role</b></td><td>Pick one at level 1. It gives two skill proficiencies and can't be changed</td></tr>
             <tr><td><b>Stats</b></td><td>5e point buy. 27 points, every stat between 8 and 15 before increases</td></tr>
             <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
-            <tr><td><b>Starting HP</b></td><td>10 + 1d10 + BOD mod</td></tr>
-            <tr><td><b>HP per level</b></td><td>10 + 1d10 + BOD mod each level up unless a perk or cyberware raises it. The GM is still finalizing this one</td></tr>
+            <tr><td><b>Starting HP</b></td><td>10 + 10 + BOD mod. Level 1 takes the max roll, no dice</td></tr>
+            <tr><td><b>HP per level</b></td><td>10 + 1d10 + BOD mod every level after 1, unless a perk or cyberware raises it</td></tr>
             <tr><td><b>Perk points</b></td><td>1 every time you level up</td></tr>
             <tr><td><b>Stat increases</b></td><td>2 points at levels 4, 6, 8, 12, 14, 16 and 19</td></tr>
             <tr><td><b>Feats</b></td><td>None</td></tr>
@@ -837,7 +838,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-coming"><h2>In the Works</h2>
         <div class="panel">
           <p>The GM is still building these. They'll land here as they're posted.</p>
-          <ul class="rlist"><li>Cyberpsychosis rules</li><li>Full RAM and hacking rules, including the CODE score</li><li>The final HP per level formula</li></ul>
+          <ul class="rlist"><li>Cyberpsychosis rules</li><li>Full RAM and hacking rules, including the CODE score</li></ul>
         </div>
       </section>
     </div>
@@ -1176,6 +1177,7 @@ function normalize0(c){
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
     jackLock: !!c.jackLock,
+    hpLv: Math.max(1, parseInt(c.hpLv) || (numOrNull(c.hpMax) > 0 ? Math.max(1, +c.level || 1) : 1)),
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
     cwT: Math.max(0, numOrNull(c.cwT) ?? 10), cwMax: Math.max(1, numOrNull(c.cwMax) ?? 15), cwAdj: parseInt(c.cwAdj) || 0,
@@ -1440,7 +1442,7 @@ function renderWizard(){
         <div class="stepper"><button data-pb="${k}" data-d="-1" ${v <= 8 ? 'disabled' : ''} aria-label="Lower ${k}">−</button><span class="val">${v}</span><button data-pb="${k}" data-d="1" ${canUp ? '' : 'disabled'} aria-label="Raise ${k}">+</button></div>
         <div class="mod">${sgn(mod(v))}</div><div class="cost">${PB_COST[v]} pts</div></div>`;
       }).join('')}</div>
-      <p class="muted" style="margin-top:12px;font-size:14px">Starting RAM ${4 + mod(W.base.INT)} · Starting HP 10 + 1d10 ${sgn(mod(W.base.BOD))} · Trees online ${ORDER.filter(k => W.base[k] >= 10).join(', ') || 'none yet'}</p>
+      <p class="muted" style="margin-top:12px;font-size:14px">Starting RAM ${4 + mod(W.base.INT)} · Starting HP ${Math.max(1, 20 + mod(W.base.BOD))} (10 + 10 ${sgn(mod(W.base.BOD))}) · Trees online ${ORDER.filter(k => W.base[k] >= 10).join(', ') || 'none yet'}</p>
       <div class="err" id="wErr">${left > 0 ? `You still have ${left} point${left > 1 ? 's' : ''} to spend.` : ''}</div>`;
   } else {
     h = `<h3>Ready to jack in</h3>
@@ -1496,7 +1498,7 @@ $('#wbody').addEventListener('click', e => {
     return renderWizard();
   }
   if (t.id === 'wDone'){
-    const c = normalize({...W, id:uid(), level:1, unlocked:[], asi:[], created:Date.now(),
+    const c = normalize({...W, id:uid(), level:1, unlocked:[], asi:[], created:Date.now(), hpMax:Math.max(1, 20 + mod(W.base.BOD)), hpLv:1,
       active: ORDER.slice().sort((a, b) => W.base[b] - W.base[a])[0]});
     DB.chars.push(c); persist();
     toast(`${c.name} is online. Welcome to Night City.`, true);
@@ -1585,11 +1587,12 @@ function useCool(kind, who){
 function setLevel(l){
   const up = l > C.level;
   C.level = Math.max(1, Math.min(20, l));
+  if (C.hpLv > C.level) C.hpLv = C.level;
   changed();
   if (up){
     $('#sheetHead').classList.remove('lvlup'); void $('#sheetHead').offsetWidth; $('#sheetHead').classList.add('lvlup');
     const gotAsi = ASI_LEVELS.includes(C.level);
-    toast(`Level ${C.level}. +1 perk point${gotAsi ? ' and +2 stat increases' : ''}.`, true);
+    toast(`Level ${C.level}. +1 perk point${gotAsi ? ' and +2 stat increases' : ''}.${C.hpMax ? ' Roll your HP on the Character sheet.' : ''}`, true);
   }
 }
 
@@ -1978,9 +1981,11 @@ function renderCS(){
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k))).join('')}</div>
     <p class="muted" style="font-size:14px;margin-top:12px">Proficient in ${[...new Set([...C.bgSkills, ...(ROLES[C.role] ? ROLES[C.role].prof : [])])].join(', ')} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>`;
   const hpBlock = hm == null
-    ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Roll your HP (10 + 1d10 ${sgn(mod(score('BOD')))} at level 1, plus your level ups) and enter your max.</p>
-       <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
+    ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Level 1 HP is 10 + 10 + BOD mod, so ${Math.max(1, 20 + mod(score('BOD')))}. Every level after adds 10 + 1d10 + BOD mod. Enter your current max.</p>
+       <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" value="${C.level === 1 ? Math.max(1, 20 + mod(score('BOD'))) : ''}" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
     : `<div class="track"><div class="head"><span class="lbl" style="margin:0">HP</span><span class="muted" style="font-size:12px">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
+       ${C.hpLv < C.level ? `<div class="lvhp"><b>Level ${C.hpLv + 1} HP</b> <span class="muted">Roll 1d10 and add 10 ${sgn(mod(score('BOD')))}. ${C.level - C.hpLv > 1 ? (C.level - C.hpLv) + ' level ups waiting.' : ''}</span>
+         <div class="row" style="margin-top:6px"><input type="number" min="1" max="10" id="lvHpRoll" placeholder="d10" aria-label="Your d10 roll" style="width:80px"><button class="btn small primary" data-act="lvHp">Add</button><button class="btn small" data-act="lvHpRoll">Roll for me</button><button class="btn small" data-act="lvHpSkip" title="Already added it by hand">Skip</button></div></div>` : ''}
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
      <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'disabled title="Black ICE locked your jack-out"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button></span></div>
@@ -2111,7 +2116,17 @@ $('#vCS').addEventListener('click', e => {
     return csSave();
   }
   switch (t.dataset.act){
-    case 'setHpMax': { const v = parseInt($('#setHpMax').value); if (v > 0){ C.hpMax = v; C.hp = v; C.netHp = v; } else toast('Enter your max HP first.'); return csSave(); }
+    case 'lvHp': case 'lvHpRoll': case 'lvHpSkip': {
+      if (C.hpLv >= C.level) return;
+      if (t.dataset.act === 'lvHpSkip'){ C.hpLv++; return csSave(); }
+      const d = t.dataset.act === 'lvHpRoll' ? 1 + Math.floor(Math.random() * 10) : parseInt(($('#lvHpRoll') || {}).value);
+      if (!(d >= 1 && d <= 10)) return toast('Enter your d10 roll, 1 to 10.');
+      const gain = Math.max(1, 10 + d + mod(score('BOD')));
+      C.hpMax += gain; if (C.hp != null) C.hp += gain; if (C.netHp != null) C.netHp += gain; C.hpLv++;
+      sfx('heal'); toast(`${t.dataset.act === 'lvHpRoll' ? 'Rolled ' + d + '. ' : ''}+${gain} max HP (10 + ${d} ${sgn(mod(score('BOD')))}). Max HP is now ${C.hpMax}.`, true);
+      return csSave();
+    }
+    case 'setHpMax': { const v = parseInt($('#setHpMax').value); if (v > 0){ C.hpMax = v; C.hp = v; C.netHp = v; C.hpLv = C.level; } else toast('Enter your max HP first.'); return csSave(); }
     case 'dmg': { const pv = C.hp ?? hm; C.hp = Math.max(0, pv - amt('hpAmt')); csSave(); if (pv > 0 && C.hp === 0) flatline('body'); return; }
     case 'heal': C.hp = Math.min(hm, (C.hp ?? hm) + amt('hpAmt')); return csSave();
     case 'hpFull': C.hp = hm; return csSave();

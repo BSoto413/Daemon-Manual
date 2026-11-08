@@ -17,7 +17,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Two stat increases at levels 4, 6, 8, 12, 14, 16 and 19, max 20 per stat
 - Max RAM is 4 + INT mod + the RAM bonus of every installed cyberware
 - Reactions cost 2 RAM (the Reaction button)
-- Max HP is entered by hand since it's rolled. NET HP uses the same max
+- HP. Level 1 is 10 + 10 + BOD mod and is set automatically on a new merc. Every level after adds 10 + 1d10 + BOD mod. After a level up the sheet asks for the d10 roll (or rolls it). `hpLv` tracks which levels have had HP added. NET HP uses the same max
 - Perk trees are shaped like a fork or a "W". The middle branch opens from either Rookie perk and ends at Phenom. Each Legend opens only from its own branch's Phenom
 
 ## Settings
