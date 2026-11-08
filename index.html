@@ -448,6 +448,24 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
 .ho.live{border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}
 .ho b{color:#fff;font-size:13px;font-weight:500}.hoimg{padding:0;border:0;background:#000;cursor:zoom-in;display:block}.hoimg img{width:100%;height:110px;object-fit:cover;display:block}
 .mbox.wide{width:min(1200px,100%)}
+.mbox[data-sheet]{height:calc(100dvh - 28px)}
+.dsheet .dsh{display:flex;gap:14px;align-items:center;margin:4px 0 6px}
+.dsheet .dsh .nm{font-family:Orbitron,sans-serif;font-size:22px;color:#fff;overflow-wrap:anywhere}
+.dsheet .dsh .sub{color:var(--muted);font-size:14px}
+.dsheet .statgrid{margin-top:12px}
+.dsheet .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;margin-top:6px}
+@media (max-width:720px){.dsheet .cols{grid-template-columns:minmax(0,1fr)}}
+.dsheet h4{font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin:18px 0 6px}
+.dsheet .kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:15px}
+.dsheet .kv span:nth-child(odd){color:var(--muted)}
+.dsheet .kv b{color:#fff;font-weight:500}
+.dsheet .list > div{padding:7px 0;border-bottom:1px solid rgba(var(--crgb),.08);font-size:15px;overflow-wrap:anywhere}
+.dsheet .list small{display:block;color:var(--muted);font-size:13px}
+.dsheet .sk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 16px;font-size:14px}
+.dsheet .sk > div{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(var(--crgb),.06)}
+.dsheet .sk .p{color:var(--yellow)}
+.dsheet .sk b{font-family:Orbitron,sans-serif;font-weight:500;color:#fff}
+.dsheet .eqm{color:var(--yellow);font-size:12px;font-family:Orbitron,sans-serif;letter-spacing:1px;margin-left:6px}
 .hoview{overflow:auto;max-height:calc(100dvh - 120px);cursor:zoom-in;text-align:center}.hoview img{max-width:100%;max-height:calc(100dvh - 130px)}
 .hoview.zoom{cursor:zoom-out}.hoview.zoom img{max-width:none;max-height:none}
 .navsearch{margin-left:auto}
@@ -1483,6 +1501,50 @@ function printSheet(){
     <h2>Notes</h2><p class="psnotes">${esc(m.notes || '').replace(/\n/g, '<br>') || '&nbsp;'}</p>
   </div>`;
   setTimeout(() => window.print(), 60);
+}
+
+/* ---- DM read-only sheet ---- */
+let sheetU = null;
+function dmSheetHTML(p){
+  const m = normalize(p.merc), pb = prof(m.level), it = id => m.inv.find(i => i.id === id);
+  const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
+  const profs = [...new Set([...m.bgSkills, ...(ROLES[m.role] ? ROLES[m.role].prof : [])])];
+  const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<div><span class="${pf.level ? 'p' : ''}">${pf.level === 2 ? '◆◆ ' : pf.level ? '◆ ' : ''}${n} <span class="muted">${st}</span></span><b>${sgn(mod(score(st, m)) + pb * pf.level)}</b></div>`; }).join('');
+  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
+  const ach = ACH.filter(a => m.ach[a.id]).length;
+  return `<div class="dsheet">
+    <div class="dsh">${avatar(m, 'av md', portraits[p.id])}<div style="min-width:0"><div class="nm">${esc(m.name)}</div>
+      <div class="sub">${m.background} · ${m.role || 'No role yet'} · Level ${m.level} · Proficiency ${sgn(pb)} · ${isOnline(p) ? 'online' : 'last seen ' + ago(p.updatedAt)}</div></div></div>
+    <div class="statgrid">${ORDER.map(k => statBox(k, score(k, m))).join('')}</div>
+    <div class="cols"><div>
+      <h4>Vitals</h4><div class="kv">
+        <span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b>
+        <span>NET HP</span><b>${hm ? net + ' / ' + hm : 'Not set'}</b>
+        <span>RAM</span><b>${ramNow(m)} / ${ramMax(m)}</b>
+        <span>Cyberware</span><b>${cwLoad(m)} / ${m.cwT} <span class="muted">max ${cwMaxOf(m)}</span></b>
+        <span>COOL Tokens</span><b>${m.cool}</b>
+        <span>Eddies</span><b>${m.eddies.toLocaleString()} €$</b>
+        <span>XP</span><b>${(m.xp || 0).toLocaleString()}</b>
+        <span>Achievements</span><b>${ach} of ${ACH.length}</b>
+      </div>
+      ${m.hacks.length || m.psycho || m.jackLock ? `<h4>Status</h4><div class="list">${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
+      <h4>Equipped</h4><div class="kv"><span>Primary</span><span>${eqd('primary')}</span><span>Secondary</span><span>${eqd('secondary')}</span></div>
+      <h4>Skills</h4><p class="muted" style="font-size:13px;margin:0 0 6px">Proficient in ${profs.join(', ') || 'nothing yet'}. ◆ adds proficiency, ◆◆ doubles it.</p><div class="sk">${sk}</div>
+    </div><div>
+      <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : ''}<small>${i.type}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
+      <h4>Installed chrome · ${m.cyber.length}</h4>${m.cyber.length ? `<div class="list">${m.cyber.map(x => `<div><b>${esc(x.name)}</b>${x.hot ? ' <span class="hotb">HOT</span>' : ''}<small>${(SLOTMAP[x.slot] || [])[1] || x.slot}${x.effect ? ' · ' + esc(x.effect) : ''}</small></div>`).join('')}</div>` : '<p class="muted">None installed.</p>'}
+      <h4>Perks · ${m.unlocked.length}</h4>${m.unlocked.length ? `<div class="list">${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<div><b>${esc(pk.n)}</b> <span class="muted">${st}</span><small>${esc(pk.d || '')}</small></div>`; }).join('')}</div>` : '<p class="muted">None yet.</p>'}
+      ${m.notes ? `<h4>Notes</h4><p style="font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere">${esc(m.notes)}</p>` : ''}
+    </div></div></div>`;
+}
+function showDmSheet(u){
+  const p = players.find(x => x.id === u); if (!p || !p.merc) return toast("That merc hasn't synced yet.");
+  sheetU = u;
+  const md = $('#modal'), box = md.querySelector('.mbox[data-sheet]'), top = box ? box.scrollTop : 0;
+  md.hidden = false; document.documentElement.classList.add('noscroll');
+  md.innerHTML = `<div class="mbox" data-sheet="${u}"><div class="sethead"><h3>Merc sheet</h3><span class="muted" style="font-size:12px;margin-left:10px">Read only · updates live</span><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>${dmSheetHTML(p)}</div>`;
+  if (box) md.querySelector('.mbox').scrollTop = top;
+  md.onclick = e => { const b = e.target.closest('[data-m]'); if ((b && b.dataset.m === 'close') || e.target === md){ sheetU = null; closeModal(); } };
 }
 
 /* ================= CHARACTER MATH ================= */
@@ -3621,6 +3683,7 @@ function partyCard(p, dm){
   const pay = !dm && !me && myMerc ? `
       <div class="row"><input type="number" min="1" id="pe-${k}" placeholder="€$" aria-label="Eddies to send ${esc(m.name)}"><button class="btn small" data-live="sendEd" data-u="${k}">Send €$</button></div>` : '';
   const controls = dm ? `
+      <div class="row"><button class="btn small primary" data-live="viewsheet" data-u="${k}">View sheet</button><span class="muted" style="font-size:12px">Stats, skills, perks and inventory</span></div>
       <div class="ctlgrid">
         <span class="ctl">Amount</span><div class="row"><input type="number" min="0" id="amt-${k}" placeholder="Amt" aria-label="Amount for ${esc(m.name)}"></div>
         <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
@@ -3657,6 +3720,7 @@ function partyCard(p, dm){
 function renderLive(){
   const root = $('#liveBody');
   keepInputs(root, () => { root.innerHTML = liveHTML(); });
+  if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
 }
 function liveHTML(){
   if (!LIVE_OK){
@@ -3794,6 +3858,7 @@ $('#liveBody').addEventListener('click', async e => {
   }
   if (await genClick(a, t)) return;
   if (a === 'dmtab'){ dmTab = t.dataset.k; sfx('tab'); return renderLive(); }
+  if (a === 'viewsheet'){ sfx('tab'); return showDmSheet(t.dataset.u); }
   if (await progClick(a) || await hoClick(a, t) || await recapClick(a)) return;
   if (a === 'jackout' || a === 'jacklock'){
     const on = !!t.dataset.on;
