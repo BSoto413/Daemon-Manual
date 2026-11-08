@@ -345,6 +345,13 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .stp{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-right:10px}.stp b{min-width:14px;text-align:center;color:#fff;font-family:Orbitron,sans-serif}
 .iedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(var(--crgb),.12)}
 .iedit .wide{grid-column:1/-1}
+.wpnb{font:600 10px Orbitron,sans-serif;letter-spacing:1px;border:1px solid var(--yellow);color:var(--yellow);padding:2px 6px}
+
+.cwp.cap{border-color:var(--red)!important;background:rgba(255,60,90,.28)!important;box-shadow:0 0 8px rgba(255,60,90,.7)}
+.cwp.cap.on{background:var(--red)!important}
+.losttag{font:600 17px Orbitron,sans-serif;letter-spacing:.08em;color:var(--red);margin:10px 0 2px;text-shadow:0 0 14px rgba(255,60,90,.7)}
+.psysave{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:10px 0 4px}
+
 .tpicks{border:1px solid rgba(var(--crgb),.3);padding:10px 12px;margin-bottom:12px}
 .tpicks.due{border-color:var(--yellow);background:rgba(255,210,63,.06)}
 .tpn{font:600 11px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow)}
@@ -537,6 +544,10 @@ nav a.on{opacity:1;color:var(--cyan)}
   .rtable.stack td:first-child{font-size:16px;padding-bottom:4px}
   .rtable.stack td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-top:4px}
   .rtable.stack td.none{display:none!important}
+  .rtable.stack.inl tr{display:flex;flex-wrap:wrap;gap:4px 22px;align-items:flex-end}
+  .rtable.stack.inl td{display:block!important;width:auto!important;min-width:0;padding:2px 0;font-size:16px}
+  .rtable.stack.inl td::before{content:attr(data-label)!important;display:block!important;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-bottom:2px}
+  .rtable.stack.inl td:first-child{font-size:18px}
   .rtable.stack.hastitle tr{display:flex;flex-direction:column}
   .rtable.stack.hastitle td:first-child{font-size:inherit;padding-bottom:3px}
   .rtable.stack.hastitle td.ttl{order:-1;font-size:16px;padding-bottom:4px}
@@ -893,7 +904,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
     <aside class="toc" id="toc">
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
-      <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
+      <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a><a href="#r-attacks">Attacks and Weapons</a>
       <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
@@ -912,7 +923,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>The six 5e ability scores are renamed and each one drives different parts of the game.</p>
           <table class="rtable" data-title="1"><thead><tr><th>5e</th><th>Daemon</th><th>What it does</th></tr></thead><tbody>
-            <tr><td>Strength</td><td><b>STR</b> Strength</td><td>Blunt melee damage, shotguns, LMGs and HMGs</td></tr>
+            <tr><td>Strength</td><td><b>STR</b> Strength</td><td>Blunt melee damage, handcannons, shotguns, LMGs and HMGs</td></tr>
             <tr><td>Dexterity</td><td><b>REF</b> Reflexes</td><td>Bladed melee damage, pistols, rifles, SMGs and stealth</td></tr>
             <tr><td>Constitution</td><td><b>BOD</b> Body</td><td>HP, tolerances and healing</td></tr>
             <tr><td>Intelligence</td><td><b>INT</b> Intelligence</td><td>Netrunning, hacks, smart weapons and RAM</td></tr>
@@ -981,7 +992,15 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-turn"><h2>Your Turn</h2>
         <div class="panel">
           <p>Normal 5e gives you a movement, an action and a bonus action. Daemon gives you <b>2 actions per turn</b> to spend however you want.</p>
-          <div class="chips2 big"><span>Move</span><span>Attack</span><span>Grapple</span><span>Reload</span><span>Heal</span><span>Throw</span><span>Use a skill, perk or object</span><span>Hold an action</span></div>
+          <div class="chips2 big"><span>Move</span><span>Leap</span><span>Attack</span><span>Grapple</span><span>Reload</span><span>Heal</span><span>Throw</span><span>Use a skill, perk or object</span><span>Hold an action</span></div>
+          <h3 style="margin-top:18px">Leap</h3>
+          <p style="margin-top:8px">As part of your MOVE action, if you move 15 ft in a straight line you can LEAP. Pick one.</p>
+          <table class="rtable"><tbody>
+            <tr><td><b>Long jump</b></td><td>15 ft long with about 5 ft of height. More than enough to clear most vehicles and NPCs who duck</td></tr>
+            <tr><td><b>High jump</b></td><td>10 ft long with about 10 ft of height</td></tr>
+            <tr><td><b>Straight up</b></td><td>15 ft vertical</td></tr>
+          </tbody></table>
+          <p class="muted" style="font-size:13px;margin-top:8px">The REF perk Plumber Legs gives you one more LEAP midair.</p>
           <p style="margin-top:14px">Reactions still exist but work a little differently. See below.</p>
         </div>
       </section>
@@ -994,6 +1013,25 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Slide</b></td><td>Make a REF save against a DC to take half damage</td></tr>
             <tr><td><b>Reboot</b></td><td>Make an INT check against a DC to give the attacker disadvantage</td></tr>
           </tbody></table>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-attacks"><h2>Attacks and Weapons</h2>
+        <div class="panel">
+          <h3>Rate of fire</h3>
+          <p style="margin-top:8px">Every weapon has a Rate of Fire, or <b>ROF</b>, which varies weapon to weapon. ROF is how many times you can attack with that weapon on one ATTACK action. A 3-ROF weapon makes 3 separate d20 rolls to HIT.</p>
+          <h3 style="margin-top:18px">Weapon types</h3>
+          <p style="margin-top:8px">Melee weapons come in two kinds, and ranged weapons split by whether you aim the gun or control it.</p>
+          <table class="rtable"><thead><tr><th>Type</th><th>REF</th><th>STR</th></tr></thead><tbody>
+            <tr><td><b>Melee</b></td><td>Swords, knives and wires</td><td>Fists, clubs and hammers</td></tr>
+            <tr><td><b>Ranged</b></td><td>Pistols, rifles and SMGs. You aim these</td><td>Handcannons, shotguns and LMGs. You control these</td></tr>
+          </tbody></table>
+          <h3 style="margin-top:18px">Reloading</h3>
+          <table class="rtable"><tbody>
+            <tr><td><b>LIGHT</b></td><td>A standard RELOAD action</td></tr>
+            <tr><td><b>HEAVY</b></td><td>Reloading takes your whole TURN</td></tr>
+          </tbody></table>
+          <p class="muted" style="font-size:13px;margin-top:8px">Every weapon on your sheet shows its ROF and reload speed. The DM sets them, and you can edit them in the item.</p>
         </div>
       </section>
 
@@ -1029,19 +1067,19 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-chrome"><h2>Cyberware and RipperDocs</h2>
         <div class="panel">
-          <p>Chrome goes into body slots, and each piece can add to your max RAM.</p>
+          <p>Chrome goes into body slots. Every piece adds to your cyberware threshold. Only chrome designed for it adds RAM.</p>
           <h3 style="margin-top:18px">Shards</h3>
           <p style="margin-top:8px">Shards are data sticks you slot into one of your two Shard Slots. The DM decides what each one does, like a skill boost, a language or intel. Anyone can slot or pull a shard without a RipperDoc, and it doesn't count against your cyberware threshold. The effect lasts while it's slotted. Pull it out and the effect ends and the shard goes back in your bag.</p>
           <h3 style="margin-top:18px">Cyberware threshold</h3>
-          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Anything past your <b>threshold</b> is <b>overflow</b>. You can't install anything that would push you past your <b>max</b>. Each point of overflow raises your Cyberpsychosis DC by 2.</p>
-          <p class="muted" style="font-size:14px;margin-top:6px">Example. Threshold 10, max 15. A tally of 12 is 2 points of overflow, so your Cyberpsychosis DC is +4.</p>
-          <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, on themselves or anyone else. If nobody in the crew is a RipperDoc, you'll need the DM's ripper.</p>
+          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Anything past your <b>threshold</b> is <b>overflow</b>. Overflow can only go up to half your threshold, rounded up, which sets your <b>max</b>. The last overflow hex is red. Fill it and you hit the point of no return. See Cyberpsychosis.</p>
+          <p class="muted" style="font-size:14px;margin-top:6px">Example. Threshold 10, so overflow caps at 5 and your max is 15. A tally of 12 is 2 points of overflow, so your Cyberpsychosis save DC is 14. A tally of 15 fills the red hex.</p>
+          <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, on themselves or anyone else. If nobody in the crew is a RipperDoc, you'll need to find one!</p>
           <p>During a live session a RipperDoc sees an install panel on every party member's card. The part has to be in the patient's bag, so hand it over first. Any merc can hand items and eddies to the rest of the crew.</p>
           <h3 style="margin-top:18px">Hot-swappable parts</h3>
           <p style="margin-top:8px">For an extra fee, a RipperDoc can make a part hot-swappable. Anyone can swap a hot part in or out of themselves without a RipperDoc, but it comes with a cost.</p>
           <table class="rtable"><tbody>
             <tr><td><b>Price</b></td><td>500 €$ of the RipperDoc's time and parts</td></tr>
-            <tr><td><b>Weaker link</b></td><td>A hot part only gives half its RAM bonus, rounded down</td></tr>
+            <tr><td><b>Weaker link</b></td><td>More moving parts mean less stability. Hot-swappable chrome trades effectiveness for versatility. Its enhancements and damage are half as effective, rounded up</td></tr>
             <tr><td><b>Swapping</b></td><td>Costs 2 RAM and an ACTION each time you swap it in or out yourself</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:10px">The hot-swap numbers are a house rule draft until the GM signs off.</p>
@@ -1052,9 +1090,9 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>Only a merc with the TEC Phenom perk <b>Fabricator</b> can create, upgrade or fortify items. Roll Craft against a DC the DM sets, then pay for the parts. To work on a crewmate's gear, they hand it to you and you hand it back.</p>
           <table class="rtable"><thead><tr><th>Job</th><th>Cost</th><th>What you get</th></tr></thead><tbody>
-            <tr><td><b>Create</b></td><td>300 €$</td><td>A new item with stats agreed with the DM</td></tr>
+            <tr><td><b>Create</b></td><td>From 300 €$</td><td>A new item with stats agreed with the DM. The final cost depends on what's being made</td></tr>
             <tr><td><b>Upgrade</b></td><td>200 €$ per tier</td><td>Raises an item one tier, up to Tier 4. See Item Tiers for what each tier adds</td></tr>
-            <tr><td><b>Fortify</b></td><td>150 €$</td><td>The item is reinforced and tagged FORT</td></tr>
+            <tr><td><b>Fortify</b></td><td>150 €$</td><td>The item is reinforced and tagged FORT. Fortified items don't drop tiers when damaged</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:10px">The Maintenance Crew perk lets you repair items with your Craft score. These prices are a draft until the GM sets them.</p>
         </div>
@@ -1075,7 +1113,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-inventory"><h2>Inventory</h2>
         <div class="panel">
           <p>Your backpack is a grid. It's always 6 spaces wide, and STR sets how many rows you get.</p>
-          <table class="rtable"><thead><tr><th>STR mod</th><th>Rows</th><th>Spaces</th></tr></thead><tbody><tr><td><b>−2</b></td><td>2</td><td>12</td></tr><tr><td><b>−1</b></td><td>3</td><td>18</td></tr><tr><td><b>+0</b></td><td>4</td><td>24</td></tr><tr><td><b>+1</b></td><td>5</td><td>30</td></tr><tr><td><b>+2</b></td><td>6</td><td>36</td></tr><tr><td><b>+3</b></td><td>7</td><td>42</td></tr><tr><td><b>+4</b></td><td>8</td><td>48</td></tr><tr><td><b>+5</b></td><td>9</td><td>54</td></tr></tbody></table>
+          <table class="rtable" data-inline><thead><tr><th>STR mod</th><th>Rows</th><th>Spaces</th></tr></thead><tbody><tr><td><b>−2</b></td><td>2</td><td>12</td></tr><tr><td><b>−1</b></td><td>3</td><td>18</td></tr><tr><td><b>+0</b></td><td>4</td><td>24</td></tr><tr><td><b>+1</b></td><td>5</td><td>30</td></tr><tr><td><b>+2</b></td><td>6</td><td>36</td></tr><tr><td><b>+3</b></td><td>7</td><td>42</td></tr><tr><td><b>+4</b></td><td>8</td><td>48</td></tr><tr><td><b>+5</b></td><td>9</td><td>54</td></tr></tbody></table>
           <p>Every item takes up a shape on the grid, like 4 × 1 for a rifle or 1 × 1 for a grenade. The GM tells you how big something is. A stack of the same item shares one spot.</p>
           <p>Equipped weapons and worn armor don't use backpack space. Installed cyberware and vehicles don't either.</p>
           <p>If something doesn't fit, it goes on the floor and you're <b>Encumbered</b> until you make room. The GM decides what that costs you.</p>
@@ -1113,7 +1151,14 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-psycho"><h2>Cyberpsychosis</h2>
         <div class="panel">
-          <p>Cyberpsychosis saves are normally made at <b>−5</b>. A few perks help. BOD has Theseus and I'm Special, COO has Tranquility and TEC has Limit Setter. The full rules are still coming.</p>
+          <p>Cyberpsychosis saves are a TEC roll. Roll <b>1d20 + your TEC mod</b> to keep from going over the edge.</p>
+          <table class="rtable"><tbody>
+            <tr><td><b>DC</b></td><td>10 + 2 for each point of overflow, meaning each point your tally is over your threshold</td></tr>
+            <tr><td><b>Overflow cap</b></td><td>Half your threshold, rounded up. A threshold of 10 caps at 5 and a threshold of 11 caps at 6</td></tr>
+            <tr><td><b>Point of no return</b></td><td>The last overflow hex is red. Fill it and your merc is lost to cyberpsychosis for good. They can't be brought back</td></tr>
+          </tbody></table>
+          <p style="margin-top:12px">A few perks help. <b>Theseus</b> (BOD) gives advantage on the save. <b>Tranquility</b> (COO) adds your COOL mod to your own and your allies' saves. <b>Limit Setter</b> (TEC) means the first piece of cyberware that pushes you past your threshold doesn't make you a Cyberpsycho.</p>
+          <p class="muted" style="font-size:13px">Your sheet shows the current DC and has a button to roll the save whenever you're in overflow.</p>
         </div>
       </section>
 
@@ -1369,7 +1414,7 @@ const PERKS = {
     'B.l': {n:'RipperDoc', d:'Licensed to chrome. You get discounts on cyberware and can install it yourself.'}
   },
   REF:{
-    'A.r': {n:'Plumber Legs', d:'Double Jump (−1 RAM). No additional LEAP cost.'},
+    'A.r': {n:'Plumber Legs', d:'Perform one additional LEAP midair. It can go in any direction and doesn\'t have to follow the first LEAP\'s straight line.'},
     'B.r': {n:'Waste of Time', d:'+10 MOVE after a KILL (−1 RAM).'},
     'A.p': {n:'Kitty Got Claws', d:'Free ATK on everyone within 5 ft after a LEAP.'},
     'S.p': {n:'Gag Order', d:'A kill on a Surprise attack alerts no one.'},
@@ -1413,7 +1458,7 @@ const PERKS = {
     'A.ph':{n:'Theseus', d:'ADV on Cyberpsychosis saves.'},
     'S.ph':{n:'Adrenaline Rush', d:'Heal 2d6 every round.'},
     'B.ph':{n:'Built to Last', d:'Add your BOD mod to all healing.'},
-    'A.l': {n:"I'm Special", d:'Your Cyberpsychosis save penalty drops from −5 to −2.'},
+    'A.l': {n:"I'm Special", d:'TBD. This used to shrink the old −5 Cyberpsychosis save penalty, which no longer exists. The GM will rewrite it.'},
     'B.l': {n:'Can Tank This', d:'+100 HP.'}
   }
 };
@@ -1427,7 +1472,7 @@ let DB = {chars:[], current:null};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
 if (!Array.isArray(DB.trash)) DB.trash = [];
 DB.trash = DB.trash.filter(x => x && x.merc && Date.now() - (x.at || 0) < 30 * 864e5);
-function persist(){ DB.chars.forEach(m => { if (m && m.inv && m.eq){ packInv(m); if (m.ds) vitalFix(m); tierFix(m); } }); trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
+function persist(){ DB.chars.forEach(m => { if (m && m.inv && m.eq){ packInv(m); if (m.ds) vitalFix(m); tierFix(m); if (lostFix(m) && m === C) setTimeout(lostFx, 80); } }); trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
 let C = null;       // current character
@@ -1473,7 +1518,7 @@ const CYBER_SLOTS = [
 const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
 // AC is 10 + REF mod + TEC mod. Installed chrome can add to it, and meds or consumables can add a temporary bonus.
 const acIn = t => { const m = /([+\-−]\s*\d+)\s*AC\b/i.exec(t || ''); return m ? parseInt(m[1].replace(/[−\s]/g, c => c === '−' ? '-' : '')) : 0; };
-const acChrome = m => (m.cyber || []).reduce((n, x) => n + (x.ac || 0), 0);
+const acChrome = m => (m.cyber || []).reduce((n, x) => n + (x.hot ? Math.ceil((x.ac || 0) / 2) : (x.ac || 0)), 0);
 const acBase = m => 10 + mod(score('REF', m)) + mod(score('TEC', m));
 const acOf = m => acBase(m) + acChrome(m) + (m.acTemp || 0);
 const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
@@ -1510,7 +1555,7 @@ function normalize0(c){
       id: i.id || uid(), name: String(i.name).slice(0, 60), type: ITEM_TYPES.includes(i.type) ? i.type : 'Gear',
       qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
       tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0),
-      ...sizeOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null
+      ...sizeOf(i), ...weaponOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null
     })),
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null, armor: (c.eq || {}).armor || null},
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
@@ -1532,7 +1577,7 @@ function normalize0(c){
     hpLv: Math.max(1, parseInt(c.hpLv) || (numOrNull(c.hpMax) > 0 ? Math.max(1, +c.level || 1) : 1)),
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
-    cwT: Math.max(0, numOrNull(c.cwT) ?? 10), cwMax: Math.max(1, numOrNull(c.cwMax) ?? 15), cwAdj: parseInt(c.cwAdj) || 0,
+    cwT: Math.max(0, numOrNull(c.cwT) ?? 10), cwAdj: parseInt(c.cwAdj) || 0, lost: !!c.lost,
     portrait: typeof c.portrait === 'string' && c.portrait.length < 300000 && PORTRAIT_RE.test(c.portrait) ? c.portrait : null
   };
 }
@@ -1562,6 +1607,26 @@ function defSize(type, name){
   for (const [re, t, sz] of SIZE_RULES) if ((!t || t === type) && re.test(name || '')) return sz;
   return TYPE_SIZE[type] || [1, 1];
 }
+// Rate of fire and reload speed. Defaults guess from the weapon's name; the DM sets the real numbers.
+const MELEE_RE = /knife|dagger|blade|katana|sword|machete|shiv|wire|mantis|fist|knuckle|club|bat\b|baton|hammer|axe|pipe|staff|spear|gorilla/i;
+function weaponDefaults(name, stats){
+  const n = (name || '').toLowerCase();
+  if (MELEE_RE.test(n) || (!/piercing|round|shot|range/i.test(stats || '') && !/pistol|revolver|rifle|smg|uzi|shotgun|lmg|hmg|minigun|sniper|launcher|carbine|cannon|railgun|gun/i.test(n))) return {rof: /knife|dagger|shiv/.test(n) ? 2 : 1, reload:'none'};
+  if (/lmg|hmg|minigun/.test(n)) return {rof:3, reload:'heavy'};
+  if (/launcher|railgun/.test(n)) return {rof:1, reload:'heavy'};
+  if (/smg|uzi|machine pistol/.test(n)) return {rof:3, reload:'light'};
+  if (/sniper|shotgun|revolver|hand ?cannon/.test(n)) return {rof:1, reload:'light'};
+  if (/assault|rifle|carbine/.test(n)) return {rof:2, reload:'light'};
+  if (/pistol/.test(n)) return {rof:2, reload:'light'};
+  return {rof:1, reload:'light'};
+}
+function weaponOf(i){
+  if (i.type !== 'Weapon') return {rof:null, reload:null};
+  const d = weaponDefaults(i.name, i.stats), r = parseInt(i.rof);
+  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload: ['light', 'heavy', 'none'].includes(i.reload) ? i.reload : d.reload};
+}
+const RELOAD_TXT = {light:'LIGHT reload', heavy:'HEAVY reload', none:'Melee'};
+const wpnTag = i => i.type === 'Weapon' ? `<span class="wpnb" title="Rate of fire and reload">ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() : ''}</span>` : '';
 function sizeOf(i){
   const d = defSize(i.type, i.name), w = parseInt(i.w), h = parseInt(i.h);
   return {w: Math.max(1, Math.min(BAG_MAX_W, w || d[0])), h: Math.max(1, Math.min(BAG_MAX_H, h || d[1]))};
@@ -1612,7 +1677,7 @@ function sortBag(m){
   return packInv(m);
 }
 const bagUsed = m => m.inv.filter(i => inBag(m, i) && placed(i)).reduce((n, i) => n + i.w * i.h, 0);
-const itemPayload = (i, q) => ({name:i.name, type:i.type, qty:q == null ? (i.qty || 1) : q, stats:i.stats || '', hot:!!i.hot, tier:i.tier || 0, fort:!!i.fort, cw:i.cw || 0, w:sizeOf(i).w, h:sizeOf(i).h});
+const itemPayload = (i, q) => ({name:i.name, type:i.type, qty:q == null ? (i.qty || 1) : q, stats:i.stats || '', hot:!!i.hot, tier:i.tier || 0, fort:!!i.fort, cw:i.cw || 0, w:sizeOf(i).w, h:sizeOf(i).h, ...weaponOf(i)});
 
 /* ================= PROGRESS: LEDGER, COUNTERS, ACHIEVEMENTS, UNDO, XP ================= */
 const XP_TABLE = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
@@ -1815,7 +1880,7 @@ function dmSheetHTML(p){
   const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
   const profs = [...new Set([...m.bgSkills, ...(ROLES[m.role] ? ROLES[m.role].prof : [])])];
   const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<div><span class="${pf.level ? 'p' : ''}">${pf.level === 2 ? '◆◆ ' : pf.level ? '◆ ' : ''}${n} <span class="muted">${st}</span></span><b>${sgn(mod(score(st, m)) + pb * pf.level)}</b></div>`; }).join('');
-  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
+  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
   const ach = ACH.filter(a => m.ach[a.id]).length;
   return `<div class="dsheet">
     <div class="dsh">${avatar(m, 'av md', portraits[p.id])}<div style="min-width:0"><div class="nm">${esc(m.name)}</div>
@@ -1833,12 +1898,12 @@ function dmSheetHTML(p){
         <span>XP</span><b>${(m.xp || 0).toLocaleString()}</b>
         <span>Achievements</span><b>${ach} of ${ACH.length}</b>
       </div>
-      ${hm && isDown(m) ? `<h4>Death saves</h4>${seesawSVG(m)}` : ''}${m.status.length ? `<h4>Status effects</h4><div class="schips">${statusChips(m)}</div>` : ''}${m.hacks.length || m.psycho || m.jackLock || encumbered(m) || m.dead ? `<h4>Status</h4><div class="list">${m.dead ? '<div><b style="color:var(--red)">DEAD</b> · three failed death saves</div>' : ''}${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${encumbered(m) ? '<div><b>Encumbered</b> · stuff on the floor</div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
+      ${hm && isDown(m) ? `<h4>Death saves</h4>${seesawSVG(m)}` : ''}${m.status.length ? `<h4>Status effects</h4><div class="schips">${statusChips(m)}</div>` : ''}${m.hacks.length || m.psycho || m.jackLock || encumbered(m) || m.dead || m.lost ? `<h4>Status</h4><div class="list">${m.dead ? '<div><b style="color:var(--red)">DEAD</b> · three failed death saves</div>' : ''}${m.lost ? '<div><b style="color:var(--red)">LOST</b> · filled the red hex, cyberpsychosis for good</div>' : ''}${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${encumbered(m) ? '<div><b>Encumbered</b> · stuff on the floor</div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
       <h4>Equipped</h4><div class="kv"><span>Primary</span><span>${eqd('primary')}</span><span>Secondary</span><span>${eqd('secondary')}</span><span>Armor</span><span>${eqd('armor')}</span></div>
       <h4>Skills</h4><p class="muted" style="font-size:13px;margin:0 0 6px">Proficient in ${profs.join(', ') || 'nothing yet'}. ◆ adds proficiency, ◆◆ doubles it.</p><div class="sk">${sk}</div>
     </div><div>
       <h4>Backpack · ${BAG_COLS} × ${bagRows(m)} · ${bagUsed(m)} of ${BAG_COLS * bagRows(m)} spaces</h4>${bagHTML(m, true)}
-      <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : m.eq.armor === i.id ? '<span class="eqm">WORN</span>' : onFloor(m, i) ? '<span class="eqm" style="color:var(--red)">FLOOR</span>' : ''}<small>${i.type} · ${i.w}×${i.h}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
+      <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : m.eq.armor === i.id ? '<span class="eqm">WORN</span>' : onFloor(m, i) ? '<span class="eqm" style="color:var(--red)">FLOOR</span>' : ''}<small>${i.type} · ${i.w}×${i.h}${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() + ' reload' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
       <h4>Installed chrome · ${m.cyber.length}</h4>${cyberMapHTML(m, true)}${m.cyber.length ? `<div class="list">${m.cyber.map(x => `<div><b>${esc(x.name)}</b>${x.hot ? ' <span class="hotb">HOT</span>' : ''}<small>${(SLOTMAP[x.slot] || [])[1] || x.slot}${x.ac ? ' · ' + sgn(x.ac) + ' AC' : ''}${x.effect ? ' · ' + esc(x.effect) : ''}</small></div>`).join('')}</div>` : '<p class="muted">None installed.</p>'}
       <h4>Perks · ${m.unlocked.length}</h4>${m.unlocked.length ? `<div class="list">${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<div><b>${esc(pk.n)}</b> <span class="muted">${st}</span><small>${esc(pk.d || '')}</small></div>`; }).join('')}</div>` : '<p class="muted">None yet.</p>'}
       ${m.notes ? `<h4>Notes</h4><p style="font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere">${esc(m.notes)}</p>` : ''}
@@ -2585,10 +2650,24 @@ function toast(msg, good){
 /* ================= CHARACTER SHEET TAB ================= */
 const cwLoad = (c = C) => Math.max(0, c.cyber.reduce((n, x) => n + (x.cw || 0), 0) + (c.cwAdj || 0));
 const cwOver = (c = C) => Math.max(0, cwLoad(c) - c.cwT);
-const cwMaxOf = c => Math.max(c.cwMax, c.cwT);
+// Overflow can go up to half your threshold, rounded up. Filling the last (red) overflow hex is the point of no return.
+const cwCap = c => Math.ceil((c.cwT || 0) / 2);
+const cwMaxOf = c => (c.cwT || 0) + cwCap(c);
+const psyDC = c => 10 + 2 * cwOver(c);
+const psyMod = c => mod(score('TEC', c)) + (c.unlocked.includes('COO.A.l') ? mod(score('COO', c)) : 0);
+function lostFix(m){ if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
+function lostFx(){
+  const el = $('#flatline'); if (!el) return;
+  const tx = el.querySelector('.fl-text');
+  tx.textContent = 'POINT OF NO RETURN'; tx.dataset.text = tx.textContent; tx.classList.add('afl');
+  $('#flSub').textContent = 'The red hex is full. Your merc is lost to cyberpsychosis and can\'t be brought back.';
+  el.hidden = true; void el.offsetWidth; el.hidden = false; sfx('psycho');
+  clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; tx.textContent = 'FLATLINED'; tx.dataset.text = 'FLATLINED'; tx.classList.remove('afl'); }, flashOK() ? 6500 : 4000);
+  setTimeout(() => cyberpsycho(true), 400);
+}
 function cwPips(c, small){
   const mx = cwMaxOf(c), load = cwLoad(c);
-  const pip = i => `<i class="cwp ${i < c.cwT ? '' : 'ov'} ${i < load ? 'on' : ''}"></i>`;
+  const pip = i => `<i class="cwp ${i < c.cwT ? '' : 'ov'} ${i === mx - 1 && mx > c.cwT ? 'cap' : ''} ${i < load ? 'on' : ''}"></i>`;
   const base = Array.from({length: c.cwT}, (_, i) => pip(i)).join(''), over = Array.from({length: mx - c.cwT}, (_, i) => pip(c.cwT + i)).join('');
   return `<div class="cwpips ${small ? 'sm' : ''}">${base}${mx > c.cwT ? `<span class="cwsep"></span>${over}` : ''}</div>`;
 }
@@ -2694,7 +2773,7 @@ function genWeaponRoll(t, cls){
   const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t);
   const o = {name:`${pick(GEN.makers)} ${pick(GEN.models)} ${w[0]}`.slice(0, 60), type:'Weapon', qty:1, tier, cw:0,
     stats:(w[1] + (w[2] ? ', ' + w[2] : '') + tierBit(tier, /piercing/.test(w[1]) ? 'Weapon' : 'Melee')).slice(0, 120)};
-  return Object.assign(o, sizeOf({type:'Weapon', name:w[0]}));
+  return Object.assign(o, sizeOf({type:'Weapon', name:w[0]}), weaponOf({type:'Weapon', name:w[0], stats:w[1]}));
 }
 function genItemRoll(t, type){
   type = type || pick(Object.keys(GEN.items));
@@ -2719,7 +2798,8 @@ function renderRuleTiers(){
 const canFab = (c = C) => c.unlocked.includes(FABRICATOR);
 const upCost = i => FAB_COST.upgrade * (i.tier + 1);
 const itemTags = i => `${tierTag(i.tier)}${i.fort ? '<span class="tagb">FORT</span>' : ''}`;
-const cyberRam = (c = C) => (c.hacks || []).includes('cyber') ? 0 : c.cyber.reduce((n, x) => n + (x.hot ? Math.floor((+x.ram || 0) / 2) : (+x.ram || 0)), 0);
+const hotHalf = v => Math.ceil((+v || 0) / 2);
+const cyberRam = (c = C) => (c.hacks || []).includes('cyber') ? 0 : c.cyber.reduce((n, x) => n + (x.hot ? hotHalf(x.ram) : (+x.ram || 0)), 0);
 const canRip = (c = C) => c.unlocked.includes(RIPPER);
 const INSULATED = 'INT.A.p';
 function ramNow(c){ const mx = ramMax(c); return c.ram == null ? mx : Math.max(0, Math.min(c.ram, mx)); }
@@ -2755,7 +2835,7 @@ function renderCS(){
   const eqCard = (k, label) => {
     const i = it(C.eq[k]);
     return `<div class="eqslot ${i ? 'on' : ''}" data-eqslot="${k}"><span class="lbl">${label}</span>${i ? `<div class="gi eqart t${i.tier + 1}" data-gi="${i.id}" title="Drag back to the bag to unequip">${itemArt(i)}</div>` : ''}` + (i
-      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div><div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
+      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
       : `<div class="muted" style="font-size:14px">${k === 'armor' ? 'Empty. Drag armor here or hit Wear on it.' : `Empty. Drag a weapon here or hit ${k === 'primary' ? 'P' : 'S'} on it.`}</div>`) + `</div>`;
   };
   const ident = `<div class="ident">
@@ -2797,9 +2877,11 @@ function renderCS(){
       <p class="muted" style="font-size:12px;margin:4px 0 0">Usually the DM applies these. Leave rounds blank if it lasts until removed. For Exhaustion, adding it again raises the level.</p></details></div>`;
   const cwl = cwLoad(), cwo = cwOver();
   const cwBlock = `<div class="track cwtrack"><div class="head"><span class="lbl" style="margin:0">Cyberware threshold</span><span class="muted" style="font-size:12px">Threshold ${C.cwT} · Max ${cwMaxOf(C)}</span></div>
-      <div class="num">${cwl} <small>/ ${C.cwT}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} · Cyberpsychosis DC +${cwo * 2}</span>` : ''}</div>
+      <div class="num">${cwl} <small>/ ${C.cwT}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} of ${cwCap(C)} · Save DC ${psyDC(C)}</span>` : ''}</div>
       ${cwPips(C)}
-      <div class="row"><button class="btn small" data-act="cw-">−1</button><button class="btn small" data-act="cw+">+1</button><span class="muted" style="font-size:12px">Installed chrome fills this on its own. The DM sets your threshold and max.</span></div>
+      ${C.lost ? '<div class="losttag gl" data-text="LOST TO CYBERPSYCHOSIS">LOST TO CYBERPSYCHOSIS</div><p class="muted" style="font-size:12px;margin:2px 0 8px">The red hex filled. This merc is gone for good.</p>'
+        : cwo ? `<div class="psysave"><button class="btn small danger" data-act="psyRoll">Roll Cyberpsychosis save</button><span class="muted" style="font-size:12px">d20 ${sgn(psyMod(C))} (TEC${hasPerk('COO.A.l') ? ' + COOL from Tranquility' : ''})${hasPerk('BOD.A.ph') ? ' with advantage from Theseus' : ''} against DC ${psyDC(C)}</span></div>` : ''}
+      <div class="row"><button class="btn small" data-act="cw-">−1</button><button class="btn small" data-act="cw+">+1</button><span class="muted" style="font-size:12px">Installed chrome fills this on its own. The DM sets your threshold, and your max is that plus half, rounded up.</span></div>
       ${hasPerk('TEC.A.l') ? '<p class="muted" style="font-size:12px;margin:8px 0 0">Limit Setter: the first piece that pushes you past your threshold won\'t make you a Cyberpsycho.</p>' : ''}</div>`;
   const ramBlock = `<div class="track"><div class="head"><span class="lbl" style="margin:0">RAM</span><span class="muted" style="font-size:12px">4 base ${sgn(mod(score('INT')))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
       <div class="num">${rc} <small>/ ${rm}</small></div>
@@ -2813,6 +2895,8 @@ function renderCS(){
       <label class="fl"><span>Type</span><select data-i="${i.id}" data-f="type">${opts(i.type)}</select></label>
       <div class="fl"><span>Quantity</span><div class="q"><button data-qty="-1" data-i="${i.id}" aria-label="One less">−</button><span>${i.qty}</span><button data-qty="1" data-i="${i.id}" aria-label="One more">+</button></div></div>
       <label class="fl wide"><span>Stats or notes</span><input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Like 2d6 piercing, or +1 AC"></label>
+      ${i.type === 'Weapon' ? `<label class="fl"><span>Rate of fire</span><input type="number" min="1" max="10" data-i="${i.id}" data-f="rof" value="${i.rof}" title="Attack rolls per ATTACK action"></label>
+      <label class="fl"><span>Reload</span><small class="muted" style="font-size:11px;margin-top:-2px">LIGHT is an action, HEAVY is your whole turn</small><select data-i="${i.id}" data-f="reload">${Object.entries(RELOAD_TXT).map(([k, v]) => `<option value="${k}" ${i.reload === k ? 'selected' : ''}>${k === 'light' ? 'LIGHT' : k === 'heavy' ? 'HEAVY' : 'Melee'}</option>`).join('')}</select></label>` : ''}
       <div class="tags wide">${i.type === 'Cyberware' ? `<span class="tagb cwb" title="Cyberware threshold cost">CW ${i.cw}</span>` : ''}${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}</div>
       <div class="acts wide">
         ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="primary" data-i="${i.id}">${p ? 'Primary ✓' : 'Equip primary'}</button><button class="btn small ${s2 ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="secondary" data-i="${i.id}">${s2 ? 'Secondary ✓' : 'Equip secondary'}</button>` : ''}
@@ -2827,7 +2911,7 @@ function renderCS(){
   lastFloorN = C.inv.filter(i => onFloor(C, i)).length;
   const sel = C.inv.find(i => i.id === selItem), H = bagRows(C), enc = encumbered(C), garage = C.inv.filter(i => i.type === 'Vehicle');
   const selPanel = sel ? `<div class="selp t${sel.tier + 1}"><div class="selart">${itemArt(sel)}</div>
-      <div class="row" style="gap:6px;margin:8px 0 4px"><b style="color:#fff">${esc(sel.name)}</b>${tierTag(sel.tier)}<span class="muted" style="font-size:12px">${sel.type}${isEquipped(C, sel) ? ' · equipped' : onFloor(C, sel) ? ' · on the floor' : ''}</span></div>
+      <div class="row" style="gap:6px;margin:8px 0 4px"><b style="color:#fff">${esc(sel.name)}</b>${tierTag(sel.tier)}${wpnTag(sel)}<span class="muted" style="font-size:12px">${sel.type}${isEquipped(C, sel) ? ' · equipped' : onFloor(C, sel) ? ' · on the floor' : ''}</span></div>
       ${sel.type === 'Vehicle' ? '<p class="muted" style="font-size:13px;margin:0 0 6px">Vehicles don\'t go in the bag.</p>' : `<div class="szrow"><span class="lbl" style="margin:0;width:100%">Size in the bag</span>
         <span class="stp"><span class="muted">Wide</span><button class="btn small" data-act="invW-" aria-label="Narrower">−</button><b>${sel.w}</b><button class="btn small" data-act="invW+" aria-label="Wider">+</button></span>
         <span class="stp"><span class="muted">Tall</span><button class="btn small" data-act="invH-" aria-label="Shorter">−</button><b>${sel.h}</b><button class="btn small" data-act="invH+" aria-label="Taller">+</button></span></div>
@@ -2880,7 +2964,7 @@ function renderCS(){
     ${fabPanel}
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
-      <p class="muted" style="font-size:13px;margin-top:4px">Each install's RAM bonus adds to your max RAM. Hot-swap parts only give half, rounded down. Swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
+      <p class="muted" style="font-size:13px;margin-top:4px">Chrome only adds RAM if it's designed to, and that bonus adds to your max RAM. Hot-swap parts only give half, rounded up. Swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
       ${cyberMapHTML(C)}</div>
     ${ledgerHTML()}
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
@@ -2965,7 +3049,7 @@ function bodySVG(m, hl){
     <path ${p('immune')} d="M100 178l11 4v7c0 7-5 11-11 13-6-2-11-6-11-13v-7z"/>
   </svg>`;
 }
-let selCy = null, hlSlot = null;
+let selCy = null, hlSlot = null, capWarn = null;
 function cyberMapHTML(m, ro){
   const rip = !ro && canRip();
   const slot = k => {
@@ -2995,7 +3079,7 @@ function cyberMapHTML(m, ro){
         <label class="fl"><span>Threshold cost</span><input type="number" min="0" data-c="${x.id}" data-cf="cw" value="${x.cw}"></label>
         <label class="fl wide"><span>What it does</span><input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}"></label></div>`
       : x.slot === 'shard' ? `<p class="muted" style="font-size:13px;margin:6px 0 0">Active while slotted. Pull it to end the effect and put it back in your bag.</p>`
-      : `<div class="kvs"><span>RAM</span><b>${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)}${x.hot ? ' (half, hot-swap)' : ''}</b><span>AC</span><b>${sgn(x.ac || 0)}</b><span>Threshold cost</span><b>${x.cw}</b></div>${x.effect ? `<p style="font-size:14px;margin:8px 0 0">${esc(x.effect)}</p>` : ''}`}
+      : `<div class="kvs"><span>RAM</span><b>${sgn(x.hot ? Math.ceil(x.ram / 2) : x.ram)}${x.hot ? ' (half, hot-swap)' : ''}</b><span>AC</span><b>${sgn(x.hot ? Math.ceil((x.ac || 0) / 2) : (x.ac || 0))}${x.hot && x.ac ? ' (half, hot-swap)' : ''}</b><span>Threshold cost</span><b>${x.cw}</b></div>${x.effect ? `<p style="font-size:14px;margin:8px 0 0">${esc(x.effect)}</p>` : ''}`}
       <div class="row" style="gap:8px;margin-top:10px">${x.slot === 'shard' ? `<button class="btn small" data-uninstall="${x.id}">Pull shard</button>` : rip ? `<button class="btn small" data-uninstall="${x.id}">Remove to bag</button>` : x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out · ${HOTSWAP_RAM} RAM</button>` : '<span class="muted" style="font-size:13px">Only a RipperDoc can take this out.</span>'}<button class="btn small" data-act="cyDesel">Done</button></div></div>`;
   } else if (!ro){
     const held = C.inv.find(i => i.id === selItem && (i.type === 'Cyberware' || i.type === 'Shard'));
@@ -3016,6 +3100,8 @@ function installItem(i, slot){
   }
   if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return false; }
   if (cwLoad() + (i.cw || 0) > cwMaxOf(C)){ toast(`${i.name} costs ${i.cw} and would push you past your max of ${cwMaxOf(C)}.`); return false; }
+  if (cwCap(C) > 0 && cwLoad() + (i.cw || 0) === cwMaxOf(C) && capWarn !== i.id){ capWarn = i.id; sfx('deny'); toast(`${i.name} would fill your red hex and your merc is lost for good. Install it again to do it anyway.`); return false; }
+  capWarn = null;
   if (!canRip()){
     if (!i.hot){ toast('Only a RipperDoc can install that.'); return false; }
     if (ramCur() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return false; }
@@ -3319,11 +3405,20 @@ $('#vCS').addEventListener('click', e => {
       const d = t.dataset.act === 'cw+' ? 1 : -1, nl = cwLoad() + d;
       if (nl < 0) return;
       if (nl > cwMaxOf(C)) return toast(`You're at your max of ${cwMaxOf(C)}.`);
+      if (d > 0 && nl === cwMaxOf(C) && capWarn !== 'manual'){ capWarn = 'manual'; sfx('deny'); return toast('That fills your red hex and your merc is lost for good. Hit +1 again to do it anyway.'); }
+      capWarn = null;
       C.cwAdj += d; csSave();
       if (d > 0 && nl > C.cwT) toast(`Overflow ${nl - C.cwT}. Cyberpsychosis DC is now +${(nl - C.cwT) * 2}.`);
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
+    case 'psyRoll': {
+      const a = 1 + Math.floor(Math.random() * 20), b2 = 1 + Math.floor(Math.random() * 20), adv = hasPerk('BOD.A.ph'), d20 = adv ? Math.max(a, b2) : a;
+      const tot = d20 + psyMod(C), dc = psyDC(C), pass = tot >= dc;
+      toast(`Cyberpsychosis save · ${adv ? `rolled ${a} and ${b2}, kept ${d20}` : `rolled ${d20}`} ${sgn(psyMod(C))} = ${tot} vs DC ${dc} · ${pass ? 'you hold it together' : 'you snap'}`, pass);
+      if (!pass){ C.psycho = true; csSave(); cyberpsycho(true); } else sfx('heal');
+      return;
+    }
     case 'dsRoll': case 'dsPass': case 'dsFail': {
       let pass = t.dataset.act === 'dsPass';
       if (t.dataset.act === 'dsRoll'){ const r = 1 + Math.floor(Math.random() * 20); pass = r >= 10; toast(`Death save · rolled ${r} · ${pass ? 'pass' : 'fail'}`, pass); }
@@ -3342,7 +3437,7 @@ $('#vCS').addEventListener('click', e => {
       const name = $('#niName').value.trim();
       if (!name){ $('#niName').focus(); return toast('Give the item a name.'); }
       const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120), tier:Math.max(0, Math.min(3, parseInt($('#niTier').value) || 0)), gx:null, gy:null};
-      Object.assign(item, sizeOf({...item, w:$('#niW').value, h:$('#niH').value}));
+      Object.assign(item, sizeOf({...item, w:$('#niW').value, h:$('#niH').value}), weaponOf(item));
       C.inv.push(item); packInv(C); selItem = item.id;
       if (onFloor(C, item)) toast(`No room for ${item.name}. It's on the floor.`);
       $('#niW').value = ''; $('#niH').value = '';
@@ -3393,7 +3488,9 @@ $('#vCS').addEventListener('change', async e => {
     const i = C.inv.find(x => x.id === t.dataset.i); if (!i) return;
     if (t.dataset.f === 'name'){ const v = t.value.trim(); if (v) i.name = v.slice(0, 60); else t.value = i.name; return saveC(); }
     if (t.dataset.f === 'stats'){ i.stats = t.value.slice(0, 120); return saveC(); }
-    if (t.dataset.f === 'type'){ i.type = t.value; fixEq(C); return csSave(); }
+    if (t.dataset.f === 'type'){ i.type = t.value; Object.assign(i, weaponOf({...i, rof:null, reload:null})); fixEq(C); return csSave(); }
+    if (t.dataset.f === 'rof'){ i.rof = Math.max(1, Math.min(10, parseInt(t.value) || 1)); return csSave(); }
+    if (t.dataset.f === 'reload'){ i.reload = t.value; return csSave(); }
   }
   if (t.dataset.c && t.dataset.cf){
     const x = C.cyber.find(y => y.id === t.dataset.c); if (!x) return;
@@ -3859,7 +3956,8 @@ function diffMerc(a, b){
   a.cyber.filter(x => !b.cyber.some(y => y.id === x.id)).forEach(x => add(`Removed ${x.name}`));
   const w1 = cwLoad(a), w2 = cwLoad(b);
   if (w1 !== w2) add(`Cyberware ${w1} → ${w2} of ${b.cwT}${cwOver(b) ? ` · DC +${cwOver(b) * 2}` : ''}`, w2 > w1 ? 'bad' : '');
-  if (a.cwT !== b.cwT || a.cwMax !== b.cwMax) add(`Cyberware threshold ${b.cwT}, max ${b.cwMax}`);
+  if (a.cwT !== b.cwT) add(`Cyberware threshold ${b.cwT}, max ${cwMaxOf(b)}`);
+  if (!a.lost && b.lost) add('LOST · the red hex filled, cyberpsychosis for good', 'bad');
   if (a.notes !== b.notes) add('Updated notes');
   if (a.xp !== b.xp) add(`${b.xp > a.xp ? '+' : '−'}${Math.abs(b.xp - a.xp).toLocaleString()} XP`, b.xp > a.xp ? 'good' : '');
   ACH.filter(x => b.ach[x.id] && !a.ach[x.id]).forEach(x => add('★ ' + x.n, 'good'));
@@ -3911,7 +4009,7 @@ function playAskHTML(){
 let gN = null, gNLock = {name:false, origin:false, gender:false, age:false}, gW = null, gI = null, gWT = '', gWC = '', gIT = '', gIType = '';
 function genResult(x){
   if (!x) return `<div class="res"><p class="muted" style="margin:0">Hit Roll to generate one.</p></div>`;
-  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span><span class="nisz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-gsz="w" value="${sizeOf(x).w}" aria-label="Width in spaces"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-gsz="h" value="${sizeOf(x).h}" aria-label="Height in spaces"></span></div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
+  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span><span class="nisz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-gsz="w" value="${sizeOf(x).w}" aria-label="Width in spaces"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-gsz="h" value="${sizeOf(x).h}" aria-label="Height in spaces"></span>${x.type === 'Weapon' ? `<label class="muted" style="font-size:12px">ROF <input type="number" min="1" max="10" data-gsz="rof" value="${weaponOf(x).rof}" style="width:56px" aria-label="Rate of fire"></label><select data-gsz="reload" aria-label="Reload">${['light', 'heavy', 'none'].map(k => `<option value="${k}" ${weaponOf(x).reload === k ? 'selected' : ''}>${k === 'none' ? 'Melee' : k.toUpperCase() + ' reload'}</option>`).join('')}</select>` : ''}</div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
 }
 let moodDraft = {style:'nomad', tod:'default', weather:'default'};
 const TODS = [['default', 'Scene default'], ['auto', 'Follow the clock'], ['dawn', 'Dawn'], ['day', 'Day'], ['dusk', 'Dusk'], ['night', 'Night']];
@@ -3973,7 +4071,7 @@ $('#liveBody').addEventListener('change', e => {
   const id = e.target.id;
   if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
   if (id === 'rcDay'){ recapDay = +e.target.value; return; }
-  if (e.target.dataset.gsz){ const g = e.target.closest('.gen'), k = g && g.querySelector('[data-live=groll]'), x = k && (k.dataset.g === 'w' ? gW : gI); if (x){ x[e.target.dataset.gsz] = e.target.value; Object.assign(x, sizeOf(x)); e.target.value = x[e.target.dataset.gsz]; } return; }
+  if (e.target.dataset.gsz){ const g = e.target.closest('.gen'), k = g && g.querySelector('[data-live=groll]'), x = k && (k.dataset.g === 'w' ? gW : gI); if (x){ x[e.target.dataset.gsz] = e.target.value; Object.assign(x, sizeOf(x), weaponOf(x)); e.target.value = x[e.target.dataset.gsz]; } return; }
   if (e.target.dataset.libsz){ const it = lib.find(z => z.id === e.target.dataset.i); if (it){ const nx = {...it, [e.target.dataset.libsz]:e.target.value}; Object.assign(nx, sizeOf(nx)); liveApi.setLibItem(nx).catch(() => toast("Couldn't save the size.")); } return; }
   if (id === 'mdStyle'){ moodDraft.style = e.target.value; return; } if (id === 'mdTod'){ moodDraft.tod = e.target.value; return; } if (id === 'mdWx'){ moodDraft.weather = e.target.value; return; }
   if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
@@ -4232,7 +4330,7 @@ function applyOp(op){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
     const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
     const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h})); m.inv.push(ni); }
+    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
@@ -4293,8 +4391,8 @@ function applyOp(op){
     m.cwAdj += nl - cwLoad(m);
     msg = `The DM ${n > 0 ? 'added to' : 'lowered'} your cyberware tally. ${nl} / ${m.cwT}${nl > m.cwT ? `, Cyberpsychosis DC +${(nl - m.cwT) * 2}` : ''}.`; sound = n > 0 ? 'down' : 'up';
   } else if (op.kind === 'cwSet'){
-    m.cwT = Math.max(0, parseInt(op.t) || 0); m.cwMax = Math.max(m.cwT, parseInt(op.max) || m.cwT);
-    msg = `The DM set your cyberware threshold to ${m.cwT}, max ${m.cwMax}.`; sound = 'select';
+    m.cwT = Math.max(0, parseInt(op.t) || 0);
+    msg = `The DM set your cyberware threshold to ${m.cwT}. Your max is ${cwMaxOf(m)}.`; sound = 'select';
   } else if (op.kind === 'ramDelta'){
     const n = parseInt(op.amount) || 0, mx = ramMax(m), cur = ramNow(m);
     m.ram = Math.max(0, Math.min(mx, cur + n));
@@ -4483,7 +4581,7 @@ function partyCard(p, dm){
         <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
         <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
         <span class="ctl">Chrome</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button>
-          <span class="muted" style="font-size:11px">Thresh</span><input type="number" min="0" id="cwt-${k}" value="${m.cwT}" title="Threshold" aria-label="Threshold" style="width:54px"><span class="muted" style="font-size:11px">Max</span><input type="number" min="1" id="cwm-${k}" value="${cwMaxOf(m)}" title="Max" aria-label="Max" style="width:54px"><button class="btn small" data-live="cwset" data-u="${k}">Set</button></div>
+          <span class="muted" style="font-size:11px">Thresh</span><input type="number" min="0" id="cwt-${k}" value="${m.cwT}" title="Threshold" aria-label="Threshold" style="width:54px"><span class="muted" style="font-size:11px">Max ${cwMaxOf(m)}</span><button class="btn small" data-live="cwset" data-u="${k}">Set</button></div>
         <span class="ctl">Eddies</span><div class="row"><button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button></div>
       </div>
       <div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
@@ -4496,7 +4594,7 @@ function partyCard(p, dm){
       <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''}">
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
-        ${m.dead ? '<span class="stagb red gl" data-text="DEAD">DEAD</span>' : hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
+        ${m.lost ? '<span class="stagb psy gl" data-text="LOST">LOST</span>' : ''}${m.dead ? '<span class="stagb red gl" data-text="DEAD">DEAD</span>' : hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
       <div><div class="stat"><span>AC</span><b>${acOf(m)}${m.acTemp ? ` <span class="muted" style="font-size:12px">(${sgn(m.acTemp)} temp)</span>` : ''}</b></div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
         ${hm && isDown(m) ? seesawSVG(m, true) : ''}${(m.status || []).length ? `<div class="schips" style="margin:2px 0 8px">${statusChips(m, dm ? x => `<button class="sx" data-live="stRm" data-u="${k}" data-s="${x.id}" aria-label="Clear ${STATUSMAP[x.id].n}">✕</button>` : null)}</div>` : ''}
@@ -4575,7 +4673,7 @@ function liveHTML(){
       <div class="row gap"><span class="muted" style="font-size:13px">Deploy Black ICE</span>${BLACK_ICE.map(i => `<button class="btn small danger" data-live="ice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
       <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
       <div class="players">${npcCards || '<p class="muted">No NPCs yet.</p>'}</div></div>`;
-  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''} <span class="nisz lsz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-libsz="w" data-i="${i.id}" value="${sizeOf(i).w}" aria-label="${esc(i.name)} width"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-libsz="h" data-i="${i.id}" value="${sizeOf(i).h}" aria-label="${esc(i.name)} height"></span></span><span class="muted">${esc(i.stats || '')}</span>
+  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}${i.type === 'Weapon' ? ' · ROF ' + weaponOf(i).rof + (weaponOf(i).reload !== 'none' ? ' ' + weaponOf(i).reload.toUpperCase() : '') : ''} <span class="nisz lsz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-libsz="w" data-i="${i.id}" value="${sizeOf(i).w}" aria-label="${esc(i.name)} width"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-libsz="h" data-i="${i.id}" value="${sizeOf(i).h}" aria-label="${esc(i.name)} height"></span></span><span class="muted">${esc(i.stats || '')}</span>
       <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
       <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libhide" data-i="${i.id}" title="${i.hidden ? 'Hidden from the codex' : 'Shown in the codex'}">${i.hidden ? 'Hidden' : 'Codex'}</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
     : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
@@ -4597,6 +4695,7 @@ function liveHTML(){
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Tier <select id="liTier" aria-label="Tier">${tierOpts(0)}</select></label><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Backpack size</span><span class="nisz"><input type="number" id="liW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="liH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><span class="muted" style="font-size:12px">Blank guesses from the type, like 4 × 1 for a rifle</span></div>
+      <div class="row gap"><span class="muted" style="font-size:13px">Weapons only</span><label class="muted" style="font-size:13px">ROF <input type="number" id="liRof" min="1" max="10" placeholder="auto" style="width:70px" aria-label="Rate of fire"></label><select id="liRel" aria-label="Reload speed"><option value="">Reload: auto</option><option value="light">LIGHT reload</option><option value="heavy">HEAVY reload</option><option value="none">Melee</option></select></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
       <div style="margin-top:10px">${libRows}</div>
     </div>` : ''}`;
@@ -4751,9 +4850,9 @@ $('#liveBody').addEventListener('click', async e => {
   }
   if (a === 'cw+' || a === 'cw-'){ if (await sendOp(u, {kind:'cwDelta', amount: a === 'cw+' ? 1 : -1})) toast(`Cyberware tally ${a === 'cw+' ? '+1' : '−1'} for ${pname(u)}.`, true); return; }
   if (a === 'cwset'){
-    const tv = parseInt(($('#cwt-' + u) || {}).value), mv = parseInt(($('#cwm-' + u) || {}).value);
-    if (!(tv >= 0) || !(mv >= 1)) return toast('Enter a threshold and a max.');
-    if (await sendOp(u, {kind:'cwSet', t:tv, max:Math.max(mv, tv)})) toast(`Threshold ${tv}, max ${Math.max(mv, tv)} for ${pname(u)}.`, true);
+    const tv = parseInt(($('#cwt-' + u) || {}).value);
+    if (!(tv >= 0)) return toast('Enter a threshold.');
+    if (await sendOp(u, {kind:'cwSet', t:tv})) toast(`Threshold ${tv} for ${pname(u)}. Their max is ${tv + Math.ceil(tv / 2)}.`, true);
     return;
   }
   if (a === 'ram'){ if (await sendOp(u, {kind:'ram'})) toast(`Restored RAM for ${pname(u)}.`, true); return; }
@@ -4844,7 +4943,7 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'libadd'){
     const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
     const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0), tier:Math.max(0, Math.min(3, parseInt($('#liTier').value) || 0))};
-    Object.assign(item, sizeOf({...item, w:$('#liW').value, h:$('#liH').value})); $('#liW').value = ''; $('#liH').value = '';
+    Object.assign(item, sizeOf({...item, w:$('#liW').value, h:$('#liH').value}), weaponOf({...item, rof:($('#liRof') || {}).value, reload:($('#liRel') || {}).value})); $('#liW').value = ''; $('#liH').value = ''; if ($('#liRof')) $('#liRof').value = '';
     const to = $('#liTo').value;
     try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
     $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
@@ -4872,7 +4971,7 @@ $('#liveBody').addEventListener('click', async e => {
       const arr = JSON.parse($('#libImpTxt').value);
       if (!Array.isArray(arr)) throw 0;
       let n = 0;
-      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h})}); n++; }
+      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h}), ...weaponOf({type:r.type, name:r.name, stats:r.stats, rof:r.rof, reload:r.reload})}); n++; }
       libImport = false; toast(`Imported ${n} items.`, true); renderLive();
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
@@ -6172,6 +6271,7 @@ else if (LIVE_OK && acctFlag()) getLive().catch(e => console.error(e));
       t.after(d); return;
     }
     t.classList.add('stack');
+    if (t.hasAttribute('data-inline')) t.classList.add('inl');
     const tc = t.dataset.title != null ? +t.dataset.title : null;
     if (tc != null){ t.classList.add('hastitle'); t.querySelectorAll('tbody tr').forEach(tr => { const c = tr.children[tc]; if (c) c.classList.add('ttl'); }); }
     const trs = [...t.querySelectorAll('tbody tr')];
