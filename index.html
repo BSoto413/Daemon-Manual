@@ -4470,9 +4470,7 @@ const STYLES = {
   net:{n:'The Net', d:'Data rain, ICE walls and floating nodes', pal:{bg:'#04202a', trace:'#0f6b7a', light:'#2fe6f0', accent:'#ff4a5e'},
     lab:[['Void', 'The space around you'], ['Grid', 'The floor and ceiling lines'], ['Data', 'Falling code and nodes'], ['ICE', 'The wall on the horizon and packets']]},
   bar:{n:'Merc Bar', d:'Smoky dive bar, backlit shelves and buzzing neon', pal:{bg:'#3a0d14', trace:'#1c0b0d', light:'#ffb347', accent:'#ff2a4f'},
-    lab:[['Room', 'Walls and shadows'], ['Shelves', 'Wood and bottle glass'], ['Backlight', 'Shelf glow, smoke and dust'], ['Neon', 'The signs']]},
-  rush:{n:'Neon Rush', d:'Loud anime action, color slabs and speed lines', pal:{bg:'#140a30', trace:'#ff2fa8', light:'#ffe600', accent:'#2fe6f0'},
-    lab:[['Base', 'The backdrop'], ['Color slabs', 'The big sliding bands'], ['Speed lines', 'The burst lines'], ['Pop shapes', 'Impact shapes that flash in']]}
+    lab:[['Room', 'Walls and shadows'], ['Shelves', 'Wood and bottle glass'], ['Backlight', 'Shelf glow, smoke and dust'], ['Neon', 'The signs']]}
 };
 const UNLOCKS = [
   {id:'gold', n:'Iconic Gold', hint:'Any merc installs a Legend perk', pal:{bg:'#6b4e00', trace:'#a07a10', light:'#ffd700', accent:'#ffffff'}, test:c => c.unlocked.some(k => /\.l$/.test(k))},
@@ -4491,7 +4489,7 @@ const PRESETS = [
 ];
 let THEME = {...THEME_DEF};
 try { const t = JSON.parse(localStorage.getItem(THEME_KEY)); if (t) THEME = {...THEME_DEF, ...t}; } catch(e){}
-if (!STYLES[THEME.style]) THEME.style = 'circuit';
+if (!STYLES[THEME.style]) THEME = {...THEME_DEF};
 let AT = {...THEME, tod:'default', weather:'default', src:'theme'};
 const ENVS = {jack:false, mood:null};
 const originStyle = bg => ({Nomad:'nomad', Corpo:'corpo', Streetkid:'streetkid'})[bg] || null;
@@ -4910,7 +4908,7 @@ SCENES.bar = (() => {
       return {y:.16 + i * .17, c, base};
     });
     const k = Math.min(1, VW / 900);
-    signs = [{x:.7, y:.3, w:150 * k, h:46 * k, txt:'OPEN', ph:r() * 9}, {x:.06, y:.58, w:120 * k, h:40 * k, txt:'BAR', ph:r() * 9}, {x:.88, y:.52, shape:'glass', s:46 * k, ph:r() * 9}, {x:.34, y:.84, shape:'arrow', s:60 * k, ph:r() * 9}];
+    signs = [{x:.7, y:.3, w:150 * k, h:46 * k, txt:'OPEN', ph:r() * 9}, {x:.88, y:.52, shape:'glass', s:46 * k, ph:r() * 9}, {x:.34, y:.84, shape:'arrow', s:60 * k, ph:r() * 9}];
     motes = Array.from({length:PREFS.battery ? 40 : 90}, () => ({x:Math.random(), y:Math.random(), vx:(Math.random() - .5) * .006, vy:-.002 - Math.random() * .006, a:.1 + Math.random() * .4, s:.6 + Math.random() * 1.6}));
     smoke = Array.from({length:PREFS.battery ? 3 : 5}, () => ({x:Math.random() * VW, y:VH * (.2 + Math.random() * .7), r:250 + Math.random() * 350, v:4 + Math.random() * 10, a:.05 + Math.random() * .07}));
   }
@@ -4940,7 +4938,7 @@ SCENES.bar = (() => {
     cx.globalCompositeOperation = 'lighter';
     signs.forEach(sg => {
       const on = FXS.motion ? (Math.sin(t * 2.3 + sg.ph) > -.92 ? 1 : .15) * (.85 + .15 * Math.sin(t * 13 + sg.ph)) : 1;
-      const x = sg.x * W - px * 1.2, y = sg.y * H - py * 1.2, col = sg.txt === 'BAR' ? AT.light : AT.accent;
+      const x = sg.x * W - px * 1.2, y = sg.y * H - py * 1.2, col = AT.accent;
       [[10, .1], [5, .22], [2.2, .9]].forEach(([lw, al]) => { cx.strokeStyle = rgbA(col, al * on); cx.lineWidth = lw; signPath(sg, x, y); cx.stroke(); });
       if (sg.txt){ cx.font = `600 ${Math.round(sg.h * .6)}px Orbitron, sans-serif`; cx.textAlign = 'center'; cx.textBaseline = 'middle';
         [[6, .14], [1.6, .9]].forEach(([lw, al]) => { cx.strokeStyle = rgbA(col, al * on); cx.lineWidth = lw; cx.strokeText(sg.txt, x + sg.w / 2, y + sg.h / 2 + 2); }); }
@@ -4956,57 +4954,8 @@ SCENES.bar = (() => {
   return {init, draw};
 })();
 
-/* Neon Rush. Loud anime action. Color slabs with halftone, speed lines, pop shapes */
-SCENES.rush = (() => {
-  let slabs = [], pops = [], dots = null, nextPop = 0;
-  function init(){
-    const r = srnd(71);
-    slabs = Array.from({length:6}, (_, i) => ({o:r() * 1.4 - .2, w:.08 + r() * .2, ang:-.5 + (i % 2 ? .08 : -.05), v:.012 + r() * .02, a:.25 + r() * .35, half:r() < .6}));
-    const c = document.createElement('canvas'); c.width = c.height = 12; const g = c.getContext('2d');
-    g.fillStyle = 'rgba(0,0,0,.55)'; g.beginPath(); g.arc(3, 3, 2.2, 0, 7); g.arc(9, 9, 2.2, 0, 7); g.fill();
-    dots = cx.createPattern(c, 'repeat'); pops = []; nextPop = 0;
-  }
-  function draw(t, dt){
-    const W = VW, H = VH, px = ptr.sx * 20, py = ptr.sy * 12 + Math.min(scrollY, 3000) * .05;
-    const g = cx.createLinearGradient(0, 0, W, H);
-    g.addColorStop(0, mixHex(AT.bg, '#000000', .2)); g.addColorStop(1, mixHex(AT.bg, AT.trace, .18));
-    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-    // slabs
-    slabs.forEach((s, i) => {
-      const L = Math.hypot(W, H) * 1.4, pos = ((s.o + t * s.v) % 1.6 + 1.6) % 1.6 - .3;
-      const cxp = pos * W - px * (1 + i * .2), cyp = H / 2 - py * (1 + i * .2), w = s.w * W;
-      cx.save(); cx.translate(cxp, cyp); cx.rotate(s.ang);
-      cx.fillStyle = rgbA(i % 3 === 2 ? AT.accent : AT.trace, s.a * .55); cx.fillRect(-w / 2, -L / 2, w, L);
-      if (s.half && dots){ cx.fillStyle = dots; cx.globalAlpha = .6; cx.fillRect(-w / 2, -L / 2, w, L); cx.globalAlpha = 1; }
-      cx.fillStyle = rgbA('#ffffff', .25); cx.fillRect(-w / 2, -L / 2, 2, L);
-      cx.restore();
-    });
-    // speed lines from a focal point
-    const fx = W * .72 - px, fy = H * .38 - py, n = PREFS.battery ? 40 : 80, seed = FXS.motion ? Math.floor(t * 8) : 1, rr = srnd(seed * 31 + 7);
-    cx.globalCompositeOperation = 'lighter'; cx.strokeStyle = rgbA(AT.light, .16); cx.lineWidth = 1.4; cx.beginPath();
-    for (let i = 0; i < n; i++){ const a = rr() * 6.283, r0 = Math.min(W, H) * (.18 + rr() * .2), r1 = Math.max(W, H) * (.8 + rr() * .5); cx.moveTo(fx + Math.cos(a) * r0, fy + Math.sin(a) * r0); cx.lineTo(fx + Math.cos(a) * r1, fy + Math.sin(a) * r1); }
-    cx.stroke();
-    // pops
-    if (FXS.motion && t > nextPop){ nextPop = t + (flashOK() ? .9 : 2.6) + Math.random() * 1.6; pops.push({x:Math.random() * W, y:Math.random() * H, s:30 + Math.random() * 90, k:Math.floor(Math.random() * 3), life:0, col:Math.random() < .5 ? AT.accent : AT.light, rot:Math.random() * 6}); }
-    for (let i = pops.length - 1; i >= 0; i--){
-      const p = pops[i]; p.life += dt; if (p.life > 1.4){ pops.splice(i, 1); continue; }
-      const k = Math.min(1, p.life * 6), fade = Math.min(1, (1.4 - p.life) * 2.5), s = p.s * (.6 + .4 * k);
-      cx.save(); cx.translate(p.x, p.y); cx.rotate(p.rot); cx.strokeStyle = rgbA(p.col, .85 * fade); cx.lineWidth = 3; cx.beginPath();
-      if (p.k === 0){ for (let j = 0; j < 10; j++){ const a = j / 10 * 6.283, R = j % 2 ? s * .45 : s; j ? cx.lineTo(Math.cos(a) * R, Math.sin(a) * R) : cx.moveTo(Math.cos(a) * R, Math.sin(a) * R); } cx.closePath(); }
-      else if (p.k === 1){ cx.moveTo(-s, s * .3); cx.lineTo(-s * .3, -s * .3); cx.lineTo(0, s * .2); cx.lineTo(s * .4, -s * .4); cx.lineTo(s, s * .2); }
-      else { cx.moveTo(0, -s); cx.lineTo(s * .87, s * .5); cx.lineTo(-s * .87, s * .5); cx.closePath(); }
-      cx.stroke(); cx.restore();
-    }
-    cx.globalCompositeOperation = 'source-over';
-    // chromatic edge bars
-    cx.fillStyle = rgbA(AT.accent, .5); cx.fillRect(0, H - 6, W * (.4 + .1 * Math.sin(t)), 3);
-    cx.fillStyle = rgbA(AT.trace, .5); cx.fillRect(W * .55, 4, W * .45, 3);
-  }
-  return {init, draw};
-})();
-
 /* ---- environment: time of day, weather, merc reactions ---- */
-const SCENE_TOD = {circuit:'night', corpo:'night', nomad:'dusk', streetkid:'night', net:'night', bar:'night', rush:'night'};
+const SCENE_TOD = {circuit:'night', corpo:'night', nomad:'dusk', streetkid:'night', net:'night', bar:'night'};
 function todNow(){
   let t = AT.tod || 'default';
   if (t === 'auto'){ const h = new Date().getHours(); t = h >= 5 && h < 8 ? 'dawn' : h >= 8 && h < 17 ? 'day' : h >= 17 && h < 20 ? 'dusk' : 'night'; }
