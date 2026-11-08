@@ -402,18 +402,28 @@ nav a.on{opacity:1;color:var(--cyan)}
 .rtable td.cls b{color:var(--muted)}
 .ptree{overflow-x:auto}
 .ptree .rtable{min-width:640px}
+.colstack{display:none;margin-top:10px}
+.colstack h5{font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin:14px 0 4px}
+.colstack li{padding:4px 0;border-bottom:1px solid rgba(var(--crgb),.08);list-style:none}
+.colstack ul{margin:0;padding:0}
 @media (max-width:640px){
   .ptree{overflow-x:visible}
   .ptree .rtable{min-width:0}
   .rtable.stack, .rtable.stack tbody, .rtable.stack tr, .rtable.stack td{display:block;width:100%}
   .rtable.stack thead{display:none}
   .rtable.stack tr{padding:10px 0;border-bottom:1px solid rgba(var(--crgb),.18)}
-  .rtable.stack td{border:0;padding:3px 2px;overflow-wrap:anywhere}
+  .rtable.stack td{border:0;padding:3px 2px;overflow-wrap:break-word}
   .rtable.stack td:first-child{font-size:16px;color:#fff;padding-bottom:4px}
   .rtable.stack td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-top:4px}
-  .rtable.stack td.none{display:none}
+  .rtable.stack td.none{display:none!important}
   .rtable.stack td.short{display:inline-block;width:auto;min-width:52px;margin-right:10px;vertical-align:top}
-  .rtable td{overflow-wrap:anywhere}
+  .rtable td{overflow-wrap:break-word}
+  .rtable.kvst, .rtable.kvst tbody, .rtable.kvst tr, .rtable.kvst td{display:block;width:100%}
+  .rtable.kvst tr{padding:8px 0;border-bottom:1px solid rgba(var(--crgb),.18)}
+  .rtable.kvst td{border:0;padding:2px}
+  .rtable.kvst td:first-child{color:#fff;font-weight:500}
+  .rtable[data-cols]{display:none}
+  .colstack{display:block!important}
 }
 .ptree h3 .muted{font-family:'Exo 2',sans-serif;font-size:14px}
 .chips2.big span{font-size:14px;padding:6px 12px}
@@ -791,7 +801,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-backgrounds"><h2>Backgrounds</h2>
         <div class="panel">
           <p>There are only three ways a merc comes up in Night City. Each background offers three skills and you pick two of them.</p>
-          <table class="rtable"><thead><tr><th>Nomad</th><th>Corpo</th><th>Streetkid</th></tr></thead><tbody>
+          <table class="rtable" data-cols><thead><tr><th>Nomad</th><th>Corpo</th><th>Streetkid</th></tr></thead><tbody>
             <tr><td>Vehicle</td><td>Performance</td><td>History</td></tr><tr><td>Craft</td><td>Deception</td><td>Persuasion</td></tr><tr><td>Intimidation</td><td>Medicine</td><td>Perception</td></tr>
           </tbody></table>
         </div>
@@ -5343,9 +5353,18 @@ else if (LIVE_OK && acctFlag()) getLive().catch(e => console.error(e));
   const label = () => document.querySelectorAll('table.rtable:not([data-st])').forEach(t => {
     t.dataset.st = '1';
     const hs = [...t.querySelectorAll('thead th')].map(th => th.textContent.trim());
-    if (!hs.length) return;
+    t.querySelectorAll('td').forEach(td => { if (/^[—–-]$/.test(td.textContent.trim())) td.classList.add('none'); });
+    if (!hs.length){ if (t.querySelector('tr > td + td')) t.classList.add('kvst'); return; }
+    if (t.hasAttribute('data-cols')){
+      const rows = [...t.querySelectorAll('tbody tr')].map(tr => [...tr.children]);
+      const d = document.createElement('div'); d.className = 'colstack';
+      d.innerHTML = hs.map((h, i) => `<h5>${h}</h5><ul>${rows.map(r => r[i] ? `<li>${r[i].innerHTML}</li>` : '').join('')}</ul>`).join('');
+      t.after(d); return;
+    }
     t.classList.add('stack');
-    t.querySelectorAll('tbody tr').forEach(tr => [...tr.children].forEach((td, i) => { if (hs[i]) td.dataset.label = hs[i]; if (i && td.textContent.trim().length <= 6) td.classList.add('short'); }));
+    const trs = [...t.querySelectorAll('tbody tr')];
+    const shortCol = hs.map((_, i) => i > 0 && trs.every(tr => !tr.children[i] || tr.children[i].classList.contains('none') || tr.children[i].textContent.trim().length <= 6));
+    trs.forEach(tr => [...tr.children].forEach((td, i) => { if (hs[i]) td.dataset.label = hs[i]; if (shortCol[i] && !td.classList.contains('none')) td.classList.add('short'); }));
   });
   let q = 0;
   new MutationObserver(() => { if (!q) q = requestAnimationFrame(() => { q = 0; label(); }); }).observe(document.body, { childList: true, subtree: true });
