@@ -343,7 +343,23 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .selart .art{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px)}
 .szrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:13px}
 .stp{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-right:10px}.stp b{min-width:14px;text-align:center;color:#fff;font-family:Orbitron,sans-serif}
-.selp .irow{margin-top:8px}
+.iedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(var(--crgb),.12)}
+.iedit .wide{grid-column:1/-1}
+.acrow{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.acshield{position:relative;width:64px;height:74px;flex:none;color:var(--cyan)}
+.acshield svg{position:absolute;inset:0;width:100%;height:100%}
+.acshield path{fill:rgba(var(--crgb),.12);stroke:currentColor;stroke-width:1.6}
+.acshield b{position:absolute;inset:0;display:grid;place-items:center;padding-bottom:6px;font:600 26px Orbitron,sans-serif;color:#fff}
+.actemp{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.actemp .q button{width:34px;height:34px}
+
+.iedit .fl{display:flex;flex-direction:column;gap:4px;min-width:0}
+.iedit .fl > span{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.iedit .fl input,.iedit .fl select{width:100%;min-width:0}
+.iedit .q{display:flex;align-items:center;gap:8px}.iedit .q button{width:38px;height:38px;font-size:18px}
+.iedit .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;justify-content:flex-start}
+.iedit .tags:empty{display:none}
+.iedit.eq input[data-f=name]{border-color:var(--cyan);color:var(--cyan)}
 .nisz{display:inline-flex;align-items:center;gap:4px}.nisz input{width:58px}
 .eqslot{position:relative}
 .gi.eqart{position:relative;height:56px;margin:0 0 4px;cursor:grab}
@@ -366,6 +382,59 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .inv-add .btn{justify-self:end}
 .btn.small.on{background:var(--cyan);color:#03161a}
 .cyber{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:12px}
+/* ---- cyberware body map ---- */
+.cymap{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,230px) minmax(0,1fr);gap:14px;margin-top:14px;align-items:start}
+.cycol{display:grid;gap:10px}
+.cybody{position:sticky;top:70px;display:flex;justify-content:center}
+.cybody .body{width:100%;max-width:230px;height:auto}
+.body .sil > *{fill:rgba(var(--crgb),.07);stroke:rgba(var(--crgb),.5);stroke-width:1.2}
+.body.skin .sil > *{stroke:var(--cyan);stroke-width:2;filter:drop-shadow(0 0 4px rgba(var(--crgb),.7))}
+.body.skinhl .sil > *{stroke:var(--yellow);stroke-width:2.2}
+.body .bp{fill:none;stroke:rgba(var(--crgb),.35);stroke-width:1.3}
+.body .sil .bp{fill:rgba(var(--crgb),.07)}
+.body [data-bp=circ],.body [data-bp=immune],.body [data-bp=os],.body [data-bp=cortex],.body [data-bp=ocular] ellipse{fill:rgba(var(--crgb),.05)}
+.body .bp.on{stroke:var(--cyan);stroke-width:1.8;filter:drop-shadow(0 0 3px var(--cyan))}
+.body [data-bp=circ].on,.body [data-bp=immune].on,.body [data-bp=os].on,.body [data-bp=cortex].on,.body [data-bp=ocular].on ellipse,.body .sil .bp.on{fill:rgba(var(--crgb),.28)}
+.body .bp.hl,.body .bp.hl ellipse{stroke:var(--yellow)!important;stroke-width:2.2;fill:rgba(255,210,63,.22)!important;filter:drop-shadow(0 0 4px var(--yellow))}
+.cyslot{min-width:0;background:#08080f;border:1px solid rgba(var(--crgb),.16);padding:10px;transition:border-color .15s,background .15s}
+.cyslot.has{border-color:rgba(var(--crgb),.45)}
+.cyslot.droph{border-color:#3be37a!important;background:rgba(59,227,122,.1)}
+.cyslot .h{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.cyslot .h b{font-family:Orbitron,sans-serif;font-weight:500;color:#fff;flex:1;min-width:0;overflow-wrap:normal;word-break:normal;hyphens:none}
+.cyslot .cap{color:var(--muted);font-family:Orbitron,sans-serif}
+.cyi{width:20px;height:20px;flex:none;color:var(--cyan)}
+.cyi g > *{fill:rgba(var(--crgb),.18);stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.cyi .ln{fill:none!important}.cyi .vis{fill:currentColor!important}
+.cyslot .cells{display:grid;grid-template-columns:repeat(3,minmax(0,72px));gap:6px}
+.cyempty{aspect-ratio:1;border:1px dashed rgba(var(--crgb),.3);background:transparent;color:rgba(var(--crgb),.6);font-size:20px;cursor:pointer;min-height:44px}
+.cyempty:hover,.cyempty:focus-visible{border-color:var(--cyan);color:var(--cyan)}
+span.cyempty{cursor:default;min-height:30px}
+.cychip{--tc:#9aa6b2;aspect-ratio:1;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px;border:1px solid var(--tc);color:var(--tc);cursor:pointer;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--tc) 22%,#0b0d16),#0b0d16 75%);min-width:0}
+.cychip.t2{--tc:var(--cyan)}.cychip.t3{--tc:var(--yellow)}.cychip.t4{--tc:var(--red)}
+.cychip .cyi{width:22px;height:22px;color:var(--tc)}
+.cychip span{font-size:9px;line-height:1.2;color:#fff;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cychip.sel{box-shadow:0 0 0 2px #fff,0 0 14px var(--tc)}
+.cychip.hot{border-style:dashed}
+.cychip[disabled]{cursor:default;opacity:1}
+.cydetail{margin-top:14px;border:1px solid rgba(var(--crgb),.3);padding:12px}
+.cydetail.empty{border-style:dashed}
+.cydetail .kvs{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin-top:8px;font-size:14px}.cydetail .kvs span{color:var(--muted)}.cydetail .kvs b{color:#fff;font-weight:500}
+@media (max-width:760px){
+  .cymap{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .cybody{grid-column:1/-1;grid-row:1;position:static}
+  .cybody .body{max-width:116px}
+  .cycol{align-content:start}
+  .cyslot{padding:8px;min-width:0}
+  .cyslot .h{font-size:10px;letter-spacing:.2px;gap:4px 6px;flex-wrap:wrap}
+  .cyslot .h b{flex:1 1 auto}
+  .cyslot .cap{margin-left:auto}
+  .cyslot .cells{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .cyempty,.cychip{min-height:0}
+  .cyi{width:18px;height:18px}
+}
+.dsheet .cymap{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.dsheet .cybody{grid-column:1/-1;grid-row:1;position:static}.dsheet .cybody .body{max-width:120px}
+
 .cslot{background:#08080f;border:1px solid rgba(var(--crgb),.14);padding:12px}
 .cslot .h{display:flex;justify-content:space-between;align-items:baseline}
 .cslot .h b{font-family:Orbitron,sans-serif;font-weight:500;color:#fff;font-size:12px;letter-spacing:1px;text-transform:uppercase}
@@ -858,6 +927,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <table class="rtable"><tbody>
             <tr><td><b>Role</b></td><td>Pick one at level 1. It gives two skill proficiencies and can't be changed</td></tr>
             <tr><td><b>Stats</b></td><td>5e point buy with 27 points. Every stat starts between 8 and 15.</td></tr>
+            <tr><td><b>AC</b></td><td>10 + REF mod + TEC mod. Cyberware can raise it, and meds or consumables can raise it for a while</td></tr>
             <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
             <tr><td><b>Starting HP</b></td><td>10 + 10 + BOD mod. Level 1 takes the max roll, no dice</td></tr>
             <tr><td><b>HP per level</b></td><td>10 + 1d10 + BOD mod every level after 1, unless a perk or cyberware raises it</td></tr>
@@ -1325,6 +1395,11 @@ const CYBER_SLOTS = [
   ['hands','Hands',2],['arms','Arms',1],['legs','Legs',1]
 ];
 const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
+// AC is 10 + REF mod + TEC mod. Installed chrome can add to it, and meds or consumables can add a temporary bonus.
+const acIn = t => { const m = /([+\-−]\s*\d+)\s*AC\b/i.exec(t || ''); return m ? parseInt(m[1].replace(/[−\s]/g, c => c === '−' ? '-' : '')) : 0; };
+const acChrome = m => (m.cyber || []).reduce((n, x) => n + (x.ac || 0), 0);
+const acBase = m => 10 + mod(score('REF', m)) + mod(score('TEC', m));
+const acOf = m => acBase(m) + acChrome(m) + (m.acTemp || 0);
 const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
 const numOrNull = v => (v === null || v === undefined || v === '' || isNaN(+v)) ? null : +v;
 function normalize(c){ return packInv(fixEq(normalize0(c))); }
@@ -1352,10 +1427,10 @@ function normalize0(c){
     })),
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null, armor: (c.eq || {}).armor || null},
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
-      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
+      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), tier: Math.max(0, Math.min(3, parseInt(x.tier) || 0)), ac: x.ac != null && x.ac !== '' ? (parseInt(x.ac) || 0) : acIn(x.effect), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
     })),
     hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
-    hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram),
+    hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram), acTemp: parseInt(c.acTemp) || 0,
     eddies: Math.max(0, parseInt(c.eddies) || 0),
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
@@ -1658,6 +1733,7 @@ function dmSheetHTML(p){
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k, m))).join('')}</div>
     <div class="cols"><div>
       <h4>Vitals</h4><div class="kv">
+        <span>AC</span><b>${acOf(m)} <span class="muted" style="font-size:12px">10 ${sgn(mod(score('REF', m)))} REF ${sgn(mod(score('TEC', m)))} TEC${acChrome(m) ? ' ' + sgn(acChrome(m)) + ' chrome' : ''}${m.acTemp ? ' ' + sgn(m.acTemp) + ' temp' : ''}</span></b>
         <span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b>
         <span>NET HP</span><b>${hm ? net + ' / ' + hm : 'Not set'}</b>
         <span>RAM</span><b>${ramNow(m)} / ${ramMax(m)}</b>
@@ -1673,7 +1749,7 @@ function dmSheetHTML(p){
     </div><div>
       <h4>Backpack · ${BAG_COLS} × ${bagRows(m)} · ${bagUsed(m)} of ${BAG_COLS * bagRows(m)} spaces</h4>${bagHTML(m, true)}
       <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : m.eq.armor === i.id ? '<span class="eqm">WORN</span>' : onFloor(m, i) ? '<span class="eqm" style="color:var(--red)">FLOOR</span>' : ''}<small>${i.type} · ${i.w}×${i.h}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
-      <h4>Installed chrome · ${m.cyber.length}</h4>${m.cyber.length ? `<div class="list">${m.cyber.map(x => `<div><b>${esc(x.name)}</b>${x.hot ? ' <span class="hotb">HOT</span>' : ''}<small>${(SLOTMAP[x.slot] || [])[1] || x.slot}${x.effect ? ' · ' + esc(x.effect) : ''}</small></div>`).join('')}</div>` : '<p class="muted">None installed.</p>'}
+      <h4>Installed chrome · ${m.cyber.length}</h4>${cyberMapHTML(m, true)}${m.cyber.length ? `<div class="list">${m.cyber.map(x => `<div><b>${esc(x.name)}</b>${x.hot ? ' <span class="hotb">HOT</span>' : ''}<small>${(SLOTMAP[x.slot] || [])[1] || x.slot}${x.ac ? ' · ' + sgn(x.ac) + ' AC' : ''}${x.effect ? ' · ' + esc(x.effect) : ''}</small></div>`).join('')}</div>` : '<p class="muted">None installed.</p>'}
       <h4>Perks · ${m.unlocked.length}</h4>${m.unlocked.length ? `<div class="list">${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<div><b>${esc(pk.n)}</b> <span class="muted">${st}</span><small>${esc(pk.d || '')}</small></div>`; }).join('')}</div>` : '<p class="muted">None yet.</p>'}
       ${m.notes ? `<h4>Notes</h4><p style="font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere">${esc(m.notes)}</p>` : ''}
     </div></div></div>`;
@@ -2081,7 +2157,7 @@ function openChar(id){
   const raw = DB.chars.find(x => x.id === id); if (!raw) return;
   if (!C || C.id !== id) ENVS.jack = false;
   C = normalize(raw); validate(); saveC();
-  sel = null; cyberForm = null; delItem = null; selItem = null; $('#codeOut').hidden = true;
+  sel = null; cyberForm = null; delItem = null; selItem = null; selCy = null; hlSlot = null; $('#codeOut').hidden = true;
   show('sheet'); setSheetTab(sheetTab); goTop();
   requestAnimationFrame(build);
 }
@@ -2587,6 +2663,11 @@ function renderCS(){
      <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'disabled title="Black ICE locked your jack-out"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button></span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
+  const acc = acChrome(C), act = C.acTemp || 0;
+  const acBlock = `<div class="track acbox"><div class="head"><span class="lbl" style="margin:0">Armor class</span><span class="muted" style="font-size:12px">10 ${sgn(mod(score('REF')))} REF ${sgn(mod(score('TEC')))} TEC${acc ? ' ' + sgn(acc) + ' chrome' : ''}${act ? ' ' + sgn(act) + ' temporary' : ''}</span></div>
+      <div class="acrow"><div class="acshield" aria-label="Armor class ${acOf(C)}"><svg viewBox="0 0 40 46" aria-hidden="true"><path d="M20 2 L37 8 V22 C37 33 29 41 20 44 C11 41 3 33 3 22 V8 Z"/></svg><b>${acOf(C)}</b></div>
+      <div class="actemp"><span class="lbl" style="margin:0">Temporary AC</span><div class="q"><button data-act="acT-" aria-label="Lower temporary AC">−</button><span>${sgn(act)}</span><button data-act="acT+" aria-label="Raise temporary AC">+</button>${act ? '<button class="btn small" data-act="acT0" style="width:auto;height:auto">Clear</button>' : ''}</div>
+      <span class="muted" style="font-size:12px">From meds or consumables. Clear it when it wears off.</span></div></div></div>`;
   const cwl = cwLoad(), cwo = cwOver();
   const cwBlock = `<div class="track cwtrack"><div class="head"><span class="lbl" style="margin:0">Cyberware threshold</span><span class="muted" style="font-size:12px">Threshold ${C.cwT} · Max ${cwMaxOf(C)}</span></div>
       <div class="num">${cwl} <small>/ ${C.cwT}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} · Cyberpsychosis DC +${cwo * 2}</span>` : ''}</div>
@@ -2599,19 +2680,21 @@ function renderCS(){
       <div class="row"><button class="btn small" data-act="ram-1" ${hacked('lockout') ? 'disabled' : ''}>−1</button><button class="btn small" data-act="ram-2" ${hacked('lockout') ? 'disabled' : ''}>Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull" title="All RAM comes back after a round where you use none">Cooldown round</button></div></div>`;
   const irow = i => {
     const p = C.eq.primary === i.id, s2 = C.eq.secondary === i.id;
-    return `<div class="irow ${p || s2 ? 'eq' : ''}">
-      <input type="text" class="f" data-i="${i.id}" data-f="name" value="${esc(i.name)}" aria-label="Item name">
-      <select data-i="${i.id}" data-f="type" aria-label="Item type">${opts(i.type)}</select>
-      <div class="q"><button data-qty="-1" data-i="${i.id}" aria-label="Less">−</button><span>${i.qty}</span><button data-qty="1" data-i="${i.id}" aria-label="More">+</button></div>
-      <input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Stats or notes" aria-label="Item stats">
-      <div class="acts">
-        ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="primary" data-i="${i.id}" title="Equip as primary">P</button><button class="btn small ${s2 ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="secondary" data-i="${i.id}" title="Equip as secondary">S</button>` : ''}
-        ${i.type === 'Cyberware' ? `<span class="tagb cwb" title="Cyberware threshold cost">CW ${i.cw}</span>` : ''}${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}
-        ${i.type === 'Cyberware' && (canRip() || i.hot) ? `<select data-install="${i.id}" aria-label="Install into slot"><option value="">${canRip() ? 'Install…' : 'Swap in (−' + HOTSWAP_RAM + ' RAM)…'}</option>${CYBER_SLOTS.map(([k, n, cap]) => `<option value="${k}" ${C.cyber.filter(x => x.slot === k).length >= cap ? 'disabled' : ''}>${n}</option>`).join('')}</select>` : ''}
-        ${i.type === 'Cyberware' && canRip() && !i.hot ? `<button class="btn small" data-hot="${i.id}" title="Make one hot-swappable for ${HOTSWAP_COST} €$">Hot-swap</button>` : ''}
-        ${liveMe() && players.some(p => p.id !== liveApi.uid) ? `<select data-hand="${i.id}" aria-label="Hand to a party member"><option value="">Hand to…</option>${players.filter(p => p.id !== liveApi.uid).map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>` : ''}
-        <button class="btn small ${delItem === i.id ? 'danger' : ''}" data-del-item="${i.id}" aria-label="Delete item">${delItem === i.id ? 'Sure?' : '✕'}</button>
-      </div></div>`;
+    const others = liveMe() ? players.filter(x => x.id !== liveApi.uid) : [];
+    return `<div class="iedit ${p || s2 ? 'eq' : ''}">
+      <label class="fl wide"><span>Name</span><input type="text" class="f" data-i="${i.id}" data-f="name" value="${esc(i.name)}"></label>
+      <label class="fl"><span>Type</span><select data-i="${i.id}" data-f="type">${opts(i.type)}</select></label>
+      <div class="fl"><span>Quantity</span><div class="q"><button data-qty="-1" data-i="${i.id}" aria-label="One less">−</button><span>${i.qty}</span><button data-qty="1" data-i="${i.id}" aria-label="One more">+</button></div></div>
+      <label class="fl wide"><span>Stats or notes</span><input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Like 2d6 piercing, or +1 AC"></label>
+      <div class="tags wide">${i.type === 'Cyberware' ? `<span class="tagb cwb" title="Cyberware threshold cost">CW ${i.cw}</span>` : ''}${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}</div>
+      <div class="acts wide">
+        ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="primary" data-i="${i.id}">${p ? 'Primary ✓' : 'Equip primary'}</button><button class="btn small ${s2 ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="secondary" data-i="${i.id}">${s2 ? 'Secondary ✓' : 'Equip secondary'}</button>` : ''}
+        ${i.type === 'Cyberware' && canRip() && !i.hot ? `<button class="btn small" data-hot="${i.id}" title="Make one hot-swappable for ${HOTSWAP_COST} €$">Make hot-swap · ${HOTSWAP_COST} €$</button>` : ''}
+        ${others.length ? `<label class="fl"><span>Hand to</span><select data-hand="${i.id}"><option value="">Pick a crewmate</option>${others.map(x => `<option value="${x.id}">${esc(x.name || 'Player')}</option>`).join('')}</select></label>` : ''}
+        <button class="btn small ${delItem === i.id ? 'danger' : ''}" data-del-item="${i.id}">${delItem === i.id ? 'Tap again to delete' : 'Delete'}</button>
+      </div>
+      ${i.type === 'Cyberware' ? `<p class="muted wide" style="font-size:12px;margin:0">${canRip() || i.hot ? 'Drag it onto a slot on the body below, or tap an open slot while this is picked up.' : 'Only a RipperDoc can install this. Hand it to one in a live session.'}</p>` : ''}
+    </div>`;
   };
   if (selItem && !C.inv.some(i => i.id === selItem)) selItem = null;
   lastFloorN = C.inv.filter(i => onFloor(C, i)).length;
@@ -2650,30 +2733,12 @@ function renderCS(){
         <button class="btn small" data-act="fabUp">Upgrade</button><button class="btn small" data-act="fabFort">Fortify · ${FAB_COST.fortify} €$</button></div>` : '<p class="muted" style="font-size:14px">Nothing in your bag to work on.</p>'}`
     : `<p style="font-size:14px;margin-top:6px">Creating, upgrading and fortifying gear takes the TEC Phenom perk <b>Fabricator</b>. Find a crewmate who has it and hand them your gear.</p>`}
   </div>`;
-  const cyber = CYBER_SLOTS.map(([k, n, cap]) => {
-    const list = C.cyber.filter(x => x.slot === k);
-    const form = !rip ? '' : cyberForm === k
-      ? `<div class="cform"><input type="text" class="f" id="cfName" placeholder="Cyberware name" aria-label="Cyberware name">
-         <label class="muted" style="font-size:12px">RAM bonus <input type="number" id="cfRam" value="0"></label>
-         <label class="muted" style="font-size:12px">Threshold cost <input type="number" id="cfCw" value="1" min="0"></label>
-         <input type="text" class="f" id="cfEff" placeholder="What it does" aria-label="Effect">
-         <div class="row"><button class="btn small primary" data-act="cfSave" data-slot="${k}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div>`
-      : (list.length < cap ? `<button class="btn small" data-act="cfOpen" data-slot="${k}" style="margin-top:8px">+ Install</button>` : '');
-    return `<div class="cslot ${list.length >= cap ? 'full' : ''}"><div class="h"><b>${n}</b><span class="cap">${list.length} / ${cap}</span></div>
-      ${list.map(x => rip ? `<div class="cw ${x.hot ? 'hot' : ''}"><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}" aria-label="Cyberware name">
-        <div class="r"><span class="muted">RAM</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}" aria-label="RAM bonus"><span class="muted">Cost</span><input type="number" min="0" data-c="${x.id}" data-cf="cw" value="${x.cw}" aria-label="Threshold cost">${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span><button class="btn small" data-uninstall="${x.id}">Remove</button></div>
-        <input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}" placeholder="What it does" aria-label="Effect"></div>`
-      : `<div class="cw ${x.hot ? 'hot' : ''}"><div style="color:#fff">${esc(x.name)}</div>
-        <div class="r"><span class="muted">RAM ${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)} · Cost ${x.cw}</span>${x.hot ? '<span class="hotb">HOT ½</span>' : ''}<span class="spacer"></span>${x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out (−${HOTSWAP_RAM} RAM)</button>` : ''}</div>
-        ${x.effect ? `<div class="muted" style="font-size:13px">${esc(x.effect)}</div>` : ''}</div>`).join('')}
-      ${form}</div>`;
-  }).join('');
   $('#vCS').innerHTML = `
     <div class="panel gap"><div class="idwrap"><div style="display:grid;gap:8px;justify-items:start">${avatar(C, 'av lg')}
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
     <div class="cs-grid">
-      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}${cwBlock}${psyBlock}</div>
+      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${ramBlock}${cwBlock}${psyBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div></div>
     </div>
     <div class="panel gap" id="invPanel"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
@@ -2689,11 +2754,102 @@ function renderCS(){
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
       <p class="muted" style="font-size:13px;margin-top:4px">Each install's RAM bonus adds to your max RAM. Hot-swap parts only give half, rounded down. Swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
-      <div class="cyber">${cyber}</div></div>
+      ${cyberMapHTML(C)}</div>
     ${ledgerHTML()}
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
 const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
+/* ---- Cyberware body map. Installed chrome lives here, not in the backpack. ---- */
+const CY_LEFT = ['cortex', 'ocular', 'circ', 'immune', 'nervous', 'integ'], CY_RIGHT = ['os', 'skeleton', 'hands', 'arms', 'legs'];
+const CY_ICON = {
+  os:'<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" class="vis"/><path class="ln" d="M8 2v3M12 2v3M16 2v3M8 19v3M12 19v3M16 19v3M2 8h3M2 12h3M2 16h3M19 8h3M19 12h3M19 16h3"/>',
+  cortex:'<path d="M12 4c-3-2-8 0-8 4-2 1-2 6 1 7 0 3 4 5 7 3 3 2 7 0 7-3 3-1 3-6 1-7 0-4-5-6-8-4z"/><path class="ln" d="M12 4v14M8 9c2 0 2 2 4 2M16 9c-2 0-2 2-4 2"/>',
+  ocular:'<path d="M2 12c4-6 16-6 20 0-4 6-16 6-20 0z"/><circle cx="12" cy="12" r="3.5" class="vis"/>',
+  circ:'<path d="M12 20C5 15 3 11 3 8a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 3-2 7-9 12z"/><path class="ln" d="M5 12h4l1.5-3 2 6 1.5-3h4"/>',
+  immune:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path class="ln" d="M12 8v8M8 12h8"/>',
+  nervous:'<path class="ln" d="M12 2v20M12 7l-5-3M12 7l5-3M12 12l-6 1M12 12l6 1M12 17l-4 4M12 17l4 4"/><circle cx="12" cy="7" r="1.6" class="vis"/><circle cx="12" cy="12" r="1.6" class="vis"/><circle cx="12" cy="17" r="1.6" class="vis"/>',
+  integ:'<path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"/><path class="ln" d="M12 7l4.3 2.5v5L12 17l-4.3-2.5v-5z"/>',
+  skeleton:'<path d="M6 8a2.5 2.5 0 1 1 2-4 2.5 2.5 0 1 1 2 4l6 8a2.5 2.5 0 1 1-2 4 2.5 2.5 0 1 1-2-4z"/>',
+  hands:'<path d="M7 21v-8l-2-4c-.6-1.4 1.2-2.3 2-1l2 3V4.5a1.5 1.5 0 0 1 3 0V10V3.5a1.5 1.5 0 0 1 3 0V10V5a1.5 1.5 0 0 1 3 0v10c0 3-2 6-5 6z"/>',
+  arms:'<path d="M5 3h5l1 8 6 3 3 6-4 1-3-4-7-3z"/><path class="ln" d="M8 7h3M13 15l3 1"/>',
+  legs:'<path d="M8 2h7l-1 9 1 9h4v2H11l-1-11z"/><path class="ln" d="M9.5 6h4M10.5 15h3"/>'
+};
+const cyIcon = k => `<svg class="cyi" viewBox="0 0 24 24" aria-hidden="true"><g>${CY_ICON[k] || CY_ICON.os}</g></svg>`;
+function bodySVG(m, hl){
+  const on = k => (m.cyber || []).some(x => x.slot === k) ? ' on' : '', h = k => hl === k ? ' hl' : '';
+  const p = k => `class="bp${on(k)}${h(k)}" data-bp="${k}"`;
+  return `<svg class="body ${on('integ') ? 'skin' : ''} ${hl === 'integ' ? 'skinhl' : ''}" viewBox="0 0 200 400" aria-hidden="true">
+    <g class="sil">
+      <ellipse cx="100" cy="46" rx="25" ry="31"/><rect x="91" y="74" width="18" height="14"/>
+      <path d="M62 92 Q100 80 138 92 L134 160 Q128 200 124 222 L76 222 Q72 200 66 160 Z"/>
+      <path ${p('arms')} d="M62 94 Q48 100 44 128 L36 200 Q40 206 48 204 L58 140 L66 118 Z"/><path ${p('arms')} d="M138 94 Q152 100 156 128 L164 200 Q160 206 152 204 L142 140 L134 118 Z"/>
+      <path ${p('hands')} d="M34 204 Q30 222 34 238 Q42 246 48 238 L52 206 Z"/><path ${p('hands')} d="M166 204 Q170 222 166 238 Q158 246 152 238 L148 206 Z"/>
+      <path ${p('legs')} d="M76 222 L98 222 L96 300 L94 382 L74 386 L72 300 Z"/><path ${p('legs')} d="M124 222 L102 222 L104 300 L106 382 L126 386 L128 300 Z"/>
+    </g>
+    <path ${p('cortex')} d="M100 24c-6-4-16 0-16 8-4 2-4 11 2 13 0 6 8 9 14 6 6 3 14 0 14-6 6-2 6-11 2-13 0-8-10-12-16-8z"/>
+    <rect ${p('os')} x="113" y="18" width="12" height="9" rx="1.5"/>
+    <g ${p('ocular')}><ellipse cx="90" cy="56" rx="6" ry="3.4"/><ellipse cx="110" cy="56" rx="6" ry="3.4"/></g>
+    <path ${p('skeleton')} class-extra d="M78 110 Q100 104 122 110 M76 124 Q100 118 124 124 M77 138 Q100 132 123 138 M80 152 Q100 146 120 152"/>
+    <path ${p('nervous')} d="M100 92 V218 M100 120 L84 112 M100 120 L116 112 M100 160 L82 168 M100 160 L118 168"/>
+    <path ${p('circ')} d="M112 140c-7-5-9-8-9-11a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-2 6-9 11z"/>
+    <path ${p('immune')} d="M100 178l11 4v7c0 7-5 11-11 13-6-2-11-6-11-13v-7z"/>
+  </svg>`;
+}
+let selCy = null, hlSlot = null;
+function cyberMapHTML(m, ro){
+  const rip = !ro && canRip();
+  const slot = k => {
+    const [, n, cap] = SLOTMAP[k], list = m.cyber.filter(x => x.slot === k);
+    const cells = [];
+    list.forEach(x => cells.push(`<button class="cychip t${(x.tier || 0) + 1} ${!ro && selCy === x.id ? 'sel' : ''} ${x.hot ? 'hot' : ''}" ${ro ? 'disabled' : `data-cyid="${x.id}"`} title="${esc(x.name)}${x.effect ? ' · ' + esc(x.effect) : ''}">${cyIcon(k)}<span>${esc(x.name)}</span></button>`));
+    for (let i = list.length; i < cap; i++) cells.push(ro ? `<span class="cyempty" aria-hidden="true"></span>` : `<button class="cyempty" data-cyopen="${k}" aria-label="Open ${n} slot">+</button>`);
+    return `<div class="cyslot ${list.length >= cap ? 'full' : ''} ${list.length ? 'has' : ''}" data-cyslot="${k}"><div class="h">${cyIcon(k)}<b>${n}</b><span class="cap">${list.length}/${cap}</span></div><div class="cells">${cells.join('')}</div></div>`;
+  };
+  const x = !ro && m.cyber.find(y => y.id === selCy);
+  let detail = '';
+  if (!ro && cyberForm && SLOTMAP[cyberForm]){
+    detail = `<div class="cydetail"><div class="row" style="gap:8px">${cyIcon(cyberForm)}<b style="color:#fff">Install into ${SLOTMAP[cyberForm][1]}</b></div>
+      <div class="iedit" style="border:0;padding-top:4px">
+        <label class="fl wide"><span>Name</span><input type="text" class="f" id="cfName" placeholder="Like Kiroshi Optics"></label>
+        <label class="fl"><span>RAM bonus</span><input type="number" id="cfRam" value="0"></label>
+        <label class="fl"><span>AC bonus</span><input type="number" id="cfAc" value="0"></label>
+        <label class="fl"><span>Threshold cost</span><input type="number" id="cfCw" value="1" min="0"></label>
+        <label class="fl wide"><span>What it does</span><input type="text" class="f" id="cfEff" placeholder="Effect"></label>
+        <div class="acts wide"><button class="btn small primary" data-act="cfSave" data-slot="${cyberForm}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div></div>`;
+  } else if (x){
+    detail = `<div class="cydetail t${(x.tier || 0) + 1}"><div class="row" style="gap:8px">${cyIcon(x.slot)}<b style="color:#fff">${esc(x.name)}</b><span class="muted" style="font-size:12px">${SLOTMAP[x.slot][1]}</span>${x.hot ? '<span class="hotb">HOT</span>' : ''}</div>
+      ${rip ? `<div class="iedit" style="border:0;padding-top:4px">
+        <label class="fl wide"><span>Name</span><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}"></label>
+        <label class="fl"><span>RAM bonus</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}"></label>
+        <label class="fl"><span>AC bonus</span><input type="number" data-c="${x.id}" data-cf="ac" value="${x.ac || 0}"></label>
+        <label class="fl"><span>Threshold cost</span><input type="number" min="0" data-c="${x.id}" data-cf="cw" value="${x.cw}"></label>
+        <label class="fl wide"><span>What it does</span><input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}"></label></div>`
+      : `<div class="kvs"><span>RAM</span><b>${sgn(x.hot ? Math.floor(x.ram / 2) : x.ram)}${x.hot ? ' (half, hot-swap)' : ''}</b><span>AC</span><b>${sgn(x.ac || 0)}</b><span>Threshold cost</span><b>${x.cw}</b></div>${x.effect ? `<p style="font-size:14px;margin:8px 0 0">${esc(x.effect)}</p>` : ''}`}
+      <div class="row" style="gap:8px;margin-top:10px">${rip ? `<button class="btn small" data-uninstall="${x.id}">Remove to bag</button>` : x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out · ${HOTSWAP_RAM} RAM</button>` : '<span class="muted" style="font-size:13px">Only a RipperDoc can take this out.</span>'}<button class="btn small" data-act="cyDesel">Done</button></div></div>`;
+  } else if (!ro){
+    const held = C.inv.find(i => i.id === selItem && i.type === 'Cyberware');
+    detail = `<div class="cydetail empty"><p class="muted" style="margin:0;font-size:13px">${held ? `Holding <b style="color:#fff">${esc(held.name)}</b>. Tap an open slot to install it.` : `Tap installed chrome to see it. ${rip ? 'Tap an open slot to install by hand, or drag cyberware from your bag onto a slot.' : 'Drag hot-swap parts from your bag onto a slot. Everything else needs a RipperDoc.'}`}</p></div>`;
+  }
+  return `<div class="cymap ${ro ? 'ro' : ''}"><div class="cycol">${CY_LEFT.map(slot).join('')}</div><div class="cybody">${bodySVG(m, ro ? null : (x ? x.slot : cyberForm || hlSlot))}</div><div class="cycol">${CY_RIGHT.map(slot).join('')}</div></div>${detail}`;
+}
+function installItem(i, slot){
+  if (stunned() || blocked('cyber')) return false;
+  if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return false; }
+  if (cwLoad() + (i.cw || 0) > cwMaxOf(C)){ toast(`${i.name} costs ${i.cw} and would push you past your max of ${cwMaxOf(C)}.`); return false; }
+  if (!canRip()){
+    if (!i.hot){ toast('Only a RipperDoc can install that.'); return false; }
+    if (ramCur() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return false; }
+    C.ram = ramCur() - HOTSWAP_RAM;
+  }
+  const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
+  const x = {id:uid(), slot, name:i.name, hot:i.hot, cw:i.cw || 0, tier:i.tier || 0, ac:acIn(i.stats), ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()};
+  C.cyber.push(x);
+  if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(z => z !== i); fixEq(C); if (selItem === i.id) selItem = null; }
+  selCy = x.id; sfx('equip');
+  toast(`${i.name} installed in ${SLOTMAP[slot][1]}.`, true);
+  return true;
+}
+
 /* ---- Inventory controls. Tap to pick up, tap an empty space to place, or drag. ---- */
 let selItem = null, lastFloorN = 0, dragS = null;
 function bagNote(){
@@ -2783,8 +2939,9 @@ function dragOver(px, py){
     dragS.target = ok ? {kind:'bag', x, y} : null; return;
   }
   markCells(null);
-  const el = document.elementFromPoint(px, py), fl = el && el.closest('#floor, .floorwrap'), slot = el && el.closest('[data-eqslot]');
-  if (fl){ fl.closest('.floorwrap').classList.add('droph'); dragS.target = {kind:'floor'}; }
+  const el = document.elementFromPoint(px, py), fl = el && el.closest('#floor, .floorwrap'), slot = el && el.closest('[data-eqslot]'), cy = el && el.closest('.cymap:not(.ro) [data-cyslot]');
+  if (cy){ const it = C.inv.find(z => z.id === dragS.id); if (it && it.type === 'Cyberware'){ cy.classList.add('droph'); dragS.target = {kind:'cy', k:cy.dataset.cyslot}; } }
+  else if (fl){ fl.closest('.floorwrap').classList.add('droph'); dragS.target = {kind:'floor'}; }
   else if (slot){ slot.classList.add('droph'); dragS.target = {kind:'eq', k:slot.dataset.eqslot}; }
 }
 window.addEventListener('pointermove', e => {
@@ -2818,6 +2975,7 @@ function endDrag(e, cancel){
   if (d.target.kind === 'bag'){ if (moveTo(i, d.target.x, d.target.y, d.w, d.h)){ sfx('equip'); return csSave(); } }
   else if (d.target.kind === 'floor'){ if (isEquipped(C, i)) return renderCS(); i.gx = -1; i.gy = 0; lastFloorN++; sfx('unequip'); return csSave(); }
   else if (d.target.kind === 'eq'){ if (equipTo(i, d.target.k)){ sfx('equip'); return csSave(); } }
+  else if (d.target.kind === 'cy'){ if (installItem(i, d.target.k)) return csSave(); }
   renderCS();
 }
 window.addEventListener('pointerup', e => endDrag(e));
@@ -2840,6 +2998,14 @@ $('#vCS').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   const amt = id => Math.max(0, parseInt(($('#' + id) || {}).value) || 0);
   const hm = C.hpMax;
+  if (t.dataset.cyid){ selCy = selCy === t.dataset.cyid ? null : t.dataset.cyid; cyberForm = null; sfx('select'); return renderCS(); }
+  if (t.dataset.cyopen){
+    const k = t.dataset.cyopen, held = C.inv.find(i => i.id === selItem && i.type === 'Cyberware');
+    if (held){ installItem(held, k); return csSave(); }
+    if (canRip()){ cyberForm = k; selCy = null; renderCS(); const f = $('#cfName'); if (f){ f.focus({preventScroll:true}); f.scrollIntoView({block:'center', behavior:'smooth'}); } return; }
+    hlSlot = k; renderCS(); return toast('Pick up a hot-swap part in your bag first, then tap this slot. Anything else needs a RipperDoc.');
+  }
+  if (t.dataset.act === 'cyDesel'){ selCy = null; return renderCS(); }
   if ((t.dataset.equip || t.dataset.unequip || t.dataset.uninstall || t.dataset.hot) && stunned()) return;
   if (/^(fabCreate|fabUp|fabFort|cfOpen|cfSave)$/.test(t.dataset.act || '') && stunned()) return;
   if ((t.dataset.equip || t.dataset.unequip) && blocked('weapons')) return;
@@ -2867,8 +3033,9 @@ $('#vCS').addEventListener('click', e => {
         C.ram = ramCur() - HOTSWAP_RAM;
       }
       C.cyber = C.cyber.filter(y => y !== x);
-      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
-      toast(`${x.name} moved to inventory.`, true);
+      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, tier:x.tier || 0, gx:null, gy:null, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac && !acIn(x.effect) ? sgn(x.ac) + ' AC' : '', x.effect].filter(Boolean).join(' · ')});
+      selCy = null; packInv(C); bagNote();
+      toast(onFloor(C, C.inv[C.inv.length - 1]) ? `${x.name} is out. No room in the bag, so it's on the floor.` : `${x.name} moved to your bag.`, true);
     }
     return csSave();
   }
@@ -2968,6 +3135,9 @@ $('#vCS').addEventListener('click', e => {
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
+    case 'acT+': C.acTemp = Math.min(20, (C.acTemp || 0) + 1); sfx('up'); return csSave();
+    case 'acT-': C.acTemp = Math.max(-20, (C.acTemp || 0) - 1); sfx('down'); return csSave();
+    case 'acT0': C.acTemp = 0; sfx('down'); return csSave();
     case 'invSort': case 'invDesel': case 'invRot': case 'invW+': case 'invW-': case 'invH+': case 'invH-': case 'invFloor': case 'invBag': return invAct(t.dataset.act);
     case 'addItem': {
       const name = $('#niName').value.trim();
@@ -2989,7 +3159,7 @@ $('#vCS').addEventListener('click', e => {
       const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the cyberware first.'); }
       const cwc = Math.max(0, parseInt($('#cfCw').value) || 0);
       if (cwLoad() + cwc > cwMaxOf(C)) return toast(`That would push you past your cyberware max of ${cwMaxOf(C)}.`);
-      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), cw:cwc, ram:parseInt($('#cfRam').value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
+      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), cw:cwc, ram:parseInt($('#cfRam').value) || 0, ac:parseInt(($('#cfAc') || {}).value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
       toast(`${name} installed in ${SLOTMAP[t.dataset.slot][1]}.`, true);
       cyberForm = null; return csSave();
     }
@@ -3017,20 +3187,8 @@ $('#vCS').addEventListener('change', async e => {
   }
   if (t.dataset.install){
     const slot = t.value; if (!slot) return;
-    if (stunned() || blocked('cyber')) return renderCS();
-    const i = C.inv.find(x => x.id === t.dataset.install); if (!i) return;
-    if (C.cyber.filter(x => x.slot === slot).length >= SLOTMAP[slot][2]){ toast('That slot is full.'); return renderCS(); }
-    if (cwLoad() + (i.cw || 0) > cwMaxOf(C)){ toast(`${i.name} costs ${i.cw} and would push you past your max of ${cwMaxOf(C)}.`); return renderCS(); }
-    if (!canRip()){
-      if (!i.hot){ toast('Only a RipperDoc can install that.'); return renderCS(); }
-      if (ramCur() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return renderCS(); }
-      C.ram = ramCur() - HOTSWAP_RAM;
-    }
-    const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
-    C.cyber.push({id:uid(), slot, name:i.name, hot:i.hot, cw:i.cw || 0, ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
-    if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
-    toast(`${i.name} installed in ${SLOTMAP[slot][1]}.`, true);
-    return csSave();
+    const i = C.inv.find(x => x.id === t.dataset.install); if (!i) return renderCS();
+    installItem(i, slot); return csSave();
   }
   if (t.dataset.i && t.dataset.f){
     const i = C.inv.find(x => x.id === t.dataset.i); if (!i) return;
@@ -3042,6 +3200,7 @@ $('#vCS').addEventListener('change', async e => {
     const x = C.cyber.find(y => y.id === t.dataset.c); if (!x) return;
     if (t.dataset.cf === 'ram'){ x.ram = parseInt(t.value) || 0; return csSave(); }
     if (t.dataset.cf === 'cw'){ x.cw = Math.max(0, parseInt(t.value) || 0); return csSave(); }
+    if (t.dataset.cf === 'ac'){ x.ac = parseInt(t.value) || 0; return csSave(); }
     if (t.dataset.cf === 'name'){ const v = t.value.trim(); if (v) x.name = v.slice(0, 60); else t.value = x.name; return saveC(); }
     x.effect = t.value.slice(0, 200); return saveC();
   }
@@ -3470,6 +3629,7 @@ function diffMerc(a, b){
   if (r1 !== r2 || m1 !== m2) add(`RAM ${r1}/${m1} → ${r2}/${m2}${isOverheated(b) && !isOverheated(a) ? ' · OVERHEATED' : ''}`, r2 < r1 ? 'bad' : 'good');
   if (a.eddies !== b.eddies) add(`${b.eddies > a.eddies ? '+' : '−'}${Math.abs(b.eddies - a.eddies)} €$ (now ${b.eddies})`, b.eddies > a.eddies ? 'good' : '');
   if (a.cool !== b.cool) add(`COOL Tokens ${a.cool} → ${b.cool}`, b.cool > a.cool ? 'good' : '');
+  if (acOf(a) !== acOf(b)) add(`AC ${acOf(a)} → ${acOf(b)}`, acOf(b) > acOf(a) ? 'good' : '');
   if (a.jackLock !== b.jackLock) add(b.jackLock ? 'Jack-out locked by Black ICE' : 'Jack-out unlocked', b.jackLock ? 'bad' : 'good');
   if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
   b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
@@ -4116,7 +4276,7 @@ function partyCard(p, dm){
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
         ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
-      <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
+      <div><div class="stat"><span>AC</span><b>${acOf(m)}${m.acTemp ? ` <span class="muted" style="font-size:12px">(${sgn(m.acTemp)} temp)</span>` : ''}</b></div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
