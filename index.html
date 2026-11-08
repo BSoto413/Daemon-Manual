@@ -442,6 +442,13 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
 .srhit:hover,.srhit.on{background:rgba(var(--crgb),.08);border-left-color:var(--cyan)}
 .srhit b{display:block;color:#fff;font-weight:500}.srhit span{display:block;font-size:13px;color:var(--muted)}.srhit small{display:block;font-size:12.5px;color:#cfe;margin-top:2px}
 .flashhit{animation:flashhit 1.6s ease-out 1}@keyframes flashhit{0%{box-shadow:0 0 0 2px var(--yellow)}100%{box-shadow:0 0 0 2px transparent}}
+.qhs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:10px}
+.qh{text-align:left;background:#08080f;border:1px solid rgba(var(--crgb),.25);color:inherit;font:inherit;padding:10px 12px;cursor:pointer;position:relative}
+.qh:hover:not(:disabled){border-color:var(--cyan);background:rgba(var(--crgb),.06)}
+.qh b{display:block;color:#fff;font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:.5px;padding-right:56px}
+.qh .rc{position:absolute;top:10px;right:10px;font-family:Orbitron,sans-serif;font-size:11px;color:var(--yellow)}
+.qh small{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+.qh.off{opacity:.45;cursor:not-allowed}
 .sheettools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}
 .xprow{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:13px}.xprow .ready{color:var(--yellow);font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1px}
 .bar.thin{height:5px;margin:4px 0}
@@ -687,7 +694,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
-      <a href="#r-ram">RAM</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -794,6 +801,16 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <p>The INT perk Extra Slot doubles your max RAM, and Automation cuts every RAM cost by 1, so reactions only cost 1.</p>
           <h3 style="margin-top:18px">Overheated</h3>
           <p style="margin-top:8px">If your RAM hits 0 your system overheats. You're stunned and can't do anything until your RAM comes back. The INT perk Insulated Wires keeps you from ever overheating. The DM can drain or restore your RAM at any time.</p>
+          <h3 style="margin-top:18px">Cooldown round</h3>
+          <p style="margin-top:8px">All your RAM comes back after a cooldown round, a round where you don't use any RAM.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-quickhacks"><h2>Quickhacks</h2>
+        <div class="panel">
+          <p>Quickhacks are actions you pay for with RAM. All of your RAM comes back after a cooldown round where you use none.</p>
+          <div id="rQh"></div>
+          <p class="muted" style="font-size:13px;margin-top:10px">The INT perk Automation cuts every RAM cost by 1. Entries marked TBD are waiting on the GM.</p>
         </div>
       </section>
 
@@ -895,7 +912,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-coming"><h2>In the Works</h2>
         <div class="panel">
           <p>The GM is still building these. They'll land here as they're posted.</p>
-          <ul class="rlist"><li>Cyberpsychosis rules</li><li>Full RAM and hacking rules, including the CODE score</li></ul>
+          <ul class="rlist"><li>Cyberpsychosis rules</li><li>Damage for Short Circuit and Sonic, and effects for Distract, Memory Wipe, Overheat, Burnout and Detonate</li><li>The CODE score</li></ul>
         </div>
       </section>
     </div>
@@ -2098,10 +2115,30 @@ const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200}
 const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
 /* ================= ITEM TIERS + GENERATORS =================
    Placeholder tables. Swap these out when the GM posts the real ones. */
+const QUICKHACKS = [
+  {id:'short', n:'Short Circuit', ram:3, d:'Damage. Amount TBD'},
+  {id:'contagion', n:'Contagion', ram:5, d:'Gives a target disadvantage, and it spreads to 2 more targets in or entering a 15 ft radius'},
+  {id:'malfunction', n:'Malfunction', ram:4, d:'Target is stunned for 1 round'},
+  {id:'cripple', n:'Cripple', ram:3, d:'Half movement and no Dash'},
+  {id:'ping', n:'Ping', ram:1, d:'Pick a piece of tech you can see and ping a signal through it. You can see enemies through walls while they pass within 20 ft of it'},
+  {id:'distract', n:'Distract', ram:1, d:'Effect TBD'},
+  {id:'hijack', n:'Hijack', ram:2, d:'Take over cameras, turrets and drones'},
+  {id:'wipe', n:'Memory Wipe', ram:8, d:'Effect TBD'},
+  {id:'overheat', n:'Overheat', ram:5, d:'Effect TBD'},
+  {id:'burnout', n:'Burnout', ram:8, d:'Effect TBD'},
+  {id:'sonic', n:'Sonic', ram:5, d:'Damage and disconnects comms. Amount TBD'},
+  {id:'collapse', n:'Collapse', ram:12, d:'Target falls unconscious'},
+  {id:'detonate', n:'Detonate', ram:10, d:'Effect TBD'}
+];
+const qhCost = (q, c = C) => Math.max(0, q.ram - (c && c.unlocked.includes('INT.S.ph') ? 1 : 0));
+function renderRuleQh(){
+  const el = $('#rQh'); if (!el) return;
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Quickhack</th><th>RAM</th><th>Effect</th></tr></thead><tbody>${QUICKHACKS.map(q => `<tr><td><b>${q.n}</b></td><td>${q.ram}</td><td>${esc(q.d)}</td></tr>`).join('')}</tbody></table>`;
+}
 const BLACK_ICE = [
   {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:''},
   {id:'cobra', n:'Cobra', ac:12, hp:12, hit:6, per:4, dmg:'Drains 1d4+1 RAM', fx:''},
-  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, alerting other Black ICE', fx:''},
+  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, revealing their physical location to other netrunners and alerting the next Black ICE program that they are coming', fx:''},
   {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:'−2 that stacks with each hit', fx:''},
   {id:'scorpion', n:'Scorpion', ac:12, hp:15, hit:2, per:2, dmg:'Half movement and no Dash', fx:''},
   {id:'wisp', n:'Wisp', ac:10, hp:15, hit:4, per:4, dmg:'1d6 NET damage and −1 RAM', fx:''},
@@ -2261,7 +2298,7 @@ function renderCS(){
   const ramBlock = `<div class="track"><div class="head"><span class="lbl" style="margin:0">RAM</span><span class="muted" style="font-size:12px">4 base ${sgn(mod(score('INT')))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
       <div class="num">${rc} <small>/ ${rm}</small></div>
       <div class="pips">${Array.from({length: rm}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
-      <div class="row"><button class="btn small" data-act="ram-1" ${hacked('lockout') ? 'disabled' : ''}>−1</button><button class="btn small" data-act="ram-2" ${hacked('lockout') ? 'disabled' : ''}>Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull">Restore</button></div></div>`;
+      <div class="row"><button class="btn small" data-act="ram-1" ${hacked('lockout') ? 'disabled' : ''}>−1</button><button class="btn small" data-act="ram-2" ${hacked('lockout') ? 'disabled' : ''}>Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull" title="All RAM comes back after a round where you use none">Cooldown round</button></div></div>`;
   const rows = C.inv.length ? C.inv.map(i => {
     const p = C.eq.primary === i.id, s2 = C.eq.secondary === i.id;
     return `<div class="irow ${p || s2 ? 'eq' : ''}">
@@ -2325,6 +2362,9 @@ function renderCS(){
     <div class="panel gap"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
       <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><button class="btn primary small" data-act="addItem">Add</button></div>
       <div>${rows}</div></div>
+    <div class="panel gap"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
+      <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
+      <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
     ${fabPanel}
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
@@ -2442,6 +2482,19 @@ $('#vCS').addEventListener('click', e => {
     case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
     case 'ram+1': C.ram = Math.min(ramMax(), ramCur() + 1); return csSave();
     case 'ramFull': C.ram = null; return csSave();
+    case 'qh': {
+      if (stunned() || blocked('lockout')) return;
+      const q = QUICKHACKS.find(x => x.id === t.dataset.q); if (!q) return;
+      const c = qhCost(q); if (ramCur() < c) return toast(`${q.n} needs ${c} RAM. You have ${ramCur()}.`);
+      const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
+      if (live) flushLog('');
+      C.ram = ramCur() - c; saveC();
+      if (live){ logBase = normalize(C); liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:C.id, name:C.name, via:'Quickhack', lines:[{t:`${q.n} · −${c} RAM (${ramCur()}/${ramMax()} left)`, k:'bad'}]}).catch(() => {}); }
+      sfx('breach'); if (flashOK()) coolFx(q.n.toUpperCase(), false);
+      toast(`${q.n}. −${c} RAM. ${q.d}.`, true);
+      csSave(); if (isOverheated()) setTimeout(() => heatFx(), 200);
+      return;
+    }
     case 'cw+': case 'cw-': {
       const d = t.dataset.act === 'cw+' ? 1 : -1, nl = cwLoad() + d;
       if (nl < 0) return;
@@ -4084,7 +4137,7 @@ function renderRulePerks(){
   }).join('');
   $('#lvlTrack').innerHTML = Array.from({length:20}, (_, i) => `<div class="${i === 0 ? 'one' : ASI_LEVELS.includes(i + 1) ? 'asi' : ''}">${i + 1}</div>`).join('');
 }
-renderRulePerks(); renderRuleTiers(); renderRuleIce();
+renderRulePerks(); renderRuleTiers(); renderRuleIce(); renderRuleQh();
 
 let rIndex = null;
 function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }
