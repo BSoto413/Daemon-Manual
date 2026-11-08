@@ -304,9 +304,52 @@ input[type=number]:focus,select:focus{border-color:var(--cyan)}
 select{background:#06060c;border:1px solid var(--cyan-dim);color:var(--cyan);padding:8px;font-family:'Exo 2',sans-serif;font-size:14px;outline:none;max-width:100%}
 input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10px;letter-spacing:0}
 .eqslots{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:480px){.eqslots{grid-template-columns:1fr}}
+@media (max-width:480px){.eqslots{grid-template-columns:1fr 1fr}.eqslot{min-height:0;padding:10px}.eqslot[data-eqslot=armor]{grid-column:1/-1}}
 .eqslot{border:1px dashed rgba(var(--crgb),.3);padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px}
 .eqslot.on{border-style:solid;border-color:var(--cyan);background:rgba(var(--crgb),.05)}
+/* ---- spatial inventory ---- */
+.invlay{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:20px;align-items:start;margin-top:4px}
+@media (max-width:820px){.invlay{grid-template-columns:minmax(0,1fr)}}
+.baghead{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;margin-bottom:8px;font-size:12px}
+.bag{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;width:100%;max-width:420px;padding:6px;background:rgba(0,0,0,.35);border:1px solid rgba(var(--crgb),.35);box-shadow:inset 0 0 24px rgba(var(--crgb),.06);user-select:none;-webkit-user-select:none}
+.bag .bc{aspect-ratio:1;background:rgba(var(--crgb),.04);border:1px solid rgba(var(--crgb),.12);min-width:0}
+.bag .bc.ok{background:rgba(59,227,122,.28);border-color:#3be37a}
+.bag .bc.no{background:rgba(255,60,90,.3);border-color:var(--red)}
+.gi{--tc:#9aa6b2;position:relative;z-index:2;min-width:0;min-height:0;margin:1px;color:var(--tc);border:1px solid var(--tc);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--tc) 22%,#0b0d16),#0b0d16 70%);overflow:hidden;cursor:grab;touch-action:none;-webkit-touch-callout:none;transition:box-shadow .15s}
+.gi.t2{--tc:var(--cyan)}.gi.t3{--tc:var(--yellow)}.gi.t4{--tc:var(--red)}
+.gi .art{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px)}
+.art g > *{fill:color-mix(in srgb,currentColor 30%,transparent);stroke:currentColor;stroke-width:1.2;stroke-linejoin:round}
+.art .ln{fill:none!important}.art .vis{fill:currentColor!important;fill-opacity:.75}
+.gi .gn{position:absolute;left:3px;right:3px;top:1px;font-size:9px;line-height:1.3;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #000,0 0 4px #000;pointer-events:none;letter-spacing:.2px}
+.gi .gq{position:absolute;right:3px;bottom:1px;font:600 10px Orbitron,sans-serif;color:#fff;text-shadow:0 1px 2px #000;pointer-events:none}
+.gi .gf{position:absolute;left:3px;bottom:1px;font:600 9px Orbitron,sans-serif;color:var(--yellow);pointer-events:none}
+.gi.sel{box-shadow:0 0 0 2px #fff,0 0 16px var(--tc);z-index:3}
+.gi.drag{opacity:.3}
+.gi.ro{cursor:default;touch-action:auto}
+.gi.ghost{position:fixed;z-index:9999;pointer-events:none;margin:0;opacity:.92;box-shadow:0 0 0 2px #fff,0 8px 24px rgba(0,0,0,.6)}
+.floorwrap{margin-top:10px;padding:8px;border:1px dashed rgba(var(--crgb),.25);transition:border-color .15s,background .15s}
+.floorwrap.has{border-color:var(--red);background:rgba(255,60,90,.06)}
+.floorwrap.droph,.eqslot.droph{border-color:#3be37a!important;background:rgba(59,227,122,.1)!important}
+.floor{display:flex;flex-wrap:wrap;gap:6px;min-height:40px;margin-top:6px;--fu:38px}
+.floor .gi{width:calc(var(--fu) * var(--w));height:calc(var(--fu) * var(--h));flex:none}
+.garage{margin-top:12px}
+.encb{border:1px solid var(--red);color:var(--red);background:rgba(255,60,90,.08);padding:8px 10px;font-size:13px;margin-bottom:8px}
+.encb b{font-family:Orbitron,sans-serif;letter-spacing:1.5px;margin-right:6px}
+.selp{border:1px solid rgba(var(--crgb),.25);padding:12px;--tc:#9aa6b2}
+.selp.t2{--tc:var(--cyan)}.selp.t3{--tc:var(--yellow)}.selp.t4{--tc:var(--red)}
+.selp.empty{border-style:dashed}
+.selart{height:72px;color:var(--tc);border:1px solid var(--tc);background:linear-gradient(160deg,color-mix(in srgb,var(--tc) 18%,#0b0d16),#0b0d16 70%);position:relative}
+.selart .art{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px)}
+.szrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:13px}
+.stp{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-right:10px}.stp b{min-width:14px;text-align:center;color:#fff;font-family:Orbitron,sans-serif}
+.selp .irow{margin-top:8px}
+.nisz{display:inline-flex;align-items:center;gap:4px}.nisz input{width:58px}
+.eqslot{position:relative}
+.gi.eqart{position:relative;height:56px;margin:0 0 4px;cursor:grab}
+.dsheet .bag{max-width:360px}
+.encb.sm{display:inline-block;padding:2px 8px;font-size:11px;margin:0}
+
 .eqn{font-family:Orbitron,sans-serif;color:#fff;font-size:16px;word-break:break-word}
 .inv-add{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 150px auto;gap:8px;align-items:center}
 .irow{display:grid;grid-template-columns:minmax(0,2fr) 130px 96px minmax(0,2fr) 210px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(var(--crgb),.08)}
@@ -357,8 +400,9 @@ textarea.notes{font-family:'Exo 2',sans-serif;font-size:15px;color:#fff;min-heig
 .pcard .row input[type=number]{width:70px}
 .libadd{display:grid;grid-template-columns:minmax(0,2fr) 130px 70px minmax(0,2fr);gap:8px}
 @media (max-width:760px){.libadd{grid-template-columns:1fr 1fr}.libadd > :first-child,.libadd > :nth-child(4){grid-column:1 / -1}}
-.lrow{display:grid;grid-template-columns:minmax(0,1.4fr) 100px minmax(0,2fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(var(--crgb),.08);font-size:14px}
+.lrow{display:grid;grid-template-columns:minmax(0,1.4fr) 170px minmax(0,2fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(var(--crgb),.08);font-size:14px}
 .lrow .n{color:#fff}
+.lsz input{width:44px;padding:4px 6px;font-size:12px}.lsz{margin-left:4px;text-transform:none}
 .lrow .t{color:var(--muted);font-size:12px;letter-spacing:1px;text-transform:uppercase}
 @media (max-width:760px){.lrow{grid-template-columns:1fr 1fr}.lrow > :nth-child(3),.lrow > :nth-child(4){grid-column:1 / -1}}
 .flash{animation:flash 1.2s ease}
@@ -744,7 +788,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a>
-      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -903,6 +947,17 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Fortify</b></td><td>150 €$</td><td>The item is reinforced and tagged FORT</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:10px">The Maintenance Crew perk lets you repair items with your Craft score. These prices are a draft until the GM sets them.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-inventory"><h2>Inventory</h2>
+        <div class="panel">
+          <p>Your backpack is a grid. It's always 6 spaces wide, and STR sets how many rows you get.</p>
+          <table class="rtable"><thead><tr><th>STR mod</th><th>Rows</th><th>Spaces</th></tr></thead><tbody><tr><td><b>−2</b></td><td>2</td><td>12</td></tr><tr><td><b>−1</b></td><td>3</td><td>18</td></tr><tr><td><b>+0</b></td><td>4</td><td>24</td></tr><tr><td><b>+1</b></td><td>5</td><td>30</td></tr><tr><td><b>+2</b></td><td>6</td><td>36</td></tr><tr><td><b>+3</b></td><td>7</td><td>42</td></tr><tr><td><b>+4</b></td><td>8</td><td>48</td></tr><tr><td><b>+5</b></td><td>9</td><td>54</td></tr></tbody></table>
+          <p>Every item takes up a shape on the grid, like 4 × 1 for a rifle or 1 × 1 for a grenade. The GM tells you how big something is. A stack of the same item shares one spot.</p>
+          <p>Equipped weapons and worn armor don't use backpack space. Installed cyberware and vehicles don't either.</p>
+          <p>If something doesn't fit, it goes on the floor and you're <b>Encumbered</b> until you make room. The GM decides what that costs you.</p>
+          <p class="muted" style="font-size:13px">On your sheet, tap an item to pick it up, then tap an empty space to put it there. You can also drag it, rotate it, drop it on the floor or drag it onto your equipped slots.</p>
         </div>
       </section>
 
@@ -1250,7 +1305,7 @@ let DB = {chars:[], current:null};
 try { const d = JSON.parse(localStorage.getItem(KEY)); if (d && Array.isArray(d.chars)) DB = d; } catch(e){}
 if (!Array.isArray(DB.trash)) DB.trash = [];
 DB.trash = DB.trash.filter(x => x && x.merc && Date.now() - (x.at || 0) < 30 * 864e5);
-function persist(){ trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
+function persist(){ DB.chars.forEach(m => { if (m && m.inv && m.eq) packInv(m); }); trackAll(); try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch(e){} schedulePush(); scheduleCloud(); checkUnlocks(); }
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
 let C = null;       // current character
@@ -1272,7 +1327,7 @@ const CYBER_SLOTS = [
 const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
 const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
 const numOrNull = v => (v === null || v === undefined || v === '' || isNaN(+v)) ? null : +v;
-function normalize(c){ return fixEq(normalize0(c)); }
+function normalize(c){ return packInv(fixEq(normalize0(c))); }
 function normalize0(c){
   const base = {}; ORDER.forEach(k => base[k] = Math.min(15, Math.max(8, +((c.base||{})[k]) || 8)));
   const bg = BACKGROUNDS[c.background] ? c.background : 'Streetkid';
@@ -1292,9 +1347,10 @@ function normalize0(c){
     inv: (Array.isArray(c.inv) ? c.inv : []).filter(i => i && i.name).map(i => ({
       id: i.id || uid(), name: String(i.name).slice(0, 60), type: ITEM_TYPES.includes(i.type) ? i.type : 'Gear',
       qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
-      tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0)
+      tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0),
+      ...sizeOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null
     })),
-    eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null},
+    eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null, armor: (c.eq || {}).armor || null},
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
       id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
     })),
@@ -1318,8 +1374,80 @@ function normalize0(c){
 function fixEq(c){
   ['primary','secondary'].forEach(k => { const i = c.inv.find(x => x.id === c.eq[k]); if (!i || i.type !== 'Weapon') c.eq[k] = null; });
   if (c.eq.primary && c.eq.primary === c.eq.secondary) c.eq.secondary = null;
+  if (c.eq.armor){ const a = c.inv.find(x => x.id === c.eq.armor); if (!a || a.type !== 'Armor') c.eq.armor = null; }
   return c;
 }
+
+/* ================= SPATIAL INVENTORY ================= */
+// Backpack is always 6 wide. STR 10 gets 4 rows, each STR mod point adds or removes one.
+const BAG_COLS = 6, BAG_MAX_W = 6, BAG_MAX_H = 8;
+const bagRows = m => Math.max(1, Math.min(12, 4 + mod(score('STR', m))));
+const SIZE_RULES = [
+  [/sniper|lmg|hmg|minigun|railgun|launcher/i, 'Weapon', [5, 1]],
+  [/assault|rifle|shotgun|carbine|katana|sword|machete|bat\b|staff|spear/i, 'Weapon', [4, 1]],
+  [/smg|uzi|machine pistol|club|baton|hammer|axe/i, 'Weapon', [3, 1]],
+  [/pistol|revolver|knife|dagger|blade|shiv|knuckle|taser/i, 'Weapon', [2, 1]],
+  [/riot|plate|heavy/i, 'Armor', [2, 3]],
+  [/helmet|mask|hood\b|goggles/i, 'Armor', [2, 2]],
+  [/medkit|toolkit|tool kit|laptop|deck|drone|grapple|case/i, '', [2, 1]],
+  [/arm blade|mantis|launcher|gorilla/i, 'Cyberware', [2, 1]]
+];
+const TYPE_SIZE = {Weapon:[3, 1], Armor:[2, 2], Consumable:[1, 1], Ammo:[1, 1], Gear:[1, 1], Cyberware:[1, 1], Vehicle:[1, 1]};
+function defSize(type, name){
+  for (const [re, t, sz] of SIZE_RULES) if ((!t || t === type) && re.test(name || '')) return sz;
+  return TYPE_SIZE[type] || [1, 1];
+}
+function sizeOf(i){
+  const d = defSize(i.type, i.name), w = parseInt(i.w), h = parseInt(i.h);
+  return {w: Math.max(1, Math.min(BAG_MAX_W, w || d[0])), h: Math.max(1, Math.min(BAG_MAX_H, h || d[1]))};
+}
+const placed = i => Number.isInteger(i.gx) && i.gx >= 0 && Number.isInteger(i.gy);
+const isEquipped = (m, i) => m.eq.primary === i.id || m.eq.secondary === i.id || m.eq.armor === i.id;
+const inBag = (m, i) => i.type !== 'Vehicle' && !isEquipped(m, i);
+const onFloor = (m, i) => inBag(m, i) && i.gx === -1;
+const encumbered = m => m.inv.some(i => onFloor(m, i));
+function bagOcc(m, except){
+  const W = BAG_COLS, H = bagRows(m), occ = Array.from({length: H}, () => Array(W).fill(null));
+  m.inv.forEach(i => {
+    if (i.id === except || !inBag(m, i) || !placed(i)) return;
+    for (let y = i.gy; y < i.gy + i.h && y < H; y++) for (let x = i.gx; x < i.gx + i.w && x < W; x++) occ[y][x] = i.id;
+  });
+  return occ;
+}
+function fitsAt(occ, x, y, w, h, id){
+  const H = occ.length, W = BAG_COLS;
+  if (x < 0 || y < 0 || x + w > W || y + h > H) return false;
+  for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) if (occ[yy][xx] && occ[yy][xx] !== id) return false;
+  return true;
+}
+function findSpot(occ, w, h){
+  for (const [ww, hh] of w === h ? [[w, h]] : [[w, h], [h, w]])
+    for (let y = 0; y + hh <= occ.length; y++) for (let x = 0; x + ww <= BAG_COLS; x++) if (fitsAt(occ, x, y, ww, hh)) return {x, y, w:ww, h:hh};
+  return null;
+}
+// Keeps every bag item somewhere valid. New or displaced items get the first spot that fits, or the floor.
+function packInv(m){
+  const H = bagRows(m), occ = Array.from({length: H}, () => Array(BAG_COLS).fill(null)), mark = i => { for (let y = i.gy; y < i.gy + i.h; y++) for (let x = i.gx; x < i.gx + i.w; x++) occ[y][x] = i.id; };
+  const later = [];
+  m.inv.forEach(i => {
+    if (!(i.w >= 1 && i.h >= 1)) Object.assign(i, sizeOf(i));
+    if (!inBag(m, i)){ i.gx = null; i.gy = null; return; }
+    if (i.gx === -1){ i.gy = 0; return; }
+    if (placed(i) && fitsAt(occ, i.gx, i.gy, i.w, i.h)) mark(i); else later.push(i);
+  });
+  later.sort((a, b) => b.w * b.h - a.w * a.h).forEach(i => {
+    const p = findSpot(occ, i.w, i.h);
+    if (p){ i.gx = p.x; i.gy = p.y; i.w = p.w; i.h = p.h; mark(i); } else { i.gx = -1; i.gy = 0; }
+  });
+  return m;
+}
+// Repack everything, biggest first, to make the most room.
+function sortBag(m){
+  m.inv.forEach(i => { if (inBag(m, i)) { i.gx = null; i.gy = null; if (i.h > i.w && i.h <= BAG_COLS){ const t = i.w; i.w = i.h; i.h = t; } } });
+  return packInv(m);
+}
+const bagUsed = m => m.inv.filter(i => inBag(m, i) && placed(i)).reduce((n, i) => n + i.w * i.h, 0);
+const itemPayload = (i, q) => ({name:i.name, type:i.type, qty:q == null ? (i.qty || 1) : q, stats:i.stats || '', hot:!!i.hot, tier:i.tier || 0, fort:!!i.fort, cw:i.cw || 0, w:sizeOf(i).w, h:sizeOf(i).h});
 
 /* ================= PROGRESS: LEDGER, COUNTERS, ACHIEVEMENTS, UNDO, XP ================= */
 const XP_TABLE = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
@@ -1539,11 +1667,12 @@ function dmSheetHTML(p){
         <span>XP</span><b>${(m.xp || 0).toLocaleString()}</b>
         <span>Achievements</span><b>${ach} of ${ACH.length}</b>
       </div>
-      ${m.hacks.length || m.psycho || m.jackLock ? `<h4>Status</h4><div class="list">${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
-      <h4>Equipped</h4><div class="kv"><span>Primary</span><span>${eqd('primary')}</span><span>Secondary</span><span>${eqd('secondary')}</span></div>
+      ${m.hacks.length || m.psycho || m.jackLock || encumbered(m) ? `<h4>Status</h4><div class="list">${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${encumbered(m) ? '<div><b>Encumbered</b> · stuff on the floor</div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
+      <h4>Equipped</h4><div class="kv"><span>Primary</span><span>${eqd('primary')}</span><span>Secondary</span><span>${eqd('secondary')}</span><span>Armor</span><span>${eqd('armor')}</span></div>
       <h4>Skills</h4><p class="muted" style="font-size:13px;margin:0 0 6px">Proficient in ${profs.join(', ') || 'nothing yet'}. ◆ adds proficiency, ◆◆ doubles it.</p><div class="sk">${sk}</div>
     </div><div>
-      <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : ''}<small>${i.type}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
+      <h4>Backpack · ${BAG_COLS} × ${bagRows(m)} · ${bagUsed(m)} of ${BAG_COLS * bagRows(m)} spaces</h4>${bagHTML(m, true)}
+      <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : m.eq.armor === i.id ? '<span class="eqm">WORN</span>' : onFloor(m, i) ? '<span class="eqm" style="color:var(--red)">FLOOR</span>' : ''}<small>${i.type} · ${i.w}×${i.h}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
       <h4>Installed chrome · ${m.cyber.length}</h4>${m.cyber.length ? `<div class="list">${m.cyber.map(x => `<div><b>${esc(x.name)}</b>${x.hot ? ' <span class="hotb">HOT</span>' : ''}<small>${(SLOTMAP[x.slot] || [])[1] || x.slot}${x.effect ? ' · ' + esc(x.effect) : ''}</small></div>`).join('')}</div>` : '<p class="muted">None installed.</p>'}
       <h4>Perks · ${m.unlocked.length}</h4>${m.unlocked.length ? `<div class="list">${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<div><b>${esc(pk.n)}</b> <span class="muted">${st}</span><small>${esc(pk.d || '')}</small></div>`; }).join('')}</div>` : '<p class="muted">None yet.</p>'}
       ${m.notes ? `<h4>Notes</h4><p style="font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere">${esc(m.notes)}</p>` : ''}
@@ -1557,6 +1686,78 @@ function showDmSheet(u){
   md.innerHTML = `<div class="mbox" data-sheet="${u}"><div class="sethead"><h3>Merc sheet</h3><span class="muted" style="font-size:12px;margin-left:10px">Read only · updates live</span><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>${dmSheetHTML(p)}</div>`;
   if (box) md.querySelector('.mbox').scrollTop = top;
   md.onclick = e => { const b = e.target.closest('[data-m]'); if ((b && b.dataset.m === 'close') || e.target === md){ sheetU = null; closeModal(); } };
+}
+
+/* ---- Item art, drawn from primitives. Long side runs left to right, tall items get rotated. ---- */
+function artKind(i){
+  const n = (i.name || '').toLowerCase();
+  if (i.type === 'Weapon'){
+    if (/sniper/.test(n)) return 'sniper';
+    if (/lmg|hmg|minigun/.test(n)) return 'lmg';
+    if (/shotgun/.test(n)) return 'shotgun';
+    if (/smg|uzi|machine pistol/.test(n)) return 'smg';
+    if (/rifle|carbine|assault/.test(n)) return 'rifle';
+    if (/pistol|revolver|taser/.test(n)) return 'pistol';
+    if (/katana|sword|machete|knife|dagger|blade|shiv/.test(n)) return 'blade';
+    if (/bat|club|baton|hammer|axe|pipe/.test(n)) return 'blunt';
+    return /piercing|range|round|shot/.test((i.stats || '').toLowerCase()) ? 'rifle' : 'blade';
+  }
+  if (i.type === 'Armor') return /helmet|mask|goggles/.test(n) ? 'helmet' : 'vest';
+  if (i.type === 'Ammo') return 'ammo';
+  if (i.type === 'Cyberware') return /blade|mantis/.test(n) ? 'blade' : 'chip';
+  if (i.type === 'Vehicle') return 'car';
+  if (/grenade|frag|emp|smoke/.test(n)) return 'grenade';
+  if (/inject|stim|syringe|booster|dose/.test(n)) return 'syringe';
+  if (/medkit|first aid|trauma kit/.test(n)) return 'medkit';
+  if (/phone|shard|chip|scanner|deck|laptop|tablet/.test(n)) return 'device';
+  if (/grapple|rope|line|cable/.test(n)) return 'rope';
+  if (i.type === 'Consumable') return 'vial';
+  return 'box';
+}
+function artShapes(k, L, S){
+  const r = (x, y, w, h, o) => `<rect x="${(x * L).toFixed(1)}" y="${(y * S).toFixed(1)}" width="${(w * L).toFixed(1)}" height="${(h * S).toFixed(1)}" ${o || ''}/>`;
+  const p = pts => `<polygon points="${pts.map(([x, y]) => (x * L).toFixed(1) + ',' + (y * S).toFixed(1)).join(' ')}"/>`;
+  const c = (x, y, rr) => `<circle cx="${(x * L).toFixed(1)}" cy="${(y * S).toFixed(1)}" r="${(rr * Math.min(L, S)).toFixed(1)}"/>`;
+  switch (k){
+    case 'pistol': return r(.1, .22, .78, .2) + r(.82, .27, .1, .1) + p([[.2, .42], [.42, .42], [.36, .88], [.16, .88]]) + `<path class="ln" d="M${.44 * L} ${.42 * S} q ${.06 * L} ${.28 * S} ${-.04 * L} ${.26 * S}"/>`;
+    case 'smg': return r(.08, .28, .7, .2) + r(.78, .33, .16, .08) + r(.42, .48, .08, .42) + p([[.2, .48], [.32, .48], [.28, .8], [.17, .8]]) + r(0, .3, .08, .12);
+    case 'rifle': return p([[.02, .3], [.2, .36], [.2, .58], [.02, .7]]) + r(.2, .32, .5, .2) + r(.7, .38, .28, .08) + r(.5, .52, .07, .38) + p([[.3, .52], [.38, .52], [.36, .8], [.28, .8]]) + r(.36, .2, .2, .1);
+    case 'sniper': return p([[.02, .32], [.18, .38], [.18, .6], [.02, .72]]) + r(.18, .36, .42, .18) + r(.6, .41, .38, .07) + r(.3, .14, .26, .14) + c(.29, .21, .09) + c(.57, .21, .09) + p([[.24, .54], [.31, .54], [.29, .82], [.22, .82]]);
+    case 'shotgun': return p([[.02, .3], [.22, .36], [.22, .6], [.02, .72]]) + r(.22, .34, .36, .2) + r(.58, .36, .4, .1) + r(.6, .48, .24, .12) + p([[.3, .54], [.38, .54], [.36, .82], [.28, .82]]);
+    case 'lmg': return p([[.02, .25], [.16, .3], [.16, .55], [.02, .62]]) + r(.16, .28, .5, .24) + r(.66, .35, .32, .08) + r(.34, .52, .2, .3) + `<path class="ln" d="M${.82 * L} ${.43 * S} L ${.76 * L} ${.95 * S} M ${.82 * L} ${.43 * S} L ${.9 * L} ${.95 * S}"/>`;
+    case 'blade': return r(.04, .38, .26, .24) + r(.3, .2, .04, .6) + p([[.34, .4], [.9, .4], [.98, .5], [.9, .6], [.34, .6]]);
+    case 'blunt': return p([[.04, .44], [.4, .4], [.96, .3], [.96, .7], [.4, .6], [.04, .56]]) + r(.04, .4, .2, .2);
+    case 'vest': return p([[.22, .06], [.38, .06], [.42, .2], [.58, .2], [.62, .06], [.78, .06], [.92, .3], [.9, .94], [.1, .94], [.08, .3]]) + `<path class="ln" d="M${.5 * L} ${.22 * S} V ${.92 * S} M ${.2 * L} ${.55 * S} H ${.8 * L}"/>`;
+    case 'helmet': return `<path d="M${.1 * L} ${.7 * S} A ${.4 * L} ${.55 * S} 0 0 1 ${.9 * L} ${.7 * S} Z"/>` + r(.06, .66, .88, .14) + r(.3, .44, .4, .1, 'class="vis"');
+    case 'ammo': return r(.08, .3, .84, .6) + [.2, .4, .6, .8].map(x => r(x - .06, .08, .1, .3, 'rx="2"')).join('');
+    case 'chip': return r(.24, .24, .52, .52, 'rx="2"') + r(.38, .38, .24, .24, 'class="vis"') + [.32, .5, .68].map(x => r(x - .03, .08, .06, .14) + r(x - .03, .78, .06, .14) + r(.08, x - .03, .14, .06) + r(.78, x - .03, .14, .06)).join('');
+    case 'grenade': return c(.5, .58, .34) + r(.42, .12, .16, .14) + `<path class="ln" d="M${.58 * L} ${.18 * S} q ${.2 * L} 0 ${.22 * L} ${.3 * S}"/>`;
+    case 'syringe': return r(.18, .38, .5, .24) + r(.06, .3, .04, .4) + r(.1, .46, .08, .08) + r(.68, .44, .08, .12) + r(.76, .48, .2, .04);
+    case 'medkit': return r(.08, .2, .84, .7, 'rx="3"') + r(.42, .3, .16, .5, 'class="vis"') + r(.3, .47, .4, .16, 'class="vis"') + r(.38, .1, .24, .1);
+    case 'device': return r(.26, .08, .48, .84, 'rx="3"') + r(.32, .16, .36, .56, 'class="vis"') + c(.5, .82, .05);
+    case 'rope': return `<circle class="ln" cx="${.42 * L}" cy="${.5 * S}" r="${.3 * Math.min(L, S)}"/><circle class="ln" cx="${.42 * L}" cy="${.5 * S}" r="${.18 * Math.min(L, S)}"/>` + `<path class="ln" d="M${.62 * L} ${.5 * S} H ${.86 * L} q ${.1 * L} 0 ${.1 * L} ${-.16 * S}"/>`;
+    case 'vial': return r(.36, .1, .28, .14) + r(.3, .24, .4, .68, 'rx="3"') + r(.34, .5, .32, .38, 'class="vis"');
+    case 'car': return p([[.04, .6], [.2, .34], [.66, .3], [.84, .5], [.96, .56], [.96, .74], [.04, .74]]) + c(.24, .76, .14) + c(.76, .76, .14);
+    default: return r(.1, .18, .8, .72, 'rx="2"') + `<path class="ln" d="M${.1 * L} ${.18 * S} L ${.9 * L} ${.9 * S} M ${.9 * L} ${.18 * S} L ${.1 * L} ${.9 * S}"/>`;
+  }
+}
+function itemArt(i, w, h){
+  w = w || i.w; h = h || i.h;
+  const U = 20, W = w * U, H = h * U, tall = h > w, L = (tall ? H : W) - 6, S = (tall ? W : H) - 6;
+  const body = artShapes(artKind(i), L, S);
+  const g = tall ? `<g transform="translate(${W - 3} 3) rotate(90)">${body}</g>` : `<g transform="translate(3 3)">${body}</g>`;
+  return `<svg class="art" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${g}</svg>`;
+}
+const tileHTML = (i, extra, style) => `<div class="gi t${(i.tier || 0) + 1} ${extra || ''}" data-gi="${i.id}" style="${style || ''}" title="${esc(i.name)} · ${i.w}×${i.h}${i.stats ? ' · ' + esc(i.stats) : ''}">${itemArt(i)}<span class="gn">${esc(i.name)}</span>${i.qty !== 1 ? `<span class="gq">×${i.qty}</span>` : ''}${i.fort ? '<span class="gf">F</span>' : ''}</div>`;
+// The grid itself. ro = read only (DM view).
+function bagHTML(m, ro){
+  const H = bagRows(m), cells = [], items = [];
+  for (let y = 0; y < H; y++) for (let x = 0; x < BAG_COLS; x++) cells.push(`<i class="bc" data-cx="${x}" data-cy="${y}" style="grid-area:${y + 1}/${x + 1}"></i>`);
+  m.inv.filter(i => inBag(m, i) && placed(i)).forEach(i => items.push(tileHTML(i, (!ro && selItem === i.id ? 'sel' : '') + (ro ? ' ro' : ''), `grid-area:${i.gy + 1}/${i.gx + 1}/span ${i.h}/span ${i.w}`)));
+  const fl = m.inv.filter(i => onFloor(m, i));
+  return `<div class="bag ${ro ? 'ro' : ''}" ${ro ? '' : 'id="bag"'} style="grid-template-rows:repeat(${H},auto)">${cells.join('')}${items.join('')}</div>
+    <div class="floorwrap ${fl.length ? 'has' : ''}"><div class="row" style="gap:8px"><span class="lbl" style="margin:0">Floor</span><span class="muted" style="font-size:12px">${fl.length ? (ro ? 'No room for these in the bag.' : 'No room for these. Make space, then drag them in or hit Auto sort.') : ro ? 'Nothing on the floor.' : 'Drag something here to drop it.'}</span></div>
+    <div class="floor" ${ro ? '' : 'id="floor"'}>${fl.map(i => tileHTML(i, (!ro && selItem === i.id ? 'sel' : '') + (ro ? ' ro' : ''), `--w:${i.w};--h:${i.h}`)).join('')}</div></div>`;
 }
 
 /* ================= CHARACTER MATH ================= */
@@ -1880,7 +2081,7 @@ function openChar(id){
   const raw = DB.chars.find(x => x.id === id); if (!raw) return;
   if (!C || C.id !== id) ENVS.jack = false;
   C = normalize(raw); validate(); saveC();
-  sel = null; cyberForm = null; delItem = null; $('#codeOut').hidden = true;
+  sel = null; cyberForm = null; delItem = null; selItem = null; $('#codeOut').hidden = true;
   show('sheet'); setSheetTab(sheetTab); goTop();
   requestAnimationFrame(build);
 }
@@ -2304,14 +2505,16 @@ function genNpcRoll(prev, lock){
 }
 function genWeaponRoll(t, cls){
   const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t);
-  return {name:`${pick(GEN.makers)} ${pick(GEN.models)} ${w[0]}`.slice(0, 60), type:'Weapon', qty:1, tier, cw:0,
+  const o = {name:`${pick(GEN.makers)} ${pick(GEN.models)} ${w[0]}`.slice(0, 60), type:'Weapon', qty:1, tier, cw:0,
     stats:(w[1] + (w[2] ? ', ' + w[2] : '') + tierBit(tier, /piercing/.test(w[1]) ? 'Weapon' : 'Melee')).slice(0, 120)};
+  return Object.assign(o, sizeOf({type:'Weapon', name:w[0]}));
 }
 function genItemRoll(t, type){
   type = type || pick(Object.keys(GEN.items));
   const it = pick(GEN.items[type]), tier = rollTier(t);
   const cw = type === 'Cyberware' ? (it[2] || 1) + Math.floor(tier / 2) : 0;
-  return {name:it[0], type, qty:type === 'Ammo' ? 1 : 1, tier, cw, stats:(it[1] + tierBit(tier, type)).slice(0, 120)};
+  const o = {name:it[0], type, qty:1, tier, cw, stats:(it[1] + tierBit(tier, type)).slice(0, 120)};
+  return Object.assign(o, sizeOf(o));
 }
 const tierTag = (t, small) => `<span class="tagb tier t${(t || 0) + 1}" title="${esc(ITEM_TIERS[t || 0].name + '. ' + ITEM_TIERS[t || 0].buff)}">${small ? 'T' + ((t || 0) + 1) : ITEM_TIERS[t || 0].n}</span>`;
 const tierOpts = (sel, any) => (any ? `<option value="">Any tier</option>` : '') + ITEM_TIERS.map((x, i) => `<option value="${i}" ${String(sel) === String(i) ? 'selected' : ''}>${x.n} · ${x.name}</option>`).join('');
@@ -2360,9 +2563,9 @@ function renderCS(){
   const opts = sel => ITEM_TYPES.map(t => `<option ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
   const eqCard = (k, label) => {
     const i = it(C.eq[k]);
-    return `<div class="eqslot ${i ? 'on' : ''}"><span class="lbl">${label}</span>` + (i
+    return `<div class="eqslot ${i ? 'on' : ''}" data-eqslot="${k}"><span class="lbl">${label}</span>${i ? `<div class="gi eqart t${i.tier + 1}" data-gi="${i.id}" title="Drag back to the bag to unequip">${itemArt(i)}</div>` : ''}` + (i
       ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div><div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
-      : `<div class="muted" style="font-size:14px">Empty. Hit ${k === 'primary' ? 'P' : 'S'} on a weapon in your inventory to equip it here.</div>`) + `</div>`;
+      : `<div class="muted" style="font-size:14px">${k === 'armor' ? 'Empty. Drag armor here or hit Wear on it.' : `Empty. Drag a weapon here or hit ${k === 'primary' ? 'P' : 'S'} on it.`}</div>`) + `</div>`;
   };
   const ident = `<div class="ident">
       <div><span class="lbl">Handle</span><div class="v">${esc(C.name)}</div></div>
@@ -2394,7 +2597,7 @@ function renderCS(){
       <div class="num">${rc} <small>/ ${rm}</small></div>
       <div class="pips">${Array.from({length: rm}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
       <div class="row"><button class="btn small" data-act="ram-1" ${hacked('lockout') ? 'disabled' : ''}>−1</button><button class="btn small" data-act="ram-2" ${hacked('lockout') ? 'disabled' : ''}>Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull" title="All RAM comes back after a round where you use none">Cooldown round</button></div></div>`;
-  const rows = C.inv.length ? C.inv.map(i => {
+  const irow = i => {
     const p = C.eq.primary === i.id, s2 = C.eq.secondary === i.id;
     return `<div class="irow ${p || s2 ? 'eq' : ''}">
       <input type="text" class="f" data-i="${i.id}" data-f="name" value="${esc(i.name)}" aria-label="Item name">
@@ -2409,7 +2612,26 @@ function renderCS(){
         ${liveMe() && players.some(p => p.id !== liveApi.uid) ? `<select data-hand="${i.id}" aria-label="Hand to a party member"><option value="">Hand to…</option>${players.filter(p => p.id !== liveApi.uid).map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>` : ''}
         <button class="btn small ${delItem === i.id ? 'danger' : ''}" data-del-item="${i.id}" aria-label="Delete item">${delItem === i.id ? 'Sure?' : '✕'}</button>
       </div></div>`;
-  }).join('') : `<p class="muted" style="margin-top:12px">Nothing in the bag yet.</p>`;
+  };
+  if (selItem && !C.inv.some(i => i.id === selItem)) selItem = null;
+  lastFloorN = C.inv.filter(i => onFloor(C, i)).length;
+  const sel = C.inv.find(i => i.id === selItem), H = bagRows(C), enc = encumbered(C), garage = C.inv.filter(i => i.type === 'Vehicle');
+  const selPanel = sel ? `<div class="selp t${sel.tier + 1}"><div class="selart">${itemArt(sel)}</div>
+      <div class="row" style="gap:6px;margin:8px 0 4px"><b style="color:#fff">${esc(sel.name)}</b>${tierTag(sel.tier)}<span class="muted" style="font-size:12px">${sel.type}${isEquipped(C, sel) ? ' · equipped' : onFloor(C, sel) ? ' · on the floor' : ''}</span></div>
+      ${sel.type === 'Vehicle' ? '<p class="muted" style="font-size:13px;margin:0 0 6px">Vehicles don\'t go in the bag.</p>' : `<div class="szrow"><span class="lbl" style="margin:0;width:100%">Size in the bag</span>
+        <span class="stp"><span class="muted">Wide</span><button class="btn small" data-act="invW-" aria-label="Narrower">−</button><b>${sel.w}</b><button class="btn small" data-act="invW+" aria-label="Wider">+</button></span>
+        <span class="stp"><span class="muted">Tall</span><button class="btn small" data-act="invH-" aria-label="Shorter">−</button><b>${sel.h}</b><button class="btn small" data-act="invH+" aria-label="Taller">+</button></span></div>
+      <div class="row" style="gap:6px;margin:8px 0">${!isEquipped(C, sel) ? `<button class="btn small" data-act="invRot">Rotate</button>` : ''}${onFloor(C, sel) ? '<button class="btn small" data-act="invBag">Put in bag</button>' : !isEquipped(C, sel) ? '<button class="btn small" data-act="invFloor">Drop on floor</button>' : ''}
+        ${sel.type === 'Armor' ? `<button class="btn small ${C.eq.armor === sel.id ? 'on' : ''}" data-equip="armor" data-i="${sel.id}">${C.eq.armor === sel.id ? 'Take off' : 'Wear'}</button>` : ''}<button class="btn small" data-act="invDesel">Done</button></div>`}
+      ${irow(sel)}</div>`
+    : `<div class="selp empty"><p class="muted" style="margin:0">Tap an item to pick it up. Then tap an empty space to move it, or drag it there. Equip from here, or drag weapons and armor onto your equipped slots.</p></div>`;
+  const rows = `<div class="invlay"><div class="bagcol">
+      <div class="baghead"><span class="lbl" style="margin:0">Backpack</span><span class="muted">${BAG_COLS} × ${H} · ${bagUsed(C)} of ${BAG_COLS * H} spaces · STR ${score('STR')} gives ${H} row${H === 1 ? '' : 's'}</span></div>
+      ${enc ? '<div class="encb"><b>ENCUMBERED</b> Something is on the floor. The GM decides the penalty until you make room.</div>' : ''}
+      ${bagHTML(C)}
+      <div class="row" style="gap:8px;margin-top:10px"><button class="btn small" data-act="invSort">Auto sort</button><span class="muted" style="font-size:12px">Packs everything biggest first</span></div>
+      ${garage.length ? `<div class="garage"><span class="lbl">Garage</span><div class="floor">${garage.map(i => tileHTML(i, selItem === i.id ? 'sel' : '', '--w:2;--h:1')).join('')}</div></div>` : ''}
+    </div><div class="selcol">${selPanel}</div></div>`;
   const rip = canRip(), fab = canFab();
   const craft = mod(score('TEC')) + prof(C.level) * skillProf('Craft', 'TEC').level;
   const psyBlock = `<div class="track psy ${C.psycho ? 'on' : ''}"><div class="head"><span class="lbl" style="margin:0">Cyberpsychosis</span><span class="muted" style="font-size:12px">Saves at −5</span></div>
@@ -2452,11 +2674,14 @@ function renderCS(){
       <div>${ident}</div></div></div>
     <div class="cs-grid">
       <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${hpBlock}${ramBlock}${cwBlock}${psyBlock}</div>
-      <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}</div></div>
+      <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div></div>
     </div>
-    <div class="panel gap"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
-      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><button class="btn primary small" data-act="addItem">Add</button></div>
-      <div>${rows}</div></div>
+    <div class="panel gap" id="invPanel"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
+      <div>${rows}</div>
+      <span class="lbl" style="margin-top:18px">Add an item</span>
+      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><span class="nisz"><input type="number" id="niW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="niH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><button class="btn primary small" data-act="addItem">Add</button></div>
+      <p class="muted" style="font-size:12px;margin:-4px 0 10px">Leave the size blank and it guesses from the type, like 4 × 1 for a rifle. Your GM tells you the real size.</p>
+</div>
     <div class="panel gap"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
       <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
@@ -2469,6 +2694,148 @@ function renderCS(){
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
 const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
+/* ---- Inventory controls. Tap to pick up, tap an empty space to place, or drag. ---- */
+let selItem = null, lastFloorN = 0, dragS = null;
+function bagNote(){
+  const n = C.inv.filter(i => onFloor(C, i)).length;
+  if (n > lastFloorN) toast('No room in the bag. It went on the floor.');
+  lastFloorN = n;
+}
+function settle(i){
+  if (placed(i) && !fitsAt(bagOcc(C, i.id), i.gx, i.gy, i.w, i.h, i.id)){ i.gx = null; i.gy = null; }
+  packInv(C); bagNote();
+}
+function moveTo(i, x, y, w, h){
+  w = w || i.w; h = h || i.h;
+  if (!fitsAt(bagOcc(C, i.id), x, y, w, h, i.id)) return false;
+  if (isEquipped(C, i)) ['primary', 'secondary', 'armor'].forEach(k => { if (C.eq[k] === i.id) C.eq[k] = null; });
+  i.gx = x; i.gy = y; i.w = w; i.h = h; packInv(C); bagNote(); return true;
+}
+function equipTo(i, k){
+  if (k === 'armor' ? i.type !== 'Armor' : i.type !== 'Weapon'){ toast(k === 'armor' ? 'Only armor goes there.' : 'Only weapons go there.'); return false; }
+  if (stunned() || (k !== 'armor' && blocked('weapons'))) return false;
+  const old = C.inv.find(x => x.id === C.eq[k]);
+  ['primary', 'secondary'].forEach(s => { if (C.eq[s] === i.id) C.eq[s] = null; });
+  C.eq[k] = i.id; if (old && old !== i){ old.gx = null; old.gy = null; }
+  packInv(C); bagNote(); return true;
+}
+function invAct(a){
+  const i = C.inv.find(x => x.id === selItem);
+  if (a === 'invSort'){ sortBag(C); bagNote(); sfx('equip'); toast(encumbered(C) ? 'Sorted. Some things still don\'t fit.' : 'Sorted.', true); return csSave(); }
+  if (a === 'invDesel'){ selItem = null; return renderCS(); }
+  if (!i) return;
+  if (a === 'invRot'){
+    const w = i.h, h = i.w;
+    if (placed(i) && fitsAt(bagOcc(C, i.id), i.gx, i.gy, w, h, i.id)){ i.w = w; i.h = h; }
+    else if (placed(i)){ const sp = findSpot(bagOcc(C, i.id), w, h); if (sp && sp.w === w){ i.gx = sp.x; i.gy = sp.y; i.w = w; i.h = h; } else { toast('No room to turn it.'); return; } }
+    else { i.w = w; i.h = h; }
+    sfx('select'); return csSave();
+  }
+  const m = /^inv([WH])([+-])$/.exec(a);
+  if (m){
+    const k = m[1] === 'W' ? 'w' : 'h', max = k === 'w' ? BAG_MAX_W : BAG_MAX_H;
+    i[k] = Math.max(1, Math.min(max, i[k] + (m[2] === '+' ? 1 : -1)));
+    settle(i); sfx(m[2] === '+' ? 'up' : 'down'); return csSave();
+  }
+  if (a === 'invFloor'){ i.gx = -1; i.gy = 0; lastFloorN++; sfx('unequip'); return csSave(); }
+  if (a === 'invBag'){ i.gx = null; i.gy = null; packInv(C); if (onFloor(C, i)) toast('Still no room. Make space or try Auto sort.'); else sfx('equip'); lastFloorN = C.inv.filter(x => onFloor(C, x)).length; return csSave(); }
+}
+function bagPitch(){
+  const c0 = document.querySelector('#bag .bc[data-cx="0"][data-cy="0"]'), c1 = document.querySelector(`#bag .bc[data-cx="${BAG_COLS - 1}"][data-cy="0"]`);
+  if (!c0 || !c1) return null;
+  const a = c0.getBoundingClientRect(), z = c1.getBoundingClientRect(), pitch = (z.left - a.left) / (BAG_COLS - 1);
+  return {pitch, left:a.left - (pitch - a.width) / 2, top:a.top - (pitch - a.height) / 2};
+}
+function bagCellAt(px, py){
+  const g = bagPitch(); if (!g) return null;
+  const rows = document.querySelectorAll('#bag .bc').length / BAG_COLS;
+  const x = Math.floor((px - g.left) / g.pitch), y = Math.floor((py - g.top) / g.pitch);
+  if (x < 0 || y < 0 || x >= BAG_COLS || y >= rows) return {out:true, pitch:g.pitch};
+  return {x, y, pitch:g.pitch};
+}
+function markCells(x, y, w, h, ok){
+  document.querySelectorAll('#bag .bc.ok, #bag .bc.no').forEach(c => c.classList.remove('ok', 'no'));
+  if (x == null) return;
+  for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++){
+    const c = document.querySelector(`#bag .bc[data-cx="${xx}"][data-cy="${yy}"]`); if (c) c.classList.add(ok ? 'ok' : 'no');
+  }
+}
+$('#vCS').addEventListener('pointerdown', e => {
+  const t = e.target.closest('.gi[data-gi]'); if (!t || t.classList.contains('ro') || e.button > 0) return;
+  const i = C.inv.find(x => x.id === t.dataset.gi); if (!i) return;
+  const tr = t.getBoundingClientRect(), g = bagCellAt(e.clientX, e.clientY), pitch = t.closest('#bag') ? g.pitch : (g ? g.pitch : 40);
+  const unitX = tr.width / i.w, unitY = tr.height / i.h;
+  dragS = {id:i.id, x0:e.clientX, y0:e.clientY, moved:false, w:i.w, h:i.h, pitch, ox:Math.min(i.w - 1, Math.floor((e.clientX - tr.left) / unitX)), oy:Math.min(i.h - 1, Math.floor((e.clientY - tr.top) / unitY)), el:t, pid:e.pointerId};
+  try { t.setPointerCapture(e.pointerId); } catch(err){}
+});
+function ghostPos(px, py){
+  const gh = dragS.ghost; if (!gh) return;
+  gh.style.width = (dragS.w * dragS.pitch - 2) + 'px'; gh.style.height = (dragS.h * dragS.pitch - 2) + 'px';
+  gh.style.left = (px - (dragS.ox + .5) * dragS.pitch) + 'px'; gh.style.top = (py - (dragS.oy + .5) * dragS.pitch) + 'px';
+}
+function dragOver(px, py){
+  const g = bagCellAt(px, py); dragS.target = null;
+  document.querySelectorAll('.droph').forEach(x => x.classList.remove('droph'));
+  if (g && !g.out){
+    const x = g.x - dragS.ox, y = g.y - dragS.oy, i = C.inv.find(z => z.id === dragS.id);
+    const ok = fitsAt(bagOcc(C, dragS.id), x, y, dragS.w, dragS.h, dragS.id);
+    markCells(Math.max(0, x), Math.max(0, y), Math.min(dragS.w, BAG_COLS - Math.max(0, x)), dragS.h, ok);
+    dragS.target = ok ? {kind:'bag', x, y} : null; return;
+  }
+  markCells(null);
+  const el = document.elementFromPoint(px, py), fl = el && el.closest('#floor, .floorwrap'), slot = el && el.closest('[data-eqslot]');
+  if (fl){ fl.closest('.floorwrap').classList.add('droph'); dragS.target = {kind:'floor'}; }
+  else if (slot){ slot.classList.add('droph'); dragS.target = {kind:'eq', k:slot.dataset.eqslot}; }
+}
+window.addEventListener('pointermove', e => {
+  if (!dragS || e.pointerId !== dragS.pid) return;
+  const dx = e.clientX - dragS.x0, dy = e.clientY - dragS.y0;
+  if (!dragS.moved){
+    if (dx * dx + dy * dy < 64) return;
+    dragS.moved = true; dragS.el.classList.add('drag');
+    const i = C.inv.find(z => z.id === dragS.id);
+    const bp = bagPitch(); if (bp) dragS.pitch = bp.pitch;
+    const gh = document.createElement('div'); gh.className = `gi ghost t${i.tier + 1}`; gh.innerHTML = itemArt({...i, w:dragS.w, h:dragS.h});
+    document.body.appendChild(gh); dragS.ghost = gh; selItem = i.id;
+  }
+  e.preventDefault(); dragS.px = e.clientX; dragS.py = e.clientY; ghostPos(e.clientX, e.clientY); dragOver(e.clientX, e.clientY);
+  if (!dragS.scroller) dragS.scroller = setInterval(() => {
+    if (!dragS){ return; }
+    const edge = 70, y = dragS.py, v = y < edge ? -(edge - y) / 4 : y > innerHeight - edge ? (y - innerHeight + edge) / 4 : 0;
+    if (v){ window.scrollBy(0, v); dragOver(dragS.px, dragS.py); }
+  }, 16);
+}, {passive:false});
+function endDrag(e, cancel){
+  if (!dragS || (e && e.pointerId !== dragS.pid)) return;
+  const d = dragS; dragS = null;
+  if (d.scroller) clearInterval(d.scroller);
+  if (d.ghost) d.ghost.remove();
+  markCells(null); document.querySelectorAll('.droph').forEach(x => x.classList.remove('droph'));
+  if (d.el) d.el.classList.remove('drag');
+  const i = C.inv.find(z => z.id === d.id); if (!i) return;
+  if (!d.moved){ if (cancel) return; selItem = selItem === i.id ? null : i.id; sfx('select'); return renderCS(); }
+  if (cancel || !d.target){ return renderCS(); }
+  if (d.target.kind === 'bag'){ if (moveTo(i, d.target.x, d.target.y, d.w, d.h)){ sfx('equip'); return csSave(); } }
+  else if (d.target.kind === 'floor'){ if (isEquipped(C, i)) return renderCS(); i.gx = -1; i.gy = 0; lastFloorN++; sfx('unequip'); return csSave(); }
+  else if (d.target.kind === 'eq'){ if (equipTo(i, d.target.k)){ sfx('equip'); return csSave(); } }
+  renderCS();
+}
+window.addEventListener('pointerup', e => endDrag(e));
+window.addEventListener('pointercancel', e => endDrag(e, true));
+window.addEventListener('keydown', e => {
+  if (!dragS || !dragS.moved || (e.key !== 'r' && e.key !== 'R')) return;
+  const w = dragS.w; dragS.w = dragS.h; dragS.h = w; const ox = dragS.ox; dragS.ox = Math.min(dragS.w - 1, dragS.oy); dragS.oy = Math.min(dragS.h - 1, ox);
+  const i = C.inv.find(z => z.id === dragS.id); dragS.ghost.innerHTML = itemArt({...i, w:dragS.w, h:dragS.h});
+  ghostPos(dragS.x0, dragS.y0);
+});
+// Tap an empty space to place the picked-up item there
+$('#vCS').addEventListener('click', e => {
+  const c = e.target.closest('#bag .bc'); if (!c || !selItem) return;
+  const i = C.inv.find(z => z.id === selItem); if (!i || i.type === 'Vehicle') return;
+  if (moveTo(i, +c.dataset.cx, +c.dataset.cy)){ sfx('equip'); csSave(); }
+  else { sfx('deny'); toast(`${i.name} doesn't fit there. It needs ${i.w} × ${i.h}.`); }
+});
+
 $('#vCS').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   const amt = id => Math.max(0, parseInt(($('#' + id) || {}).value) || 0);
@@ -2478,11 +2845,13 @@ $('#vCS').addEventListener('click', e => {
   if ((t.dataset.equip || t.dataset.unequip) && blocked('weapons')) return;
   if (t.dataset.uninstall && blocked('cyber')) return;
   if (t.dataset.equip){
-    const k = t.dataset.equip, id = t.dataset.i, other = k === 'primary' ? 'secondary' : 'primary';
-    if (C.eq[k] === id) C.eq[k] = null; else { C.eq[k] = id; if (C.eq[other] === id) C.eq[other] = null; }
+    const k = t.dataset.equip, id = t.dataset.i, other = k === 'primary' ? 'secondary' : k === 'secondary' ? 'primary' : null;
+    if (C.eq[k] === id){ C.eq[k] = null; const i = C.inv.find(x => x.id === id); if (i){ i.gx = null; i.gy = null; } }
+    else { const old = C.eq[k]; C.eq[k] = id; if (other && C.eq[other] === id) C.eq[other] = null; const o = C.inv.find(x => x.id === old); if (o){ o.gx = null; o.gy = null; } }
+    packInv(C); bagNote();
     return csSave();
   }
-  if (t.dataset.unequip){ C.eq[t.dataset.unequip] = null; return csSave(); }
+  if (t.dataset.unequip){ const i = C.inv.find(x => x.id === C.eq[t.dataset.unequip]); C.eq[t.dataset.unequip] = null; if (i){ i.gx = null; i.gy = null; } packInv(C); bagNote(); return csSave(); }
   if (t.dataset.qty){ const i = C.inv.find(x => x.id === t.dataset.i); if (i) i.qty = Math.max(0, i.qty + (+t.dataset.qty)); return csSave(); }
   if (t.dataset.delItem){
     const id = t.dataset.delItem;
@@ -2599,11 +2968,15 @@ $('#vCS').addEventListener('click', e => {
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
+    case 'invSort': case 'invDesel': case 'invRot': case 'invW+': case 'invW-': case 'invH+': case 'invH-': case 'invFloor': case 'invBag': return invAct(t.dataset.act);
     case 'addItem': {
       const name = $('#niName').value.trim();
       if (!name){ $('#niName').focus(); return toast('Give the item a name.'); }
-      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120), tier:Math.max(0, Math.min(3, parseInt($('#niTier').value) || 0))};
-      C.inv.push(item);
+      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120), tier:Math.max(0, Math.min(3, parseInt($('#niTier').value) || 0)), gx:null, gy:null};
+      Object.assign(item, sizeOf({...item, w:$('#niW').value, h:$('#niH').value}));
+      C.inv.push(item); packInv(C); selItem = item.id;
+      if (onFloor(C, item)) toast(`No room for ${item.name}. It's on the floor.`);
+      $('#niW').value = ''; $('#niH').value = '';
       const keepType = item.type;
       csSave();
       $('#niType').value = keepType; $('#niName').focus();
@@ -2634,7 +3007,7 @@ $('#vCS').addEventListener('change', async e => {
     if (stunned()) return renderCS();
     const i = C.inv.find(x => x.id === t.dataset.hand); if (!i || !liveMe()) return renderCS();
     const target = players.find(p => p.id === to);
-    const ok = await sendPlayerOp(to, {kind:'item', item:{name:i.name, type:i.type, qty:1, stats:i.stats, hot:i.hot, tier:i.tier, fort:i.fort, cw:i.cw}});
+    const ok = await sendPlayerOp(to, {kind:'item', item:itemPayload(i, 1)});
     if (ok){
       if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(x => x !== i); fixEq(C); }
       C.ctr.gifts++;
@@ -3111,7 +3484,8 @@ function diffMerc(a, b){
     if (d > 0) add(`+${d > 1 ? d + ' ' : ''}${l}`, 'good'); else if (d < 0) add(`−${d < -1 ? -d + ' ' : ''}${l}`);
   });
   const eqn = (c, k) => { const i = c.inv.find(x => x.id === c.eq[k]); return i ? itemLabel(i) : ''; };
-  ['primary', 'secondary'].forEach(k => { const x = eqn(a, k), y = eqn(b, k); if (x !== y) add(y ? `Equipped ${y} as ${k}` : `Unequipped ${k}`); });
+  ['primary', 'secondary', 'armor'].forEach(k => { const x = eqn(a, k), y = eqn(b, k); if (x !== y) add(y ? (k === 'armor' ? `Wearing ${y}` : `Equipped ${y} as ${k}`) : (k === 'armor' ? 'Took off armor' : `Unequipped ${k}`)); });
+  if (encumbered(a) !== encumbered(b)) add(encumbered(b) ? 'Encumbered · stuff on the floor' : 'No longer encumbered', encumbered(b) ? 'bad' : 'good');
   b.cyber.filter(x => !a.cyber.some(y => y.id === x.id)).forEach(x => add(`Installed ${x.name}${x.hot ? ' (hot)' : ''}`, 'good'));
   a.cyber.filter(x => !b.cyber.some(y => y.id === x.id)).forEach(x => add(`Removed ${x.name}`));
   const w1 = cwLoad(a), w2 = cwLoad(b);
@@ -3168,7 +3542,7 @@ function playAskHTML(){
 let gN = null, gNLock = {name:false, origin:false, gender:false, age:false}, gW = null, gI = null, gWT = '', gWC = '', gIT = '', gIType = '';
 function genResult(x){
   if (!x) return `<div class="res"><p class="muted" style="margin:0">Hit Roll to generate one.</p></div>`;
-  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span></div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
+  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span><span class="nisz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-gsz="w" value="${sizeOf(x).w}" aria-label="Width in spaces"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-gsz="h" value="${sizeOf(x).h}" aria-label="Height in spaces"></span></div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
 }
 let moodDraft = {style:'nomad', tod:'default', weather:'default'};
 const TODS = [['default', 'Scene default'], ['auto', 'Follow the clock'], ['dawn', 'Dawn'], ['day', 'Day'], ['dusk', 'Dusk'], ['night', 'Night']];
@@ -3230,6 +3604,8 @@ $('#liveBody').addEventListener('change', e => {
   const id = e.target.id;
   if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
   if (id === 'rcDay'){ recapDay = +e.target.value; return; }
+  if (e.target.dataset.gsz){ const g = e.target.closest('.gen'), k = g && g.querySelector('[data-live=groll]'), x = k && (k.dataset.g === 'w' ? gW : gI); if (x){ x[e.target.dataset.gsz] = e.target.value; Object.assign(x, sizeOf(x)); e.target.value = x[e.target.dataset.gsz]; } return; }
+  if (e.target.dataset.libsz){ const it = lib.find(z => z.id === e.target.dataset.i); if (it){ const nx = {...it, [e.target.dataset.libsz]:e.target.value}; Object.assign(nx, sizeOf(nx)); liveApi.setLibItem(nx).catch(() => toast("Couldn't save the size.")); } return; }
   if (id === 'mdStyle'){ moodDraft.style = e.target.value; return; } if (id === 'mdTod'){ moodDraft.tod = e.target.value; return; } if (id === 'mdWx'){ moodDraft.weather = e.target.value; return; }
   if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
   else if (id === 'giT') gIT = e.target.value; else if (id === 'giType') gIType = e.target.value;
@@ -3259,7 +3635,7 @@ async function genClick(a, t){
     try { await liveApi.setLibItem(item); } catch(err){ toast("Couldn't save the item."); return true; }
     if (to){
       const targets = to === '*' ? players.map(p => p.id) : [to];
-      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats, cw:item.cw || 0, tier:item.tier || 0}});
+      for (const id of targets) await sendOp(id, {kind:'item', item:itemPayload(item)});
       toast(`${item.name} saved and sent.`, true);
     } else toast(`${item.name} saved to your library.`, true);
     if (t.dataset.g === 'w') gW = null; else gI = null;
@@ -3487,7 +3863,7 @@ function applyOp(op){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
     const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
     const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-    if (same) same.qty += q; else m.inv.push({id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw});
+    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
@@ -3738,7 +4114,7 @@ function partyCard(p, dm){
       <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''}">
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
-        ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
+        ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
       <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
@@ -3816,7 +4192,7 @@ function liveHTML(){
       <div class="row gap"><span class="muted" style="font-size:13px">Deploy Black ICE</span>${BLACK_ICE.map(i => `<button class="btn small danger" data-live="ice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
       <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
       <div class="players">${npcCards || '<p class="muted">No NPCs yet.</p>'}</div></div>`;
-  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
+  const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''} <span class="nisz lsz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-libsz="w" data-i="${i.id}" value="${sizeOf(i).w}" aria-label="${esc(i.name)} width"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-libsz="h" data-i="${i.id}" value="${sizeOf(i).h}" aria-label="${esc(i.name)} height"></span></span><span class="muted">${esc(i.stats || '')}</span>
       <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
       <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libhide" data-i="${i.id}" title="${i.hidden ? 'Hidden from the codex' : 'Shown in the codex'}">${i.hidden ? 'Hidden' : 'Codex'}</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
     : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
@@ -3837,6 +4213,7 @@ function liveHTML(){
       ${libImport ? `<textarea id="libImpTxt" placeholder="Paste a copied library here"></textarea><div class="row gap"><button class="btn small primary" data-live="libimpgo">Import</button></div>` : ''}
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Tier <select id="liTier" aria-label="Tier">${tierOpts(0)}</select></label><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
+      <div class="row gap"><span class="muted" style="font-size:13px">Backpack size</span><span class="nisz"><input type="number" id="liW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="liH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><span class="muted" style="font-size:12px">Blank guesses from the type, like 4 × 1 for a rifle</span></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
       <div style="margin-top:10px">${libRows}</div>
     </div>` : ''}`;
@@ -3995,7 +4372,7 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'ram'){ if (await sendOp(u, {kind:'ram'})) toast(`Restored RAM for ${pname(u)}.`, true); return; }
   if (a === 'give'){
     const it = lib.find(x => x.id === ($('#give-' + u) || {}).value); if (!it) return;
-    if (await sendOp(u, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0, tier:it.tier || 0}})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
+    if (await sendOp(u, {kind:'item', item:itemPayload(it)})) toast(`Sent ${it.name} to ${pname(u)}.`, true);
     return;
   }
   if ((a === 'install' || a === 'uninstall') && LS.role === 'player'){
@@ -4080,12 +4457,13 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'libadd'){
     const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
     const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0), tier:Math.max(0, Math.min(3, parseInt($('#liTier').value) || 0))};
+    Object.assign(item, sizeOf({...item, w:$('#liW').value, h:$('#liH').value})); $('#liW').value = ''; $('#liH').value = '';
     const to = $('#liTo').value;
     try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
     $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
     if (to){
       const targets = to === '*' ? players.map(p => p.id) : [to];
-      for (const id of targets) await sendOp(id, {kind:'item', item:{name:item.name, type:item.type, qty:item.qty, stats:item.stats, cw:item.cw || 0, tier:item.tier || 0}});
+      for (const id of targets) await sendOp(id, {kind:'item', item:itemPayload(item)});
       toast(`${item.name} saved and sent to ${to === '*' ? 'everyone' : pname(to)}.`, true);
     } else toast(`${item.name} saved to your library.`, true);
     $('#liName').focus();
@@ -4095,7 +4473,7 @@ $('#liveBody').addEventListener('click', async e => {
     const it = lib.find(x => x.id === t.dataset.i); if (!it) return;
     const to = ($('#lg-' + it.id) || {}).value || '*';
     const targets = to === '*' ? players.map(p => p.id) : [to];
-    for (const id of targets) await sendOp(id, {kind:'item', item:{name:it.name, type:it.type, qty:it.qty || 1, stats:it.stats || '', cw:it.cw || 0, tier:it.tier || 0}});
+    for (const id of targets) await sendOp(id, {kind:'item', item:itemPayload(it)});
     toast(`Sent ${it.name} to ${to === '*' ? 'everyone' : pname(to)}.`, true);
     return;
   }
@@ -4107,7 +4485,7 @@ $('#liveBody').addEventListener('click', async e => {
       const arr = JSON.parse($('#libImpTxt').value);
       if (!Array.isArray(arr)) throw 0;
       let n = 0;
-      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0)}); n++; }
+      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h})}); n++; }
       libImport = false; toast(`Imported ${n} items.`, true); renderLive();
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
@@ -5231,7 +5609,7 @@ const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if (!$('#setPanel').hidden) renderSettings(); });
 addEventListener('appinstalled', () => { installEvt = null; });
 if ('serviceWorker' in navigator && !framed && /^https?:$/.test(location.protocol) && !MOCK) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW', e)));
-const SHORTCUTS = [['/ or Ctrl K', 'Search everything'], ['Ctrl Z', 'Undo the last change to your merc'], ['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
+const SHORTCUTS = [['/ or Ctrl K', 'Search everything'], ['Ctrl Z', 'Undo the last change to your merc'], ['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM. While dragging an item, rotates it instead'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
 function renderSettings(){
   const tabs = [['look', 'Look'], ['comfort', 'Comfort'], ['sound', 'Sound'], ['controls', 'Controls']];
   const tog = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="checkbox" class="sw2" data-pref="${k}" ${PREFS[k] ? 'checked' : ''} aria-label="${label}"></label>`;
@@ -5346,7 +5724,7 @@ function remoteSettings(st){
 addEventListener('keydown', e => {
   if (e.key === 'Escape' && !$('#setPanel').hidden) return toggleSettings(false);
   if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'z'){ const tg = e.target; if (!(tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) && C && !$('#vSheet').hidden){ e.preventDefault(); undo(); } return; }
-  if (!PREFS.keys || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (!PREFS.keys || e.ctrlKey || e.metaKey || e.altKey || dragS) return;
   const tg = e.target; if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
   const k = e.key.toLowerCase();
   const sheet = C && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
