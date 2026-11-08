@@ -1031,6 +1031,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>LIGHT</b></td><td>A standard RELOAD action</td></tr>
             <tr><td><b>HEAVY</b></td><td>Reloading takes your whole TURN</td></tr>
           </tbody></table>
+          <h3 style="margin-top:18px">Quick reload</h3>
+          <p style="margin-top:8px">With double proficiency in <b>Sleight of Hand</b>, you can sacrifice 1 ROF to RELOAD instead of spending a whole ACTION on it. A Soldier with a 3-ROF weapon and double proficiency in Sleight of Hand reloads by making their next ATTACK action 2-ROF.</p>
           <p class="muted" style="font-size:13px;margin-top:8px">Every weapon on your sheet shows its ROF and reload speed. The DM sets them, and you can edit them in the item.</p>
         </div>
       </section>
@@ -2835,7 +2837,7 @@ function renderCS(){
   const eqCard = (k, label) => {
     const i = it(C.eq[k]);
     return `<div class="eqslot ${i ? 'on' : ''}" data-eqslot="${k}"><span class="lbl">${label}</span>${i ? `<div class="gi eqart t${i.tier + 1}" data-gi="${i.id}" title="Drag back to the bag to unequip">${itemArt(i)}</div>` : ''}` + (i
-      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
+      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>${i.reload !== 'none' && skillProf('Sleight of Hand', 'REF').level === 2 ? `<div class="muted" style="font-size:12px;margin:0 0 6px">Quick reload: sacrifice 1 ROF to RELOAD, so your next ATTACK is ${Math.max(0, i.rof - 1)}-ROF instead of spending an ACTION.</div>` : ''}` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
       : `<div class="muted" style="font-size:14px">${k === 'armor' ? 'Empty. Drag armor here or hit Wear on it.' : `Empty. Drag a weapon here or hit ${k === 'primary' ? 'P' : 'S'} on it.`}</div>`) + `</div>`;
   };
   const ident = `<div class="ident">
