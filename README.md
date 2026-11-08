@@ -6,7 +6,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Rules page (`#rules`) with a chapter sidebar and search. It's the official rules reference, there's no separate document. The Every Perk tables are built from the same `PERKS` data as the trees, so editing a perk updates both
 - Chapters are plain HTML sections with ids starting `r-` (like `#r-reactions`), so you can link straight to one in Discord
 - Your Mercs, a roster of saved characters, plus the party database tools
-- Onboarding in five steps (handle, background with 2 of 3 skills, role, 27-point buy, review). Role is flavor only for now and can be changed on the sheet
+- Onboarding in five steps (handle, background with 2 of 3 skills, role, 27-point buy, review). Role gives two skill proficiencies (`ROLES` in the script) and locks once picked. Older mercs without a role get one pick on the sheet
 - Each merc has two tabs
   - Perks and skills. Level, perk points, stat increases, the six perk trees and the skill list
   - Character sheet. Handle, origin, eddies, HP and NET HP trackers, RAM tracker, primary and secondary weapon slots, inventory, cyberware slots and notes
@@ -87,6 +87,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Party backups. The DM's page keeps a copy of every merc that plays in `dms/{uid}/party`. Send back (or Restore merc on the party card) puts a deleted merc back on the player's roster. Copy save code works for players who left the party
 - Generators on the DM dashboard. NPC (random name, origin, gender and age group, each one lockable so a reroll leaves it alone, add straight to your NPCs), Weapon and Item (pick a tier and class or type, or leave them on Any). Save drops the result in the library and can hand it to a player. The tables live in `GEN` and `EFFECTS` in the script, swap them for the GM's tables when they're ready
 - Item tiers. Every item is Tier 1 to 4 (`tier` 0 to 3 in the data). Tier names, buffs and effects are placeholders in `ITEM_TIERS` and show on the Rules page under Item Tiers. Fabricator upgrades raise an item one tier
+- Black ICE. Stats live in `BLACK_ICE` and fill the table in the Netrunning chapter. The DM's NPC panel has Deploy Black ICE buttons that add a program as an NPC with its HP and stat line in the notes. The party card has Force jack-out (Ogre) and Lock jack-out (Kraken), which go through the inbox as `jackout` and `jacklock` and show on the player's sheet
 - Session notes for the DM, private, saved per session in `dms/{uid}/notes/{code}`
 - Players see a live party view with everyone's portrait, HP, NET HP, RAM, eddies, weapons and items
 - Portraits are cropped to 256x256 JPEGs and stored in Firestore (no Firebase Storage needed, so it stays on the free plan)

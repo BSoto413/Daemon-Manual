@@ -99,6 +99,7 @@ textarea{font-family:monospace;font-size:12px;resize:vertical;min-height:84px;co
 .logrow li.bad{border-color:rgba(255,74,94,.45);color:#ffb3bd}.logrow li.good{border-color:rgba(255,230,0,.4);color:#fff6a8}
 .loglist{max-height:520px;overflow:auto;padding-right:6px}
 .bgs.roles{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.bgs.roles .bg{display:flex;flex-direction:column;justify-content:flex-start}
 .bg .rk{font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:.12em;color:var(--yellow)}
 .statgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:18px}
 .statbox{background:#08080f;border:1px solid rgba(var(--crgb),.25);border-top:3px solid var(--cyan);padding:12px 6px 10px;text-align:center;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
@@ -651,11 +652,15 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-roles"><h2>Roles</h2>
         <div class="panel">
-          <p>Instead of classes, every merc fills a specialized role. Each role leans on certain stats.</p>
-          <table class="rtable"><thead><tr><th>Role</th><th>Key stats</th></tr></thead><tbody>
-            <tr><td><b>Netrunner</b></td><td>INT</td></tr><tr><td><b>Soldier</b></td><td>REF and STR</td></tr>
-            <tr><td><b>Technician</b></td><td>TEC and INT</td></tr><tr><td><b>Shinobi</b></td><td>REF</td></tr><tr><td><b>Bruiser</b></td><td>STR and BOD</td></tr>
+          <p>Instead of classes, every merc fills a specialized role. You choose your role at level 1 and it gives you proficiency in two skills. Once you pick it, it's locked for good.</p>
+          <table class="rtable"><thead><tr><th>Role</th><th>Proficiencies</th><th>Key stats</th></tr></thead><tbody>
+            <tr><td><b>Netrunner</b></td><td>Hacking and Code</td><td>INT</td></tr>
+            <tr><td><b>Soldier</b></td><td>Athletics and Sleight of Hand</td><td>REF and STR</td></tr>
+            <tr><td><b>Technician</b></td><td>Scan and Craft</td><td>TEC and INT</td></tr>
+            <tr><td><b>Shinobi</b></td><td>Stealth and Acrobatics</td><td>REF</td></tr>
+            <tr><td><b>Bruiser</b></td><td>Athletics and Intimidation</td><td>STR and BOD</td></tr>
           </tbody></table>
+          <p class="muted" style="font-size:13px;margin-top:10px">If your role and your background give the same skill, it counts once. Only perks can push a skill to double proficiency.</p>
         </div>
       </section>
 
@@ -685,6 +690,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-creation"><h2>Making and Leveling a Merc</h2>
         <div class="panel">
           <table class="rtable"><tbody>
+            <tr><td><b>Role</b></td><td>Pick one at level 1. It gives two skill proficiencies and can't be changed</td></tr>
             <tr><td><b>Stats</b></td><td>5e point buy. 27 points, every stat between 8 and 15 before increases</td></tr>
             <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
             <tr><td><b>Starting HP</b></td><td>10 + 1d10 + BOD mod</td></tr>
@@ -730,9 +736,10 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>To go into The Net you need the INT perk Jack In. Netrunners can run into defensive anti-personnel programs called <b>Black ICE</b> (Intrusion Countermeasure Electronics), and they can be lethal.</p>
           <p>Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. They're equal unless a perk, item or hack changes that. Black ICE mostly attacks your NET HP, but your body can still be attacked while you're under. If <b>either</b> pool hits 0 you go unconscious in critical condition.</p>
-          <p class="lbl" style="margin-top:16px">Known Black ICE</p>
-          <div class="chips2 big"><span>Hellhound</span><span>Cobra</span><span>Raven</span><span>Skunk</span><span>Scorpion</span><span>Wisp</span><span>Lich</span><span>Ogre</span><span>Kraken</span></div>
-          <p class="muted" style="font-size:13px;margin-top:10px">Each one has its own stats and effects. Those haven't been posted yet.</p>
+          <p class="lbl" style="margin-top:16px">Black ICE programs</p>
+          <div id="rIce"></div>
+          <p style="margin-top:14px"><b>Forced jack-out.</b> You're kicked out of the Net right away. <b>Disable safe jack-out.</b> You can't jack out safely while it's active.</p>
+
         </div>
       </section>
 
@@ -819,7 +826,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-coming"><h2>In the Works</h2>
         <div class="panel">
           <p>The GM is still building these. They'll land here as they're posted.</p>
-          <ul class="rlist"><li>Cyberpsychosis rules</li><li>COOL Tokens and the COO buff and debuff mechanics</li><li>Full RAM and hacking rules, including the CODE score</li><li>Black ICE stats and effects</li><li>The final HP per level formula</li></ul>
+          <ul class="rlist"><li>Cyberpsychosis rules</li><li>COOL Tokens and the COO buff and debuff mechanics</li><li>Full RAM and hacking rules, including the CODE score</li><li>The final HP per level formula</li></ul>
         </div>
       </section>
     </div>
@@ -1156,6 +1163,7 @@ function normalize0(c){
     eddies: Math.max(0, parseInt(c.eddies) || 0),
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
+    jackLock: !!c.jackLock,
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
     cwT: Math.max(0, numOrNull(c.cwT) ?? 10), cwMax: Math.max(1, numOrNull(c.cwMax) ?? 15), cwAdj: parseInt(c.cwAdj) || 0,
@@ -1368,11 +1376,11 @@ $('#toRoster').onclick = () => { show('roster'); renderRoster(); goTop(); };
 let W = null, wStep = 0, lastStep = -1;
 const STEP_NAMES = ['Handle','Background','Role','Stats','Jack in'];
 const ROLES = {
-  Netrunner: {k:'INT', d:'Lives in the Net. Breaks ICE, fries optics and turns enemy chrome against them.'},
-  Soldier: {k:'REF and STR', d:'Trained gun for hire. Holds the line and puts rounds where they count.'},
-  Technician: {k:'TEC and INT', d:'Builds it, fixes it, breaks it. Keeps the crew and their gear running.'},
-  Shinobi: {k:'REF', d:'Fast, quiet and gone before the body hits the floor.'},
-  Bruiser: {k:'STR and BOD', d:'Walks through the front door and stays standing when everyone else drops.'}
+  Netrunner: {k:'INT', prof:['Hacking', 'Code'], d:'Lives in the Net. Breaks ICE, fries optics and turns enemy chrome against them.'},
+  Soldier: {k:'REF and STR', prof:['Athletics', 'Sleight of Hand'], d:'Trained gun for hire. Holds the line and puts rounds where they count.'},
+  Technician: {k:'TEC and INT', prof:['Scan', 'Craft'], d:'Builds it, fixes it, breaks it. Keeps the crew and their gear running.'},
+  Shinobi: {k:'REF', prof:['Stealth', 'Acrobatics'], d:'Fast, quiet and gone before the body hits the floor.'},
+  Bruiser: {k:'STR and BOD', prof:['Athletics', 'Intimidation'], d:'Walks through the front door and stays standing when everyone else drops.'}
 };
 const HANDLES = ['Static','Ghostwire','Neon Jackal','Rook','Hex','Vandal','Cinder','Byte','Lockjaw','Mirage','Switchblade','Halogen','Kestrel','Rust','Glitch','Saint','Volt','Nomi','Razor','Echo'];
 function startWizard(){
@@ -1405,9 +1413,9 @@ function renderWizard(){
       <div class="err" id="wErr"></div>`;
   } else if (wStep === 2){
     h = `<h3>Pick your role</h3>
-      <p class="muted" style="margin:6px 0 0">Your role is what you do for the crew. It is flavor for now and does not change your stats or perks.</p>
+      <p class="muted" style="margin:6px 0 0">Your role is what you do for the crew. It gives you proficiency in two skills. <b style="color:var(--yellow)">You can't change it later</b>, so pick carefully.</p>
       <div class="bgs roles">${Object.entries(ROLES).map(([k, v]) =>
-        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span></button>`).join('')}</div>
+        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span><span class="sk">Proficient in ${v.prof.join(' and ')}</span></button>`).join('')}</div>
       <div class="err" id="wErr"></div>`;
   } else if (wStep === 3){
     const left = PB_TOTAL - pbSpent();
@@ -1427,7 +1435,7 @@ function renderWizard(){
       <div class="summary">
         <div><span class="lbl">Handle</span><div class="v">${esc(W.name)}</div></div>
         <div><span class="lbl">Background</span><div class="v">${W.background}</div><div class="muted" style="font-size:14px">${W.bgSkills.join(' and ')}</div></div>
-        <div><span class="lbl">Role</span><div class="v">${W.role}</div><div class="muted" style="font-size:14px">${ROLES[W.role].k}</div></div>
+        <div><span class="lbl">Role</span><div class="v">${W.role}</div><div class="muted" style="font-size:14px">${ROLES[W.role].prof.join(' and ')}</div></div>
       </div>
       <div class="statgrid">${ORDER.map(k => statBox(k, W.base[k])).join('')}</div>
       <p class="muted" style="margin-top:16px">You start at level 1. You earn your first perk point when you hit level 2.</p>`;
@@ -1569,9 +1577,10 @@ function renderTabs(){
 
 const PERK_PROF = {'COO.A.r':'Persuasion', 'COO.B.r':'Deception', 'TEC.B.r':'Vehicle'};
 function skillProf(name, st, c = C){
-  const src = (c.bgSkills.includes(name) ? 1 : 0) + Object.entries(PERK_PROF).filter(([k, sk]) => sk === name && c.unlocked.includes(k)).length;
+  const roleP = !!(ROLES[c.role] && ROLES[c.role].prof.includes(name));
+  const src = (c.bgSkills.includes(name) || roleP ? 1 : 0) + Object.entries(PERK_PROF).filter(([k, sk]) => sk === name && c.unlocked.includes(k)).length;
   const canDouble = score(st, c) >= TIERS.ph.req;
-  return {src, level: src >= 2 && canDouble ? 2 : src >= 1 ? 1 : 0, locked: src >= 2 && !canDouble};
+  return {src, role:roleP, level: src >= 2 && canDouble ? 2 : src >= 1 ? 1 : 0, locked: src >= 2 && !canDouble};
 }
 function renderSkills(){
   const p = prof(C.level);
@@ -1580,7 +1589,7 @@ function renderSkills(){
     const pf = skillProf(n, st);
     const m = mod(score(st)) + p * pf.level;
     const dis = hacked('short') || (hacked('optics') && (n === 'Perception' || n === 'Scan'));
-    return `<div class="skill ${pf.level === 2 ? 'exp' : pf.level ? 'prof' : ''}"><span class="s">${n}<small>${st}${old ? ' · was ' + old : ''}${pf.locked ? ' · double at ' + st + ' 17' : ''}</small></span><span class="m">${dis ? '<span class="disb">DIS</span> ' : ''}${sgn(m)}</span></div>`;
+    return `<div class="skill ${pf.level === 2 ? 'exp' : pf.level ? 'prof' : ''}"><span class="s">${n}<small>${st}${old ? ' · was ' + old : ''}${pf.role ? ' · ' + C.role : ''}${pf.locked ? ' · double at ' + st + ' 17' : ''}</small></span><span class="m">${dis ? '<span class="disb">DIS</span> ' : ''}${sgn(m)}</span></div>`;
   }).join('');
 }
 
@@ -1786,6 +1795,22 @@ const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200}
 const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
 /* ================= ITEM TIERS + GENERATORS =================
    Placeholder tables. Swap these out when the GM posts the real ones. */
+const BLACK_ICE = [
+  {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 2 fire damage to IRL HP', fx:''},
+  {id:'cobra', n:'Cobra', ac:12, hp:12, hit:6, per:4, dmg:'Drains 1d4+1 RAM', fx:''},
+  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner', fx:''},
+  {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:'−2 that slides with each hit', fx:''},
+  {id:'scorpion', n:'Scorpion', ac:12, hp:15, hit:2, per:2, dmg:'Half movement and no Dash', fx:''},
+  {id:'wisp', n:'Wisp', ac:10, hp:15, hit:4, per:4, dmg:'1d6 NET damage and −1 RAM', fx:''},
+  {id:'liche', n:'Liche', ac:12, hp:25, hit:6, per:8, dmg:'Lowers the netrunner\'s INT, REF or TEC by 1d4. Roll 1d6 to pick the stat', fx:''},
+  {id:'ogre', n:'Ogre', ac:14, hp:25, hit:8, per:2, dmg:'3d6 NET damage', fx:'Forced jack-out'},
+  {id:'kraken', n:'Kraken', ac:14, hp:30, hit:8, per:6, dmg:'3d6 NET damage', fx:'Disables safe jack-out'}
+];
+const iceStat = v => v == null ? 'TBD' : v;
+function renderRuleIce(){
+  const el = $('#rIce'); if (!el) return;
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Program</th><th>AC</th><th>HP</th><th>Hit</th><th>PER</th><th>Damage and effect</th></tr></thead><tbody>${BLACK_ICE.map(i => `<tr><td><b>${i.n}</b></td><td>${iceStat(i.ac)}</td><td>${iceStat(i.hp)}</td><td>${i.hit == null ? 'TBD' : '+' + i.hit}</td><td>${i.per == null ? 'TBD' : '+' + i.per}</td><td>${esc(i.dmg)}${i.fx ? `. <b>${i.fx}</b>` : ''}</td></tr>`).join('')}</tbody></table>`;
+}
 const ITEM_TIERS = [
   {n:'Tier 1', name:'Street', buff:'No bonus. Standard street gear.', effect:'No effect slot.'},
   {n:'Tier 2', name:'Custom', buff:'Placeholder · +1 to hit or +1 AC', effect:'Placeholder · 1 minor effect'},
@@ -1906,19 +1931,19 @@ function renderCS(){
   const ident = `<div class="ident">
       <div><span class="lbl">Handle</span><div class="v">${esc(C.name)}</div></div>
       <div><span class="lbl">Origin</span><div class="v">${C.background}</div></div>
-      <div><span class="lbl">Role</span><div class="v"><select data-field="role" aria-label="Role">${C.role ? '' : '<option value="">Pick a role</option>'}${Object.keys(ROLES).map(r => `<option ${C.role === r ? 'selected' : ''}>${r}</option>`).join('')}</select></div></div>
+      <div><span class="lbl">Role</span><div class="v">${C.role ? `${C.role} <span class="muted" style="font-size:12px" title="Roles are locked once picked">🔒</span>` : `<select data-field="role" aria-label="Role"><option value="">Pick once, it locks</option>${Object.keys(ROLES).map(r => `<option>${r}</option>`).join('')}</select>`}</div></div>
       <div><span class="lbl">Level</span><div class="v">${C.level}</div></div>
       <div><span class="lbl">Eddies</span><div class="v"><input type="number" min="0" data-field="eddies" value="${C.eddies}" aria-label="Eddies" style="width:120px"> €$</div></div>
     </div>
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k))).join('')}</div>
-    <p class="muted" style="font-size:14px;margin-top:12px">Proficient in ${C.bgSkills.join(' and ')} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>`;
+    <p class="muted" style="font-size:14px;margin-top:12px">Proficient in ${[...new Set([...C.bgSkills, ...(ROLES[C.role] ? ROLES[C.role].prof : [])])].join(', ')} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>`;
   const hpBlock = hm == null
     ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Roll your HP (10 + 1d10 ${sgn(mod(score('BOD')))} at level 1, plus your level ups) and enter your max.</p>
        <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
     : `<div class="track"><div class="head"><span class="lbl" style="margin:0">HP</span><span class="muted" style="font-size:12px">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
-     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px">${ENVS.jack ? 'Jack out' : 'Jack in'}</button></span></div>
+     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'disabled title="Black ICE locked your jack-out"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button></span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
   const cwl = cwLoad(), cwo = cwOver();
@@ -2079,6 +2104,7 @@ $('#vCS').addEventListener('click', e => {
     case 'netHeal': C.netHp = Math.min(hm, (C.netHp ?? hm) + amt('netAmt')); return csSave();
     case 'netFull': C.netHp = hm; return csSave();
     case 'jack': {
+      if (ENVS.jack && C.jackLock) return toast("Black ICE locked your jack-out. The DM has to clear it.");
       ENVS.jack = !ENVS.jack;
       if (FXS.sfx && PREFS.big){ ENVS.jack ? [220, 440, 880, 1760].forEach((f, i) => tone(f, f * 1.5, .12, 'sawtooth', .03, i * .05)) : [1760, 880, 440].forEach((f, i) => tone(f, f * .6, .1, 'square', .03, i * .05)); }
       if (flashOK()) glitchBurst(450, ENVS.jack ? 'JACKED IN' : '', ['rgba(var(--crgb),.6)', 'rgba(0,0,0,.6)', 'rgba(255,255,255,.4)']);
@@ -2173,7 +2199,7 @@ $('#vCS').addEventListener('change', async e => {
   }
   const f = t.dataset.field;
   if (f === 'notes'){ C.notes = t.value.slice(0, 5000); return saveC(); }
-  if (f === 'role'){ if (ROLES[t.value]){ C.role = t.value; saveC(); renderSheetHead && renderSheetHead(); } return; }
+  if (f === 'role'){ if (!C.role && ROLES[t.value]){ C.role = t.value; toast(`${C.name} is a ${C.role}. Proficient in ${ROLES[C.role].prof.join(' and ')}. Roles are locked from here on.`, true); sfx('perk'); csSave(); renderSkills(); } return; }
   if (f === 'eddies'){ C.eddies = Math.max(0, parseInt(t.value) || 0); t.value = C.eddies; return saveC(); }
   if (f === 'hpMax'){
     const v = parseInt(t.value);
@@ -2214,7 +2240,7 @@ let LS = null; try { LS = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){}
 let liveApi = null, liveState = 'idle', liveErr = '', unsubs = [], players = [], lib = [], sessMeta = null, endConfirm = false, libImport = false;
 let portraits = {}, lastPortrait = null, restoreList = null, leaveConfirm = false;
 let npcsDM = [], npcsPub = [], npcDel = null, codexLib = [];
-const ORIGINS = ['Nomad', 'Corpo', 'Streetkid', 'Unknown'];
+const ORIGINS = ['Nomad', 'Corpo', 'Streetkid', 'Unknown', 'Black ICE'];
 const npcCrit = n => n.hpMax > 0 && n.hp > 0 && n.hp / n.hpMax < .3;
 const npcDown = n => n.hpMax > 0 && n.hp <= 0;
 const JOINED_KEY = 'daemon-joined';
@@ -2567,6 +2593,7 @@ function diffMerc(a, b){
   if (r1 !== r2 || m1 !== m2) add(`RAM ${r1}/${m1} → ${r2}/${m2}${isOverheated(b) && !isOverheated(a) ? ' · OVERHEATED' : ''}`, r2 < r1 ? 'bad' : 'good');
   if (a.eddies !== b.eddies) add(`${b.eddies > a.eddies ? '+' : '−'}${Math.abs(b.eddies - a.eddies)} €$ (now ${b.eddies})`, b.eddies > a.eddies ? 'good' : '');
   if (a.cool !== b.cool) add(`Cool bonuses ${a.cool} → ${b.cool}`, b.cool > a.cool ? 'good' : '');
+  if (a.jackLock !== b.jackLock) add(b.jackLock ? 'Jack-out locked by Black ICE' : 'Jack-out unlocked', b.jackLock ? 'bad' : 'good');
   if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
   b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
   a.hacks.filter(h => !b.hacks.includes(h)).forEach(h => add(`${HACKS[h].n} cleared`, 'good'));
@@ -2806,6 +2833,12 @@ function applyOp(op){
   } else if (op.kind === 'hack' && HACKS[op.key]){
     if (op.on){ if (!m.hacks.includes(op.key)) m.hacks.push(op.key); msg = `BREACH. ${HACKS[op.key].n}. ${HACKS[op.key].d}`; good = false; sound = null; setTimeout(() => hackFx(), 30); }
     else { m.hacks = m.hacks.filter(h => h !== op.key); msg = `${HACKS[op.key].n} cleared.`; sound = 'heal'; }
+  } else if (op.kind === 'jackout'){
+    msg = 'Black ICE forced you out of the Net.'; good = false; sound = 'breach';
+    setTimeout(() => { const was = ENVS.jack; ENVS.jack = false; refreshEnv(); if (was && flashOK()) glitchBurst(700, 'JACKED OUT', ['rgba(255,74,94,.6)', 'rgba(0,0,0,.6)', 'rgba(var(--crgb),.5)']); if (C && sheetTab === 'cs') renderCS(); }, 30);
+  } else if (op.kind === 'jacklock'){
+    m.jackLock = !!op.on; good = !op.on; sound = op.on ? 'breach' : 'heal';
+    msg = op.on ? "Black ICE locked your jack-out. You can't leave the Net safely." : 'Your safe jack-out is back online.';
   } else if (op.kind === 'unhack'){
     m.hacks = []; msg = 'Your systems are clean again.'; sound = 'heal';
   } else if (op.kind === 'cool'){
@@ -2858,7 +2891,7 @@ function applyOp(op){
     msg = `${who} removed your ${x.name}. It's in your bag.`; sound = 'unequip';
   } else return;
   if (good && sound) sfx(sound);
-  if (!good && op.kind === 'hack') sfx('breach');
+  if (!good && (op.kind === 'hack' || op.kind === 'jackout' || op.kind === 'jacklock')) sfx('breach');
   if (isOpen){ saveC(); update(false); flashSheet(); }
   else { const i = DB.chars.findIndex(x => x.id === m.id); DB.chars[i] = m; persist(); }
   flushLog(op.fromName ? 'from ' + op.fromName : 'by the DM');
@@ -3020,13 +3053,14 @@ function partyCard(p, dm){
       <div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
       <div class="row"><select id="hk-${k}" aria-label="Hack to apply" style="flex:1">${Object.entries(HACKS).map(([hk, h]) => `<option value="${hk}" ${m.hacks.includes(hk) ? 'disabled' : ''}>${h.n}</option>`).join('')}</select>
         <button class="btn small danger" data-live="hack" data-u="${k}">Hack</button>${m.hacks.length ? `<button class="btn small" data-live="unhack" data-u="${k}">Clear all</button>` : ''}</div>
+      <div class="row"><span class="ctl" style="min-width:auto">Black ICE</span><button class="btn small danger" data-live="jackout" data-u="${k}">Force jack-out</button><button class="btn small ${m.jackLock ? '' : 'danger'}" data-live="jacklock" data-on="${m.jackLock ? '' : '1'}" data-u="${k}">${m.jackLock ? 'Unlock jack-out' : 'Lock jack-out'}</button></div>
       <div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 Cool bonus</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div>
       <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
         <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
       <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''}">
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
-        ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
+        ${hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
       <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
@@ -3099,6 +3133,7 @@ function liveHTML(){
   }).join('');
   const npcPanel = `<div class="panel gap"><div class="row"><h3>NPCs</h3><span class="spacer"></span><span class="muted" style="font-size:13px">HP, advantage and notes stay private to you. Players only ever see a CRITICAL or FLATLINED stamp.</span></div>
       <div class="npadd gap"><input type="text" class="f" id="npName" placeholder="NPC name" aria-label="NPC name"><select id="npOrigin" aria-label="Origin">${ORIGINS.map(o => `<option>${o}</option>`).join('')}</select><input type="number" id="npHp" min="1" placeholder="Max HP" aria-label="Max HP"><label class="btn small" style="display:inline-block;align-self:center">Portrait<input type="file" accept="image/*" id="npPic" hidden></label></div>
+      <div class="row gap"><span class="muted" style="font-size:13px">Deploy Black ICE</span>${BLACK_ICE.map(i => `<button class="btn small danger" data-live="ice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
       <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
       <div class="players">${npcCards || '<p class="muted">No NPCs yet.</p>'}</div></div>`;
   const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</span><span class="muted">${esc(i.stats || '')}</span>
@@ -3180,6 +3215,18 @@ $('#liveBody').addEventListener('click', async e => {
     LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
   }
   if (await genClick(a, t)) return;
+  if (a === 'jackout' || a === 'jacklock'){
+    const on = !!t.dataset.on;
+    if (await sendOp(u, a === 'jackout' ? {kind:'jackout'} : {kind:'jacklock', on})) toast(a === 'jackout' ? `Forced ${pname(u)} out of the Net.` : on ? `Locked ${pname(u)}'s jack-out.` : `${pname(u)} can jack out again.`, true);
+    return;
+  }
+  if (a === 'ice'){
+    const ic = BLACK_ICE.find(x => x.id === t.dataset.i); if (!ic) return;
+    const n = {id:uid(), name:ic.n, origin:'Black ICE', hpMax:ic.hp || 0, hp:ic.hp || 0, adv:'norm', portrait:null,
+      notes:`AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}\n${ic.dmg}${ic.fx ? '. ' + ic.fx : ''}`};
+    try { await liveApi.setDmNpc(n); toast(`${ic.n} deployed to your NPCs.`, true); } catch(err){ toast("Couldn't add it."); }
+    return;
+  }
   if (a === 'moodset' || a === 'moodclear'){
     const mood = a === 'moodset' ? {...moodDraft, at:Date.now()} : null;
     try { await liveApi.updateSession(LS.code, {mood}); toast(mood ? `Mood set to ${STYLES[mood.style].n} for everyone.` : 'Mood cleared.', true); } catch(err){ toast("Couldn't set the mood."); }
@@ -3486,7 +3533,7 @@ function renderRulePerks(){
   }).join('');
   $('#lvlTrack').innerHTML = Array.from({length:20}, (_, i) => `<div class="${i === 0 ? 'one' : ASI_LEVELS.includes(i + 1) ? 'asi' : ''}">${i + 1}</div>`).join('');
 }
-renderRulePerks(); renderRuleTiers();
+renderRulePerks(); renderRuleTiers(); renderRuleIce();
 
 let rIndex = null;
 function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }
