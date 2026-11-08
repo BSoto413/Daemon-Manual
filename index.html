@@ -403,7 +403,7 @@ nav a.on{opacity:1;color:var(--cyan)}
 .ptree{overflow-x:auto}
 .ptree .rtable{min-width:640px}
 .colstack{display:none;margin-top:10px}
-.colstack h5{font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin:14px 0 4px}
+.colstack h5{font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;margin:14px 0 4px}
 .colstack li{padding:4px 0;border-bottom:1px solid rgba(var(--crgb),.08);list-style:none}
 .colstack ul{margin:0;padding:0}
 @media (max-width:640px){
@@ -413,15 +413,15 @@ nav a.on{opacity:1;color:var(--cyan)}
   .rtable.stack thead{display:none}
   .rtable.stack tr{padding:10px 0;border-bottom:1px solid rgba(var(--crgb),.18)}
   .rtable.stack td{border:0;padding:3px 2px;overflow-wrap:break-word}
-  .rtable.stack td:first-child{font-size:16px;color:#fff;padding-bottom:4px}
-  .rtable.stack td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-top:4px}
+  .rtable.stack td:first-child{font-size:16px;padding-bottom:4px}
+  .rtable.stack td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-top:4px}
   .rtable.stack td.none{display:none!important}
   .rtable.stack td.short{display:inline-block;width:auto;min-width:52px;margin-right:10px;vertical-align:top}
   .rtable td{overflow-wrap:break-word}
   .rtable.kvst, .rtable.kvst tbody, .rtable.kvst tr, .rtable.kvst td{display:block;width:100%}
   .rtable.kvst tr{padding:8px 0;border-bottom:1px solid rgba(var(--crgb),.18)}
   .rtable.kvst td{border:0;padding:2px}
-  .rtable.kvst td:first-child{color:#fff;font-weight:500}
+  .rtable.kvst td:first-child{font-weight:500}
   .rtable[data-cols]{display:none}
   .colstack{display:block!important}
 }
@@ -459,6 +459,8 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
 .ho b{color:#fff;font-size:13px;font-weight:500}.hoimg{padding:0;border:0;background:#000;cursor:zoom-in;display:block}.hoimg img{width:100%;height:110px;object-fit:cover;display:block}
 .mbox.wide{width:min(1200px,100%)}
 .mbox[data-sheet]{height:calc(100dvh - 28px)}
+.playask{border-color:var(--yellow)!important;border-left:3px solid var(--yellow)!important}
+.playask h3{color:var(--yellow)}
 .dsheet .dsh{display:flex;gap:14px;align-items:center;margin:4px 0 6px}
 .dsheet .dsh .nm{font-family:Orbitron,sans-serif;font-size:22px;color:#fff;overflow-wrap:anywhere}
 .dsheet .dsh .sub{color:var(--muted);font-size:14px}
@@ -751,7 +753,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-basics"><h2>How Daemon Works</h2>
         <div class="panel">
           <p>Daemon is a twisted take on 5e set in Night City. Every merc is a 5e Fighter and keeps all of its normal Fighter features.</p>
-          <p>There are no classes and no feats. Instead every merc fills a role, and what really makes your merc yours is the set of perk trees you climb with your stats. Those trees are ported from Cyberpunk 2077.</p>
+          <p>There are no classes and no feats. Every merc fills a role instead. What really makes your merc yours is the perk trees you climb with your stats, ported from Cyberpunk 2077.</p>
           <div class="row gap"><a class="btn primary" href="#mercs">Make a merc</a><a class="btn" href="#r-perks">Browse every perk</a></div>
         </div>
       </section>
@@ -765,14 +767,14 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td>Constitution</td><td><b>BOD</b> Body</td><td>HP, tolerances and healing</td></tr>
             <tr><td>Intelligence</td><td><b>INT</b> Intelligence</td><td>Netrunning, hacks, smart weapons and RAM</td></tr>
             <tr><td>Wisdom</td><td><b>TEC</b> Tech Ability</td><td>Armor, items, cyberware and vehicles</td></tr>
-            <tr><td>Charisma</td><td><b>COO</b> Cool</td><td>Social interactions, and mainly a buff and debuff stat</td></tr>
+            <tr><td>Charisma</td><td><b>COO</b> Cool</td><td>Social interactions. Mostly a buff and debuff stat</td></tr>
           </tbody></table>
         </div>
       </section>
 
       <section class="rsec" id="r-roles"><h2>Roles</h2>
         <div class="panel">
-          <p>Instead of classes, every merc fills a specialized role. You choose your role at level 1 and it gives you proficiency in two skills. Once you pick it, it's locked for good.</p>
+          <p>Instead of classes, every merc fills a specialized role. Pick your role at level 1. It gives you proficiency in two skills and locks for good.</p>
           <table class="rtable"><thead><tr><th>Role</th><th>Proficiencies</th><th>Key stats</th></tr></thead><tbody>
             <tr><td><b>Netrunner</b></td><td>Hacking and Code</td><td>INT</td></tr>
             <tr><td><b>Soldier</b></td><td>Athletics and Sleight of Hand</td><td>REF and STR</td></tr>
@@ -794,7 +796,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td>Religion</td><td><b>Code</b></td><td>INT</td></tr>
           </tbody></table>
           <h3 style="margin-top:20px">Double proficiency</h3>
-          <p style="margin-top:8px">You can only get double proficiency after moving two thresholds. A Rookie Netrunner can be proficient in Hacking, but they can't double it until they reach Phenom.</p>
+          <p style="margin-top:8px">Double proficiency only opens two tiers up. A Rookie Netrunner can be proficient in Hacking but can't double it until they reach Phenom.</p>
         </div>
       </section>
 
@@ -811,7 +813,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <table class="rtable"><tbody>
             <tr><td><b>Role</b></td><td>Pick one at level 1. It gives two skill proficiencies and can't be changed</td></tr>
-            <tr><td><b>Stats</b></td><td>5e point buy. 27 points, every stat between 8 and 15 before increases</td></tr>
+            <tr><td><b>Stats</b></td><td>5e point buy with 27 points. Every stat starts between 8 and 15.</td></tr>
             <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
             <tr><td><b>Starting HP</b></td><td>10 + 10 + BOD mod. Level 1 takes the max roll, no dice</td></tr>
             <tr><td><b>HP per level</b></td><td>10 + 1d10 + BOD mod every level after 1, unless a perk or cyberware raises it</td></tr>
@@ -826,7 +828,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-turn"><h2>Your Turn</h2>
         <div class="panel">
-          <p>Normal 5e gives you a movement, an action and a bonus action. Daemon gives you <b>2 actions per turn</b> and you spend them however you want.</p>
+          <p>Normal 5e gives you a movement, an action and a bonus action. Daemon gives you <b>2 actions per turn</b> to spend however you want.</p>
           <div class="chips2 big"><span>Move</span><span>Attack</span><span>Grapple</span><span>Reload</span><span>Heal</span><span>Throw</span><span>Use a skill, perk or object</span><span>Hold an action</span></div>
           <p style="margin-top:14px">Reactions still exist but work a little differently. See below.</p>
         </div>
@@ -834,7 +836,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-reactions"><h2>Reactions</h2>
         <div class="panel">
-          <p>You get <b>1 reaction per round</b>, same as 5e, and <b>every reaction costs 2 RAM</b>.</p>
+          <p>You get <b>1 reaction per round</b>, same as 5e. <b>Every reaction costs 2 RAM</b>.</p>
           <table class="rtable"><thead><tr><th>Reaction</th><th>Effect</th></tr></thead><tbody>
             <tr><td><b>Brace</b></td><td>Add your TEC mod to your AC</td></tr>
             <tr><td><b>Slide</b></td><td>Make a REF save against a DC to take half damage</td></tr>
@@ -846,11 +848,11 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-ram"><h2>RAM</h2>
         <div class="panel">
           <p>RAM is the fuel for reactions, hacks and some perks. Your max RAM is 4 + your INT mod, plus whatever your installed cyberware adds.</p>
-          <p>The INT perk Extra Slot doubles your max RAM, and Automation cuts every RAM cost by 1, so reactions only cost 1.</p>
+          <p>The INT perk Extra Slot doubles your max RAM. Automation cuts every RAM cost by 1, so reactions only cost 1.</p>
           <h3 style="margin-top:18px">Overheated</h3>
           <p style="margin-top:8px">If your RAM hits 0 your system overheats. You're stunned and can't do anything until your RAM comes back. The INT perk Insulated Wires keeps you from ever overheating. The DM can drain or restore your RAM at any time.</p>
           <h3 style="margin-top:18px">Cooldown round</h3>
-          <p style="margin-top:8px">All your RAM comes back after a cooldown round, a round where you don't use any RAM.</p>
+          <p style="margin-top:8px">A cooldown round is a round where you use no RAM. After one, all your RAM comes back.</p>
         </div>
       </section>
 
@@ -864,7 +866,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-net"><h2>Netrunning and Black ICE</h2>
         <div class="panel">
-          <p>To go into The Net you need the INT perk Jack In. Netrunners can run into defensive anti-personnel programs called <b>Black ICE</b> (Intrusion Countermeasure Electronics), and they can be lethal.</p>
+          <p>To go into The Net you need the INT perk Jack In. In there, netrunners can run into <b>Black ICE</b> (Intrusion Countermeasure Electronics). These defensive programs can be lethal.</p>
           <p>Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. They're equal unless a perk, item or hack changes that. Black ICE mostly attacks your NET HP, but your body can still be attacked while you're under. If <b>either</b> pool hits 0 you go unconscious in critical condition.</p>
           <p class="lbl" style="margin-top:16px">Black ICE programs</p>
           <div id="rIce"></div>
@@ -877,9 +879,9 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>Chrome goes into body slots, and each piece can add to your max RAM.</p>
           <h3 style="margin-top:18px">Cyberware threshold</h3>
-          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Past your <b>threshold</b> you're in the <b>overflow</b>, up to your <b>max</b>, and you can't install anything that would go over your max. Each point of overflow raises your Cyberpsychosis DC by 2.</p>
+          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Anything past your <b>threshold</b> is <b>overflow</b>. You can't install anything that would push you past your <b>max</b>. Each point of overflow raises your Cyberpsychosis DC by 2.</p>
           <p class="muted" style="font-size:14px;margin-top:6px">Example. Threshold 10, max 15. A tally of 12 is 2 points of overflow, so your Cyberpsychosis DC is +4.</p>
-          <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, in themselves or in anyone else. If nobody in the crew is a RipperDoc, you'll need the DM's ripper.</p>
+          <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, on themselves or anyone else. If nobody in the crew is a RipperDoc, you'll need the DM's ripper.</p>
           <p>During a live session a RipperDoc sees an install panel on every party member's card. The part has to be in the patient's bag, so hand it over first. Any merc can hand items and eddies to the rest of the crew.</p>
           <h3 style="margin-top:18px">Hot-swappable parts</h3>
           <p style="margin-top:8px">For an extra fee, a RipperDoc can make a part hot-swappable. Anyone can swap a hot part in or out of themselves without a RipperDoc, but it comes with a cost.</p>
@@ -934,13 +936,13 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-psycho"><h2>Cyberpsychosis</h2>
         <div class="panel">
-          <p>Cyberpsychosis saves are normally made at <b>−5</b>. A few perks push back on that, like Theseus and I'm Special in BOD, Tranquility in COO and Limit Setter in TEC. The full rules are still coming.</p>
+          <p>Cyberpsychosis saves are normally made at <b>−5</b>. A few perks help. BOD has Theseus and I'm Special, COO has Tranquility and TEC has Limit Setter. The full rules are still coming.</p>
         </div>
       </section>
 
       <section class="rsec" id="r-trees"><h2>Perk Trees</h2>
         <div class="panel">
-          <p>Every perk tree is tied to one stat. If that stat is under 10 the tree is offline. Higher tiers open as the stat climbs, and you spend 1 perk point per perk.</p>
+          <p>Every perk tree is tied to one stat. If that stat is under 10, the tree is offline. Higher tiers open as the stat climbs, and you spend 1 perk point per perk.</p>
           <table class="rtable"><thead><tr><th>Tier</th><th>Stat needed</th><th>Perks</th></tr></thead><tbody>
             <tr><td><b>Rookie</b></td><td>10–13</td><td>2</td></tr><tr><td><b>Pro</b></td><td>14–16</td><td>3</td></tr>
             <tr><td><b>Phenom</b></td><td>17–19</td><td>3</td></tr><tr><td><b>Legend</b></td><td>20</td><td>2</td></tr>
@@ -1051,7 +1053,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <h2 style="margin-top:36px">Save</h2>
       <div class="panel">
-        <p>Your merc saves in this browser on its own. To back it up, move it to another device or share it in Discord, copy the save code and paste it into Import on the other end.</p>
+        <p>Your merc saves in this browser on its own. To back it up, move it to another device or share it in Discord, copy the save code. Then paste it into Import on the other end.</p>
         <textarea id="codeOut" readonly aria-label="Save code" hidden></textarea>
         <div class="row gap">
           <button class="btn primary" id="copyCode">Copy save code</button>
@@ -1170,24 +1172,24 @@ const PERKS = {
     'A.p': {n:'Sailor Spinach', d:'When you use an ACTION to heal, the amount you heal is added to the DMG of your next melee STR ATK.'},
     'S.p': {n:'Pigtails?!', d:'ACTION. Throw grappled foes 15 ft for 2d6 + their BOD mod. Anyone in the way makes a REF save for half DMG.'},
     'A.ph':{n:'Ape Shit', d:'ACTION, −3 RAM. Ground pound that sends out a shockwave for 6d6 in a 15 ft cone. Half DMG on a REF save.'},
-    'S.ph':{n:'Juggernaut', d:'DASH ACTION in a straight line, dragging everyone in the way for 1d6 DMG every 5 ft dragged.'},
-    'A.l': {n:'Wallop!', d:"Use one ACTION to focus all your energy into a single strike. If you haven't moved, your next ATK is at ADV, and if the foe is below 50 HP, they explode."},
+    'S.ph':{n:'Juggernaut', d:'DASH ACTION in a straight line. Everyone in the way gets dragged and takes 1d6 DMG for every 5 ft.'},
+    'A.l': {n:'Wallop!', d:"Use one ACTION to focus all your energy into a single strike. If you haven't moved, your next ATK has ADV. If the foe is below 50 HP, they explode."},
     'B.r': {n:'Hold My Beer', d:'Reloading an LMG or any special HEAVY gun takes an ACTION instead of your whole TURN.'},
     'B.p': {n:"Hold 'er Steady", d:'Extra ATK ACTIONS with HEAVY weapons take −2 to HIT instead of disadvantage.'},
     'B.ph':{n:'I Call Shotgun!', d:'Shotguns auto-hit within 10 ft.'},
-    'B.l': {n:'Empty the Clip', d:'Firing the last bullet or shell in the chamber RESETS your TURN.'}
+    'B.l': {n:'Empty the Clip', d:'Firing the last bullet or shell in your mag RESETS your TURN.'}
   },
   TEC:{
     'A.r': {n:'Transfusion', d:'Add your CYBERWARE mod to healing when you use your cyberware.'},
     'A.p': {n:'Driver Update', d:'Your cyberware can be upgraded.'},
     'S.p': {n:'Pill Popper', d:'Use meds as a REACT.'},
-    'A.ph':{n:'Friendly Fire', d:'Half AOE DMG to and from allies, and 0 DMG if you burn your REACT.'},
-    'S.ph':{n:'Alchemist', d:'Combine meds. Two combine for free, three or more need a DC roll.'},
+    'A.ph':{n:'Friendly Fire', d:'You and your allies take half DMG from each other\'s AOE. Burn your REACT to take none.'},
+    'S.ph':{n:'Alchemist', d:'Combine meds. Two combine for free. Three or more need a DC roll.'},
     'A.l': {n:'Limit Setter', d:"The first piece of cyberware that pushes you past your threshold doesn't make you a Cyberpsycho."},
     'B.r': {n:'Third Pedal', d:'Proficiency in Vehicle.'},
     'B.p': {n:'Maintenance Crew', d:'Repair items using your CRAFT score.'},
     'B.ph':{n:'Fabricator', d:'Fortify, upgrade and create items using your CRAFT score.'},
-    'B.l': {n:'RipperDoc', d:'Licensed to chrome. You get discounts on cyberware and can install cyberware yourself.'}
+    'B.l': {n:'RipperDoc', d:'Licensed to chrome. You get discounts on cyberware and can install it yourself.'}
   },
   REF:{
     'A.r': {n:'Plumber Legs', d:'Double Jump (−1 RAM). No additional LEAP cost.'},
@@ -1195,7 +1197,7 @@ const PERKS = {
     'A.p': {n:'Kitty Got Claws', d:'Free ATK on everyone within 5 ft after a LEAP.'},
     'S.p': {n:'Gag Order', d:'A kill on a Surprise attack alerts no one.'},
     'B.p': {n:'Sharpshooter', d:'−5 to HIT, +10 DMG.'},
-    'A.ph':{n:'Fox Swipe', d:'Using your REACT, deflect DMG by rolling your blade DMG.'},
+    'A.ph':{n:'Fox Swipe', d:'Use your REACT to deflect DMG equal to a roll of your blade\'s damage.'},
     'S.ph':{n:'Pop Goes the Weasel', d:'Your first Surprise ATK is an automatic crit.'},
     'B.ph':{n:'Focus Fire', d:'Your last ATK crits on 18, 19 and 20.'},
     'A.l': {n:'Blender', d:'CRITing a foe below 50 HP dismembers them.'},
@@ -1204,7 +1206,7 @@ const PERKS = {
   INT:{
     'A.r': {n:'Jack In', d:'You can enter The Net.'},
     'B.r': {n:'Nerd!', d:'Proficiency with smart weapons.'},
-    'A.p': {n:'Insulated Wires', d:'Your NET attacks also hit the target\'s IRL body for half damage. Passive, you never overheat when your RAM hits 0.'},
+    'A.p': {n:'Insulated Wires', d:'Your NET attacks also hit the target\'s IRL body for half damage. Passive. You never overheat when your RAM hits 0.'},
     'S.p': {n:'Extra Slot', d:'Double your max RAM.'},
     'B.p': {n:'R.E.M.', d:'Hack multiple things at once. Each extra target costs half the original RAM.'},
     'A.ph':{n:'Who Let the Dogs Out', d:'Code 2 Hellhounds whenever you Jack In.'},
@@ -2210,7 +2212,7 @@ const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
    Placeholder tables. Swap these out when the GM posts the real ones. */
 const QUICKHACKS = [
   {id:'short', n:'Short Circuit', ram:3, d:'Damage. Amount TBD'},
-  {id:'contagion', n:'Contagion', ram:5, d:'Gives a target disadvantage, and it spreads to 2 more targets in or entering a 15 ft radius'},
+  {id:'contagion', n:'Contagion', ram:5, d:'Gives a target disadvantage. It spreads to 2 more targets in or entering a 15 ft radius.'},
   {id:'malfunction', n:'Malfunction', ram:4, d:'Target is stunned for 1 round'},
   {id:'cripple', n:'Cripple', ram:3, d:'Half movement and no Dash'},
   {id:'ping', n:'Ping', ram:1, d:'Pick a piece of tech you can see and ping a signal through it. You can see enemies through walls while they pass within 20 ft of it'},
@@ -2231,7 +2233,7 @@ function renderRuleQh(){
 const BLACK_ICE = [
   {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:''},
   {id:'cobra', n:'Cobra', ac:12, hp:12, hit:6, per:4, dmg:'Drains 1d4+1 RAM', fx:''},
-  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, revealing their physical location to other netrunners and alerting the next Black ICE program that they are coming', fx:''},
+  {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, which reveals their physical location to other netrunners and warns the next Black ICE program that they\'re coming.', fx:''},
   {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:'−2 that stacks with each hit', fx:''},
   {id:'scorpion', n:'Scorpion', ac:12, hp:15, hit:2, per:2, dmg:'Half movement and no Dash', fx:''},
   {id:'wisp', n:'Wisp', ac:10, hp:15, hit:4, per:4, dmg:'1d6 NET damage and −1 RAM', fx:''},
@@ -2316,7 +2318,7 @@ const tierOpts = (sel, any) => (any ? `<option value="">Any tier</option>` : '')
 function renderRuleTiers(){
   const el = $('#rTiers'); if (!el) return;
   el.innerHTML = `<table class="rtable"><thead><tr><th>Tier</th><th>Grade</th><th>Buff</th><th>Effects</th></tr></thead><tbody>${ITEM_TIERS.map(x => `<tr><td><b>${x.n}</b></td><td>${x.name}</td><td>${esc(x.buff)}</td><td>${esc(x.effect)}</td></tr>`).join('')}</tbody></table>
-    <p style="margin-top:14px">Placeholder effects by item type. Names only for now, the GM will write what each one does.</p>
+    <p style="margin-top:14px">Placeholder effects by item type. Names only for now. The GM will write what each one does.</p>
     <table class="rtable"><thead><tr><th>Type</th><th>Effects</th></tr></thead><tbody>${Object.entries(EFFECTS).map(([k, v]) => `<tr><td><b>${k === 'Weapon' ? 'Ranged weapon' : k === 'Melee' ? 'Melee weapon' : k}</b></td><td>${v.join(', ')}</td></tr>`).join('')}</tbody></table>`;
 }
 
@@ -2461,7 +2463,7 @@ function renderCS(){
     ${fabPanel}
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
-      <p class="muted" style="font-size:13px;margin-top:4px">Each install's RAM bonus adds to your max RAM. Hot-swap parts only give half (rounded down), and swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
+      <p class="muted" style="font-size:13px;margin-top:4px">Each install's RAM bonus adds to your max RAM. Hot-swap parts only give half, rounded down. Swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
       <div class="cyber">${cyber}</div></div>
     ${ledgerHTML()}
     <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
@@ -2810,7 +2812,7 @@ async function firebaseLive(){
     delPicCloud: id => F.deleteDoc(d('users', uid, 'pics', id)),
     async getPlayer(code, u){ const s = await F.getDoc(d('sessions', code, 'players', u)); return s.exists() ? s.data() : null; },
     watchLog: (code, cb) => F.onSnapshot(F.query(c('sessions', code, 'log'), F.orderBy('at', 'desc'), F.limit(150)), q => cb(list(q)), onErr('the activity log')),
-    addLog: (code, e) => F.addDoc(c('sessions', code, 'log'), e),
+    addLog: (code, e) => F.addDoc(c('sessions', code, 'log'), {play:curPlay(), ...e}),
     async clearLog(code){ const q = await F.getDocs(c('sessions', code, 'log')); await Promise.all(q.docs.map(x => F.deleteDoc(x.ref))); },
     watchBackups: cb => F.onSnapshot(c('dms', uid, 'party'), q => cb(list(q)), onErr('party backups')),
     setBackup: (id, data) => F.setDoc(d('dms', uid, 'party', id), data),
@@ -2880,7 +2882,7 @@ function mockLive(){
     async delPicCloud(id){ mut(db => delete db[`users/${uid}/pics/${id}`]); },
     async getPlayer(code, u){ return read()[`sessions/${code}/players/${u}`] || null; },
     watchLog: (code, cb) => watch(() => coll(`sessions/${code}/log`).sort((a, b) => b.at - a.at).slice(0, 150), cb),
-    async addLog(code, e){ mut(db => db[`sessions/${code}/log/${Math.random().toString(36).slice(2)}`] = e); },
+    async addLog(code, e){ mut(db => db[`sessions/${code}/log/${Math.random().toString(36).slice(2)}`] = {play:curPlay(), ...e}); },
     async clearLog(code){ mut(db => Object.keys(db).filter(k => k.startsWith(`sessions/${code}/log/`)).forEach(k => delete db[k])); },
     watchBackups: cb => watch(() => coll(`dms/${uid}/party`), cb),
     async setBackup(id, data){ mut(db => db[`dms/${uid}/party/${id}`] = data); },
@@ -2898,7 +2900,7 @@ function getLive(){
   if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).then(acctReady).catch(e => { apiPromise = null; throw e; });
   return apiPromise;
 }
-function stopAll(){ handouts = []; lastReveal = 0; recapText = ''; logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+function stopAll(){ logPlay = 'cur'; recapDay = ''; handouts = []; lastReveal = 0; recapText = ''; logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
 
 /* ---- account + cloud saves ---- */
 const ACCT_KEY = 'daemon-acct';
@@ -3064,7 +3066,19 @@ function pushUser(){
 }
 
 /* ---- change log ---- */
-let logs = [], logFilter = '', logBase = null, logT = null, logClear = false;
+let logs = [], logFilter = '', logBase = null, logT = null, logClear = false, logPlay = 'cur', reopenAsk = false;
+const curPlay = () => (sessMeta && sessMeta.play) || 1;
+const playsOf = m => (m && m.plays && m.plays.length) ? m.plays : [{n:1, start:(m && m.created) || Date.now()}];
+const logPlayOf = l => l.play || 1;
+const fmtDay = t => new Date(t).toLocaleDateString([], {month:'short', day:'numeric'});
+function playSpan(n){
+  const L = logs.filter(l => logPlayOf(l) === n).map(l => l.at).filter(Boolean);
+  const p = playsOf(sessMeta).find(x => x.n === n) || {};
+  const a = Math.min(...L, p.start || Infinity), b = Math.max(...L, p.end || p.start || 0);
+  if (!isFinite(a)) return '';
+  const da = fmtDay(a), db = fmtDay(b || a);
+  return da === db ? da : da + ' to ' + db;
+}
 const hpOf = c => c.hpMax ? (c.hp == null ? c.hpMax : c.hp) : null;
 const netOf = c => c.hpMax ? (c.netHp == null ? c.hpMax : c.netHp) : null;
 const itemLabel = i => i.name + (i.tier ? ' ' + MK[i.tier] : '') + (i.fort ? ' (fortified)' : '');
@@ -3121,7 +3135,8 @@ function flushLog(via){
 }
 function logHTML(dm){
   const who = [...new Map(logs.map(l => [l.mercId, l.name])).entries()];
-  const shown = logs.filter(l => !logFilter || l.mercId === logFilter);
+  const ps = playsOf(sessMeta), lp = logPlay === 'cur' ? curPlay() : logPlay;
+  const shown = logs.filter(l => (!logFilter || l.mercId === logFilter) && (lp === 'all' || logPlayOf(l) === +lp));
   let day = '';
   const rows = shown.map(l => {
     const d = new Date(l.at || 0), dl = d.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
@@ -3131,14 +3146,23 @@ function logHTML(dm){
       <div><span class="who">${esc(l.name || 'Merc')}</span>${l.via ? `<span class="via">${esc(l.via.toUpperCase())}</span>` : ''}<ul>${(l.lines || []).map(x => `<li class="${x.k === 'bad' ? 'bad' : x.k === 'good' ? 'good' : ''}">${esc(x.t)}</li>`).join('')}</ul></div></div>`;
   }).join('');
   return `<div class="panel gap"><div class="row"><h3>Activity</h3><span class="spacer"></span>
+      <select id="logPlay" aria-label="Which session"><option value="all" ${lp === 'all' ? 'selected' : ''}>All sessions</option>${ps.map(p => `<option value="${p.n}" ${+lp === p.n ? 'selected' : ''}>Session ${p.n}${playSpan(p.n) ? ' · ' + playSpan(p.n) : ''}</option>`).join('')}</select>
       <select id="logWho" aria-label="Filter by merc"><option value="">Everyone</option>${who.map(([id, n]) => `<option value="${esc(id)}" ${logFilter === id ? 'selected' : ''}>${esc(n || 'Merc')}</option>`).join('')}</select>
       ${dm && logs.length ? `<button class="btn small ${logClear ? 'danger' : ''}" data-live="logclear">${logClear ? 'Confirm clear' : 'Clear log'}</button>` : ''}</div>
-    <p class="muted" style="font-size:13px;margin:6px 0 4px">Every change to a merc in this session, newest first. It stays with the session week to week, and changes made between sessions show up when the player reconnects.</p>
+    <p class="muted" style="font-size:13px;margin:6px 0 4px">Every change to a merc in this session, newest first. It stays with the session week to week. Changes made between sessions show up when the player reconnects.</p>
     <div class="loglist">${rows || '<p class="muted" style="margin-top:10px">Nothing yet. Changes show up here as people play.</p>'}</div></div>`;
 }
 $('#liveBody').addEventListener('change', e => {
   if (e.target.id === 'logWho'){ logFilter = e.target.value; renderLive(); }
+  if (e.target.id === 'logPlay'){ logPlay = e.target.value === 'all' ? 'all' : +e.target.value; renderLive(); }
 });
+
+function playAskHTML(){
+  const ps = playsOf(sessMeta), last = ps[ps.length - 1], span = playSpan(last.n);
+  return `<div class="panel gap playask"><h3>Welcome back</h3>
+    <p class="muted" style="margin:6px 0 12px">Last time you played Session ${last.n}${span ? ' (' + span + ')' : ''}. Did that one get cut short, or is this a new night?</p>
+    <div class="row gap"><button class="btn primary" data-live="playCont">Continue Session ${last.n}</button><button class="btn" data-live="playNew">Start Session ${last.n + 1}</button></div></div>`;
+}
 
 /* ---- DM generators ---- */
 let gN = null, gNLock = {name:false, origin:false, gender:false, age:false}, gW = null, gI = null, gWT = '', gWC = '', gIT = '', gIType = '';
@@ -3205,7 +3229,7 @@ function genHTML(which){
 $('#liveBody').addEventListener('change', e => {
   const id = e.target.id;
   if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
-  if (id === 'rcDay'){ recapDay = e.target.value; return; }
+  if (id === 'rcDay'){ recapDay = +e.target.value; return; }
   if (id === 'mdStyle'){ moodDraft.style = e.target.value; return; } if (id === 'mdTod'){ moodDraft.tod = e.target.value; return; } if (id === 'mdWx'){ moodDraft.weather = e.target.value; return; }
   if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
   else if (id === 'giT') gIT = e.target.value; else if (id === 'giType') gIType = e.target.value;
@@ -3250,7 +3274,7 @@ function progressHTML(){
   return `<div class="panel gap"><div class="row"><h3>Party progress</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Milestone leveling or XP, your call.</span></div>
     <div class="row gap"><button class="btn small ${msConfirm ? 'danger' : 'primary'}" data-live="milestone" ${players.length ? '' : 'disabled'}>${msConfirm ? 'Confirm, level everyone up' : 'Milestone · level up the party'}</button></div>
     <div class="row gap"><input type="number" id="xpAmt" min="1" placeholder="XP" aria-label="XP amount" style="width:110px"><select id="xpTo" aria-label="Give XP to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select><button class="btn small" data-live="xpGive" ${players.length ? '' : 'disabled'}>Award XP</button></div>
-    <p class="muted" style="font-size:13px;margin-top:8px">XP uses the 5e table. A merc's sheet shows an XP bar once they have any, and says when they're ready to level.</p></div>`;
+    <p class="muted" style="font-size:13px;margin-top:8px">XP uses the 5e table. A merc's sheet shows an XP bar once they have any XP. It also says when they're ready to level.</p></div>`;
 }
 async function progClick(a){
   if (a === 'milestone'){
@@ -3332,14 +3356,14 @@ async function hoClick(a, t){
 /* ---- session recap ---- */
 let recapDay = '', recapText = '';
 function recapHTML(){
-  const days = [...new Set(logs.map(l => new Date(l.at).toDateString()))];
+  const ps = playsOf(sessMeta).filter(p => logs.some(l => logPlayOf(l) === p.n)), sel = recapDay || curPlay();
   return `<div class="panel gap"><div class="row"><h3>Session recap</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Turns the activity log into a summary you can paste in Discord.</span></div>
-    <div class="row gap"><select id="rcDay" aria-label="Which day">${days.length ? days.map(d => `<option value="${d}" ${recapDay === d ? 'selected' : ''}>${new Date(d).toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'})}</option>`).join('') : '<option value="">No activity yet</option>'}</select>
-      <button class="btn small primary" data-live="rcMake" ${days.length ? '' : 'disabled'}>Build recap</button>${recapText ? '<button class="btn small" data-live="rcCopy">Copy</button>' : ''}</div>
+    <div class="row gap"><select id="rcDay" aria-label="Which session">${ps.length ? ps.map(p => `<option value="${p.n}" ${+sel === p.n ? 'selected' : ''}>Session ${p.n}${playSpan(p.n) ? ' · ' + playSpan(p.n) : ''}</option>`).join('') : '<option value="">No activity yet</option>'}</select>
+      <button class="btn small primary" data-live="rcMake" ${ps.length ? '' : 'disabled'}>Build recap</button>${recapText ? '<button class="btn small" data-live="rcCopy">Copy</button>' : ''}</div>
     ${recapText ? `<textarea id="rcOut" class="notes" style="margin-top:10px;min-height:220px" aria-label="Recap">${esc(recapText)}</textarea>` : ''}</div>`;
 }
 function buildRecap(all, day){
-  const L = all.filter(l => new Date(l.at).toDateString() === day).sort((a, b) => a.at - b.at);
+  const L = all.filter(l => logPlayOf(l) === +day).sort((a, b) => a.at - b.at);
   const by = {};
   L.forEach(l => {
     const r = by[l.mercId] = by[l.mercId] || {name:l.name, dmg:0, heal:0, net:0, ed:0, xp:0, lvl:null, cool:0, coolOn:[], got:[], lost:[], perks:[], ach:[], flat:0};
@@ -3359,7 +3383,8 @@ function buildRecap(all, day){
       else if (/^−/.test(t) && !/€\$|XP/.test(t)) r.lost.push(t.slice(1).trim());
     });
   });
-  const head = `${sessMeta && sessMeta.name || 'Session'} · ${new Date(day).toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'})}`;
+  const ds = [...new Set(L.map(l => new Date(l.at).toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'})))];
+  const head = `${sessMeta && sessMeta.name || 'Live game'} · Session ${day}${ds.length ? ' · ' + (ds.length > 1 ? ds[0] + ' to ' + ds[ds.length - 1] : ds[0]) : ''}`;
   const rows = Object.values(by).map(r => {
     const bits = [];
     if (r.dmg || r.heal) bits.push(`took ${r.dmg} damage${r.heal ? ', healed ' + r.heal : ''}`);
@@ -3380,7 +3405,7 @@ function buildRecap(all, day){
 }
 async function recapClick(a){
   if (a === 'rcMake'){
-    recapDay = ($('#rcDay') || {}).value || ''; if (!recapDay) return true;
+    recapDay = +(($('#rcDay') || {}).value || 0); if (!recapDay) return true;
     let all = logs; try { all = await liveApi.getLogs(LS.code); } catch(err){}
     recapText = buildRecap(all, recapDay); renderLive(); return true;
   }
@@ -3667,7 +3692,7 @@ function keepInputs(root, fn){
   fn();
   Object.entries(vals).forEach(([id, v]) => {
     const el = document.getElementById(id); if (!el || !root.contains(el)) return;
-    if (id === 'dmNotes' && id !== actId) return;
+    if ((id === 'dmNotes' && id !== actId) || id === 'rcOut') return;
     if (el.tagName === 'SELECT' && !v) return;
     if (el.tagName === 'SELECT' && ![...el.options].some(o => o.value === v && !o.disabled)) return;
     el.value = v;
@@ -3735,7 +3760,7 @@ function renderLive(){
 function liveHTML(){
   if (!LIVE_OK){
     return `<div class="panel"><h3>Live sessions need the web address</h3>
-      <p style="margin-top:8px">Hosting and joining sessions only works when the site is opened from its web address (like your GitHub Pages link or a local server), not straight from the file or inside the claude.ai preview. Everything else on this page works offline.</p></div>`;
+      <p style="margin-top:8px">Hosting and joining sessions only work when the site is opened from its web address (like your GitHub Pages link or a local server), not straight from the file or inside the claude.ai preview. Everything else on this page works offline.</p></div>`;
   }
   const err = liveErr ? `<p class="err">${esc(liveErr)}</p>` : '';
   if (liveState === 'connecting') return `<div class="panel"><h3>Connecting…</h3><p class="muted" style="margin-top:8px">Jacking into the session.</p></div>`;
@@ -3744,7 +3769,7 @@ function liveHTML(){
     const hs = hosted();
     return `${err}<div id="acctLive">${acctHTML()}</div><div class="live-grid">
       <div class="panel"><h3>Join a session</h3>
-        <p class="muted" style="margin:6px 0 14px">Get the code from your DM and pick the merc you're bringing. Your sheet updates for the DM as you play, and anything the DM sends you shows up on its own.</p>
+        <p class="muted" style="margin:6px 0 14px">Get the code from your DM and pick the merc you're bringing. Your sheet updates for the DM as you play. Anything the DM sends you shows up on its own.</p>
         <input type="text" id="joinCode" maxlength="6" placeholder="CODE" autocomplete="off" style="text-transform:uppercase;letter-spacing:4px">
         <div class="row gap"><select id="joinMerc" aria-label="Merc to bring" style="flex:1">${mercs.length ? mercs.map(m => `<option value="${m.id}" ${C && C.id === m.id ? 'selected' : ''}>${esc(m.name)} · ${m.background} · Lvl ${m.level}</option>`).join('') : '<option value="">Make a merc first</option>'}</select>
         <button class="btn primary" data-live="join" ${mercs.length ? '' : 'disabled'}>Join</button></div>
@@ -3753,7 +3778,7 @@ function liveHTML(){
         ${joined().length ? `<p class="lbl" style="margin-top:18px">Rejoin</p><div class="row">${joined().map(j => `<button class="btn small primary" data-live="rejoin" data-code="${esc(j.code)}" data-m="${esc(j.mercId)}">${esc(j.code)} as ${esc(j.name)}</button>`).join('')}</div>` : ''}
       </div>
       <div class="panel"><h3>Host as DM</h3>
-        <p class="muted" style="margin:6px 0 14px">Start a session and share the code. You'll see every player's sheet live, and you can hand out items, eddies, damage and healing from your item library.</p>
+        <p class="muted" style="margin:6px 0 14px">Start a session and share the code. You'll see every player's sheet live and can hand out items, eddies, damage and healing.</p>
         <input type="text" id="hostName" maxlength="40" placeholder="Session name, like Night City Run" autocomplete="off" class="f">
         <div class="row gap"><button class="btn primary" data-live="host">Host session</button></div>
         ${hs.length ? `<p class="lbl" style="margin-top:18px">Your sessions</p><div class="row">${hs.map(h => `<button class="btn small" data-live="reopen" data-code="${h.code}">${esc(h.code)} · ${esc(h.name || 'Session')}</button>`).join('')}</div>` : ''}
@@ -3786,7 +3811,7 @@ function liveHTML(){
       <div class="row"><button class="btn small primary" data-live="nshow" data-n="${n.id}">Show ID card</button><button class="btn small" data-live="ncodex" data-n="${n.id}" title="${pub ? 'Players can see this NPC in their Codex' : 'Players will not see this NPC until you add it'}">${pub ? 'In codex ✓' : 'Add to codex'}</button><label class="btn small" style="display:inline-block">Portrait<input type="file" accept="image/*" data-npic="${n.id}" hidden></label><span class="spacer"></span><button class="btn small ${npcDel === n.id ? 'danger' : ''}" data-live="ndel" data-n="${n.id}">${npcDel === n.id ? 'Confirm delete' : 'Delete'}</button></div>
     </div>`;
   }).join('');
-  const npcPanel = `<div class="panel gap"><div class="row"><h3>NPCs <span class="muted" style="font-size:14px">${npcsDM.length}</span></h3><span class="spacer"></span><span class="muted" style="font-size:13px">Your master list. HP, advantage and notes stay private. Players only see an NPC once you add it to the Codex or show its ID card, and only ever see a CRITICAL or FLATLINED stamp.</span></div>
+  const npcPanel = `<div class="panel gap"><div class="row"><h3>NPCs <span class="muted" style="font-size:14px">${npcsDM.length}</span></h3><span class="spacer"></span><span class="muted" style="font-size:13px">Your master list. HP, advantage and notes stay private. Players only see an NPC after you add it to the Codex or show its ID card. Even then, all they see of its health is a CRITICAL or FLATLINED stamp.</span></div>
       <div class="npadd gap"><input type="text" class="f" id="npName" placeholder="NPC name" aria-label="NPC name"><select id="npOrigin" aria-label="Origin">${ORIGINS.map(o => `<option>${o}</option>`).join('')}</select><input type="number" id="npHp" min="1" placeholder="Max HP" aria-label="Max HP"><label class="btn small" style="display:inline-block;align-self:center">Portrait<input type="file" accept="image/*" id="npPic" hidden></label></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Deploy Black ICE</span>${BLACK_ICE.map(i => `<button class="btn small danger" data-live="ice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
       <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
@@ -3796,9 +3821,10 @@ function liveHTML(){
       <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libhide" data-i="${i.id}" title="${i.hidden ? 'Hidden from the codex' : 'Shown in the codex'}">${i.hidden ? 'Hidden' : 'Codex'}</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}">✕</button></div></div>`).join('')
     : `<p class="muted" style="margin-top:10px">No items yet. Make one above or load the starter pack.</p>`;
   return `${err}<div class="panel"><div class="row"><div style="flex:1;min-width:220px"><span class="lbl">Session code</span><div class="code">${esc(LS.code)}</div>
-      <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · ${players.length} player${players.length === 1 ? '' : 's'} connected</p></div>
-      <button class="btn" data-live="copycode">Copy code</button><button class="btn" data-live="leave">Close dashboard</button><button class="btn danger" data-live="end">${endConfirm ? 'Confirm end' : 'End session'}</button></div>
-      <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard keeps the session running so you can come back. End session kicks everyone and deletes it.</p></div>
+      <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · <b style="color:#fff">Session ${curPlay()}</b> · ${players.length} player${players.length === 1 ? '' : 's'} connected</p></div>
+      <button class="btn" data-live="copycode">Copy code</button><button class="btn" data-live="leave">Close dashboard</button><button class="btn danger" data-live="end">${endConfirm ? 'Confirm delete' : 'Delete live game'}</button></div>
+      <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard saves everything as Session ${curPlay()}. Reopen it later to keep going or start Session ${curPlay() + 1}. Delete live game kicks everyone and erases it for good.</p></div>
+    ${reopenAsk ? playAskHTML() : ''}
     <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
     ${dmTab === 'party' ? `<div class="players" style="margin-top:14px">${playerCards}</div>${progressHTML()}${logHTML(true)}` : ''}
     ${dmTab === 'npcs' ? `${npcPanel}${genHTML('npc')}` : ''}
@@ -3833,12 +3859,22 @@ $('#liveBody').addEventListener('click', async e => {
     try {
       liveApi = await getLive();
       let code, tries = 0;
-      while (true){ code = genCode(); try { await liveApi.createSession(code, {dmUid:liveApi.uid, name, created:Date.now()}); break; } catch(err){ if (++tries > 4 || err.message !== 'exists') throw err; } }
+      while (true){ code = genCode(); try { await liveApi.createSession(code, {dmUid:liveApi.uid, name, created:Date.now(), play:1, plays:[{n:1, start:Date.now()}]}); break; } catch(err){ if (++tries > 4 || err.message !== 'exists') throw err; } }
       saveHosted([{code, name}, ...hosted().filter(h => h.code !== code)]);
       LS = {role:'dm', code}; saveLS(); return connect();
     } catch(err){ console.error(err); liveErr = "Couldn't create the session. Check your connection and that the site is opened from its web address."; liveState = 'idle'; return renderLive(); }
   }
-  if (a === 'reopen'){ LS = {role:'dm', code:t.dataset.code}; saveLS(); return connect(); }
+  if (a === 'reopen'){ LS = {role:'dm', code:t.dataset.code}; saveLS(); reopenAsk = true; return connect(); }
+  if (a === 'playCont' || a === 'playNew'){
+    const ps = playsOf(sessMeta).map(p => ({...p})), last = ps[ps.length - 1];
+    if (a === 'playCont'){ last.end = null; }
+    else { last.end = last.end || Date.now(); ps.push({n:last.n + 1, start:Date.now()}); }
+    const n = a === 'playNew' ? last.n + 1 : last.n;
+    reopenAsk = false; logPlay = 'cur'; recapText = '';
+    try { await liveApi.updateSession(LS.code, {play:n, plays:ps}); sessMeta = {...sessMeta, play:n, plays:ps}; } catch(err){ console.error(err); toast("Couldn't save that. Check your connection."); }
+    toast(a === 'playNew' ? `Session ${n} started.` : `Picking up Session ${n} where you left off.`, true);
+    return renderLive();
+  }
   if (a === 'rejoin'){
     if (!DB.chars.some(c => c.id === t.dataset.m)){ liveErr = "That merc isn't on this device anymore. Use Restore to pull it from the session."; return renderLive(); }
     LS = {role:'player', code:t.dataset.code, mercId:t.dataset.m}; saveLS(); return connect();
@@ -3909,7 +3945,16 @@ $('#liveBody').addEventListener('click', async e => {
     try { await liveApi.delBackup(id); } catch(err){ console.error(err); }
     return renderLive();
   }
-  if (a === 'leave') return leaveLive(false);
+  if (a === 'leave'){
+    if (LS && LS.role === 'dm' && liveApi && sessMeta){
+      const ps = playsOf(sessMeta).map(p => ({...p})), n = curPlay(), cur = ps.find(p => p.n === n);
+      if (cur) cur.end = Date.now();
+      await liveApi.updateSession(LS.code, {play:n, plays:ps}).catch(e => console.error(e));
+      toast(`Saved as Session ${n}. Reopen it to continue or start Session ${n + 1}.`, true);
+    }
+    reopenAsk = false;
+    return leaveLive(false);
+  }
   if (a === 'leaveparty'){ if (!leaveConfirm){ leaveConfirm = true; return renderLive(); } return leaveLive(false, true); }
   if (a === 'opensheet'){ openChar(LS.mercId); return; }
   if (a === 'copycode') return copyText(LS.code, null, 'Code');
@@ -4154,7 +4199,7 @@ const codexOf = (k, d) => k === 'npcs' ? d.npcs.slice().sort((a, b) => (b.metAt 
 function renderCodex(){
   const body = $('#codexBody'); if (!body || $('#pgCodex').hidden) return;
   const d = codexData();
-  if (!d){ body.innerHTML = `<div class="panel"><h3>Nothing logged yet</h3><p style="margin-top:8px">Your codex fills in during live sessions, with every NPC your crew meets and everything in the DM's library. Join a session from the Live Session page and it'll start logging. It stays here between sessions, even offline.</p><div class="row gap"><a class="btn primary" href="#live">Go to Live Session</a></div></div>`; return; }
+  if (!d){ body.innerHTML = `<div class="panel"><h3>Nothing logged yet</h3><p style="margin-top:8px">Your Codex fills in during live sessions. It logs every NPC your crew meets and everything in the DM's library. Join a session from the Live Session page to start it. It stays here between sessions, even offline.</p><div class="row gap"><a class="btn primary" href="#live">Go to Live Session</a></div></div>`; return; }
   const q = codexQ.toLowerCase();
   const match = x => !q || [x.name, x.origin, x.stats, x.type].some(v => v && String(v).toLowerCase().includes(q));
   const list = codexOf(codexTab, d).filter(match);
@@ -4516,7 +4561,7 @@ const THEME_KEY = 'daemon-theme';
 const THEME_DEF = {style:'circuit', bg:'#b3213a', trace:'#a3283a', light:'#ff4a5e', accent:'#2fe6f0'};
 const STYLES = {
   circuit:{n:'Circuit', d:'The original living circuit board', pal:{bg:'#b3213a', trace:'#a3283a', light:'#ff4a5e', accent:'#2fe6f0'},
-    lab:[['Background', 'The glow at the top of the page'], ['Board traces', 'The circuit lines'], ['Lights', 'Most of the pulses running the traces'], ['Accent lights', 'The rarer second pulse color']]},
+    lab:[['Background', 'The glow at the top of the page'], ['Board traces', 'The circuit lines'], ['Lights', 'The pulses running along the traces'], ['Accent lights', 'The rarer second pulse color']]},
   nomad:{n:'Nomad', d:'Sunset badlands, drifting dunes and dust', pal:{bg:'#c4561b', trace:'#6b3418', light:'#ffb062', accent:'#fff1c4'},
     lab:[['Sky', 'The sunset haze'], ['Dunes', 'The rolling sand'], ['Sun and dust', 'The sun and the blowing sand'], ['Headlights', 'Drifters crossing the far dunes']]},
   corpo:{n:'Corpo', d:'Clean glass shards on an angular grid', pal:{bg:'#1d3b5c', trace:'#5a8fc2', light:'#8fdcff', accent:'#e8c56a'},
@@ -5204,7 +5249,7 @@ function renderSettings(){
     <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}</div>
     <div class="selrow">${psel('tod', TODS, 'Time of day')}${psel('weather', WEATHERS, 'Weather')}</div>
     ${tog('matchOrigin', 'Match my origin', 'Opening a merc switches to their Nomad, Corpo or Streetkid background')}
-    ${tog('react', 'React to my merc', 'Low HP drains the color, cyberpsychosis goes red, hacks go green, overheating ripples')}
+    ${tog('react', 'React to my merc', 'Low HP drains the color. Cyberpsychosis turns it red, hacks turn it green and overheating makes it ripple.')}
     ${tog('dmMood', 'Let the DM set the mood', 'In a live session the DM can push a background to the party')}
     <span class="lbl" style="margin-top:10px;display:block">Color presets</span>
     <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}">${sw(t)}${n}</button>`).join('')}

@@ -98,7 +98,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - DM hosts and gets a 6 character code. Players join with the code and pick a merc
 - Players own their merc. Their sheet syncs to the DM about half a second after any change
 - The DM never edits a merc directly. Items, eddies, damage, healing and RAM restores go into the player's inbox and the player's page applies them, so nothing gets overwritten
-- Sessions work like a campaign. They stay open week to week until the DM hits End session
+- Sessions work like a campaign. A live game stays open week to week until the DM hits Delete live game. Each night of play is numbered (`play` and `plays` on the session doc, and every log entry carries its `play` number). Close dashboard saves the current one. Reopening asks whether to continue that session or start the next, and the activity log and recap can be filtered by session
 - Disconnect keeps a player's merc in the party (shown offline). Next week they hit Rejoin. Leave party removes them
 - Anything the DM sends while a player is offline lands on their sheet when they reconnect
 - New device? Enter the code and hit Restore to pull your merc (and portrait) from the session. The DM's dashboard drops the old copy on its own
