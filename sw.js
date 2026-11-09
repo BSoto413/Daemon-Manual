@@ -1,6 +1,6 @@
 // Daemon Manual service worker. Lets the site install as an app and open offline.
 // Bump V when you want every device to drop its old cache.
-const V = 'daemon-v1';
+const V = 'daemon-v2';
 const CORE = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {

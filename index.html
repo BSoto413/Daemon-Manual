@@ -345,6 +345,13 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .stp{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-right:10px}.stp b{min-width:14px;text-align:center;color:#fff;font-family:Orbitron,sans-serif}
 .iedit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 12px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(var(--crgb),.12)}
 .iedit .wide{grid-column:1/-1}
+.sboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-top:6px}
+.sbtn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:8px 10px;text-transform:none;letter-spacing:0}
+.sbtn b{font-family:Orbitron,sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.sbtn small{font-size:11px;color:var(--muted);font-family:inherit}
+.sfc{font-style:normal;font-size:8px;letter-spacing:1px;border:1px solid currentColor;padding:1px 4px;margin-left:4px;vertical-align:middle}
+.sbtn.ui{border-color:rgba(var(--crgb),.35)}.sbtn.big{border-color:var(--yellow);color:var(--yellow)}
+
 .wpnb{font:600 10px Orbitron,sans-serif;letter-spacing:1px;border:1px solid var(--yellow);color:var(--yellow);padding:2px 6px}
 
 .cwp.cap{border-color:var(--red)!important;background:rgba(255,60,90,.28)!important;box-shadow:0 0 8px rgba(255,60,90,.7)}
@@ -2685,7 +2692,7 @@ function lostFx(){
   const tx = el.querySelector('.fl-text');
   tx.textContent = 'POINT OF NO RETURN'; tx.dataset.text = tx.textContent; tx.classList.add('afl');
   $('#flSub').textContent = 'The red hex is full. Your merc is lost to cyberpsychosis and can\'t be brought back.';
-  el.hidden = true; void el.offsetWidth; el.hidden = false; sfx('psycho');
+  el.hidden = true; void el.offsetWidth; el.hidden = false; sfxPsycho();
   clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; tx.textContent = 'FLATLINED'; tx.dataset.text = 'FLATLINED'; tx.classList.remove('afl'); }, flashOK() ? 6500 : 4000);
   setTimeout(() => cyberpsycho(true), 400);
 }
@@ -5254,55 +5261,115 @@ const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm
 let PREFS = {...PREFS_DEF};
 try { const p = JSON.parse(localStorage.getItem(PREFS_KEY)); if (p) PREFS = {...PREFS_DEF, ...p}; } catch(e){}
 const flashOK = () => FXS.motion && !PREFS.calm;
-const SND_CAT = {select:'ui', tab:'ui', up:'ui', down:'ui', deny:'ui', breach:'big', levelup:'big', cool:'big'};
-let actx = null, master = null, noiseBuf = null;
+const SND_CAT = {select:'ui', tab:'ui', up:'ui', down:'ui', deny:'ui', breach:'big', levelup:'big', cool:'big', flatline:'big', psycho:'big'};
+let actx = null, master = null, noiseBuf = null, verb = null, VMUL = 1;
+// Per-sound trims in dB so the groups sit on a ladder: UI quiet, game in the middle, big moments loudest.
+const TRIM = {select:13, tab:12, up:8, down:8, deny:-6, equip:11, unequip:8, perk:8, unperk:10, damage:5, heal:8, receive:8, levelup:9, cool:10, breach:6, flatline:10, psycho:5};
+// Custom sound files. Drop sounds/<name>.mp3 into the site and it replaces the coded sound with that name.
+const SFILE = {}, FILE_GAIN = .8;
+let sfLoading = false;
+function loadSoundFiles(){
+  if (sfLoading || !actx || location.protocol === 'file:') return; sfLoading = true;
+  Object.keys(SOUNDS).forEach(n => {
+    fetch(`sounds/${n}.mp3`).then(r => r.ok ? r.arrayBuffer() : null).then(ab => ab && new Promise((res, rej) => actx.decodeAudioData(ab, res, rej))).then(buf => { if (buf){ SFILE[n] = buf; if (setTab === 'sound' && !$('#setPanel').hidden) renderSettings(); } }).catch(() => {});
+  });
+}
+function playFile(n){
+  const a = ac(); if (!a || !SFILE[n]) return false;
+  const src = a.createBufferSource(), g = a.createGain(); src.buffer = SFILE[n]; g.gain.value = FILE_GAIN;
+  src.connect(g); g.connect(master); src.start(); return true;
+}
+function playSnd(n){ if (!SOUNDS[n]) return; if (playFile(n)) return; VMUL = Math.pow(10, (TRIM[n] || 0) / 20); try { SOUNDS[n](); } finally { VMUL = 1; } }
+document.addEventListener('pointerdown', () => { if (FXS.sfx) ac(); }, {capture:true, passive:true});
+// Clean cyber UI sound engine. Every voice runs through a soft lowpass, a gentle compressor and a short stereo echo for air.
 function ac(){
   if (!actx){
     try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){ return null; }
     master = actx.createGain(); master.gain.value = .7 * PREFS.vol / 100;
-    const comp = actx.createDynamicsCompressor(); master.connect(comp); comp.connect(actx.destination);
-    noiseBuf = actx.createBuffer(1, actx.sampleRate * .5, actx.sampleRate);
+    const comp = actx.createDynamicsCompressor(); comp.threshold.value = -18; comp.knee.value = 12; comp.ratio.value = 4; comp.attack.value = .003; comp.release.value = .15;
+    const air = actx.createBiquadFilter(); air.type = 'highshelf'; air.frequency.value = 6000; air.gain.value = -4;
+    master.connect(air); air.connect(comp); comp.connect(actx.destination);
+    // echo send
+    verb = actx.createGain(); verb.gain.value = .22;
+    const dl = actx.createDelay(1), fb = actx.createGain(), lp = actx.createBiquadFilter();
+    dl.delayTime.value = .11; fb.gain.value = .28; lp.type = 'lowpass'; lp.frequency.value = 3200;
+    verb.connect(dl); dl.connect(lp); lp.connect(fb); fb.connect(dl); lp.connect(master);
+    noiseBuf = actx.createBuffer(1, actx.sampleRate * .6, actx.sampleRate);
     const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    loadSoundFiles();
   }
   if (actx.state === 'suspended') actx.resume();
   return actx;
 }
-function tone(f1, f2, dur, type = 'square', vol = .05, delay = 0){
+// One synth voice. o = {f, f2, dur, type, vol, at (delay), atk, cut (lowpass), q, pan, wet, det}
+function voice(o){
   const a = ac(); if (!a) return;
-  const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
-  o.type = type; o.frequency.setValueAtTime(f1, t);
-  if (f2 && f2 !== f1) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
-  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .006); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
-  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .03);
+  const t = a.currentTime + (o.at || 0), dur = o.dur || .1, vol = (o.vol || .05) * VMUL;
+  const osc = a.createOscillator(), g = a.createGain(), f = a.createBiquadFilter();
+  osc.type = o.type || 'sine'; osc.frequency.setValueAtTime(o.f, t); if (o.det) osc.detune.value = o.det;
+  if (o.f2 && o.f2 !== o.f) osc.frequency.exponentialRampToValueAtTime(o.f2, t + (o.glide || dur));
+  f.type = 'lowpass'; f.frequency.setValueAtTime(o.cut || 9000, t); f.Q.value = o.q || .7;
+  if (o.cut2) f.frequency.exponentialRampToValueAtTime(o.cut2, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + (o.atk || .004)); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  osc.connect(f); f.connect(g);
+  let out = g;
+  if (o.pan && a.createStereoPanner){ const p = a.createStereoPanner(); p.pan.value = o.pan; g.connect(p); out = p; }
+  out.connect(master); if (o.wet) { const w = a.createGain(); w.gain.value = o.wet; out.connect(w); w.connect(verb); }
+  osc.start(t); osc.stop(t + dur + .05);
 }
-function noise(dur, vol = .08, delay = 0, freq = 2000, q = 1){
+// Filtered noise. o = {dur, vol, at, f, f2, q, kind, pan, wet}
+function hiss(o){
   const a = ac(); if (!a) return;
-  const t = a.currentTime + delay, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
-  src.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = q;
-  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
-  src.connect(f); f.connect(g); g.connect(master); src.start(t); src.stop(t + dur + .02);
+  const t = a.currentTime + (o.at || 0), dur = o.dur || .05, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = noiseBuf; f.type = o.kind || 'bandpass'; f.frequency.setValueAtTime(o.f || 3000, t); f.Q.value = o.q || 1;
+  if (o.f2) f.frequency.exponentialRampToValueAtTime(o.f2, t + dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime((o.vol || .05) * VMUL, t + (o.atk || .002)); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  src.connect(f); f.connect(g);
+  let out = g;
+  if (o.pan && a.createStereoPanner){ const p = a.createStereoPanner(); p.pan.value = o.pan; g.connect(p); out = p; }
+  out.connect(master); if (o.wet){ const w = a.createGain(); w.gain.value = o.wet; out.connect(w); w.connect(verb); }
+  src.start(t, Math.random() * .3); src.stop(t + dur + .03);
 }
+const tick = (at = 0, f = 5200, vol = .05) => hiss({dur:.012, vol, at, f, q:6});
+const bell = (f, at = 0, vol = .04, dur = .35, pan = 0) => { voice({f, dur, vol, at, pan, wet:.5}); voice({f:f * 2.76, dur:dur * .45, vol:vol * .28, at, pan, wet:.4}); voice({f:f * 5.4, dur:dur * .2, vol:vol * .12, at, pan}); };
+// Back-compat helper some older code calls
+function tone(f1, f2, dur, type = 'square', vol = .05, delay = 0){ voice({f:f1, f2, dur, type, vol, at:delay, cut:4200}); }
+function noise(dur, vol = .08, delay = 0, freq = 2000, q = 1){ hiss({dur, vol, at:delay, f:freq, q}); }
 const SOUNDS = {
-  select:  () => { tone(1500, 1900, .04, 'square', .025); },
-  tab:     () => { tone(820, 1240, .07, 'triangle', .05); noise(.03, .03, 0, 5000, 2); },
-  up:      () => { tone(620, 940, .07, 'triangle', .06); },
-  down:    () => { tone(760, 440, .08, 'triangle', .06); },
-  equip:   () => { noise(.05, .12, 0, 3200, 3); tone(240, 480, .08, 'sawtooth', .035, .02); tone(1180, 1180, .05, 'square', .03, .09); noise(.03, .08, .1, 4500, 4); },
-  unequip: () => { noise(.04, .08, 0, 2600, 3); tone(520, 230, .11, 'sawtooth', .03, .01); },
-  perk:    () => { [523, 659, 784, 1047].forEach((f, i) => tone(f, f * 1.01, .13, 'square', .035, i * .055)); tone(2093, 2093, .25, 'sine', .03, .22); },
-  unperk:  () => { [784, 587, 440].forEach((f, i) => tone(f, f * .97, .1, 'square', .03, i * .055)); },
-  levelup: () => { [392, 523, 659, 784, 1047].forEach((f, i) => tone(f, f, .16, 'triangle', .055, i * .07)); noise(.3, .03, .3, 6000, .7); },
-  damage:  () => { tone(170, 55, .28, 'sawtooth', .09); noise(.16, .16, 0, 380, .8); },
-  heal:    () => { tone(880, 1320, .2, 'sine', .05); tone(1320, 1760, .22, 'sine', .035, .09); },
-  deny:    () => { tone(190, 150, .09, 'square', .04); tone(190, 150, .09, 'square', .04, .12); },
-  cool:    () => { [1319, 1760, 2093, 2637].forEach((f, i) => tone(f, f, .18, 'sine', .045, i * .05)); tone(2637, 3520, .4, 'triangle', .02, .22); },
-  breach:  () => { for (let i = 0; i < 10; i++) tone(400 + Math.random() * 2400, 200 + Math.random() * 1800, .05, 'square', .035, i * .045); noise(.25, .08, .05, 3000, 6); tone(110, 60, .5, 'sawtooth', .05, .4); },
-  receive: () => { [988, 1319, 1568, 1976].forEach((f, i) => tone(f, f, .11, 'triangle', .045, i * .06)); noise(.05, .05, 0, 6000, 2); }
+  // UI: short, quiet, crisp
+  select:  () => { tick(0, 6000, .035); voice({f:2200, dur:.035, vol:.022, type:'sine'}); voice({f:3300, dur:.02, vol:.01, at:.004}); },
+  tab:     () => { hiss({dur:.07, vol:.03, f:2400, f2:7000, q:1.4}); voice({f:1250, f2:1700, dur:.06, vol:.02, type:'triangle', cut:5000}); },
+  up:      () => { voice({f:1320, dur:.045, vol:.028, type:'triangle', cut:6000, pan:-.1}); voice({f:1980, dur:.06, vol:.026, at:.04, type:'triangle', cut:6000, pan:.1, wet:.2}); },
+  down:    () => { voice({f:1760, dur:.045, vol:.026, type:'triangle', cut:5000, pan:.1}); voice({f:1175, dur:.06, vol:.026, at:.04, type:'triangle', cut:4000, pan:-.1}); },
+  deny:    () => { [0, .085].forEach(d => { voice({f:233, dur:.07, vol:.035, at:d, type:'square', cut:1100}); voice({f:247, dur:.07, vol:.025, at:d, type:'square', cut:1100}); }); tick(0, 2500, .03); },
+  // Game: mechanical, readable
+  equip:   () => { tick(0, 4200, .07); hiss({dur:.05, vol:.05, at:.005, f:1800, q:2}); voice({f:150, f2:90, dur:.09, vol:.07, type:'sine', at:.01}); bell(2637, .07, .018, .18, .2); tick(.075, 7000, .03); },
+  unequip: () => { bell(1976, 0, .014, .12, -.2); tick(.03, 3600, .05); voice({f:120, f2:70, dur:.08, vol:.05, at:.04}); hiss({dur:.06, vol:.03, at:.04, f:1200, f2:600, q:1.5}); },
+  perk:    () => { [784, 1047, 1319, 1568].forEach((f, i) => voice({f, dur:.16, vol:.03, at:i * .045, type:'triangle', cut:5200, pan:-.3 + i * .2, wet:.35})); bell(3136, .2, .02, .5); hiss({dur:.3, vol:.012, at:.18, f:9000, q:.6}); },
+  unperk:  () => { [1319, 988, 740].forEach((f, i) => voice({f, dur:.12, vol:.026, at:i * .05, type:'triangle', cut:3000, wet:.25})); },
+  damage:  () => { voice({f:180, f2:48, dur:.26, vol:.11, type:'sine', glide:.18}); voice({f:90, f2:40, dur:.22, vol:.06, type:'triangle'}); hiss({dur:.12, vol:.1, f:900, f2:300, q:.8, kind:'lowpass'}); tick(0, 2000, .06); hiss({dur:.04, vol:.04, at:.05, f:6000, q:3}); },
+  heal:    () => { [880, 1109, 1319].forEach((f, i) => { voice({f, dur:.42, vol:.022, at:i * .06, atk:.05, type:'sine', wet:.5, det:-6}); voice({f, dur:.42, vol:.016, at:i * .06, atk:.05, type:'sine', det:7}); }); hiss({dur:.35, vol:.01, at:.05, f:8000, q:.7}); },
+  receive: () => { tick(0, 6500, .04); bell(1568, .01, .035, .35, -.15); bell(2093, .1, .03, .45, .15); },
+  // Big moments: longer and fuller
+  levelup: () => { [523, 659, 784, 1047, 1319].forEach((f, i) => voice({f, dur:.2, vol:.032, at:i * .065, type:'triangle', cut:6000, pan:-.4 + i * .2, wet:.4}));
+                   [523, 784, 1047, 1568].forEach(f => voice({f, dur:1.1, vol:.018, at:.34, atk:.06, type:'sawtooth', cut:900, cut2:4800, wet:.5, det:Math.random() * 10 - 5}));
+                   bell(2093, .36, .03, .9); hiss({dur:.8, vol:.015, at:.34, f:10000, q:.5}); },
+  cool:    () => { hiss({dur:.35, vol:.03, f:600, f2:7000, q:1.2}); [1175, 1568, 1976, 2349].forEach((f, i) => bell(f, .12 + i * .055, .024, .5, -.3 + i * .2)); voice({f:587, dur:.8, vol:.02, at:.15, atk:.08, type:'sawtooth', cut:700, cut2:3000, wet:.5}); },
+  breach:  () => { for (let i = 0; i < 12; i++){ const f = 900 + Math.random() * 3200; voice({f, f2:f * (Math.random() > .5 ? 1.6 : .55), dur:.035, vol:.022, at:i * .038, type:'square', cut:5200, pan:Math.random() * 1.4 - .7}); }
+                   hiss({dur:.3, vol:.04, at:.05, f:3500, q:5}); voice({f:110, f2:55, dur:.5, vol:.06, at:.42, type:'triangle', cut:800}); tick(.42, 3000, .07); },
+  flatline:() => { voice({f:150, f2:45, dur:.35, vol:.1, type:'sine'}); hiss({dur:.18, vol:.08, f:500, q:.8, kind:'lowpass'});
+                   [.45, .75].forEach(d => voice({f:1000, dur:.1, vol:.05, at:d, type:'sine', wet:.3})); voice({f:1000, dur:2.3, vol:.045, at:1.05, atk:.01, type:'sine', wet:.2}); },
+  psycho:  () => { for (let i = 0; i < 8; i++) hiss({dur:.07, vol:.05, at:i * .1, f:700 + Math.random() * 4500, q:5, pan:Math.random() * 1.4 - .7});
+                   voice({f:55, dur:1.8, vol:.07, atk:.2, type:'sawtooth', cut:300, cut2:1400}); voice({f:58, dur:1.8, vol:.05, atk:.2, type:'sawtooth', cut:300, det:12});
+                   voice({f:1200, f2:180, dur:.7, vol:.02, at:.9, type:'square', cut:2400, wet:.4}); }
 };
-function sfx(n){ if (!FXS.sfx || !SOUNDS[n] || !PREFS[SND_CAT[n] || 'game']) return; try { SOUNDS[n](); } catch(e){} }
+const SOUND_INFO = [['select', 'Any button'], ['tab', 'Tabs and pages'], ['up', 'Plus, gain'], ['down', 'Minus, spend'], ['deny', 'Not allowed'],
+  ['equip', 'Equip, get item'], ['unequip', 'Unequip, remove'], ['perk', 'Perk installed'], ['unperk', 'Perk removed'], ['damage', 'Damage, hacked'], ['heal', 'Healing'], ['receive', 'DM sent something'],
+  ['levelup', 'Level up'], ['cool', 'COOL Token'], ['breach', 'Quickhack, Black ICE'], ['flatline', 'Flatline'], ['psycho', 'Cyberpsychosis']];
+function sfx(n){ if (!FXS.sfx || !SOUNDS[n] || !PREFS[SND_CAT[n] || 'game']) return; try { playSnd(n); } catch(e){} }
 function classify(b){
   const d = b.dataset, txt = (b.textContent || '').trim();
-  if (b.id === 'doAct' || b.id === 'tSfx' || b.id === 'coolSpend') return null;
+  if (b.id === 'doAct' || b.id === 'tSfx' || b.id === 'coolSpend' || d.sfxtest) return null;
   if (b.id === 'lvUp') return 'levelup';
   if (b.id === 'lvDown' || b.id === 'dec') return 'down';
   if (b.id === 'inc') return 'up';
@@ -5339,17 +5406,8 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => { if (e.target.matches('select[data-install], select[data-hand]') && e.target.value) sfx('equip'); }, true);
 
 /* ================= GLITCH FX ================= */
-function sfxFlatline(){
-  if (!FXS.sfx || !PREFS.big) return;
-  tone(160, 50, .35, 'sawtooth', .1); noise(.2, .14, 0, 300, .8);
-  [0, .28].forEach(d => tone(1000, 1000, .09, 'sine', .07, .5 + d));
-  tone(1000, 1000, 2.2, 'sine', .06, 1.1);
-}
-function sfxPsycho(){
-  if (!FXS.sfx || !PREFS.big) return;
-  for (let i = 0; i < 9; i++) noise(.08, .14, i * .11, 600 + Math.random() * 5000, 4);
-  tone(900, 40, 1.4, 'sawtooth', .07); tone(57, 45, 1.8, 'square', .06, .1); tone(1500, 220, .5, 'square', .03, .9);
-}
+function sfxFlatline(){ sfx('flatline'); }
+function sfxPsycho(){ sfx('psycho'); }
 function flatline(kind){
   const el = $('#flatline'); if (!el) return;
   $('#flSub').textContent = kind === 'net' ? 'Flatlined in the Net. Unconscious. Critical condition.' : 'Unconscious. Critical condition.';
@@ -6159,7 +6217,9 @@ function renderSettings(){
     ${tog('ui', 'UI clicks', 'Buttons, tabs and steppers')}
     ${tog('game', 'Game sounds', 'Damage, healing, items, perks and chrome')}
     ${tog('big', 'Big moments', 'Flatline, cyberpsychosis, overheat, hacks, level ups and COOL Tokens')}
-    <div class="row gap"><button class="btn small" data-set="test">Test sound</button><span class="muted" style="font-size:12px">The SFX button still mutes everything.</span></div>`;
+    <span class="lbl" style="margin-top:14px;display:block">Sound board</span>
+    <div class="sboard">${SOUND_INFO.map(([k, d]) => `<button class="btn small sbtn ${SND_CAT[k] || 'game'}" data-sfxtest="${k}"><b>${k}${SFILE[k] ? ' <i class="sfc">CUSTOM</i>' : ''}</b><small>${d}</small></button>`).join('')}</div>
+    <p class="muted" style="font-size:12px;margin:8px 0 0">Tap any sound to hear it, even if its group is switched off. CUSTOM ones play your file from the sounds folder, the rest use the built-in sound. The SFX button still mutes everything during play.</p>`;
   } else {
     body = `<span class="lbl" style="margin-top:12px;display:block">App</span>
     <div class="crow"><span>Install as an app<small>${isStandalone() ? 'Running as an app right now.' : installEvt ? 'Adds Daemon Manual to your home screen or desktop with its own icon. Works offline too.' : isIOS() ? 'On iPhone or iPad, tap Share, then Add to Home Screen.' : 'Open the site from its web address in Chrome or Edge to install it. On iPhone use Share, then Add to Home Screen.'}</small></span>${installEvt && !isStandalone() ? '<button class="btn small primary" data-set="install">Install</button>' : ''}</div>
@@ -6186,7 +6246,8 @@ $('#setPanel').addEventListener('click', e => {
   if (t.dataset.set === 'close') return toggleSettings(false);
   if (t.dataset.stab){ setTab = t.dataset.stab; return renderSettings(); }
   if (t.dataset.set === 'install'){ if (installEvt){ installEvt.prompt(); installEvt.userChoice.then(c => { if (c.outcome === 'accepted') toast('Installed. Look for Daemon on your home screen.', true); installEvt = null; renderSettings(); }); } return; }
-  if (t.dataset.set === 'test'){ const was = FXS.sfx; FXS.sfx = true; SOUNDS.perk(); FXS.sfx = was; return; }
+  if (t.dataset.set === 'test'){ playSnd('perk'); return; }
+  if (t.dataset.sfxtest){ try { ac(); playSnd(t.dataset.sfxtest); } catch(err){} return; }
   if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
   if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); return; }
   if (t.dataset.preset){ THEME = {...THEME, ...PRESETS[+t.dataset.preset][1], style:THEME.style}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
