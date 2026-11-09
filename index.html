@@ -352,7 +352,8 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .sfc{font-style:normal;font-size:8px;letter-spacing:1px;border:1px solid currentColor;padding:1px 4px;margin-left:4px;vertical-align:middle}
 .sbtn.ui{border-color:rgba(var(--crgb),.35)}.sbtn.big{border-color:var(--yellow);color:var(--yellow)}
 
-.wpnb{font:600 10px Orbitron,sans-serif;letter-spacing:1px;border:1px solid var(--yellow);color:var(--yellow);padding:2px 6px}
+.wpnb{font:600 10px Orbitron,sans-serif;letter-spacing:1px;border:1px solid var(--yellow);color:var(--yellow);padding:2px 6px;display:inline-block;margin:0 4px 4px 0}.wpnb.conb{border-color:var(--cyan);color:var(--cyan)}.wpnb.nocb{border-color:rgba(255,79,216,.6);color:#ff8fe6}
+.ammo{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:2px 0 8px}.ammo .an{font:600 15px Orbitron,sans-serif;letter-spacing:1px;min-width:72px}.ammo .an small{font-size:11px;opacity:.6}.ammo .an.low{color:#ff4fd8}.ammo .abar{flex:1 1 80px;height:6px;background:rgba(var(--crgb),.15);min-width:60px}.ammo .abar i{display:block;height:100%;background:var(--cyan)}.ammo .abar i.low{background:#ff4fd8}
 
 .cwp.cap{border-color:var(--red)!important;background:rgba(255,60,90,.28)!important;box-shadow:0 0 8px rgba(255,60,90,.7)}
 .cwp.cap.on{background:var(--red)!important}
@@ -950,7 +951,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Shinobi</b></td><td>Stealth and Acrobatics</td><td>REF</td></tr>
             <tr><td><b>Bruiser</b></td><td>Athletics and Intimidation</td><td>STR and BOD</td></tr>
           </tbody></table>
-          <p class="muted" style="font-size:13px;margin-top:10px">If your role and your background give the same skill, it counts once. Every time one of your stats reaches a new tier (Rookie, Pro, Phenom or Legend), you get one pick for that stat. Take a skill you don't have yet, or double one you got at least two tiers earlier. You keep picks even if the stat drops later.</p>
+          <p class="muted" style="font-size:13px;margin-top:10px">If your role and your background give the same skill, it counts once. When you level up and a stat reaches a new tier (Rookie, Pro, Phenom or Legend), you get one skill pick. Take a skill you don't have yet, or double one you got at least two tiers earlier. You keep picks even if the stat drops later.</p>
         </div>
       </section>
 
@@ -964,7 +965,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td>Religion</td><td><b>Code</b></td><td>INT</td></tr>
           </tbody></table>
           <h3 style="margin-top:20px">Double proficiency</h3>
-          <p style="margin-top:8px">Each stat tier you reach gives you one pick. Use it to become proficient in a skill tied to that stat that you don't have yet, or to double a skill you're already proficient in once that stat has moved two tiers past where you got it. A Rookie Netrunner proficient in Hacking can double it at Phenom. If the skill's stat was under 10 when you got it, Rookie counts as its first tier, so you can double it at Pro. Perks that give proficiency count toward doubling under the same two-tier rule.</p>
+          <p style="margin-top:8px">You get one pick at a time, never one per stat. It opens on a level up when any of your stats reaches a tier you haven't used yet. If several stats qualify, you choose one skill among all of them, and the rest stay locked until each one reaches its next tier. A Bruiser with STR 15, TEC 12 and INT 10 picks Athletics, so TEC and INT give nothing until they hit 14. You only get one pick per level. New mercs don't get one at level 1, and their starting stats all count toward the pick on their first level up.</p>
+          <p style="margin-top:8px">Use your pick to become proficient in a skill tied to that stat that you don't have yet, or to double a skill you're already proficient in once that stat has moved two tiers past where you got it. A Rookie Netrunner proficient in Hacking can double it at Phenom. If the skill's stat was under 10 when you got it, Rookie counts as its first tier, so you can double it at Pro. Perks that give proficiency count toward doubling under the same two-tier rule.</p>
         </div>
       </section>
 
@@ -982,7 +984,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <table class="rtable"><tbody>
             <tr><td><b>Role</b></td><td>Pick one at level 1. It gives two skill proficiencies and can't be changed</td></tr>
             <tr><td><b>Stats</b></td><td>5e point buy with 27 points. Every stat starts between 8 and 15.</td></tr>
-            <tr><td><b>Skill picks</b></td><td>Each stat tier you reach (Rookie 10, Pro 14, Phenom 17, Legend 20) gives one pick for that stat. Take a new skill, or double one you got two tiers earlier. Picks stay even if the stat drops</td></tr>
+            <tr><td><b>Skill picks</b></td><td>One pick on a level up when any stat reaches a new tier (Rookie 10, Pro 14, Phenom 17, Legend 20). Taking it locks the other stats until their next tier. Take a new skill, or double one you got two tiers earlier. Picks stay even if the stat drops</td></tr>
             <tr><td><b>AC</b></td><td>10 + REF mod + TEC mod. Cyberware can raise it, and meds or consumables can raise it for a while</td></tr>
             <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
             <tr><td><b>Starting HP</b></td><td>10 + 10 + BOD mod. Level 1 takes the max roll, no dice</td></tr>
@@ -1038,9 +1040,27 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>LIGHT</b></td><td>A standard RELOAD action</td></tr>
             <tr><td><b>HEAVY</b></td><td>Reloading takes your whole TURN</td></tr>
           </tbody></table>
+          <h3 style="margin-top:18px">Clip chart</h3>
+          <p style="margin-top:8px">Every gun takes a Standard, Extended or Drum clip. The clip sets how many shots you get before you have to RELOAD. Each ATTACK fires as many shots as the gun's ROF.</p>
+          <table class="rtable"><thead><tr><th>Type</th><th>Standard</th><th>Extended</th><th>Drum</th></tr></thead><tbody>
+            <tr><td><b>Medium Pistol</b></td><td>12</td><td>18</td><td>36</td></tr>
+            <tr><td><b>Heavy Pistol</b></td><td>8</td><td>14</td><td>28</td></tr>
+            <tr><td><b>Very Heavy Pistol</b></td><td>8</td><td>14</td><td>28</td></tr>
+            <tr><td><b>SMG</b></td><td>30</td><td>40</td><td>50</td></tr>
+            <tr><td><b>Heavy SMG</b></td><td>40</td><td>50</td><td>60</td></tr>
+            <tr><td><b>LMG</b></td><td>40</td><td>50</td><td>60</td></tr>
+            <tr><td><b>Shotgun</b></td><td>4</td><td>8</td><td>16</td></tr>
+            <tr><td><b>Assault Rifle</b></td><td>25</td><td>35</td><td>45</td></tr>
+            <tr><td><b>Sniper Rifle</b></td><td>4</td><td>8</td><td>12</td></tr>
+            <tr><td><b>Grenade Launcher</b></td><td>2</td><td>4</td><td>6</td></tr>
+            <tr><td><b>Rocket Launcher</b></td><td>1</td><td>2</td><td>3</td></tr>
+          </tbody></table>
+          <p class="muted" style="font-size:13px;margin-top:6px">Light Pistols count as Medium Pistols. Revolvers and Hand Cannons count as Very Heavy Pistols.</p>
+          <h3 style="margin-top:18px">Concealment</h3>
+          <p style="margin-top:8px">Pistols, Revolvers, Hand Cannons and SMGs can be concealed, and so can <b>some</b> Assault Rifles. The DM decides which ones. A gun can only be concealed with a <b>Standard</b> clip. Swap in an Extended or Drum clip and everyone can see it.</p>
           <h3 style="margin-top:18px">Quick reload</h3>
           <p style="margin-top:8px">With double proficiency in <b>Sleight of Hand</b>, you can sacrifice 1 ROF to RELOAD instead of spending a whole ACTION on it. A Soldier with a 3-ROF weapon and double proficiency in Sleight of Hand reloads by making their next ATTACK action 2-ROF.</p>
-          <p class="muted" style="font-size:13px;margin-top:8px">Every weapon on your sheet shows its ROF and reload speed. The DM sets them, and you can edit them in the item.</p>
+          <p class="muted" style="font-size:13px;margin-top:8px">Every gun on your sheet shows its ROF, reload speed, clip and whether it's concealable. Equipped guns track the shots you have left. Tap Fire to spend one ATTACK's worth and Reload to fill the clip. The DM sets these, and you can edit them in the item.</p>
         </div>
       </section>
 
@@ -1080,8 +1100,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <h3 style="margin-top:18px">Shards</h3>
           <p style="margin-top:8px">Shards are data sticks you slot into one of your two Shard Slots. The DM decides what each one does, like a skill boost, a language or intel. Anyone can slot or pull a shard without a RipperDoc, and it doesn't count against your cyberware threshold. The effect lasts while it's slotted. Pull it out and the effect ends and the shard goes back in your bag.</p>
           <h3 style="margin-top:18px">Cyberware threshold</h3>
-          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Anything past your <b>threshold</b> is <b>overflow</b>. Overflow can only go up to half your threshold, rounded up, which sets your <b>max</b>. The last overflow hex is red. Fill it and you hit the point of no return. See Cyberpsychosis.</p>
-          <p class="muted" style="font-size:14px;margin-top:6px">Example. Threshold 10, so overflow caps at 5 and your max is 15. A tally of 12 is 2 points of overflow, so your Cyberpsychosis save DC is 14. A tally of 15 fills the red hex.</p>
+          <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Your <b>threshold</b> is 10 + your Cyberware skill bonus, which is your TEC mod plus your proficiency bonus if you're proficient in Cyberware (twice it if you doubled the skill). It goes up on its own as you level and raise TEC. Anything past your threshold is <b>overflow</b>. Overflow can only go up to half your threshold, rounded up, which sets your <b>max</b>. The last overflow hex is red. Fill it and you hit the point of no return. See Cyberpsychosis.</p>
+          <p class="muted" style="font-size:14px;margin-top:6px">Example. TEC 14 (+2) and proficient in Cyberware at level 1 (+2) gives a threshold of 14, so overflow caps at 7 and your max is 21. A tally of 16 is 2 points of overflow, so your Cyberpsychosis save DC is 14. A tally of 21 fills the red hex.</p>
           <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, on themselves or anyone else. If nobody in the crew is a RipperDoc, you'll need to find one!</p>
           <p>During a live session a RipperDoc sees an install panel on every party member's card. The part has to be in the patient's bag, so hand it over first. Any merc can hand items and eddies to the rest of the crew.</p>
           <h3 style="margin-top:18px">Hot-swappable parts</h3>
@@ -1111,7 +1131,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>The DM can put status effects on your merc from the Live Session. They show in your Vitals with a round countdown if they have one. When a round ends, the DM hits End round and every timer ticks down.</p>
           <h3 style="margin-top:14px">Death saves</h3>
-          <p>At 0 HP you start rolling death saves. Roll a d20. A 10 or higher passes. Three passes and you're back up with 1 HP. Three fails and you're dead.</p>
+          <p>At 0 HP or 0 Net HP you start rolling death saves. Roll a d20. A 10 or higher passes. Three passes and whatever dropped you comes back at 1, so 0 Net HP comes back as 1 Net HP. If both are at 0, both come back at 1. Three fails and you're dead, no matter which one dropped you.</p>
           <p>Your Vitals show it as a seesaw. Three live skulls sit on the left and three dead skulls on the right. Each pass lights a live skull cyan, each fail turns a dead skull red, and the beam tips toward whichever side is winning. Any healing above 0 HP resets them.</p>
           <h3 style="margin-top:14px">The effects</h3>
           <div id="rStatus"></div>
@@ -1533,15 +1553,21 @@ const acOf = m => acBase(m) + acChrome(m) + (m.acTemp || 0);
 const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
 const numOrNull = v => (v === null || v === undefined || v === '' || isNaN(+v)) ? null : +v;
 function normalize(c){ return tierFix(vitalFix(packInv(fixEq(normalize0(c))))); }
-// Death saves only matter at 0 HP. Any healing clears them.
-// Every stat tier a merc reaches grants one skill pick for that stat. Earned tiers are kept even if the stat drops.
+// Death saves start at 0 HP or 0 Net HP. Healing back above 0 clears them.
+// One skill pick at a time, shared by every stat. It opens on a level up when any stat reaches a tier it hasn't used yet.
+// Taking it uses up every open tier, so the other stats stay locked until they reach their next tier. Earned tiers are kept even if the stat drops.
 function tierFix(m){
   if (!m.tierHit) return m;
   ORDER.forEach(k => { const sc = score(k, m), hit = m.tierHit[k] || (m.tierHit[k] = []); Object.entries(TIERS).forEach(([t, x]) => { if (sc >= x.req && !hit.includes(t)) hit.push(t); }); });
+  // A brand-new merc gets no pick at level 1. Its starting stats all qualify for the pick on its first level up.
+  if (!m.tierUsed){ m.tierUsed = Object.fromEntries(ORDER.map(k => [k, -1])); m.pickLv = 1; }
   return m;
 }
+const maxHit = (m, k) => Math.max(-1, ...((m.tierHit || {})[k] || []).map(t => T_IDX[t] ?? -1));
 const pickedSkills = m => Object.values(m.tierPicks || {}).filter(v => v && v !== '-').map(v => v.replace(/^2:/, ''));
-const pendingPicks = m => ORDER.flatMap(k => TIER_ORDER.filter(t => (m.tierHit[k] || []).includes(t) && !(m.tierPicks || {})[k + '.' + t]).map(t => ({k, t})));
+const pendingPicks = m => (m.level || 1) <= (m.pickLv || 0) ? [] : ORDER.filter(k => maxHit(m, k) > ((m.tierUsed || {})[k] ?? -1)).map(k => ({k, t: TIER_ORDER[maxHit(m, k)]}));
+const lockedStats = m => ORDER.filter(k => SKILLS.some(x => x[1] === k) && maxHit(m, k) <= ((m.tierUsed || {})[k] ?? -1)).map(k => { const nx = TIER_ORDER.find(t => T_IDX[t] > maxHit(m, k)); return nx ? `${k} hits ${TIERS[nx].req}` : null; }).filter(Boolean);
+function usePick(m){ m.tierUsed = Object.fromEntries(ORDER.map(k => [k, maxHit(m, k)])); m.pickLv = m.level || 1; }
 // A pick can give a new skill, or double one whose stat has moved two tiers past where you got it.
 const T_IDX = {r:0, p:1, ph:2, l:3};
 const tierIdxOf = sc => sc >= 20 ? 3 : sc >= 17 ? 2 : sc >= 14 ? 1 : sc >= 10 ? 0 : -1;
@@ -1562,7 +1588,10 @@ function pickable(m, k, t){
   return out;
 }
 const pickLabel = v => v.startsWith('2:') ? 'Double ' + v.slice(2) : v;
-function vitalFix(m){ if (!m.hpMax || (m.hp == null ? m.hpMax : m.hp) > 0){ m.ds = {p:0, f:0}; m.dead = false; } return m; }
+function vitalFix(m){ if (!m.hpMax || (hpNow(m) > 0 && netNow(m) > 0)){ m.ds = {p:0, f:0}; m.dead = false; } return m; }
+const hpNow = m => m.hp == null ? m.hpMax : m.hp, netNow = m => m.netHp == null ? m.hpMax : m.netHp;
+// Which pool dropped the merc. Death saves bring back only that pool (or both if both are at 0).
+const downWhat = m => [hpNow(m) <= 0 ? 'HP' : '', netNow(m) <= 0 ? 'Net HP' : ''].filter(Boolean).join(' and ');
 function normalize0(c){
   const base = {}; ORDER.forEach(k => base[k] = Math.min(15, Math.max(8, +((c.base||{})[k]) || 8)));
   const bg = BACKGROUNDS[c.background] ? c.background : 'Streetkid';
@@ -1591,7 +1620,10 @@ function normalize0(c){
     })),
     hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
     hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram), acTemp: parseInt(c.acTemp) || 0,
-    tierHit: Object.fromEntries(ORDER.map(k => [k, ((c.tierHit || {})[k] || []).filter(t => TIERS[t])])), tierPicks: Object.fromEntries(Object.entries(c.tierPicks || {}).filter(([k, v]) => /^[A-Z]{3}\.(r|p|ph|l)$/.test(k) && typeof v === 'string')),
+    tierHit: Object.fromEntries(ORDER.map(k => [k, ((c.tierHit || {})[k] || []).filter(t => TIERS[t])])), pv: 3, ...(c.pv === 2 && !Object.keys(c.tierPicks || {}).length ? {tierPicks: {}, tierUsed: null, pickLv: 0} : c.pv >= 2 ? {
+      tierPicks: Object.fromEntries(Object.entries(c.tierPicks || {}).filter(([k, v]) => /^[A-Z]{3}\.(r|p|ph|l)$/.test(k) && typeof v === 'string')),
+      tierUsed: c.tierUsed ? Object.fromEntries(ORDER.map(k => [k, (v => Number.isFinite(v) ? Math.max(-1, Math.min(3, v)) : -1)(parseInt(c.tierUsed[k]))])) : null, pickLv: Math.max(0, parseInt(c.pickLv) || 0)
+    } : {tierPicks: {}, tierUsed: Object.fromEntries(ORDER.map(k => [k, -1])), pickLv: 0}),
     ds: {p: Math.max(0, Math.min(3, parseInt((c.ds || {}).p) || 0)), f: Math.max(0, Math.min(3, parseInt((c.ds || {}).f) || 0))}, dead: !!c.dead,
     status: (Array.isArray(c.status) ? c.status : []).filter(x => x && STATUSMAP[x.id]).map(x => ({id:x.id, r: x.r == null || x.r === '' ? null : Math.max(0, parseInt(x.r) || 0), v: Math.max(1, Math.min(6, parseInt(x.v) || 1))})),
     eddies: Math.max(0, parseInt(c.eddies) || 0),
@@ -1605,7 +1637,7 @@ function normalize0(c){
     hpLv: Math.max(1, parseInt(c.hpLv) || (numOrNull(c.hpMax) > 0 ? Math.max(1, +c.level || 1) : 1)),
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
-    cwT: Math.max(0, numOrNull(c.cwT) ?? 10), cwAdj: parseInt(c.cwAdj) || 0, lost: !!c.lost,
+ cwAdj: parseInt(c.cwAdj) || 0, lost: !!c.lost,
     portrait: typeof c.portrait === 'string' && c.portrait.length < 300000 && PORTRAIT_RE.test(c.portrait) ? c.portrait : null
   };
 }
@@ -1648,13 +1680,44 @@ function weaponDefaults(name, stats){
   if (/pistol/.test(n)) return {rof:2, reload:'light'};
   return {rof:1, reload:'light'};
 }
+// Clip chart. Shots per clip for Standard, Extended and Drum. LMG uses the Heavy SMG row.
+const CLIPS = {
+  'Medium Pistol':[12, 18, 36], 'Heavy Pistol':[8, 14, 28], 'Very Heavy Pistol':[8, 14, 28], 'SMG':[30, 40, 50], 'Heavy SMG':[40, 50, 60], 'LMG':[40, 50, 60],
+  'Shotgun':[4, 8, 16], 'Assault Rifle':[25, 35, 45], 'Sniper Rifle':[4, 8, 12], 'Grenade Launcher':[2, 4, 6], 'Rocket Launcher':[1, 2, 3]
+};
+const CLIP_KEYS = ['std', 'ext', 'drum'], CLIP_TXT = {std:'Standard', ext:'Extended', drum:'Drum'};
+// Pistols, hand cannons and SMGs can always be concealed. Some assault rifles can too, so the DM ticks those. Only with a Standard clip.
+const CONCEAL_AUTO = ['Medium Pistol', 'Heavy Pistol', 'Very Heavy Pistol', 'SMG', 'Heavy SMG'];
+function gunTypeOf(name, stats){
+  const n = (name || '') + ' ' + (stats || '');
+  if (/rocket/i.test(n)) return 'Rocket Launcher';
+  if (/launcher/i.test(n)) return 'Grenade Launcher';
+  if (/\blmg\b|\bhmg\b|minigun|machine ?gun/i.test(n)) return 'LMG';
+  if (/heavy smg/i.test(n)) return 'Heavy SMG';
+  if (/\bsmg\b|\buzi\b|machine pistol/i.test(n)) return 'SMG';
+  if (/sniper/i.test(n)) return 'Sniper Rifle';
+  if (/shotgun/i.test(n)) return 'Shotgun';
+  if (/assault|rifle|carbine/i.test(n)) return 'Assault Rifle';
+  if (/revolver|hand ?cannon|very heavy pistol/i.test(n)) return 'Very Heavy Pistol';
+  if (/heavy pistol/i.test(n)) return 'Heavy Pistol';
+  if (/pistol/i.test(n)) return 'Medium Pistol';
+  return '';
+}
 function weaponOf(i){
   if (i.type !== 'Weapon') return {rof:null, reload:null};
   const d = weaponDefaults(i.name, i.stats), r = parseInt(i.rof);
-  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload: ['light', 'heavy', 'none'].includes(i.reload) ? i.reload : d.reload};
+  const reload = ['light', 'heavy', 'none'].includes(i.reload) ? i.reload : d.reload;
+  const gtype = reload === 'none' ? '' : CLIPS[i.gtype] ? i.gtype : i.gtype === '' ? '' : gunTypeOf(i.name, i.stats);
+  const clip = CLIP_KEYS.includes(i.clip) ? i.clip : 'std', cap = gtype ? CLIPS[gtype][CLIP_KEYS.indexOf(clip)] : null;
+  const a = parseInt(i.ammo);
+  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload, gtype, clip, conc: !!i.conc, ammo: cap == null ? null : Number.isFinite(a) ? Math.max(0, Math.min(cap, a)) : cap};
 }
+const clipCap = i => i.type === 'Weapon' && CLIPS[i.gtype] ? CLIPS[i.gtype][CLIP_KEYS.indexOf(i.clip || 'std')] : null;
+// Can this gun be concealed at all, and is it concealed right now (Standard clip only)?
+const canConceal = i => i.type === 'Weapon' && (CONCEAL_AUTO.includes(i.gtype) || (i.gtype === 'Assault Rifle' && !!i.conc));
+const concealed = i => canConceal(i) && (i.clip || 'std') === 'std';
 const RELOAD_TXT = {light:'LIGHT reload', heavy:'HEAVY reload', none:'Melee'};
-const wpnTag = i => i.type === 'Weapon' ? `<span class="wpnb" title="Rate of fire and reload">ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() : ''}</span>` : '';
+const wpnTag = i => i.type === 'Weapon' ? `<span class="wpnb" title="Rate of fire and reload">ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() : ''}</span>${clipCap(i) ? `<span class="wpnb" title="${esc(i.gtype)}, ${CLIP_TXT[i.clip || 'std']} clip">${CLIP_TXT[i.clip || 'std'].toUpperCase()} ${clipCap(i)}</span>` : ''}${canConceal(i) ? (concealed(i) ? '<span class="wpnb conb" title="Can be concealed">CONCEALABLE</span>' : '<span class="wpnb nocb" title="Only concealable with a Standard clip">NOT CONCEALABLE</span>') : ''}` : '';
 function sizeOf(i){
   const d = defSize(i.type, i.name), w = parseInt(i.w), h = parseInt(i.h);
   return {w: Math.max(1, Math.min(BAG_MAX_W, w || d[0])), h: Math.max(1, Math.min(BAG_MAX_H, h || d[1]))};
@@ -1887,7 +1950,7 @@ function printSheet(){
     <div class="pscols">
       <div><h2>Vitals</h2><table>
         <tr><td>HP</td><td>${hm ? (m.hp ?? hm) + ' / ' + hm : '____ / ____'}</td></tr><tr><td>NET HP</td><td>${hm ? (m.netHp ?? hm) + ' / ' + hm : '____ / ____'}</td></tr>
-        <tr><td>RAM</td><td>${ramNow(m)} / ${ramMax(m)}</td></tr><tr><td>Cyberware</td><td>${cwLoad(m)} / ${m.cwT} (max ${cwMaxOf(m)})</td></tr>
+        <tr><td>RAM</td><td>${ramNow(m)} / ${ramMax(m)}</td></tr><tr><td>Cyberware</td><td>${cwLoad(m)} / ${cwTOf(m)} (max ${cwMaxOf(m)})</td></tr>
         <tr><td>Eddies</td><td>${m.eddies.toLocaleString()} €$</td></tr><tr><td>COOL Tokens</td><td>${m.cool}</td></tr>${m.xp ? `<tr><td>XP</td><td>${m.xp.toLocaleString()}</td></tr>` : ''}</table>
         <h2>Equipped</h2><p><b>Primary</b> ${it(m.eq.primary) ? esc(it(m.eq.primary).name) + ' · ' + esc(it(m.eq.primary).stats || '') : 'none'}<br><b>Secondary</b> ${it(m.eq.secondary) ? esc(it(m.eq.secondary).name) + ' · ' + esc(it(m.eq.secondary).stats || '') : 'none'}</p>
         <h2>Cyberware</h2>${m.cyber.length ? `<table>${m.cyber.map(x => `<tr><td>${esc(x.name)}${x.hot ? ' (hot)' : ''}</td><td>${(SLOTMAP[x.slot] || [])[1] || x.slot}</td><td>${esc(x.effect || '')}</td></tr>`).join('')}</table>` : '<p>None</p>'}
@@ -1908,7 +1971,7 @@ function dmSheetHTML(p){
   const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
   const profs = [...new Set([...m.bgSkills, ...(ROLES[m.role] ? ROLES[m.role].prof : [])])];
   const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<div><span class="${pf.level ? 'p' : ''}">${pf.level === 2 ? '◆◆ ' : pf.level ? '◆ ' : ''}${n} <span class="muted">${st}</span></span><b>${sgn(mod(score(st, m)) + pb * pf.level)}</b></div>`; }).join('');
-  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
+  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}${clipCap(i) ? ` · Ammo ${i.ammo == null ? clipCap(i) : i.ammo}/${clipCap(i)} ${CLIP_TXT[i.clip || 'std']}` : ''}${concealed(i) ? ' · Concealable' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
   const ach = ACH.filter(a => m.ach[a.id]).length;
   return `<div class="dsheet">
     <div class="dsh">${avatar(m, 'av md', portraits[p.id])}<div style="min-width:0"><div class="nm">${esc(m.name)}</div>
@@ -1920,7 +1983,7 @@ function dmSheetHTML(p){
         <span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b>
         <span>NET HP</span><b>${hm ? net + ' / ' + hm : 'Not set'}</b>
         <span>RAM</span><b>${ramNow(m)} / ${ramMax(m)}</b>
-        <span>Cyberware</span><b>${cwLoad(m)} / ${m.cwT} <span class="muted">max ${cwMaxOf(m)}</span></b>
+        <span>Cyberware</span><b>${cwLoad(m)} / ${cwTOf(m)} <span class="muted">max ${cwMaxOf(m)}</span></b>
         <span>COOL Tokens</span><b>${m.cool}</b>
         <span>Eddies</span><b>${m.eddies.toLocaleString()} €$</b>
         <span>XP</span><b>${(m.xp || 0).toLocaleString()}</b>
@@ -2329,7 +2392,7 @@ $('#wbody').addEventListener('click', e => {
     return renderWizard();
   }
   if (t.id === 'wDone'){
-    const c = normalize({...W, id:uid(), level:1, unlocked:[], asi:[], created:Date.now(), hpMax:Math.max(1, 20 + mod(W.base.BOD)), hpLv:1,
+    const c = normalize({...W, pv:3, id:uid(), level:1, unlocked:[], asi:[], created:Date.now(), hpMax:Math.max(1, 20 + mod(W.base.BOD)), hpLv:1,
       active: ORDER.slice().sort((a, b) => W.base[b] - W.base[a])[0]});
     DB.chars.push(c); persist();
     toast(`${c.name} is online. Welcome to Night City.`, true);
@@ -2463,13 +2526,21 @@ function skillProf(name, st, c = C){
   const level = doubled ? 2 : src >= 2 && canDouble ? 2 : src >= 1 ? 1 : 0;
   return {src, role:roleP, picked, doubled, level, locked: !doubled && src >= 2 && !canDouble};
 }
+// The one open pick, as a single dropdown grouped by stat.
+function pickBoxHTML(m){
+  const pend = pendingPicks(m); if (!pend.length) return '';
+  const groups = pend.map(({k, t}) => ({k, t, opts: pickable(m, k, t)})).filter(g => g.opts.length);
+  const names = (groups.length ? groups : pend).map(p => p.k), list = names.length > 1 ? names.slice(0, -1).join(', ') + ' or ' + names[names.length - 1] : names[0];
+  return `<div class="tpick"><b>Choose 1 skill from ${list}</b>${groups.length
+    ? `<select data-tpsel aria-label="Skill pick"><option value="">Pick a skill</option>${groups.map(g => `<optgroup label="${g.k} · ${TIERS[g.t].name}">${g.opts.map(o => `<option value="${g.k}.${g.t}|${o.v}">${o.label}</option>`).join('')}</optgroup>`).join('')}</select><button class="btn small primary" data-tpick>Lock it in</button>`
+    : `<span class="muted" style="font-size:13px">Nothing to pick. Every skill for these stats is already proficient, and none are two tiers along yet.</span><button class="btn small" data-tpskip>OK</button>`}</div>
+    <p class="muted" style="font-size:12px;margin:6px 0 0">Locking one in locks the others until each stat reaches its next tier.</p>`;
+}
 function picksHTML(m){
-  const pend = pendingPicks(m), done = Object.entries(m.tierPicks || {}).filter(([, v]) => v && v !== '-');
-  const row = ({k, t}) => { const opts = pickable(m, k, t); return `<div class="tpick"><b>${k} reached ${TIERS[t].name}</b>${opts.length ? `<select data-tpsel="${k}.${t}" aria-label="Skill for ${k} ${TIERS[t].name}"><option value="">Pick a ${k} skill</option>${opts.map(o => `<option value="${o.v}">${o.label}</option>`).join('')}</select><button class="btn small primary" data-tpick="${k}.${t}">Lock it in</button>` : `<span class="muted" style="font-size:13px">${SKILLS.some(x => x[1] === k) ? `Nothing to pick. Every ${k} skill is already proficient, and none are two tiers along yet.` : `No skills use ${k}, so there's nothing to pick.`}</span><button class="btn small" data-tpskip="${k}.${t}">OK</button>`}</div>`; };
-  if (!pend.length && !done.length) return '';
-  return `<div class="tpicks ${pend.length ? 'due' : ''}"><div class="row" style="gap:8px"><span class="lbl" style="margin:0">Skill picks</span>${pend.length ? `<span class="tpn">${pend.length} waiting</span>` : ''}</div>
-    <p class="muted" style="font-size:12px;margin:4px 0 8px">Each tier a stat reaches gives you one pick: a new skill tied to it, or double proficiency in one you got two tiers earlier. You keep picks even if the stat drops.</p>
-    ${pend.map(row).join('')}${done.length ? `<p style="font-size:13px;margin:8px 0 0">${done.map(([key, v]) => { const [k, t] = key.split('.'); return `<span class="tdone">${k} ${TIERS[t].name} · <b>${esc(pickLabel(v))}</b></span>`; }).join('')}</p>` : ''}</div>`;
+  const pend = pendingPicks(m), done = Object.entries(m.tierPicks || {}).filter(([, v]) => v && v !== '-'), lk = lockedStats(m);
+  return `<div class="tpicks ${pend.length ? 'due' : ''}"><div class="row" style="gap:8px"><span class="lbl" style="margin:0">Skill picks</span>${pend.length ? '<span class="tpn">1 waiting</span>' : ''}</div>
+    <p class="muted" style="font-size:12px;margin:4px 0 8px">You get one pick on a level up when a stat reaches a new tier. It can be a new skill tied to that stat, or double proficiency in one you got two tiers earlier. Taking it locks every other stat until it reaches its next tier.</p>
+    ${pickBoxHTML(m)}${!pend.length ? `<p style="font-size:13px;margin:6px 0 0">${(m.level || 1) <= (m.pickLv || 0) && ORDER.some(k => maxHit(m, k) > ((m.tierUsed || {})[k] ?? -1)) ? 'Your next pick opens when you level up.' : lk.length ? `Next pick opens on a level up once ${lk.join(', ')}.` : 'No picks left to earn.'}</p>` : ''}${done.length ? `<p style="font-size:13px;margin:8px 0 0">${done.map(([key, v]) => { const [k, t] = key.split('.'); return `<span class="tdone">${k} ${TIERS[t].name} · <b>${esc(pickLabel(v))}</b></span>`; }).join('')}</p>` : ''}</div>`;
 }
 function renderSkills(){
   const p = prof(C.level);
@@ -2485,9 +2556,12 @@ function renderSkills(){
 
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-tpick], [data-tpskip]'); if (!b || !C) return;
-  const key = b.dataset.tpick || b.dataset.tpskip;
-  if (b.dataset.tpskip){ C.tierPicks[key] = '-'; }
-  else { const sel = b.closest('.tpick').querySelector('select'), v = sel && sel.value; if (!v){ toast('Pick a skill first.'); return; } C.tierPicks[key] = v; toast(v.startsWith('2:') ? `Double proficiency in ${v.slice(2)}.` : `Proficient in ${v}.`, true); sfx('perk'); }
+  if (!pendingPicks(C).length) return;
+  if (b.hasAttribute('data-tpick')){
+    const sel = b.closest('.tpick').querySelector('select'), raw = sel && sel.value; if (!raw){ toast('Pick a skill first.'); return; }
+    const [key, v] = raw.split('|'); C.tierPicks[key] = v; toast(v.startsWith('2:') ? `Double proficiency in ${v.slice(2)}.` : `Proficient in ${v}.`, true); sfx('perk');
+  }
+  usePick(C);
   saveC(); renderSkills(); if (sheetTab === 'cs') renderCS(); renderSheetHead();
 });
 
@@ -2598,7 +2672,7 @@ function update(mode = true){
   });
   prevRev = nowRev;
   prevEdge = new Set(edges.filter(e => e.g.classList.contains('vis')).map(e => e.from + '>' + e.to));
-  renderSheetHead(); renderTabs(); renderSkills(); renderDetail(); updateTierMarks(); renderCS(); saveC();
+  tierFix(C); renderSheetHead(); renderTabs(); renderSkills(); renderDetail(); updateTierMarks(); renderCS(); saveC();
 }
 
 function act(sl){
@@ -2680,10 +2754,12 @@ function toast(msg, good){
 
 /* ================= CHARACTER SHEET TAB ================= */
 const cwLoad = (c = C) => Math.max(0, c.cyber.reduce((n, x) => n + (x.cw || 0), 0) + (c.cwAdj || 0));
-const cwOver = (c = C) => Math.max(0, cwLoad(c) - c.cwT);
+const cwOver = (c = C) => Math.max(0, cwLoad(c) - cwTOf(c));
 // Overflow can go up to half your threshold, rounded up. Filling the last (red) overflow hex is the point of no return.
-const cwCap = c => Math.ceil((c.cwT || 0) / 2);
-const cwMaxOf = c => (c.cwT || 0) + cwCap(c);
+// Threshold is 10 + your Cyberware skill bonus (TEC mod, plus proficiency if you have the skill, doubled if you doubled it).
+const cwTOf = c => Math.max(0, 10 + mod(score('TEC', c)) + prof(c.level || 1) * skillProf('Cyberware', 'TEC', c).level);
+const cwCap = c => Math.ceil(cwTOf(c) / 2);
+const cwMaxOf = c => cwTOf(c) + cwCap(c);
 const psyDC = c => 10 + 2 * cwOver(c);
 const psyMod = c => mod(score('TEC', c)) + (c.unlocked.includes('COO.A.l') ? mod(score('COO', c)) : 0);
 function lostFix(m){ if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
@@ -2698,9 +2774,9 @@ function lostFx(){
 }
 function cwPips(c, small){
   const mx = cwMaxOf(c), load = cwLoad(c);
-  const pip = i => `<i class="cwp ${i < c.cwT ? '' : 'ov'} ${i === mx - 1 && mx > c.cwT ? 'cap' : ''} ${i < load ? 'on' : ''}"></i>`;
-  const base = Array.from({length: c.cwT}, (_, i) => pip(i)).join(''), over = Array.from({length: mx - c.cwT}, (_, i) => pip(c.cwT + i)).join('');
-  return `<div class="cwpips ${small ? 'sm' : ''}">${base}${mx > c.cwT ? `<span class="cwsep"></span>${over}` : ''}</div>`;
+  const pip = i => `<i class="cwp ${i < cwTOf(c) ? '' : 'ov'} ${i === mx - 1 && mx > cwTOf(c) ? 'cap' : ''} ${i < load ? 'on' : ''}"></i>`;
+  const base = Array.from({length: cwTOf(c)}, (_, i) => pip(i)).join(''), over = Array.from({length: mx - cwTOf(c)}, (_, i) => pip(cwTOf(c) + i)).join('');
+  return `<div class="cwpips ${small ? 'sm' : ''}">${base}${mx > cwTOf(c) ? `<span class="cwsep"></span>${over}` : ''}</div>`;
 }
 const RIPPER = 'TEC.B.l', HOTSWAP_COST = 500, HOTSWAP_RAM = 2;
 const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200};
@@ -2770,7 +2846,7 @@ const GEN = {
   makers: ['Halcyon Arms','Vashti Dynamics','Kessler-Okoro','Redline Armory','Sato Heavy','Black Lantern','Cobalt Union','Ironclad','Ghostline','Mercer Ballistics'],
   models: ['Viper','Hornet','Jackal','Mamba','Wraith','Lynx','Bastion','Torque','Riot','Halo','Spectre','Grinder','Nomad','Cinder','Saint','Razorback','Howler','Mantle','Pike','Dusk'],
   weapons: [
-    ['Light Pistol','1d8 piercing','range 60 ft'],['Heavy Pistol','2d6 piercing','range 60 ft'],['Revolver','2d6 piercing','range 80 ft, 6 shots'],
+    ['Light Pistol','1d8 piercing','range 60 ft'],['Heavy Pistol','2d6 piercing','range 60 ft'],['Revolver','2d6 piercing','range 80 ft'],
     ['SMG','1d6 piercing','burst fire'],['Assault Rifle','2d8 piercing','range 150 ft'],['Shotgun','2d8 piercing','close range'],
     ['Sniper Rifle','2d10 piercing','range 300 ft'],['LMG','2d8 piercing','heavy, suppressing fire'],
     ['Katana','1d10 slashing','finesse'],['Combat Knife','1d4 slashing','thrown, finesse'],['Machete','1d8 slashing',''],
@@ -2856,6 +2932,21 @@ function setSheetTab(t){
 }
 document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSheetTab(b.dataset.v); });
 
+// Shots left in an equipped gun. Each ATTACK fires as many shots as the gun's ROF.
+function ammoHTML(i){
+  const cap = clipCap(i), a = i.ammo == null ? cap : i.ammo, low = a < i.rof;
+  return `<div class="ammo"><span class="an ${low ? 'low' : ''}" aria-label="Ammo">${a} <small>/ ${cap}</small></span><span class="abar"><i class="${low ? 'low' : ''}" style="width:${cap ? a / cap * 100 : 0}%"></i></span>
+    <button class="btn small primary" data-ammo="fire" data-i="${i.id}" ${a ? '' : 'disabled'} title="One ATTACK fires ${i.rof} shot${i.rof === 1 ? '' : 's'}">Fire −${Math.min(i.rof, a) || i.rof}</button><button class="btn small" data-ammo="add" data-i="${i.id}" ${a < cap ? '' : 'disabled'} aria-label="One more shot">+1</button><button class="btn small" data-ammo="reload" data-i="${i.id}" ${a < cap ? '' : 'disabled'}>Reload</button></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-ammo]'); if (!b || !C) return;
+  const i = C.inv.find(x => x.id === b.dataset.i), cap = i && clipCap(i); if (!cap) return;
+  const a = i.ammo == null ? cap : i.ammo;
+  if (b.dataset.ammo === 'fire'){ const n = Math.min(i.rof, a); i.ammo = a - n; if (!i.ammo) toast(`Clip's empty. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`); }
+  else if (b.dataset.ammo === 'add') i.ammo = Math.min(cap, a + 1);
+  else { i.ammo = cap; toast(`Reloaded. ${cap} shots.`, true); }
+  saveC(); renderCS();
+});
 function renderCS(){
   if (!C || sheetTab !== 'cs') return;
   const hm = C.hpMax, hp = C.hp == null ? hm : Math.min(C.hp, hm), net = C.netHp == null ? hm : Math.min(C.netHp, hm);
@@ -2866,7 +2957,7 @@ function renderCS(){
   const eqCard = (k, label) => {
     const i = it(C.eq[k]);
     return `<div class="eqslot ${i ? 'on' : ''}" data-eqslot="${k}"><span class="lbl">${label}</span>${i ? `<div class="gi eqart t${i.tier + 1}" data-gi="${i.id}" title="Drag back to the bag to unequip">${itemArt(i)}</div>` : ''}` + (i
-      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>${i.reload !== 'none' && skillProf('Sleight of Hand', 'REF').level === 2 ? `<div class="muted" style="font-size:12px;margin:0 0 6px">Quick reload: sacrifice 1 ROF to RELOAD, so your next ATTACK is ${Math.max(0, i.rof - 1)}-ROF instead of spending an ACTION.</div>` : ''}` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
+      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>${clipCap(i) ? ammoHTML(i) : ''}${i.reload !== 'none' && skillProf('Sleight of Hand', 'REF').level === 2 ? `<div class="muted" style="font-size:12px;margin:0 0 6px">Quick reload: sacrifice 1 ROF to RELOAD, so your next ATTACK is ${Math.max(0, i.rof - 1)}-ROF instead of spending an ACTION.</div>` : ''}` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
       : `<div class="muted" style="font-size:14px">${k === 'armor' ? 'Empty. Drag armor here or hit Wear on it.' : `Empty. Drag a weapon here or hit ${k === 'primary' ? 'P' : 'S'} on it.`}</div>`) + `</div>`;
   };
   const ident = `<div class="ident">
@@ -2878,7 +2969,7 @@ function renderCS(){
     </div>
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k))).join('')}</div>
     <p class="muted" style="font-size:14px;margin-top:12px">Proficient in ${SKILLS.filter(([n, st]) => skillProf(n, st).level).map(([n]) => n).join(', ') || 'nothing yet'} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>
-    ${pendingPicks(C).length ? `<div class="tpicks due" style="margin-top:10px"><div class="row" style="gap:8px"><span class="tpn">${pendingPicks(C).length} skill pick${pendingPicks(C).length === 1 ? '' : 's'} waiting</span><span class="muted" style="font-size:12px">A stat reached a new tier</span></div>${pendingPicks(C).map(({k, t}) => { const opts = pickable(C, k, t); return `<div class="tpick"><b>${k} reached ${TIERS[t].name}</b>${opts.length ? `<select data-tpsel="${k}.${t}" aria-label="Skill for ${k} ${TIERS[t].name}"><option value="">Pick a ${k} skill</option>${opts.map(o => `<option value="${o.v}">${o.label}</option>`).join('')}</select><button class="btn small primary" data-tpick="${k}.${t}">Lock it in</button>` : `<span class="muted" style="font-size:13px">${SKILLS.some(x => x[1] === k) ? `Nothing to pick right now.` : `No skills use ${k}.`}</span><button class="btn small" data-tpskip="${k}.${t}">OK</button>`}</div>`; }).join('')}</div>` : ''}`;
+    ${pendingPicks(C).length ? `<div class="tpicks due" style="margin-top:10px"><div class="row" style="gap:8px"><span class="tpn">1 skill pick waiting</span><span class="muted" style="font-size:12px">A stat reached a new tier</span></div>${pickBoxHTML(C)}</div>` : ''}`;
   const hpBlock = hm == null
     ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Level 1 HP is 10 + 10 + BOD mod, so ${Math.max(1, 20 + mod(score('BOD')))}. Every level after adds 10 + 1d10 + BOD mod. Enter your current max.</p>
        <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" value="${C.level === 1 ? Math.max(1, 20 + mod(score('BOD'))) : ''}" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
@@ -2896,19 +2987,19 @@ function renderCS(){
       <div class="actemp"><span class="lbl" style="margin:0">Temporary AC</span><div class="q"><button data-act="acT-" aria-label="Lower temporary AC">−</button><span>${sgn(act)}</span><button data-act="acT+" aria-label="Raise temporary AC">+</button>${act ? '<button class="btn small" data-act="acT0" style="width:auto;height:auto">Clear</button>' : ''}</div>
       <span class="muted" style="font-size:12px">From meds or consumables. Clear it when it wears off.</span></div></div></div>`;
   const down = isDown(C), slotted = C.cyber.filter(x => x.slot === 'shard');
-  const dsBlock = hm == null ? '' : `<div class="track dsbox ${down ? 'down' : ''} ${C.dead ? 'dead' : ''}"><div class="head"><span class="lbl" style="margin:0">Death saves</span><span class="muted" style="font-size:12px">${C.dead ? '' : down ? `${C.ds.p} pass · ${C.ds.f} fail · first side to fill wins` : 'Only at 0 HP'}</span></div>
+  const dsBlock = hm == null ? '' : `<div class="track dsbox ${down ? 'down' : ''} ${C.dead ? 'dead' : ''}"><div class="head"><span class="lbl" style="margin:0">Death saves</span><span class="muted" style="font-size:12px">${C.dead ? '' : down ? `${downWhat(C)} at 0 · ${C.ds.p} pass · ${C.ds.f} fail` : 'At 0 HP or 0 Net HP'}</span></div>
       ${seesawSVG(C)}
-      ${C.dead ? `<div class="deadtag gl" data-text="DEAD">DEAD</div><p class="muted" style="font-size:12px;margin:4px 0 0">Healing above 0 HP brings them back, if the GM allows it.</p>`
-        : down ? `<div class="row" style="gap:8px;justify-content:center"><button class="btn small primary" data-act="dsRoll">Roll d20</button><button class="btn small" data-act="dsPass">Pass</button><button class="btn small danger" data-act="dsFail">Fail</button></div><p class="muted" style="font-size:12px;margin:6px 0 0;text-align:center">10 or higher passes. Three passes and you're back with 1 HP. Three fails and you're dead.</p>`
-        : `<p class="muted" style="font-size:12px;margin:0;text-align:center">Hit 0 HP and these start counting.</p>`}</div>`;
+      ${C.dead ? `<div class="deadtag gl" data-text="DEAD">DEAD</div><p class="muted" style="font-size:12px;margin:4px 0 0">Healing back above 0 brings them back, if the GM allows it.</p>`
+        : down ? `<div class="row" style="gap:8px;justify-content:center"><button class="btn small primary" data-act="dsRoll">Roll d20</button><button class="btn small" data-act="dsPass">Pass</button><button class="btn small danger" data-act="dsFail">Fail</button></div><p class="muted" style="font-size:12px;margin:6px 0 0;text-align:center">10 or higher passes. Three passes and your ${downWhat(C)} comes back at 1. Three fails and you're dead.</p>`
+        : `<p class="muted" style="font-size:12px;margin:0;text-align:center">Hit 0 HP or 0 Net HP and these start counting.</p>`}</div>`;
   const stBlock = `<div class="track stbox"><div class="head"><span class="lbl" style="margin:0">Status effects</span>${C.status.some(x => x.r != null) ? '<button class="btn small" data-act="stTick">End round</button>' : ''}</div>
       <div class="schips">${statusChips(C, x => `<button class="sx" data-strm="${x.id}" aria-label="Remove ${STATUSMAP[x.id].n}">✕</button>`) || '<span class="muted" style="font-size:13px">None right now.</span>'}${slotted.map(x => `<span class="schip shard" title="${esc(x.effect || '')}"><b>Shard · ${esc(x.name)}</b></span>`).join('')}</div>
       ${C.status.length ? `<details class="stdesc"><summary>What these do</summary>${C.status.map(x => `<p><b>${STATUSMAP[x.id].n}</b> ${esc(STATUSMAP[x.id].d)}</p>`).join('')}</details>` : ''}
       <details class="stadd"><summary>Add one yourself</summary><div class="row" style="gap:6px;margin-top:6px"><select id="stSel" aria-label="Status effect">${statusOpts()}</select><input type="number" id="stR" min="1" placeholder="Rounds" aria-label="Rounds, blank means until removed" style="width:90px"><button class="btn small" data-act="stAdd">Add</button></div>
       <p class="muted" style="font-size:12px;margin:4px 0 0">Usually the DM applies these. Leave rounds blank if it lasts until removed. For Exhaustion, adding it again raises the level.</p></details></div>`;
   const cwl = cwLoad(), cwo = cwOver();
-  const cwBlock = `<div class="track cwtrack"><div class="head"><span class="lbl" style="margin:0">Cyberware threshold</span><span class="muted" style="font-size:12px">Threshold ${C.cwT} · Max ${cwMaxOf(C)}</span></div>
-      <div class="num">${cwl} <small>/ ${C.cwT}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} of ${cwCap(C)} · Save DC ${psyDC(C)}</span>` : ''}</div>
+  const cwBlock = `<div class="track cwtrack"><div class="head"><span class="lbl" style="margin:0">Cyberware threshold</span><span class="muted" style="font-size:12px">Threshold ${cwTOf(C)} · Max ${cwMaxOf(C)}</span></div>
+      <div class="num">${cwl} <small>/ ${cwTOf(C)}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} of ${cwCap(C)} · Save DC ${psyDC(C)}</span>` : ''}</div>
       ${cwPips(C)}
       ${C.lost ? '<div class="losttag gl" data-text="LOST TO CYBERPSYCHOSIS">LOST TO CYBERPSYCHOSIS</div><p class="muted" style="font-size:12px;margin:2px 0 8px">The red hex filled. This merc is gone for good.</p>'
         : cwo ? `<div class="psysave"><button class="btn small danger" data-act="psyRoll">Roll Cyberpsychosis save</button><span class="muted" style="font-size:12px">d20 ${sgn(psyMod(C))} (TEC${hasPerk('COO.A.l') ? ' + COOL from Tranquility' : ''})${hasPerk('BOD.A.ph') ? ' with advantage from Theseus' : ''} against DC ${psyDC(C)}</span></div>` : ''}
@@ -2927,7 +3018,10 @@ function renderCS(){
       <div class="fl"><span>Quantity</span><div class="q"><button data-qty="-1" data-i="${i.id}" aria-label="One less">−</button><span>${i.qty}</span><button data-qty="1" data-i="${i.id}" aria-label="One more">+</button></div></div>
       <label class="fl wide"><span>Stats or notes</span><input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Like 2d6 piercing, or +1 AC"></label>
       ${i.type === 'Weapon' ? `<label class="fl"><span>Rate of fire</span><input type="number" min="1" max="10" data-i="${i.id}" data-f="rof" value="${i.rof}" title="Attack rolls per ATTACK action"></label>
-      <label class="fl"><span>Reload</span><small class="muted" style="font-size:11px;margin-top:-2px">LIGHT is an action, HEAVY is your whole turn</small><select data-i="${i.id}" data-f="reload">${Object.entries(RELOAD_TXT).map(([k, v]) => `<option value="${k}" ${i.reload === k ? 'selected' : ''}>${k === 'light' ? 'LIGHT' : k === 'heavy' ? 'HEAVY' : 'Melee'}</option>`).join('')}</select></label>` : ''}
+      <label class="fl"><span>Reload</span><small class="muted" style="font-size:11px;margin-top:-2px">LIGHT is an action, HEAVY is your whole turn</small><select data-i="${i.id}" data-f="reload">${Object.entries(RELOAD_TXT).map(([k, v]) => `<option value="${k}" ${i.reload === k ? 'selected' : ''}>${k === 'light' ? 'LIGHT' : k === 'heavy' ? 'HEAVY' : 'Melee'}</option>`).join('')}</select></label>
+      ${i.reload !== 'none' ? `<label class="fl"><span>Gun type</span><select data-i="${i.id}" data-f="gtype"><option value="" ${!i.gtype ? 'selected' : ''}>Other (no clip)</option>${Object.keys(CLIPS).map(g => `<option ${i.gtype === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
+      ${i.gtype ? `<label class="fl"><span>Clip</span><select data-i="${i.id}" data-f="clip">${CLIP_KEYS.map((c, n) => `<option value="${c}" ${i.clip === c ? 'selected' : ''}>${CLIP_TXT[c]} · ${CLIPS[i.gtype][n]}</option>`).join('')}</select></label>` : ''}
+      ${i.gtype === 'Assault Rifle' ? `<label class="wide" style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer"><input type="checkbox" data-i="${i.id}" data-f="conc" ${i.conc ? 'checked' : ''} style="width:18px;height:18px;flex:none;accent-color:var(--cyan)">This rifle can be concealed, with a Standard clip only</label>` : ''}` : ''}` : ''}
       <div class="tags wide">${i.type === 'Cyberware' ? `<span class="tagb cwb" title="Cyberware threshold cost">CW ${i.cw}</span>` : ''}${itemTags(i)}${i.hot ? '<span class="hotb" title="Hot-swappable">HOT</span>' : ''}</div>
       <div class="acts wide">
         ${i.type === 'Weapon' ? `<button class="btn small ${p ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="primary" data-i="${i.id}">${p ? 'Primary ✓' : 'Equip primary'}</button><button class="btn small ${s2 ? 'on' : ''}" ${hacked('weapons') ? 'disabled' : ''} data-equip="secondary" data-i="${i.id}">${s2 ? 'Secondary ✓' : 'Equip secondary'}</button>` : ''}
@@ -3004,7 +3098,7 @@ const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
 /* ---- Death saves. 3 live skulls vs 3 dead skulls on a seesaw. ---- */
 const SKULL = 'M12 2C6.5 2 3 5.8 3 10.4c0 2.7 1.2 4.6 3 5.8V19a1 1 0 0 0 1 1h1.5v-2h2v2h3v-2h2v2H17a1 1 0 0 0 1-1v-2.8c1.8-1.2 3-3.1 3-5.8C21 5.8 17.5 2 12 2z';
 const skull = (x, y, st) => `<g class="sk ${st}" transform="translate(${x - 12} ${y - 24})"><path d="${SKULL}"/><circle cx="8.6" cy="11" r="2.2" class="eye"/><circle cx="15.4" cy="11" r="2.2" class="eye"/></g>`;
-const isDown = m => !!m.hpMax && (m.hp == null ? m.hpMax : m.hp) <= 0;
+const isDown = m => !!m.hpMax && (hpNow(m) <= 0 || netNow(m) <= 0);
 function seesawSVG(m, small){
   const down = isDown(m), p = m.ds.p, f = m.ds.f, tilt = m.dead ? 12 : down ? (f - p) * 4 : 0;
   const L = [0, 1, 2].map(i => skull(36 + i * 34, 0, !down ? 'hollow' : i < p ? 'pass' : 'full'));
@@ -3015,7 +3109,7 @@ function seesawSVG(m, small){
 }
 function deathSave(m, pass){
   if (!isDown(m) || m.dead) return '';
-  if (pass){ m.ds.p++; if (m.ds.p >= 3){ m.hp = 1; m.ds = {p:0, f:0}; return 'up'; } return 'pass'; }
+  if (pass){ m.ds.p++; if (m.ds.p >= 3){ if (hpNow(m) <= 0) m.hp = 1; if (netNow(m) <= 0) m.netHp = 1; m.ds = {p:0, f:0}; return 'up'; } return 'pass'; }
   m.ds.f++; if (m.ds.f >= 3){ m.dead = true; return 'dead'; } return 'fail';
 }
 function afterlife(){
@@ -3439,7 +3533,7 @@ $('#vCS').addEventListener('click', e => {
       if (d > 0 && nl === cwMaxOf(C) && capWarn !== 'manual'){ capWarn = 'manual'; sfx('deny'); return toast('That fills your red hex and your merc is lost for good. Hit +1 again to do it anyway.'); }
       capWarn = null;
       C.cwAdj += d; csSave();
-      if (d > 0 && nl > C.cwT) toast(`Overflow ${nl - C.cwT}. Cyberpsychosis DC is now +${(nl - C.cwT) * 2}.`);
+      if (d > 0 && nl > cwTOf(C)) toast(`Overflow ${nl - cwTOf(C)}. Cyberpsychosis DC is now +${(nl - cwTOf(C)) * 2}.`);
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
@@ -3453,16 +3547,16 @@ $('#vCS').addEventListener('click', e => {
     case 'dsRoll': case 'dsPass': case 'dsFail': {
       let pass = t.dataset.act === 'dsPass';
       if (t.dataset.act === 'dsRoll'){ const r = 1 + Math.floor(Math.random() * 20); pass = r >= 10; toast(`Death save · rolled ${r} · ${pass ? 'pass' : 'fail'}`, pass); }
-      const res = deathSave(C, pass); sfx(pass ? 'heal' : 'damage'); csSave();
-      if (res === 'up') toast(`${C.name} pulls through with 1 HP.`, true);
+      const w = downWhat(C), res = deathSave(C, pass); sfx(pass ? 'heal' : 'damage'); csSave();
+      if (res === 'up') toast(`${C.name} pulls through with 1 ${w}.`, true);
       if (res === 'dead') afterlife();
       return;
     }
     case 'stAdd': addStatus(C, $('#stSel').value, $('#stR').value, 1); sfx('damage'); return csSave();
     case 'stTick': { const g = tickStatus(C); if (g.length) toast(`${g.map(id => STATUSMAP[id].n).join(', ')} wore off.`, true); sfx('tab'); return csSave(); }
-    case 'acT+': C.acTemp = Math.min(20, (C.acTemp || 0) + 1); sfx('up'); return csSave();
-    case 'acT-': C.acTemp = Math.max(-20, (C.acTemp || 0) - 1); sfx('down'); return csSave();
-    case 'acT0': C.acTemp = 0; sfx('down'); return csSave();
+    case 'acT+': C.acTemp = Math.min(20, (C.acTemp || 0) + 1); return csSave();
+    case 'acT-': C.acTemp = Math.max(-20, (C.acTemp || 0) - 1); return csSave();
+    case 'acT0': C.acTemp = 0; return csSave();
     case 'invSort': case 'invDesel': case 'invRot': case 'invW+': case 'invW-': case 'invH+': case 'invH-': case 'invFloor': case 'invBag': return invAct(t.dataset.act);
     case 'addItem': {
       const name = $('#niName').value.trim();
@@ -3521,7 +3615,10 @@ $('#vCS').addEventListener('change', async e => {
     if (t.dataset.f === 'stats'){ i.stats = t.value.slice(0, 120); return saveC(); }
     if (t.dataset.f === 'type'){ i.type = t.value; Object.assign(i, weaponOf({...i, rof:null, reload:null})); fixEq(C); return csSave(); }
     if (t.dataset.f === 'rof'){ i.rof = Math.max(1, Math.min(10, parseInt(t.value) || 1)); return csSave(); }
-    if (t.dataset.f === 'reload'){ i.reload = t.value; return csSave(); }
+    if (t.dataset.f === 'reload'){ i.reload = t.value; Object.assign(i, weaponOf(i)); return csSave(); }
+    if (t.dataset.f === 'gtype'){ i.gtype = t.value; i.ammo = null; Object.assign(i, weaponOf(i)); return csSave(); }
+    if (t.dataset.f === 'clip'){ i.clip = t.value; i.ammo = null; Object.assign(i, weaponOf(i)); toast(`${CLIP_TXT[i.clip]} clip, ${clipCap(i)} shots.${canConceal(i) && !concealed(i) ? ' Not concealable with this clip.' : ''}`); return csSave(); }
+    if (t.dataset.f === 'conc'){ i.conc = t.checked; return csSave(); }
   }
   if (t.dataset.c && t.dataset.cf){
     const x = C.cyber.find(y => y.id === t.dataset.c); if (!x) return;
@@ -3986,8 +4083,8 @@ function diffMerc(a, b){
   b.cyber.filter(x => !a.cyber.some(y => y.id === x.id)).forEach(x => add(`Installed ${x.name}${x.hot ? ' (hot)' : ''}`, 'good'));
   a.cyber.filter(x => !b.cyber.some(y => y.id === x.id)).forEach(x => add(`Removed ${x.name}`));
   const w1 = cwLoad(a), w2 = cwLoad(b);
-  if (w1 !== w2) add(`Cyberware ${w1} → ${w2} of ${b.cwT}${cwOver(b) ? ` · DC +${cwOver(b) * 2}` : ''}`, w2 > w1 ? 'bad' : '');
-  if (a.cwT !== b.cwT) add(`Cyberware threshold ${b.cwT}, max ${cwMaxOf(b)}`);
+  if (w1 !== w2) add(`Cyberware ${w1} → ${w2} of ${cwTOf(b)}${cwOver(b) ? ` · DC +${cwOver(b) * 2}` : ''}`, w2 > w1 ? 'bad' : '');
+  if (cwTOf(a) !== cwTOf(b)) add(`Cyberware threshold ${cwTOf(b)}, max ${cwMaxOf(b)}`);
   if (!a.lost && b.lost) add('LOST · the red hex filled, cyberpsychosis for good', 'bad');
   if (a.notes !== b.notes) add('Updated notes');
   if (a.xp !== b.xp) add(`${b.xp > a.xp ? '+' : '−'}${Math.abs(b.xp - a.xp).toLocaleString()} XP`, b.xp > a.xp ? 'good' : '');
@@ -4040,7 +4137,7 @@ function playAskHTML(){
 let gN = null, gNLock = {name:false, origin:false, gender:false, age:false}, gW = null, gI = null, gWT = '', gWC = '', gIT = '', gIType = '';
 function genResult(x){
   if (!x) return `<div class="res"><p class="muted" style="margin:0">Hit Roll to generate one.</p></div>`;
-  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span><span class="nisz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-gsz="w" value="${sizeOf(x).w}" aria-label="Width in spaces"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-gsz="h" value="${sizeOf(x).h}" aria-label="Height in spaces"></span>${x.type === 'Weapon' ? `<label class="muted" style="font-size:12px">ROF <input type="number" min="1" max="10" data-gsz="rof" value="${weaponOf(x).rof}" style="width:56px" aria-label="Rate of fire"></label><select data-gsz="reload" aria-label="Reload">${['light', 'heavy', 'none'].map(k => `<option value="${k}" ${weaponOf(x).reload === k ? 'selected' : ''}>${k === 'none' ? 'Melee' : k.toUpperCase() + ' reload'}</option>`).join('')}</select>` : ''}</div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
+  return `<div class="res"><div class="nm">${esc(x.name)}</div><div class="row" style="margin-top:6px;gap:6px">${tierTag(x.tier)}<span class="muted" style="font-size:13px">${esc(x.type)}${x.type === 'Cyberware' ? ' · CW ' + x.cw : ''}</span><span class="nisz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-gsz="w" value="${sizeOf(x).w}" aria-label="Width in spaces"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-gsz="h" value="${sizeOf(x).h}" aria-label="Height in spaces"></span>${x.type === 'Weapon' ? `<label class="muted" style="font-size:12px">ROF <input type="number" min="1" max="10" data-gsz="rof" value="${weaponOf(x).rof}" style="width:56px" aria-label="Rate of fire"></label><select data-gsz="reload" aria-label="Reload">${['light', 'heavy', 'none'].map(k => `<option value="${k}" ${weaponOf(x).reload === k ? 'selected' : ''}>${k === 'none' ? 'Melee' : k.toUpperCase() + ' reload'}</option>`).join('')}</select>${weaponOf(x).gtype ? `<select data-gsz="clip" aria-label="Clip">${CLIP_KEYS.map((c, n) => `<option value="${c}" ${weaponOf(x).clip === c ? 'selected' : ''}>${CLIP_TXT[c]} clip · ${CLIPS[weaponOf(x).gtype][n]}</option>`).join('')}</select>` : ''}` : ''}</div><p style="margin:8px 0 0;font-size:14px">${esc(x.stats)}</p></div>`;
 }
 let moodDraft = {style:'nomad', tod:'default', weather:'default'};
 const TODS = [['default', 'Scene default'], ['auto', 'Follow the clock'], ['dawn', 'Dawn'], ['day', 'Day'], ['dusk', 'Dusk'], ['night', 'Night']];
@@ -4102,7 +4199,7 @@ $('#liveBody').addEventListener('change', e => {
   const id = e.target.id;
   if (e.target.dataset.gn && gN){ gN[e.target.dataset.gn] = e.target.value; if (!gNLock[e.target.dataset.gn]){ gNLock[e.target.dataset.gn] = true; renderLive(); } return; }
   if (id === 'rcDay'){ recapDay = +e.target.value; return; }
-  if (e.target.dataset.gsz){ const g = e.target.closest('.gen'), k = g && g.querySelector('[data-live=groll]'), x = k && (k.dataset.g === 'w' ? gW : gI); if (x){ x[e.target.dataset.gsz] = e.target.value; Object.assign(x, sizeOf(x), weaponOf(x)); e.target.value = x[e.target.dataset.gsz]; } return; }
+  if (e.target.dataset.gsz){ const g = e.target.closest('.gen'), k = g && g.querySelector('[data-live=groll]'), x = k && (k.dataset.g === 'w' ? gW : gI); if (x){ x[e.target.dataset.gsz] = e.target.value; if (e.target.dataset.gsz === 'clip') x.ammo = null; Object.assign(x, sizeOf(x), weaponOf(x)); e.target.value = x[e.target.dataset.gsz]; } return; }
   if (e.target.dataset.libsz){ const it = lib.find(z => z.id === e.target.dataset.i); if (it){ const nx = {...it, [e.target.dataset.libsz]:e.target.value}; Object.assign(nx, sizeOf(nx)); liveApi.setLibItem(nx).catch(() => toast("Couldn't save the size.")); } return; }
   if (id === 'mdStyle'){ moodDraft.style = e.target.value; return; } if (id === 'mdTod'){ moodDraft.tod = e.target.value; return; } if (id === 'mdWx'){ moodDraft.weather = e.target.value; return; }
   if (id === 'gwT') gWT = e.target.value; else if (id === 'gwC') gWC = e.target.value;
@@ -4361,7 +4458,7 @@ function applyOp(op){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
     const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
     const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload})); m.inv.push(ni); }
+    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
@@ -4396,8 +4493,8 @@ function applyOp(op){
   } else if (op.kind === 'tick'){
     const g = tickStatus(m); msg = g.length ? `Round over. ${g.map(id => STATUSMAP[id].n).join(', ')} wore off.` : ''; sound = 'tab';
   } else if (op.kind === 'ds'){
-    const res = deathSave(m, !!op.pass);
-    msg = res === 'up' ? 'Three passes. You pull through with 1 HP.' : res === 'dead' ? 'Three failed death saves.' : res ? `The DM logged a ${op.pass ? 'passed' : 'failed'} death save.` : ''; sound = op.pass ? 'heal' : 'damage'; good = !!op.pass;
+    const w = downWhat(m), res = deathSave(m, !!op.pass);
+    msg = res === 'up' ? `Three passes. You pull through with 1 ${w}.` : res === 'dead' ? 'Three failed death saves.' : res ? `The DM logged a ${op.pass ? 'passed' : 'failed'} death save.` : ''; sound = op.pass ? 'heal' : 'damage'; good = !!op.pass;
     if (res === 'dead') setTimeout(afterlife, 60);
   } else if (op.kind === 'cool'){
     const n = parseInt(op.amount) || 0; m.cool = Math.max(0, m.cool + n);
@@ -4420,10 +4517,7 @@ function applyOp(op){
   } else if (op.kind === 'cwDelta'){
     const n = parseInt(op.amount) || 0, nl = Math.max(0, Math.min(cwMaxOf(m), cwLoad(m) + n));
     m.cwAdj += nl - cwLoad(m);
-    msg = `The DM ${n > 0 ? 'added to' : 'lowered'} your cyberware tally. ${nl} / ${m.cwT}${nl > m.cwT ? `, Cyberpsychosis DC +${(nl - m.cwT) * 2}` : ''}.`; sound = n > 0 ? 'down' : 'up';
-  } else if (op.kind === 'cwSet'){
-    m.cwT = Math.max(0, parseInt(op.t) || 0);
-    msg = `The DM set your cyberware threshold to ${m.cwT}. Your max is ${cwMaxOf(m)}.`; sound = 'select';
+    msg = `The DM ${n > 0 ? 'added to' : 'lowered'} your cyberware tally. ${nl} / ${cwTOf(m)}${nl > cwTOf(m) ? `, Cyberpsychosis DC +${(nl - cwTOf(m)) * 2}` : ''}.`; sound = n > 0 ? 'down' : 'up';
   } else if (op.kind === 'ramDelta'){
     const n = parseInt(op.amount) || 0, mx = ramMax(m), cur = ramNow(m);
     m.ram = Math.max(0, Math.min(mx, cur + n));
@@ -4612,7 +4706,7 @@ function partyCard(p, dm){
         <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
         <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
         <span class="ctl">Chrome</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button>
-          <span class="muted" style="font-size:11px">Thresh</span><input type="number" min="0" id="cwt-${k}" value="${m.cwT}" title="Threshold" aria-label="Threshold" style="width:54px"><span class="muted" style="font-size:11px">Max ${cwMaxOf(m)}</span><button class="btn small" data-live="cwset" data-u="${k}">Set</button></div>
+          <span class="muted" style="font-size:11px">Threshold ${cwTOf(m)} · Max ${cwMaxOf(m)}</span></div>
         <span class="ctl">Eddies</span><div class="row"><button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button></div>
       </div>
       <div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
@@ -4632,7 +4726,7 @@ function partyCard(p, dm){
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
-        <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${m.cwT}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
+        <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${cwTOf(m)}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
         ${m.xp ? `<div class="stat"><span>XP</span><b>${m.xp.toLocaleString()}</b></div>` : ''}<div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}${dm ? ` <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button>` : ''}</span>`).join('')}</div>` : ''}
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
@@ -4726,7 +4820,7 @@ function liveHTML(){
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Tier <select id="liTier" aria-label="Tier">${tierOpts(0)}</select></label><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Backpack size</span><span class="nisz"><input type="number" id="liW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="liH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><span class="muted" style="font-size:12px">Blank guesses from the type, like 4 × 1 for a rifle</span></div>
-      <div class="row gap"><span class="muted" style="font-size:13px">Weapons only</span><label class="muted" style="font-size:13px">ROF <input type="number" id="liRof" min="1" max="10" placeholder="auto" style="width:70px" aria-label="Rate of fire"></label><select id="liRel" aria-label="Reload speed"><option value="">Reload: auto</option><option value="light">LIGHT reload</option><option value="heavy">HEAVY reload</option><option value="none">Melee</option></select></div>
+      <div class="row gap"><span class="muted" style="font-size:13px">Weapons only</span><label class="muted" style="font-size:13px">ROF <input type="number" id="liRof" min="1" max="10" placeholder="auto" style="width:70px" aria-label="Rate of fire"></label><select id="liRel" aria-label="Reload speed"><option value="">Reload: auto</option><option value="light">LIGHT reload</option><option value="heavy">HEAVY reload</option><option value="none">Melee</option></select><select id="liClip" aria-label="Clip"><option value="std">Standard clip</option><option value="ext">Extended clip</option><option value="drum">Drum clip</option></select></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
       <div style="margin-top:10px">${libRows}</div>
     </div>` : ''}`;
@@ -4880,12 +4974,6 @@ $('#liveBody').addEventListener('click', async e => {
     return;
   }
   if (a === 'cw+' || a === 'cw-'){ if (await sendOp(u, {kind:'cwDelta', amount: a === 'cw+' ? 1 : -1})) toast(`Cyberware tally ${a === 'cw+' ? '+1' : '−1'} for ${pname(u)}.`, true); return; }
-  if (a === 'cwset'){
-    const tv = parseInt(($('#cwt-' + u) || {}).value);
-    if (!(tv >= 0)) return toast('Enter a threshold.');
-    if (await sendOp(u, {kind:'cwSet', t:tv})) toast(`Threshold ${tv} for ${pname(u)}. Their max is ${tv + Math.ceil(tv / 2)}.`, true);
-    return;
-  }
   if (a === 'ram'){ if (await sendOp(u, {kind:'ram'})) toast(`Restored RAM for ${pname(u)}.`, true); return; }
   if (a === 'give'){
     const it = lib.find(x => x.id === ($('#give-' + u) || {}).value); if (!it) return;
@@ -4974,7 +5062,7 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'libadd'){
     const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
     const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0), tier:Math.max(0, Math.min(3, parseInt($('#liTier').value) || 0))};
-    Object.assign(item, sizeOf({...item, w:$('#liW').value, h:$('#liH').value}), weaponOf({...item, rof:($('#liRof') || {}).value, reload:($('#liRel') || {}).value})); $('#liW').value = ''; $('#liH').value = ''; if ($('#liRof')) $('#liRof').value = '';
+    Object.assign(item, sizeOf({...item, w:$('#liW').value, h:$('#liH').value}), weaponOf({...item, rof:($('#liRof') || {}).value, reload:($('#liRel') || {}).value, clip:($('#liClip') || {}).value})); $('#liW').value = ''; $('#liH').value = ''; if ($('#liRof')) $('#liRof').value = '';
     const to = $('#liTo').value;
     try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
     $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
@@ -5002,7 +5090,7 @@ $('#liveBody').addEventListener('click', async e => {
       const arr = JSON.parse($('#libImpTxt').value);
       if (!Array.isArray(arr)) throw 0;
       let n = 0;
-      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h}), ...weaponOf({type:r.type, name:r.name, stats:r.stats, rof:r.rof, reload:r.reload})}); n++; }
+      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h}), ...weaponOf({type:r.type, name:r.name, stats:r.stats, rof:r.rof, reload:r.reload, gtype:r.gtype, clip:r.clip, conc:r.conc})}); n++; }
       libImport = false; toast(`Imported ${n} items.`, true); renderLive();
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
@@ -5394,8 +5482,6 @@ function classify(b){
     if (a === 'cw-') return 'up';
   }
   if (b.matches('.tab, .vtabs button, #topnav a, .toc a')) return 'tab';
-  if (txt === '+') return 'up';
-  if (txt === '−' || txt === '-') return 'down';
   return 'select';
 }
 document.addEventListener('click', e => {
