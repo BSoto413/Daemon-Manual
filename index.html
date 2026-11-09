@@ -913,7 +913,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a><a href="#r-attacks">Attacks and Weapons</a>
-      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-ice">Black ICE</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -1083,14 +1083,48 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         </div>
       </section>
 
-      <section class="rsec" id="r-net"><h2>Netrunning and Black ICE</h2>
+      <section class="rsec" id="r-net"><h2>Netrunning</h2>
         <div class="panel">
-          <p>To go into The Net you need the INT perk Jack In. In there, netrunners can run into <b>Black ICE</b> (Intrusion Countermeasure Electronics). These defensive programs can be lethal.</p>
-          <p>Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. They're equal unless a perk, item or hack changes that. Black ICE mostly attacks your NET HP, but your body can still be attacked while you're under. If <b>either</b> pool hits 0 you go unconscious in critical condition.</p>
+          <p>The Net is a space of opportunity and terror, and Netrunners take it on head first. To go in you need the INT perk <b>Jack In</b>. Here's what every rookie Netrunner should know before hacking a network.</p>
+          <h3 style="margin-top:18px">Access Points</h3>
+          <p style="margin-top:8px">To get into a network you need a place to Jack In, called an <b>Access Point</b>. Use the <b>SCAN</b> skill to find one, which costs an ACTION. Once you've found it and reached it, you can Jack In. If you do that on the same turn as the SCAN, it costs nothing extra. On a later turn, Jacking In costs an ACTION.</p>
+          <h3 style="margin-top:18px">In The Net</h3>
+          <p style="margin-top:8px">A network is built like a building with several floors. Each floor holds an obstacle or a reward. When you get in you'll meet a Firewall, Black ICE, a Daemon or nothing at all.</p>
+          <p style="margin-top:8px">While you're in, you can do a <b>SCAN Ping</b>. Spend 1 RAM and roll a SCAN check. Depending on the roll, you learn how many floors the network has, how many obstacles are ahead and what rewards are waiting.</p>
+          <h3 style="margin-top:18px">Firewalls</h3>
+          <p style="margin-top:8px">Firewalls are defensive programs that keep hackers, meaning you, out of a network. They range from a simple password to layers of encryption you have to decrypt. You beat them with your <b>CODE</b> skill.</p>
+          <h3 style="margin-top:18px">Enemy Netrunners and Daemons</h3>
+          <p style="margin-top:8px">The Net isn't private. Other Netrunners might be there guarding the network, or as rival mercs after the same thing you want.</p>
+          <p style="margin-top:8px"><b>Daemons</b> are powerful AI programs that can hack tech, and you. Treat them like enemy Netrunners. Luckily, when you de-rez a Daemon it's gone for good.</p>
+          <h3 style="margin-top:18px">Net combat</h3>
+          <p style="margin-top:8px">Fighting Black ICE, enemy Netrunners and Daemons uses two programs, <b>SWORD</b> and <b>SHIELD</b>. Your HACKING and CODE skills power them.</p>
+          <table class="rtable"><thead><tr><th>Program</th><th>What it does</th><th>Cost</th></tr></thead><tbody>
+            <tr><td><b>SWORD</b></td><td>A NET ATTACK action. Roll a HACKING check to hit. Each strike deals 2d8 NET damage</td><td>3 RAM, plus 2 RAM for each extra strike in that ACTION</td></tr>
+            <tr><td><b>SHIELD</b></td><td>A passive defense that works as your AC in The Net. It's 10 + your CODE skill bonus</td><td>Free</td></tr>
+            <tr><td><b>SHIELD react</b></td><td>Use your REACT to double your CODE bonus on your SHIELD for one hit</td><td>2 RAM</td></tr>
+          </tbody></table>
+          <h3 style="margin-top:18px">Jacking out</h3>
+          <table class="rtable"><tbody>
+            <tr><td><b>Safe</b></td><td>Costs an ACTION and 3 RAM</td></tr>
+            <tr><td><b>Unsafe</b></td><td>A FREE ACTION with no RAM cost. Every Black ICE program, Daemon and security measure you didn't de-rez gets a free hit on you, and other Netrunners get a bead on your location</td></tr>
+          </tbody></table>
+          <h3 style="margin-top:18px">NET HP</h3>
+          <p style="margin-top:8px">Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. NET HP matches your IRL HP unless an implant changes it. Black ICE mostly hits your NET HP, but your body can still be attacked while you're under.</p>
+          <p style="margin-top:8px">If your NET HP hits 0 you Flatline and go into critical condition, and you start rolling death saves. Once you stabilize, your processors are <b>fried</b>. You need a Ripper to repair them, and you can't access The Net until your injuries heal.</p>
+          <p class="muted" style="font-size:13px;margin-top:8px">With Jack In installed, your character sheet gets a Net panel with your SHIELD and buttons that spend the RAM for SWORD, SHIELD react, SCAN Ping and Safe Jack-Out.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-ice"><h2>Black ICE</h2>
+        <div class="panel">
+          <p><b>Black ICE</b> (Intrusion Countermeasure Electronics) is defensive software built to stop Netrunners, and it can be lethal.</p>
+          <h3 style="margin-top:18px">Slide</h3>
+          <p style="margin-top:8px">If a SCAN warned you that Black ICE is ahead, you can try to <b>SLIDE</b> past it. A SLIDE is a STEALTH check against the Black ICE's passive PERCEPTION.</p>
+          <h3 style="margin-top:18px">Fighting Black ICE</h3>
+          <p style="margin-top:8px">If your SLIDE fails, or you choose to fight, the encounter starts. Black ICE moves first, and it goes right before you in the initiative order until you deal with it.</p>
           <p class="lbl" style="margin-top:16px">Black ICE programs</p>
           <div id="rIce"></div>
-          <p style="margin-top:14px"><b>Forced jack-out.</b> You're kicked out of the Net right away. <b>Disable safe jack-out.</b> You can't jack out safely while it's active.</p>
-
+          <p style="margin-top:14px"><b>Forced jack-out.</b> You're kicked out of The Net right away. <b>Disable safe jack-out.</b> You can't jack out safely while it's active.</p>
         </div>
       </section>
 
@@ -1131,7 +1165,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>The DM can put status effects on your merc from the Live Session. They show in your Vitals with a round countdown if they have one. When a round ends, the DM hits End round and every timer ticks down.</p>
           <h3 style="margin-top:14px">Death saves</h3>
-          <p>At 0 HP or 0 Net HP you start rolling death saves. Roll a d20. A 10 or higher passes. Three passes and whatever dropped you comes back at 1, so 0 Net HP comes back as 1 Net HP. If both are at 0, both come back at 1. Three fails and you're dead, no matter which one dropped you.</p>
+          <p>At 0 HP or 0 Net HP you start rolling death saves. Roll a d20. A 10 or higher passes. Three passes and whatever dropped you comes back at 1, so 0 Net HP comes back as 1 Net HP. Coming back from 0 Net HP also leaves your processors <b>fried</b>, so no Net until a Ripper repairs you. If both are at 0, both come back at 1. Three fails and you're dead, no matter which one dropped you.</p>
           <p>Your Vitals show it as a seesaw. Three live skulls sit on the left and three dead skulls on the right. Each pass lights a live skull cyan, each fail turns a dead skull red, and the beam tips toward whichever side is winning. Any healing above 0 HP resets them.</p>
           <h3 style="margin-top:14px">The effects</h3>
           <div id="rStatus"></div>
@@ -1536,7 +1570,8 @@ const STATUS = [
   {id:'bleeding', n:'Bleeding', d:'Loses HP at the start of each turn until treated. Amount and treatment are TBD.', cyber:true},
   {id:'shocked', n:'Shocked', d:'Electrical damage scrambles your systems. Effect TBD.', cyber:true},
   {id:'emp', n:"EMP'd", d:'Cyberware goes offline. Which effects stop working, and for how long, is TBD.', cyber:true},
-  {id:'concussed', n:'Concussed', d:'Rattled from a heavy hit. Effect TBD.', cyber:true}
+  {id:'concussed', n:'Concussed', d:'Rattled from a heavy hit. Effect TBD.', cyber:true},
+  {id:'fried', n:'Fried processors', d:"You flatlined in The Net. No Net access until a Ripper repairs you and your injuries heal.", cyber:true}
 ];
 const STATUSMAP = Object.fromEntries(STATUS.map(x => [x.id, x]));
 const CYBER_SLOTS = [
@@ -2798,6 +2833,24 @@ const QUICKHACKS = [
   {id:'collapse', n:'Collapse', ram:12, d:'Target falls unconscious'},
   {id:'detonate', n:'Detonate', ram:10, d:'Effect TBD'}
 ];
+// Net combat. SWORD and SHIELD run on HACKING and CODE. Automation cuts every RAM cost by 1.
+const skillBonus = (n, st, c = C) => mod(score(st, c)) + prof(c.level || 1) * skillProf(n, st, c).level;
+const shieldOf = (c = C) => 10 + skillBonus('Code', 'INT', c);
+const netCost = (n, c = C) => Math.max(0, n - (hasPerk('INT.S.ph', c) ? 1 : 0));
+const swordCost = (k, c = C) => netCost(3 + 2 * (k - 1), c);
+let swordN = 1;
+function netPanel(){
+  if (!hasPerk('INT.A.r')) return '';
+  const fried = C.status.some(x => x.id === 'fried'), lock = hacked('lockout'), rc = ramCur(), code = skillBonus('Code', 'INT');
+  const btn = (n, label, cost, sub) => `<button class="qh ${fried || lock || rc < cost ? 'off' : ''}" data-act="net" data-n="${n}" ${fried || lock || rc < cost ? 'disabled' : ''}><b>${label}</b><span class="rc">${cost} RAM</span><small>${sub}</small></button>`;
+  return `<div class="panel gap"><div class="row"><h3>The Net</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${rc} / ${ramMax()} · NET HP ${netNow(C) ?? '—'}</span></div>
+    <div class="row" style="gap:18px;margin:8px 0 12px;align-items:flex-end"><div><span class="lbl" style="margin:0">Shield</span><div class="num" style="font-size:30px">${shieldOf()}</div><span class="muted" style="font-size:12px">10 ${sgn(code)} CODE · react makes it ${10 + 2 * code}</span></div>
+      <label class="muted" style="font-size:13px">SWORD strikes <select id="swordN" aria-label="SWORD strikes">${[1, 2, 3, 4].map(k => `<option value="${k}" ${swordN === k ? 'selected' : ''}>${k} · ${swordCost(k)} RAM</option>`).join('')}</select></label></div>
+    ${fried ? '<p style="font-size:14px;color:#ff8fe6;margin:0 0 10px">Processors fried. No Net access until a Ripper repairs you and your injuries heal.</p>' : ''}
+    <div class="qhs">${btn('sword', `SWORD ×${swordN}`, swordCost(swordN), `Roll HACKING ${sgn(skillBonus('Hacking', 'INT'))} to hit. 2d8 NET damage per strike`)}${btn('shield', 'SHIELD react', netCost(2), `Uses your REACT. SHIELD is ${10 + 2 * code} for one hit`)}${btn('ping', 'SCAN Ping', netCost(1), `Roll SCAN ${sgn(skillBonus('Scan', 'INT'))} to map floors, obstacles and rewards`)}${btn('jackout', 'Safe Jack-Out', netCost(3), 'Costs an ACTION. Unsafe Jack-Out is free but gives everything a free hit')}</div>
+    <p class="muted" style="font-size:13px;margin-top:10px">${lock ? "System Lockout. You can't run programs until the DM clears it." : 'Tap one to spend the RAM.'}${hasPerk('INT.S.ph') ? ' Automation is cutting every cost by 1.' : ''}</p></div>`;
+}
+document.addEventListener('change', e => { if (e.target.id === 'swordN' && C){ swordN = Math.max(1, Math.min(4, parseInt(e.target.value) || 1)); renderCS(); } });
 const qhCost = (q, c = C) => Math.max(0, q.ram - (c && c.unlocked.includes('INT.S.ph') ? 1 : 0));
 function renderRuleQh(){
   const el = $('#rQh'); if (!el) return;
@@ -3086,6 +3139,7 @@ function renderCS(){
     <div class="panel gap"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
       <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
+    ${netPanel()}
     ${fabPanel}
     <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
@@ -3109,7 +3163,7 @@ function seesawSVG(m, small){
 }
 function deathSave(m, pass){
   if (!isDown(m) || m.dead) return '';
-  if (pass){ m.ds.p++; if (m.ds.p >= 3){ if (hpNow(m) <= 0) m.hp = 1; if (netNow(m) <= 0) m.netHp = 1; m.ds = {p:0, f:0}; return 'up'; } return 'pass'; }
+  if (pass){ m.ds.p++; if (m.ds.p >= 3){ if (hpNow(m) <= 0) m.hp = 1; if (netNow(m) <= 0){ m.netHp = 1; addStatus(m, 'fried', null, 1); } m.ds = {p:0, f:0}; return 'up'; } return 'pass'; }
   m.ds.f++; if (m.ds.f >= 3){ m.dead = true; return 'dead'; } return 'fail';
 }
 function afterlife(){
@@ -3513,6 +3567,23 @@ $('#vCS').addEventListener('click', e => {
     case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
     case 'ram+1': C.ram = Math.min(ramMax(), ramCur() + 1); return csSave();
     case 'ramFull': C.ram = null; return csSave();
+    case 'net': {
+      if (stunned() || blocked('lockout')) return;
+      if (C.status.some(x => x.id === 'fried')) return toast('Your processors are fried. No Net until a Ripper fixes you.');
+      const n = t.dataset.n, cost = n === 'sword' ? swordCost(swordN) : netCost(n === 'shield' ? 2 : n === 'ping' ? 1 : 3);
+      const label = n === 'sword' ? `SWORD ×${swordN}` : n === 'shield' ? 'SHIELD react' : n === 'ping' ? 'SCAN Ping' : 'Safe Jack-Out';
+      if (ramCur() < cost) return toast(`${label} needs ${cost} RAM. You have ${ramCur()}.`);
+      const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
+      if (live) flushLog('');
+      C.ram = ramCur() - cost; saveC();
+      if (live){ logBase = normalize(C); liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:C.id, name:C.name, via:'The Net', lines:[{t:`${label} · −${cost} RAM (${ramCur()}/${ramMax()} left)`, k:'bad'}]}).catch(() => {}); }
+      sfx(n === 'jackout' ? 'down' : 'breach');
+      toast(n === 'sword' ? `SWORD. Roll HACKING ${sgn(skillBonus('Hacking', 'INT'))} to hit, 2d8 NET damage on each of ${swordN} strike${swordN > 1 ? 's' : ''}. −${cost} RAM.`
+        : n === 'shield' ? `SHIELD react. Your SHIELD is ${10 + 2 * skillBonus('Code', 'INT')} against this hit. −${cost} RAM.`
+        : n === 'ping' ? `SCAN Ping. Roll SCAN ${sgn(skillBonus('Scan', 'INT'))}. −${cost} RAM.` : `Jacked out safely. −${cost} RAM.`, true);
+      csSave(); if (isOverheated()) setTimeout(() => heatFx(), 200);
+      return;
+    }
     case 'qh': {
       if (stunned() || blocked('lockout')) return;
       const q = QUICKHACKS.find(x => x.id === t.dataset.q); if (!q) return;
@@ -3548,7 +3619,7 @@ $('#vCS').addEventListener('click', e => {
       let pass = t.dataset.act === 'dsPass';
       if (t.dataset.act === 'dsRoll'){ const r = 1 + Math.floor(Math.random() * 20); pass = r >= 10; toast(`Death save · rolled ${r} · ${pass ? 'pass' : 'fail'}`, pass); }
       const w = downWhat(C), res = deathSave(C, pass); sfx(pass ? 'heal' : 'damage'); csSave();
-      if (res === 'up') toast(`${C.name} pulls through with 1 ${w}.`, true);
+      if (res === 'up') toast(`${C.name} pulls through with 1 ${w}.${/Net/.test(w) ? ' Processors fried. No Net until a Ripper fixes you.' : ''}`, true);
       if (res === 'dead') afterlife();
       return;
     }
@@ -4494,7 +4565,7 @@ function applyOp(op){
     const g = tickStatus(m); msg = g.length ? `Round over. ${g.map(id => STATUSMAP[id].n).join(', ')} wore off.` : ''; sound = 'tab';
   } else if (op.kind === 'ds'){
     const w = downWhat(m), res = deathSave(m, !!op.pass);
-    msg = res === 'up' ? `Three passes. You pull through with 1 ${w}.` : res === 'dead' ? 'Three failed death saves.' : res ? `The DM logged a ${op.pass ? 'passed' : 'failed'} death save.` : ''; sound = op.pass ? 'heal' : 'damage'; good = !!op.pass;
+    msg = res === 'up' ? `Three passes. You pull through with 1 ${w}.${/Net/.test(w) ? ' Your processors are fried.' : ''}` : res === 'dead' ? 'Three failed death saves.' : res ? `The DM logged a ${op.pass ? 'passed' : 'failed'} death save.` : ''; sound = op.pass ? 'heal' : 'damage'; good = !!op.pass;
     if (res === 'dead') setTimeout(afterlife, 60);
   } else if (op.kind === 'cool'){
     const n = parseInt(op.amount) || 0; m.cool = Math.max(0, m.cool + n);
@@ -5277,7 +5348,7 @@ function searchIndex(){
   ORDER.forEach(st => SLOTS.forEach(s => { const pk = perk(st, s.slot); if (pk.unknown) return;
     out.push({g:'Perks', t:pk.n, sub:`${STATS[st].name} · ${TIERS[s.tier].name}`, body:pk.n + ' ' + (pk.d || ''), go:() => openPerk(st, s.slot)}); }));
   SKILLS.forEach(([n, st, old]) => out.push({g:'Skills', t:n, sub:st + (old ? ' · was ' + old : ''), body:n + ' ' + (old || ''), go:() => { location.hash = '#r-skills'; }}));
-  BLACK_ICE.forEach(i => out.push({g:'Black ICE', t:i.n, sub:i.dmg, body:i.n + ' ' + i.dmg + ' ' + i.fx, go:() => { location.hash = '#r-net'; }}));
+  BLACK_ICE.forEach(i => out.push({g:'Black ICE', t:i.n, sub:i.dmg, body:i.n + ' ' + i.dmg + ' ' + i.fx, go:() => { location.hash = '#r-ice'; }}));
   DB.chars.forEach(raw => { const m = normalize(raw);
     out.push({g:'Your mercs', t:m.name, sub:`${m.background} · ${m.role || 'No role'} · Level ${m.level}`, body:[m.name, m.background, m.role, m.notes].join(' '), go:() => { location.hash = '#mercs'; openChar(m.id); }});
     m.inv.forEach(i => out.push({g:'Inventory', t:i.name, sub:`${m.name} · ${i.type}${i.qty > 1 ? ' ×' + i.qty : ''}`, body:i.name + ' ' + i.type + ' ' + (i.stats || ''), go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }}));
