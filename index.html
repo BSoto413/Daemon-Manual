@@ -623,17 +623,17 @@ body.dmwide .wrap{max-width:1440px}
 .dmid{flex:1;min-width:0;display:grid;gap:4px}
 .dnm{color:#fff;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dsub{font-size:12px;color:#aab3c5}
-.dbar{display:grid;grid-template-columns:32px 1fr 52px;align-items:center;gap:6px;font-size:11px}.dbar b{font:600 9px Orbitron,sans-serif;letter-spacing:1px;color:#aab3c5}
-.dbar em{font-style:normal;color:#fff;text-align:right;font-variant-numeric:tabular-nums}
+.dbar{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:6px;font-size:11px}.dbar b{font:600 9px Orbitron,sans-serif;letter-spacing:1px;color:#aab3c5}
+.dbar em{font-style:normal;min-width:52px;white-space:nowrap;color:#fff;text-align:right;font-variant-numeric:tabular-nums}
 .dbar .mb{height:7px;background:rgba(var(--crgb),.15)}.dbar .mb i{display:block;height:100%;background:#3ee08a}.dbar.net .mb i{background:#3fd0ff}
 .dbar.mid .mb i{background:#ffd23f}.dbar.low .mb i{background:#ff4f6d}.dbar.low em{color:#ff8fa3}
 .dtags{display:flex;flex-wrap:wrap;gap:4px}.dtags i{font-style:normal;font-size:10px;letter-spacing:.5px;padding:2px 6px;border:1px solid rgba(var(--crgb),.35);color:#cdeff2}
 .dtags i.t{font-family:Orbitron,sans-serif;letter-spacing:1px}.dtags i.red{border-color:#ff4f6d;color:#ff8fa3}.dtags i.psy{border-color:#ff4fd8;color:#ff9be9}.dtags i.hk{border-color:#3fd0ff;color:#9fe6ff}.dtags i.heat{border-color:#ffa53f;color:#ffc98a}
 .dfocus{display:grid;gap:12px;border-color:var(--cyan);scroll-margin-top:64px}.dfocus .head{display:flex;gap:12px;align-items:flex-start}.dfocus .nm{font-size:18px}
 .droster .dfocus{margin:-4px 0 4px;border-top:0}
-.dstrip{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px}
-.dstrip div{border:1px solid rgba(var(--crgb),.22);padding:6px 8px;background:rgba(255,255,255,.02)}.dstrip small{display:block;font:500 9px Orbitron,sans-serif;letter-spacing:1.5px;color:#aab3c5;text-transform:uppercase}
-.dstrip b{font:600 18px Orbitron,sans-serif;color:#fff}.dstrip b i{font-style:normal;font-size:12px;opacity:.6}.dstrip .mid b{color:#ffd23f}.dstrip .low b{color:#ff4f6d}
+.dstrip{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+.dstrip div{min-width:0;overflow:hidden;border:1px solid rgba(var(--crgb),.22);padding:6px 8px;background:rgba(255,255,255,.02)}.dstrip small{display:block;font:500 9px Orbitron,sans-serif;letter-spacing:1.5px;color:#aab3c5;text-transform:uppercase}
+.dstrip b{font:600 17px Orbitron,sans-serif;color:#fff;white-space:nowrap}.dstrip b i{font-style:normal;font-size:12px;opacity:.6}.dstrip .mid b{color:#ffd23f}.dstrip .low b{color:#ff4f6d}
 .dsave{display:grid;gap:8px;border:1px solid #ff4f6d;padding:10px;background:rgba(255,79,109,.06)}
 .dsubs button{font-size:11px;padding:11px 4px}
 .dbody .ctlgrid{grid-template-columns:78px 1fr}.dbody .ctlgrid .row{flex-wrap:wrap}
@@ -1245,7 +1245,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Unsafe</b></td><td>A FREE ACTION with no RAM cost. Every Black ICE program, Daemon and security measure you didn't de-rez gets a free hit on you, and other Netrunners get a bead on your location</td></tr>
           </tbody></table>
           <h3 style="margin-top:18px">NET HP</h3>
-          <p style="margin-top:8px">Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. NET HP matches your IRL HP unless an implant changes it. Black ICE mostly hits your NET HP, but your body can still be attacked while you're under.</p>
+          <p style="margin-top:8px">Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. NET HP matches your IRL HP unless an implant changes it. Black ICE mostly hits your NET HP, but your body can still be attacked while you're under. Some Black ICE, like a Hellhound's fire, and Daemons can also damage your IRL HP straight from The Net. The INT perk <b>Insulated Wires</b> halves that damage, rounded down.</p>
           <p style="margin-top:8px">If your NET HP hits 0 you Flatline and go into critical condition, and you start rolling death saves. Once you stabilize, your processors are <b>fried</b>. You need a Ripper to repair them, and you can't access The Net until your injuries heal.</p>
           <p class="muted" style="font-size:13px;margin-top:8px">With Jack In installed, your character sheet gets a Net panel with your SHIELD and buttons that spend the RAM for SWORD, SHIELD react, SCAN Ping and Safe Jack-Out.</p>
         </div>
@@ -1639,7 +1639,7 @@ const PERKS = {
   INT:{
     'A.r': {n:'Jack In', d:'You can enter The Net.'},
     'B.r': {n:'Nerd!', d:'Proficiency with smart weapons.'},
-    'A.p': {n:'Insulated Wires', d:'Your NET attacks also hit the target\'s IRL body for half damage. Passive. You never overheat when your RAM hits 0.'},
+    'A.p': {n:'Insulated Wires', d:'Passive. You never overheat when your RAM hits 0, and NET attacks that would hurt your IRL HP, like a Hellhound\'s fire or a Daemon, only do half damage to it.'},
     'S.p': {n:'Extra Slot', d:'Double your max RAM.'},
     'B.p': {n:'R.E.M.', d:'Hack multiple things at once. Each extra target costs half the original RAM.'},
     'A.ph':{n:'Who Let the Dogs Out', d:'Code 2 Hellhounds whenever you Jack In.'},
@@ -2225,11 +2225,11 @@ function dmSheetHTML(p){
       ${hm && isDown(m) ? `<h4>Death saves</h4>${seesawSVG(m)}` : ''}${m.status.length ? `<h4>Status effects</h4><div class="schips">${statusChips(m)}</div>` : ''}${m.hacks.length || m.psycho || m.jackLock || encumbered(m) || m.dead || m.lost ? `<h4>Status</h4><div class="list">${m.dead ? '<div><b style="color:var(--red)">DEAD</b> · three failed death saves</div>' : ''}${m.lost ? '<div><b style="color:var(--red)">LOST</b> · filled the red hex, cyberpsychosis for good</div>' : ''}${m.psycho ? '<div><b>Cyberpsycho</b></div>' : ''}${encumbered(m) ? '<div><b>Encumbered</b> · stuff on the floor</div>' : ''}${m.jackLock ? '<div><b>Jack-out locked</b></div>' : ''}${m.hacks.map(h => `<div><b>Hacked</b> · ${esc((HACKS[h] || {n:h}).n)}</div>`).join('')}</div>` : ''}
       <h4>Equipped</h4><div class="kv"><span>Primary</span><span>${eqd('primary')}</span><span>Secondary</span><span>${eqd('secondary')}</span><span>Armor</span><span>${eqd('armor')}</span></div>
       <h4>Skills</h4><p class="muted" style="font-size:13px;margin:0 0 6px">Proficient in ${profs.join(', ') || 'nothing yet'}. ◆ adds proficiency, ◆◆ doubles it.</p><div class="sk">${sk}</div>
+      <h4>Perks · ${m.unlocked.length}</h4>${m.unlocked.length ? `<div class="list">${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<div><b>${esc(pk.n)}</b> <span class="muted">${st}</span><small>${esc(pk.d || '')}</small></div>`; }).join('')}</div>` : '<p class="muted">None yet.</p>'}
     </div><div>
       <h4>Backpack · ${BAG_COLS} × ${bagRows(m)} · ${bagUsed(m)} of ${BAG_COLS * bagRows(m)} spaces</h4>${bagHTML(m, true)}
       <h4>Inventory · ${m.inv.length}</h4>${m.inv.length ? `<div class="list">${m.inv.map(i => `<div><b>${esc(i.name)}</b>${i.qty > 1 ? ' ×' + i.qty : ''} ${tierTag(i.tier)}${i.type === 'Cyberware' ? `<span class="tagb cwb">CW ${i.cw}</span>` : ''}${m.eq.primary === i.id ? '<span class="eqm">PRIMARY</span>' : m.eq.secondary === i.id ? '<span class="eqm">SECONDARY</span>' : m.eq.armor === i.id ? '<span class="eqm">WORN</span>' : onFloor(m, i) ? '<span class="eqm" style="color:var(--red)">FLOOR</span>' : ''}<small>${i.type} · ${i.w}×${i.h}${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() + ' reload' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}</small></div>`).join('')}</div>` : '<p class="muted">Nothing in the bag.</p>'}
       <h4>Installed chrome · ${m.cyber.length}</h4>${cyberMapHTML(m, true)}${m.cyber.length ? `<div class="list">${m.cyber.map(x => `<div><b>${esc(x.name)}</b>${x.hot ? ' <span class="hotb">HOT</span>' : ''}<small>${(SLOTMAP[x.slot] || [])[1] || x.slot}${x.ac ? ' · ' + sgn(x.ac) + ' AC' : ''}${x.effect ? ' · ' + esc(x.effect) : ''}</small></div>`).join('')}</div>` : '<p class="muted">None installed.</p>'}
-      <h4>Perks · ${m.unlocked.length}</h4>${m.unlocked.length ? `<div class="list">${m.unlocked.map(k => { const [st, ...sl] = k.split('.'), pk = perk(st, sl.join('.')); return `<div><b>${esc(pk.n)}</b> <span class="muted">${st}</span><small>${esc(pk.d || '')}</small></div>`; }).join('')}</div>` : '<p class="muted">None yet.</p>'}
       ${m.notes ? `<h4>Notes</h4><p style="font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere">${esc(m.notes)}</p>` : ''}
     </div></div></div>`;
 }
@@ -5215,6 +5215,7 @@ function dmFlags(m){
   if (m.jackLock) f.push(['JACK-OUT LOCKED', 'hk']);
   return f;
 }
+const irlHit = (id, n) => { const p = players.find(x => x.id === id); return p && p.merc && (p.merc.unlocked || []).includes(INSULATED) ? Math.floor(n / 2) : n; };
 const dmTone = (v, mx) => !mx ? '' : v / mx <= .25 ? 'low' : v / mx <= .5 ? 'mid' : '';
 const dmBar = (lbl, v, mx, cls) => `<span class="dbar ${cls || ''} ${dmTone(v, mx)}"><b>${lbl}</b><span class="mb"><i style="width:${mx ? Math.max(0, Math.min(100, v / mx * 100)) : 0}%"></i></span><em>${mx ? v + '/' + mx : '—'}</em></span>`;
 function dmAlertsHTML(){
@@ -5244,6 +5245,7 @@ function dmFocusHTML(p){
   if (dmSub === 'vitals') body = `<div class="ctlgrid">${amtRow}
       <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
       <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
+      <span class="ctl">Net to body</span><div class="row"><button class="btn small danger" data-live="irl-" data-u="${k}" title="IRL HP damage from Black ICE or a Daemon">Damage</button><span class="muted" style="font-size:12px">${m.unlocked.includes(INSULATED) ? 'Insulated Wires, takes half' : 'Hellhound fire, Daemons'}</span></div>
       <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
       <span class="ctl">Status</span><div class="row"><select id="sts-${k}" aria-label="Status effect for ${esc(m.name)}">${statusOpts()}</select><input type="number" min="1" id="str-${k}" placeholder="Rds" aria-label="Rounds, blank means until removed" style="width:70px"><button class="btn small" data-live="stApply" data-u="${k}">Apply</button></div>
       <span class="ctl">COOL</span><div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 Token</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div></div>`;
@@ -5277,7 +5279,7 @@ function dmFocusHTML(p){
       <div class="${dmTone(rc, rmx)}"><small>RAM</small><b>${rc}<i>/${rmx}</i></b></div>
       <div class="${cwOver(m) ? 'low' : ''}"><small>Chrome</small><b>${cwLoad(m)}<i>/${cwTOf(m)}</i></b></div>
       <div><small>COOL</small><b style="color:var(--yellow)">${m.cool}</b></div>
-      <div><small>Eddies</small><b>${m.eddies}</b></div>
+      <div><small>Eddies</small><b>${m.eddies.toLocaleString()}</b></div>
     </div>
     ${hm && isDown(m) ? `<div class="dsave">${seesawSVG(m, true)}${m.dead ? '' : `<div class="row"><span class="ctl" style="min-width:auto">Death save</span><button class="btn small" data-live="dsP" data-u="${k}">Pass</button><button class="btn small danger" data-live="dsF" data-u="${k}">Fail</button></div>`}</div>` : ''}
     ${(m.status || []).length ? `<div class="schips">${statusChips(m, x => `<button class="sx" data-live="stRm" data-u="${k}" data-s="${x.id}" aria-label="Clear ${STATUSMAP[x.id].n}">✕</button>`)}</div>` : ''}
@@ -5296,7 +5298,7 @@ function dmPartyHTML(){
   const rows = live.map(p => dmRow(p) + (!wide && sel && p.id === sel.id ? dmFocusHTML(p) : '')).join('');
   const bar = `<div class="panel dmbar"><div class="row"><label class="dchk all"><input type="checkbox" data-blast="*" ${all ? 'checked' : ''} aria-label="Tick everyone"></label><b class="lblb">Party hit</b>
       <input type="number" min="0" id="blastAmt" placeholder="Amt" inputmode="numeric" aria-label="Amount for ticked players" style="width:64px">
-      <button class="btn small danger" data-live="blast" data-k="hp-">Damage</button><button class="btn small danger" data-live="blast" data-k="net-">NET dmg</button><button class="btn small" data-live="blast" data-k="hp+">Heal</button></div>
+      <button class="btn small danger" data-live="blast" data-k="hp-">Damage</button><button class="btn small danger" data-live="blast" data-k="net-">NET dmg</button><button class="btn small danger" data-live="blast" data-k="irl-" title="IRL HP damage from Black ICE or a Daemon. Halved for Insulated Wires">Net to body</button><button class="btn small" data-live="blast" data-k="hp+">Heal</button></div>
       <p class="muted" style="font-size:12px;margin-top:6px">${blastSel.size ? `${blastSel.size} ticked` : 'Tick mercs on the left of each row to hit or heal several at once, like a grenade'}</p>
       ${timed ? `<div class="row" style="margin-top:8px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down timed status effects</span></div>` : ''}</div>`;
   return `${dmAlertsHTML()}<div class="dmsplit">
@@ -5483,10 +5485,21 @@ $('#liveBody').addEventListener('click', async e => {
     if (await sendOp(u, {kind:'xp', amount:n})) toast(`+${n.toLocaleString()} XP for ${pname(u)}.`, true);
     return;
   }
+  if (a === 'irl-'){
+    const n = amt(); if (!n) return toast('Enter an amount first.');
+    const r = irlHit(u, n); if (await sendOp(u, {kind:'hp', amount:-r})) toast(`${r} Net to body damage to ${pname(u)}${r !== n ? ' (halved by Insulated Wires)' : ''}.`, true);
+    return;
+  }
   if (a === 'blast'){
     const n = Math.max(0, parseInt(($('#blastAmt') || {}).value) || 0); if (!n) return toast('Enter an amount first.');
     const ids = [...blastSel].filter(id => players.some(p => p.id === id)); if (!ids.length) return toast('Tick the mercs to hit first.');
     const k2 = t.dataset.k, kind = k2.startsWith('net') ? 'net' : 'hp', sign = k2.endsWith('-') ? -1 : 1;
+    if (k2 === 'irl-'){
+      const half = [];
+      for (const id of ids){ const r = irlHit(id, n); if (r !== n) half.push(pname(id)); await sendOp(id, {kind:'hp', amount:-r}); }
+      toast(`${n} Net to body damage for ${ids.map(pname).join(', ')}${half.length ? `. Halved to ${Math.floor(n / 2)} for ${half.join(', ')}` : ''}.`, true);
+      return;
+    }
     for (const id of ids) await sendOp(id, {kind, amount:sign * n});
     toast(`${sign < 0 ? (kind === 'net' ? 'NET damage' : 'Damage') + ' ' + n : 'Healed ' + n} for ${ids.map(pname).join(', ')}.`, true);
     return;

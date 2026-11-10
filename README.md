@@ -45,7 +45,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - The dashboard has four tabs. Party (party roster, encounter, progress, activity log), NPCs (master list, Black ICE, NPC generator), Items (library and generators) and Session (handouts, mood, notes, recap, backups)
 - Party tab. A compact roster of every merc shows HP and NET bars, AC, RAM, COOL and status tags. An alert strip above it flags anyone down, hacked, overheated, cyberpsycho or jack-out locked, and tapping an alert opens that merc
 - Tap a merc to open their controls, split into Vitals, Give, Chrome and Sheet tabs. On a tablet or laptop held sideways (900 px and wider) the roster sits on the left and the controls stay pinned on the right. On a phone the controls open right under the merc you tapped
-- Party hit. Tick the boxes beside several mercs, enter an amount, then Damage, NET dmg or Heal hits them all at once, like a grenade. End round for everyone shows while any timed status effect is running
+- Party hit. Tick the boxes beside several mercs, enter an amount, then Damage, NET dmg, Net to body or Heal hits them all at once, like a grenade. Net to body is IRL HP damage from Black ICE or a Daemon, and it's halved automatically (rounded down) for anyone with Insulated Wires. End round for everyone shows while any timed status effect is running
 - Players on a screen 1000 px or wider see Combat and Gear side by side on their sheet
 - NPCs only reach the players' Codex once the DM hits Add to codex or Show ID card
 - Party progress. Milestone levels up the whole party. Award XP to everyone or one player
