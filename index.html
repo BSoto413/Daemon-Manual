@@ -592,6 +592,17 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 .dock{position:fixed;right:14px;bottom:14px;z-index:6;display:flex;gap:6px}
 .dock button{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
 .setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);max-height:calc(100dvh - 80px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:0 18px 16px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+/* ---------- sheet layout: back link, sticky vitals, sub tabs ---------- */
+.sheettop{margin:-4px 0 8px}.backlink{background:none;border:0;color:var(--cyan);font:500 13px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:6px 0}.backlink:hover{text-decoration:underline}
+#vitalsBar{position:sticky;top:0;z-index:4;display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px 10px;margin:0 0 10px;background:rgba(10,10,18,.96);border:1px solid rgba(var(--crgb),.35);box-shadow:0 6px 14px rgba(0,0,0,.55);cursor:pointer;backdrop-filter:blur(4px)}
+#vitalsBar:empty{display:none}#vitalsBar .vb{flex:1 1 0;min-width:64px;display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+#vitalsBar .vb small{font:500 9px Orbitron,sans-serif;letter-spacing:1.5px;color:var(--muted, #8a93a6);text-transform:uppercase}#vitalsBar .vb b{font:600 16px Orbitron,sans-serif;color:#fff;letter-spacing:.5px}
+#vitalsBar .vb b small{font-size:11px;color:inherit;opacity:.6;letter-spacing:0}#vitalsBar .vb.low b{color:#ff4f6d}#vitalsBar .vb.mid b{color:#ffd23f}
+#vitalsBar .hb{height:3px;width:100%;background:rgba(var(--crgb),.15);margin-top:3px}#vitalsBar .hb i{display:block;height:100%;background:var(--cyan)}#vitalsBar .low .hb i{background:#ff4f6d}#vitalsBar .mid .hb i{background:#ffd23f}
+#vCS .cs-grid{scroll-margin-top:84px}
+#vCS[data-sub="combat"] [data-sub]:not([data-sub="combat"]),#vCS[data-sub="gear"] [data-sub]:not([data-sub="gear"]),#vCS[data-sub="chrome"] [data-sub]:not([data-sub="chrome"]),#vCS[data-sub="profile"] [data-sub]:not([data-sub="profile"]){display:none!important}
+.vtabs button[hidden]{display:none}
+#liveStub .panel{border-left:3px solid var(--cyan)}
 .sethead{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;background:rgba(10,10,18,.98);padding:14px 0 8px;margin-bottom:2px}
 .setback{position:fixed;inset:0;z-index:6;background:rgba(0,0,0,.35);touch-action:none}
 html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
@@ -1323,9 +1334,11 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
     <!-- SHEET -->
     <div id="vSheet" hidden>
+      <div class="sheettop"><button class="backlink" id="backMercs" aria-label="Back to all mercs">‹ All mercs</button></div>
+      <div id="vitalsBar" role="button" tabindex="0" aria-label="Vitals, tap for the Combat tab"></div>
       <div id="combatBar" hidden></div>
       <div class="panel" id="sheetHead"></div>
-      <div class="vtabs" role="tablist"><button data-v="perks" class="on" role="tab">Perks and skills</button><button data-v="cs" role="tab">Character sheet</button><button data-v="ach" role="tab">Achieve&shy;ments</button></div>
+      <div class="vtabs" role="tablist"><button data-v="combat" class="on" role="tab">Combat</button><button data-v="gear" role="tab">Gear</button><button data-v="chrome" role="tab">Chrome</button><button data-v="perks" role="tab">Perks and skills</button><button data-v="party" role="tab" hidden>Party</button><button data-v="profile" role="tab">Profile</button></div>
       <div id="vPerks">
       <div class="tabs" id="tabs" role="tablist"></div>
       <div class="sim-grid">
@@ -1367,8 +1380,10 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <div class="panel"><div id="skillPicks"></div><p class="muted" id="skillNote"></p><div class="skills" id="skills"></div></div>
       </div>
       <div id="vCS" hidden></div>
+      <div id="vParty" hidden></div>
       <div id="vAch" hidden></div>
 
+      <div id="vSave" hidden>
       <h2 style="margin-top:36px">Save</h2>
       <div class="panel">
         <p>Your merc saves in this browser on its own. To back it up, move it to another device or share it in Discord, copy the save code. Then paste it into Import on the other end.</p>
@@ -1381,12 +1396,14 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <button class="btn" id="toRoster">All mercs</button>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
   <section id="live">
     <h2>Live Session</h2>
-    <div id="liveBody"></div>
+    <div id="liveStub" hidden></div>
+    <div id="liveHome"><div id="liveBody"></div></div>
   </section>
 
   </div>
@@ -1968,7 +1985,7 @@ function announceAch(list){
     if (flashOK() && $('#modal').hidden) coolFx('ACHIEVEMENT', false, true); sfx('levelup');
   }, 900 + i * 2200));
   if (mine.length > 3) setTimeout(() => toast(`And ${mine.length - 3} more. Check the Achievements tab.`, true), 900 + 3 * 2200);
-  if (C && sheetTab === 'ach') setTimeout(renderAch, 50);
+  if (C && sheetTab === 'profile') setTimeout(renderAch, 50);
 }
 function undo(){
   if (!C) return;
@@ -1976,7 +1993,7 @@ function undo(){
   const prev = normalize(JSON.parse(st.pop()));
   prev.ach = {...prev.ach, ...C.ach}; prev.ctr = {...C.ctr}; prev.savedAt = Date.now();
   undoBusy = true; C = prev; saveC(); undoBusy = false;
-  update(false); renderSheetHead(); if (sheetTab === 'cs') renderCS();
+  update(false); renderSheetHead(); if (CS_TABS.includes(sheetTab)) renderCS();
   sfx('down'); toast('Undid your last change.');
 }
 const xpNext = lvl => XP_TABLE[Math.min(19, lvl)] || null;
@@ -2406,7 +2423,8 @@ $('#dlFile').onclick = () => download(JSON.stringify({format:'daemon-db', versio
 $('#copyJson').onclick = () => copyText(JSON.stringify({format:'daemon-db', version:2, mercs:[withDerived(C)]}, null, 2), $('#codeOut'), 'Merc data');
 $('#dbCopy').onclick = () => copyText(dbText(), $('#dbOut'), 'Database');
 $('#dbDl').onclick = () => download(dbText(), 'daemon-database.json');
-$('#toRoster').onclick = () => { show('roster'); renderRoster(); goTop(); };
+const toRoster = () => { if (location.hash !== '#mercs') location.hash = '#mercs'; else { show('roster'); renderRoster(); goTop(); } };
+$('#toRoster').onclick = toRoster; $('#backMercs').onclick = toRoster;
 
 /* ================= WIZARD ================= */
 let W = null, wStep = 0, lastStep = -1;
@@ -2535,6 +2553,7 @@ function openChar(id){
   C = normalize(raw); validate(); saveC();
   sel = null; cyberForm = null; delItem = null; selItem = null; selCy = null; hlSlot = null; $('#codeOut').hidden = true;
   show('sheet'); setSheetTab(sheetTab); goTop();
+  if (location.hash !== '#sheet') location.hash = '#sheet';
   requestAnimationFrame(build);
 }
 
@@ -2551,9 +2570,20 @@ function updateHeat(){
   const show = on && !$('#vSheet').hidden && !document.body.classList.contains('on-rules');
   document.body.classList.toggle('overheat', !!show);
 }
+// Always-visible strip at the top of the sheet. HP, Net HP (netrunners), RAM and AC. Tap it to jump to Combat.
+function renderVitalsBar(){
+  const el = $('#vitalsBar'); if (!el || !C) return;
+  const hm = C.hpMax, cell = (lbl, a, b, bar) => { const r = b ? a / b : 1, cls = bar ? (r <= .25 ? 'low' : r <= .5 ? 'mid' : '') : '';
+    return `<div class="vb ${cls}"><small>${lbl}</small><b>${a}${b != null ? `<small> / ${b}</small>` : ''}</b>${bar ? `<span class="hb"><i style="width:${Math.max(0, Math.min(100, r * 100))}%"></i></span>` : ''}</div>`; };
+  const showNet = hm && (hasPerk('INT.A.r') || netNow(C) < hm);
+  el.innerHTML = (hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set')) + (showNet ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C));
+}
+$('#vitalsBar').addEventListener('click', () => { if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
+$('#vitalsBar').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.currentTarget.click(); } });
 function renderSheetHead(){
   updateVignette(); updateHeat(); if (typeof updatePsy === 'function'){ updatePsy(); updateHack(); }
   if (typeof updateCombatBar === 'function') updateCombatBar();
+  renderVitalsBar();
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
     <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'}${C.bgSkills.length ? ' · ' + C.bgSkills.join(' and ') : ''}</div></div></div>
@@ -2605,7 +2635,7 @@ function useCool(kind, who){
     liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:C.id, name:C.name, via:'COOL Token',
       lines:[{t:`${s} to ${whose} d20 roll`, k:kind === 'foe' ? 'bad' : 'good'}, ...(hasPerk('COO.S.ph') ? [{t:'You Ready to Rock?! · every ally gets COOL buffs and a free ACTION', k:'good'}] : [])]}).catch(() => {});
   }
-  renderSheetHead(); if (sheetTab === 'cs') renderCS();
+  renderSheetHead(); if (CS_TABS.includes(sheetTab)) renderCS();
   if (flashOK()) coolFx(`${s} COOL`, true); sfx('cool');
   const target = kind === 'self' ? 'your' : kind === 'ally' ? (who === 'an ally' ? "your ally's" : who + "'s") : (who === 'an enemy' ? "the enemy's" : who + "'s");
   toast(`COOL Token used. Add ${s} to ${target} d20 roll.${hasPerk('COO.S.ph') ? ' You Ready to Rock?! kicks in, so every ally gets COOL buffs and a free ACTION.' : ''}`, true);
@@ -2691,7 +2721,7 @@ document.addEventListener('click', e => {
     const [key, v] = raw.split('|'); C.tierPicks[key] = v; toast(v.startsWith('2:') ? `Double proficiency in ${v.slice(2)}.` : `Proficient in ${v}.`, true); sfx('perk');
   }
   usePick(C);
-  saveC(); renderSkills(); if (sheetTab === 'cs') renderCS(); renderSheetHead();
+  saveC(); renderSkills(); if (CS_TABS.includes(sheetTab)) renderCS(); renderSheetHead();
 });
 
 /* ---------- tree DOM ---------- */
@@ -2891,7 +2921,7 @@ const cwCap = c => Math.ceil(cwTOf(c) / 2);
 const cwMaxOf = c => cwTOf(c) + cwCap(c);
 const psyDC = c => 10 + 2 * cwOver(c);
 const psyMod = c => mod(score('TEC', c)) + (c.unlocked.includes('COO.A.l') ? mod(score('COO', c)) : 0);
-function lostFix(m){ if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
+function lostFix(m){ if (!Array.isArray(m.cyber)) return false; if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
 function lostFx(){
   const el = $('#flatline'); if (!el) return;
   const tx = el.querySelector('.fl-text');
@@ -3156,17 +3186,38 @@ const ramBase = (c = C) => Math.max(0, 4 + mod(score('INT', c)) + cyberRam(c));
 const ramMax = (c = C) => ramBase(c) * (hasPerk('INT.S.p', c) ? 2 : 1);
 const reactCost = (c = C) => hasPerk('INT.S.ph', c) ? 1 : 2;
 const ramCur = () => C.ram == null ? ramMax() : Math.max(0, Math.min(C.ram, ramMax()));
-let sheetTab = 'perks', cyberForm = null, delItem = null, psyConfirm = false;
-
+let sheetTab = 'combat', cyberForm = null, delItem = null, psyConfirm = false;
+// Combat, Gear, Chrome and Profile are views of the same sheet (#vCS). Party shows the live session. Old names still work.
+const CS_TABS = ['combat', 'gear', 'chrome', 'profile'], TAB_ALIAS = {cs:'combat', ach:'profile'};
+const partyOn = () => !!(LS && LS.role === 'player' && liveState === 'on' && C && C.id === LS.mercId);
 function setSheetTab(t){
+  t = TAB_ALIAS[t] || t;
+  if (t === 'party' && !partyOn()) t = 'combat';
   sheetTab = t;
   $('#vPerks').hidden = t !== 'perks';
-  $('#vCS').hidden = t !== 'cs'; $('#vAch').hidden = t !== 'ach';
-  if (t === 'ach') renderAch();
-  document.querySelectorAll('.vtabs button').forEach(b => { b.classList.toggle('on', b.dataset.v === t); b.setAttribute('aria-selected', b.dataset.v === t); });
-  if (t === 'cs') renderCS(); else if (t === 'perks') requestAnimationFrame(layout);
+  $('#vCS').hidden = !CS_TABS.includes(t); $('#vAch').hidden = t !== 'profile'; $('#vSave').hidden = t !== 'profile'; $('#vParty').hidden = t !== 'party';
+  if (t === 'profile') renderAch();
+  updateTabs();
+  if (CS_TABS.includes(t)) renderCS(); else if (t === 'perks') requestAnimationFrame(layout); else if (t === 'party') placeLive();
 }
-document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setSheetTab(b.dataset.v); });
+function updateTabs(){
+  const pb = document.querySelector('.vtabs [data-v=party]'); if (pb) pb.hidden = !partyOn();
+  document.querySelectorAll('.vtabs button').forEach(b => { b.classList.toggle('on', b.dataset.v === sheetTab); b.setAttribute('aria-selected', b.dataset.v === sheetTab); });
+}
+// While a player is in a session, the live session view lives in their sheet's Party tab. The Live Session page points there.
+function placeLive(){
+  const lb = $('#liveBody'), inParty = !!(LS && LS.role === 'player' && liveState === 'on'), dest = inParty ? $('#vParty') : $('#liveHome');
+  if (lb && dest && lb.parentNode !== dest) dest.appendChild(lb);
+  if (!inParty && sheetTab === 'party' && C) setSheetTab('combat');
+  const stub = $('#liveStub'); if (!stub) return;
+  stub.hidden = !inParty;
+  if (inParty){ const m = DB.chars.find(x => x.id === LS.mercId);
+    stub.innerHTML = `<div class="panel"><span class="lbl">Connected to</span><div class="code">${esc(LS.code)}</div><p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · Playing as ${m ? esc(m.name) : 'unknown merc'}</p>
+      <p style="font-size:14px;margin-top:10px">Your party, handouts and the activity log are in the Party tab on your sheet.</p><div class="row gap"><button class="btn primary" id="goParty">Open the Party tab</button></div></div>`; }
+  updateTabs();
+}
+document.addEventListener('click', e => { if (e.target.id === 'goParty' && LS && LS.mercId){ openChar(LS.mercId); setSheetTab('party'); location.hash = '#sheet'; } });
+document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ setSheetTab(b.dataset.v); sfx('tab'); } });
 
 // Shots left in an equipped gun. Each ATTACK fires as many shots as the gun's ROF.
 function ammoHTML(i){
@@ -3184,7 +3235,7 @@ document.addEventListener('click', e => {
   saveC(); renderCS();
 });
 function renderCS(){
-  if (!C || sheetTab !== 'cs') return;
+  if (!C || !CS_TABS.includes(sheetTab)) return;
   const hm = C.hpMax, hp = C.hp == null ? hm : Math.min(C.hp, hm), net = C.netHp == null ? hm : Math.min(C.netHp, hm);
   const rm = ramMax(), rc = ramCur(), cr = cyberRam();
   const it = id => C.inv.find(i => i.id === id);
@@ -3306,31 +3357,32 @@ function renderCS(){
         <button class="btn small" data-act="fabUp">Upgrade</button><button class="btn small" data-act="fabFort">Fortify · ${FAB_COST.fortify} €$</button></div>` : '<p class="muted" style="font-size:14px">Nothing in your bag to work on.</p>'}`
     : `<p style="font-size:14px;margin-top:6px">Creating, upgrading and fortifying gear takes the TEC Phenom perk <b>Fabricator</b>. Find a crewmate who has it and hand them your gear.</p>`}
   </div>`;
+  $('#vCS').dataset.sub = CS_TABS.includes(sheetTab) ? sheetTab : 'combat';
   $('#vCS').innerHTML = `
-    <div class="panel gap"><div class="idwrap"><div style="display:grid;gap:8px;justify-items:start">${avatar(C, 'av lg')}
+    <div class="panel gap" data-sub="profile"><div class="idwrap"><div style="display:grid;gap:8px;justify-items:start">${avatar(C, 'av lg')}
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
-    <div class="cs-grid">
-      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}${cwBlock}${psyBlock}</div>
+    <div class="cs-grid" data-sub="combat">
+      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div></div>
     </div>
-    <div class="panel gap" id="invPanel"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
+    <div class="panel gap" id="invPanel" data-sub="gear"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
       <div>${rows}</div>
       <span class="lbl" style="margin-top:18px">Add an item</span>
       <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><span class="nisz"><input type="number" id="niW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="niH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><button class="btn primary small" data-act="addItem">Add</button></div>
       <p class="muted" style="font-size:12px;margin:-4px 0 10px">Leave the size blank and it guesses from the type, like 4 × 1 for a rifle. Your GM tells you the real size.</p>
 </div>
-    <div class="panel gap"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
+    <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
       <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
-    ${netPanel()}
-    ${fabPanel}
-    <div class="panel gap"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
+    <div data-sub="combat">${netPanel()}</div>
+    <div data-sub="gear">${fabPanel}${ledgerHTML()}</div>
+    <div class="panel gap" data-sub="chrome"><h3 style="margin-bottom:14px">Chrome load</h3>${cwBlock}${psyBlock}</div>
+    <div class="panel gap" data-sub="chrome"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
       <p class="muted" style="font-size:13px;margin-top:4px">Chrome only adds RAM if it's designed to, and that bonus adds to your max RAM. Hot-swap parts only give half, rounded up. Swapping one in or out yourself costs ${HOTSWAP_RAM} RAM and an ACTION. Slot counts are a starting point until the GM sets them.</p>
       ${cyberMapHTML(C)}</div>
-    ${ledgerHTML()}
-    <div class="panel gap"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
+    <div class="panel gap" data-sub="profile"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
 const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
 /* ---- Death saves. 3 live skulls vs 3 dead skulls on a seesaw. ---- */
@@ -4735,7 +4787,7 @@ function applyOp(op){
     }
   } else if (op.kind === 'jackout'){
     msg = 'Black ICE forced you out of the Net.'; good = false; sound = 'breach';
-    setTimeout(() => { const was = ENVS.jack; ENVS.jack = false; refreshEnv(); if (was && flashOK()) glitchBurst(700, 'JACKED OUT', ['rgba(255,74,94,.6)', 'rgba(0,0,0,.6)', 'rgba(var(--crgb),.5)']); if (C && sheetTab === 'cs') renderCS(); }, 30);
+    setTimeout(() => { const was = ENVS.jack; ENVS.jack = false; refreshEnv(); if (was && flashOK()) glitchBurst(700, 'JACKED OUT', ['rgba(255,74,94,.6)', 'rgba(0,0,0,.6)', 'rgba(var(--crgb),.5)']); if (C && CS_TABS.includes(sheetTab)) renderCS(); }, 30);
   } else if (op.kind === 'jacklock'){
     m.jackLock = !!op.on; good = !op.on; sound = op.on ? 'breach' : 'heal';
     msg = op.on ? "Black ICE locked your jack-out. You can't leave the Net safely." : 'Your safe jack-out is back online.';
@@ -4825,7 +4877,7 @@ async function startPlayer(){
   unsubs.push(api.watchPlayers(LS.code, list => {
     const before = players.map(p => p.id).join();
     players = dedupe(list).keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
-    if (players.map(p => p.id).join() !== before && sheetTab === 'cs' && C) renderCS();
+    if (players.map(p => p.id).join() !== before && CS_TABS.includes(sheetTab) && C) renderCS();
   }));
   unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
   unsubs.push(api.watchInbox(LS.code, api.uid, ops => {
@@ -4900,6 +4952,7 @@ async function connect(){
     sessMeta = s; liveState = 'on'; setTimeout(renderCodex, 0);
     if (LS.role === 'dm') startDM(); else await startPlayer();
     renderLive(); if (C) renderSheetHead();
+    if (goPartyAfter && LS && LS.role === 'player'){ goPartyAfter = false; openChar(LS.mercId); setSheetTab('party'); }
   } catch(e){
     console.error(e);
     liveErr = "Couldn't reach the live server. Check your connection and that the site is opened from its web address.";
@@ -4992,6 +5045,7 @@ function partyCard(p, dm){
     </div>`;
 }
 function renderLive(){
+  placeLive();
   const root = $('#liveBody');
   keepInputs(root, () => { root.innerHTML = liveHTML(); });
   if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
@@ -5027,7 +5081,7 @@ function liveHTML(){
     const m = DB.chars.find(x => x.id === LS.mercId);
     return `<div class="panel"><div class="row"><div style="flex:1;min-width:220px"><span class="lbl">Connected to</span><div class="code">${esc(LS.code)}</div>
       <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · Playing as ${m ? esc(m.name) : 'unknown merc'}</p></div>
-      <button class="btn primary" data-live="opensheet">Open my sheet</button><button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
+      <button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
       <h3 style="margin:22px 0 0">Your party</h3>
       <div class="players">${players.map(p => partyCard(p, false)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
@@ -5100,7 +5154,7 @@ $('#liveBody').addEventListener('click', async e => {
     const code = ($('#joinCode').value || '').trim().toUpperCase(), mercId = $('#joinMerc').value;
     if (code.length !== 6){ liveErr = 'Session codes are 6 characters.'; return renderLive(); }
     if (!mercId) return;
-    LS = {role:'player', code, mercId}; saveLS(); return connect();
+    LS = {role:'player', code, mercId}; saveLS(); goPartyAfter = true; return connect();
   }
   if (a === 'host'){
     const name = ($('#hostName').value || '').trim().slice(0, 40) || 'Night City Run';
@@ -5126,7 +5180,7 @@ $('#liveBody').addEventListener('click', async e => {
   }
   if (a === 'rejoin'){
     if (!DB.chars.some(c => c.id === t.dataset.m)){ liveErr = "That merc isn't on this device anymore. Use Restore to pull it from the session."; return renderLive(); }
-    LS = {role:'player', code:t.dataset.code, mercId:t.dataset.m}; saveLS(); return connect();
+    LS = {role:'player', code:t.dataset.code, mercId:t.dataset.m}; saveLS(); goPartyAfter = true; return connect();
   }
   if (a === 'findmerc'){
     const code = ($('#joinCode').value || '').trim().toUpperCase();
@@ -5353,7 +5407,7 @@ $('#liveBody').addEventListener('click', async e => {
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
 });
-let npDraftPic = null, preloadMsg = '';
+let npDraftPic = null, preloadMsg = '', goPartyAfter = false;
 // ---- Encounters. The DM's list of who's in the fight. Kept apart from the NPC list, on this device. ----
 let enc = [];
 const ENC_KEY = 'daemon-enc';
@@ -5691,14 +5745,19 @@ function route(){
   document.body.classList.toggle('on-rules', rules || codex);
   setTimeout(() => { updateVignette(); updatePsy(); updateHack(); updateHeat(); }, 0);
   $('#pgRules').hidden = !rules; $('#pgCodex').hidden = !codex; $('#pgApp').hidden = rules || codex;
-  document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : codex ? a.dataset.pg === 'codex' : a.getAttribute('href') === '#' + (h || 'mercs')));
+  document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : codex ? a.dataset.pg === 'codex' : a.getAttribute('href') === '#' + (h === 'sheet' || !h ? 'mercs' : h)));
   if (codex){ renderCodex(); window.scrollTo(0, 0); return; }
   if (rules){
     const el = h.startsWith('r-') && document.getElementById(h);
     requestAnimationFrame(() => el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0));
   } else {
-    const el = h && document.getElementById(h);
-    if (el) requestAnimationFrame(() => el.scrollIntoView({block:'start'}));
+    // Your Mercs and Live Session are separate pages now, not one long scroll.
+    const live = h === 'live';
+    $('#mercs').hidden = live; $('#live').hidden = !live;
+    if (live){ renderLive(); window.scrollTo(0, 0); }
+    else if (h === 'mercs'){ if (!$('#vSheet').hidden || !$('#vWizard').hidden){ show('roster'); renderRoster(); } window.scrollTo(0, 0); }
+    else if (h === 'sheet'){ if (C && $('#vSheet').hidden){ show('sheet'); setSheetTab(sheetTab); } window.scrollTo(0, 0); }
+    else { const el = h && document.getElementById(h); if (el) requestAnimationFrame(() => el.scrollIntoView({block:'start'})); }
     requestAnimationFrame(layout);
   }
 }
@@ -5719,22 +5778,22 @@ function searchIndex(){
   SKILLS.forEach(([n, st, old]) => out.push({g:'Skills', t:n, sub:st + (old ? ' · was ' + old : ''), body:n + ' ' + (old || ''), go:() => { location.hash = '#r-skills'; }}));
   BLACK_ICE.forEach(i => out.push({g:'Black ICE', t:i.n, sub:i.dmg, body:i.n + ' ' + i.dmg + ' ' + i.fx, go:() => { location.hash = '#r-ice'; }}));
   DB.chars.forEach(raw => { const m = normalize(raw);
-    out.push({g:'Your mercs', t:m.name, sub:`${m.background} · ${m.role || 'No role'} · Level ${m.level}`, body:[m.name, m.background, m.role, m.notes].join(' '), go:() => { location.hash = '#mercs'; openChar(m.id); }});
-    m.inv.forEach(i => out.push({g:'Inventory', t:i.name, sub:`${m.name} · ${i.type}${i.qty > 1 ? ' ×' + i.qty : ''}`, body:i.name + ' ' + i.type + ' ' + (i.stats || ''), go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }}));
-    m.cyber.forEach(x => out.push({g:'Inventory', t:x.name, sub:`${m.name} · installed chrome`, body:x.name + ' ' + (x.effect || ''), go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }}));
-    if (m.notes) out.push({g:'Notes', t:m.name + "'s notes", sub:'', body:m.notes, go:() => { location.hash = '#mercs'; openChar(m.id); setTimeout(() => setSheetTab('cs'), 60); }});
+    out.push({g:'Your mercs', t:m.name, sub:`${m.background} · ${m.role || 'No role'} · Level ${m.level}`, body:[m.name, m.background, m.role, m.notes].join(' '), go:() => { openChar(m.id); }});
+    m.inv.forEach(i => out.push({g:'Inventory', t:i.name, sub:`${m.name} · ${i.type}${i.qty > 1 ? ' ×' + i.qty : ''}`, body:i.name + ' ' + i.type + ' ' + (i.stats || ''), go:() => { openChar(m.id); setTimeout(() => setSheetTab('gear'), 60); }}));
+    m.cyber.forEach(x => out.push({g:'Inventory', t:x.name, sub:`${m.name} · installed chrome`, body:x.name + ' ' + (x.effect || ''), go:() => { openChar(m.id); setTimeout(() => setSheetTab('chrome'), 60); }}));
+    if (m.notes) out.push({g:'Notes', t:m.name + "'s notes", sub:'', body:m.notes, go:() => { openChar(m.id); setTimeout(() => setSheetTab('profile'), 60); }});
   });
   const cd = codexData();
   if (cd){
     cd.npcs.forEach(n => out.push({g:'Codex', t:n.name, sub:'NPC · ' + (n.origin || 'Unknown'), body:n.name + ' ' + (n.origin || ''), go:() => { codexTab = 'npcs'; codexQ = n.name; location.hash = '#codex'; renderCodex(); }}));
     cd.items.forEach(i => out.push({g:'Codex', t:i.name, sub:i.type + (i.stats ? ' · ' + i.stats : ''), body:[i.name, i.type, i.stats].join(' '), go:() => { codexTab = i.type === 'Weapon' ? 'weapons' : i.type === 'Vehicle' ? 'vehicles' : i.type === 'Cyberware' ? 'cyber' : 'items'; codexQ = i.name; location.hash = '#codex'; renderCodex(); }}));
   }
-  if (C) ACH.forEach(a => out.push({g:'Achievements', t:a.n, sub:a.d + (C.ach[a.id] ? ' · unlocked' : ''), body:a.n + ' ' + a.d, go:() => { location.hash = '#mercs'; show('sheet'); setSheetTab('ach'); }}));
+  if (C) ACH.forEach(a => out.push({g:'Achievements', t:a.n, sub:a.d + (C.ach[a.id] ? ' · unlocked' : ''), body:a.n + ' ' + a.d, go:() => { location.hash = '#sheet'; show('sheet'); setSheetTab('profile'); }}));
   return out;
 }
 function openPerk(st, sl){
   if (!C){ location.hash = '#r-perks'; return; }
-  location.hash = '#mercs'; show('sheet'); C.active = st; saveC(); setSheetTab('perks');
+  location.hash = '#sheet'; show('sheet'); C.active = st; saveC(); setSheetTab('perks');
   requestAnimationFrame(() => { build(); sel = sl; update(false); renderDetail(); const n = nodeEls[sl]; if (n) n.scrollIntoView({block:'center', behavior:'smooth'}); });
 }
 function flashEl(el){ el.classList.remove('flashhit'); void el.offsetWidth; el.classList.add('flashhit'); }
@@ -6829,17 +6888,17 @@ addEventListener('keydown', e => {
   const press = sel => { const b = $(sel); if (b && b.offsetParent && !b.disabled){ b.click(); return true; } return false; };
   const amtAct = act => {
     if (!sheet) return;
-    if (sheetTab !== 'cs') setSheetTab('cs');
+    if (sheetTab !== 'combat') setSheetTab('combat');
     const box = $('#hpAmt');
     if (box && (parseInt(box.value) || 0) > 0) press(`[data-act=${act}]`);
     else if (box){ box.scrollIntoView({block:'center', behavior:'smooth'}); box.focus(); toast('Type an amount, then press ' + (act === 'dmg' ? 'D' : 'H') + ' again or hit the button.'); }
   };
   if (k === '1') go('#rules'); else if (k === '2') go('#mercs'); else if (k === '3') go('#live'); else if (k === '4') go('#codex');
   else if (k === 'p' && sheet){ setSheetTab('perks'); sfx('tab'); }
-  else if (k === 'c' && sheet){ setSheetTab('cs'); sfx('tab'); }
+  else if (k === 'c' && sheet){ setSheetTab('combat'); sfx('tab'); }
   else if (k === 'd') amtAct('dmg');
   else if (k === 'h') amtAct('heal');
-  else if (k === 'r' && sheet){ if (sheetTab !== 'cs') setSheetTab('cs'); press('[data-act="ram-2"]'); }
+  else if (k === 'r' && sheet){ if (sheetTab !== 'combat') setSheetTab('combat'); press('[data-act="ram-2"]'); }
   else if (k === 's'){ sfx('select'); toggleSettings(); }
   else if (e.key === '?'){ setTab = 'controls'; toggleSettings(true); }
   else return;
@@ -6859,7 +6918,7 @@ $('#tFx').onclick = () => {
 syncDock();
 
 /* ================= START ================= */
-if (DB.current && DB.chars.some(c => c.id === DB.current)){ C = normalize(DB.chars.find(c => c.id === DB.current)); show('sheet'); setSheetTab('perks'); requestAnimationFrame(build); }
+if (DB.current && DB.chars.some(c => c.id === DB.current)){ C = normalize(DB.chars.find(c => c.id === DB.current)); show('sheet'); setSheetTab('combat'); if (!location.hash || location.hash === '#mercs') history.replaceState(null, '', '#sheet'); requestAnimationFrame(build); }
 else { show('roster'); renderRoster(); }
 renderLive();
 route();
