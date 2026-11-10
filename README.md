@@ -65,6 +65,13 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Death saves live in `ds: {p, f}` and `dead`. Three passes brings a merc back with 1 HP. Three fails sets `dead` and plays the afterlife screen. Healing above 0 HP resets both.
 - Status effects live in `status: [{id, r, v}]`. `r` is rounds left (null means until removed) and `v` is the Exhaustion level. The DM applies them from the party card and ends rounds for everyone.
 
+## Net dives
+- Jacking in is saved on the merc and synced. The DM's roster and the party cards show IN THE NET, and moving around the site no longer jacks you out
+- Jacking in reminds you to stay within 15 ft of the access point. Jacking out asks Safe (an ACTION and 3 RAM) or Unsafe (free, but anything not de-rezzed gets a free hit)
+- The DM's Unsafe jack-out button is for a runner who's moved past 15 ft. It jacks them out on their device and logs it as unsafe
+- A runner's Net panel lists anyone else diving, in their signature color
+- The Rules page has a Diving during combat section
+
 ## Flair
 - Signature color. Each merc picks one on the Profile tab. It shows on the roster, party cards, the DM's roster and the activity log
 - Low HP vision. Under a quarter HP (or Net HP) the screen edges pulse red and the vitals bar flickers. While down the screen goes nearly black and white with a heartbeat glow. Table mode keeps the red edge but stops the motion
