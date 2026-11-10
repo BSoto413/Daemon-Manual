@@ -147,3 +147,4 @@ Edit the `PERKS` object in the script. Any slot left out shows as Classified.
 Slots are `A.r`, `B.r`, `A.p`, `S.p`, `B.p`, `A.ph`, `S.ph`, `B.ph`, `A.l`, `B.l`
 (A and B are the outer branches, S is the middle). Branch names are in `STATS`, connections in `SLOTS`.
 Cyberware slot names and counts are in `CYBER_SLOTS`.
+- Random roller tables. The DM's Items tab has Download tables (`templates/daemon-random-tables.xlsx`, the defaults) and Upload tables. Each filled tab replaces that list (Items and Tier effects per type, Odds per roll). Saved on the DM's device under `daemon-tables`, applied over `GEN`, `EFFECTS`, `HANDLES` and `TIER_WEIGHT` from a copy of the defaults (`GEN_DEF`). Custom handles go to the session doc as `handles` so players' Random button uses them

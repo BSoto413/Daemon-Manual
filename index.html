@@ -2432,7 +2432,7 @@ $('#wbody').addEventListener('click', e => {
   if (t.id === 'wNext') return wNext();
   if (t.id === 'wBack'){ wStep--; return renderWizard(); }
   if (t.id === 'wCancel'){ show('roster'); return renderRoster(); }
-  if (t.id === 'wRand'){ W.name = HANDLES[Math.floor(Math.random() * HANDLES.length)]; return renderWizard(); }
+  if (t.id === 'wRand'){ const hs = (LS && LS.role === 'player' && sessMeta && sessMeta.handles && sessMeta.handles.length) ? sessMeta.handles : HANDLES; W.name = hs[Math.floor(Math.random() * hs.length)]; return renderWizard(); }
   if (t.dataset.role){ W.role = t.dataset.role; return renderWizard(); }
   if (t.dataset.bg){ if (W.background !== t.dataset.bg){ W.background = t.dataset.bg; W.bgSkills = []; } return renderWizard(); }
   if (t.dataset.sk){
@@ -2939,6 +2939,7 @@ const GEN = {
     Cyberware: [['Optic Scanner','RAM +1 · Scan targets in 60 ft',1],['Reflex Booster','Bonus action Dash once per rest',3],['Subdermal Plating','+1 AC',2],['Grip Servos','Advantage on grapples',1],['Arm Blades','1d8 slashing melee weapon',2],['Neural Deck','RAM +2',2],['Toxin Filter','Advantage vs poison',1],['Leg Pistons','Jump distance doubled',2]]
   }
 };
+GEN.originW = [['Nomad', 30], ['Corpo', 30], ['Streetkid', 30], ['Unknown', 10]];
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const rollTier = t => t !== '' && t != null ? +t : (() => { let r = Math.random() * 100; for (let i = 0; i < 4; i++){ if ((r -= TIER_WEIGHT[i]) < 0) return i; } return 0; })();
 const TBUFF = {Weapon:t => `+${t} to hit`, Melee:t => `+${t} to hit`, Armor:t => `+${t} AC`};
@@ -2950,15 +2951,17 @@ function genNpcRoll(prev, lock){
   const o = {};
   o.gender = lock.gender && prev.gender ? prev.gender : wpick(GEN.genders);
   o.age = lock.age && prev.age ? prev.age : wpick(GEN.ages);
-  o.origin = lock.origin && prev.origin ? prev.origin : Math.random() < .1 ? 'Unknown' : pick(GEN.origins);
+  o.origin = lock.origin && prev.origin ? prev.origin : wpick(GEN.originW);
   o.name = lock.name && prev.name ? prev.name : firstFor(o.gender) + ' ' + pick(GEN.last);
   return o;
 }
 function genWeaponRoll(t, cls){
-  const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t);
+  const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t), gt = w[3] || '', melee = gt === 'Melee';
   const o = {name:`${pick(GEN.makers)} ${pick(GEN.models)} ${w[0]}`.slice(0, 60), type:'Weapon', qty:1, tier, cw:0,
     stats:(w[1] + (w[2] ? ', ' + w[2] : '') + tierBit(tier, /piercing/.test(w[1]) ? 'Weapon' : 'Melee')).slice(0, 120)};
-  return Object.assign(o, sizeOf({type:'Weapon', name:w[0]}), weaponOf({type:'Weapon', name:w[0], stats:w[1]}));
+  const d = weaponDefaults(gt && !melee ? gt : w[0], w[1]);
+  return Object.assign(o, sizeOf({type:'Weapon', name:gt && !melee ? gt : w[0]}), weaponOf({type:'Weapon', name:w[0], stats:w[1], rof:d.rof,
+    reload: melee ? 'none' : gt ? (d.reload === 'none' ? 'light' : d.reload) : d.reload, gtype: melee ? '' : CLIPS[gt] ? gt : undefined}));
 }
 function genItemRoll(t, type){
   type = type || pick(Object.keys(GEN.items));
@@ -2967,6 +2970,87 @@ function genItemRoll(t, type){
   const o = {name:it[0], type, qty:1, tier, cw, stats:(it[1] + tierBit(tier, type)).slice(0, 120)};
   return Object.assign(o, sizeOf(o));
 }
+// ---- Custom roller tables. The DM uploads a spreadsheet; each tab he fills replaces that list on this device. ----
+const TABLES_KEY = 'daemon-tables', GEN_DEF = JSON.parse(JSON.stringify({GEN, EFFECTS, HANDLES, TIER_WEIGHT}));
+let tablesMeta = null;
+const setArr = (a, b) => { a.splice(0, a.length, ...b); };
+function applyTables(t){
+  const D = JSON.parse(JSON.stringify(GEN_DEF));
+  Object.keys(D.GEN).forEach(k => { GEN[k] = D.GEN[k]; }); Object.keys(EFFECTS).forEach(k => delete EFFECTS[k]); Object.assign(EFFECTS, D.EFFECTS);
+  setArr(HANDLES, D.HANDLES); setArr(TIER_WEIGHT, D.TIER_WEIGHT);
+  if (!t) return;
+  ['masc', 'fem', 'neutral', 'last', 'makers', 'models', 'weapons', 'genders', 'ages', 'originW'].forEach(k => { if (t[k] && t[k].length) GEN[k] = t[k]; });
+  if (t.items) Object.entries(t.items).forEach(([k, v]) => { if (v.length) GEN.items[k] = v; });
+  if (t.effects) Object.entries(t.effects).forEach(([k, v]) => { if (v.length) EFFECTS[k] = v; });
+  if (t.handles && t.handles.length) setArr(HANDLES, t.handles);
+  if (t.tiers && t.tiers.some(x => x > 0)) setArr(TIER_WEIGHT, t.tiers);
+}
+try { tablesMeta = JSON.parse(localStorage.getItem(TABLES_KEY)); if (tablesMeta) applyTables(tablesMeta.t); } catch(e){ tablesMeta = null; }
+const TABLE_NAMES = {masc:'Masculine names', fem:'Feminine names', neutral:'Either names', last:'Last names', handles:'Handles', weapons:'Weapons', makers:'Makers', models:'Models', items:'Items', effects:'Tier effects', genders:'Gender odds', ages:'Age odds', originW:'Origin odds', tiers:'Tier odds'};
+function parseTables(tabs){
+  const t = {}, find = re => Object.entries(tabs).find(([n]) => re.test(n)), col = (objs, k) => objs.map(o => (o[k] || '').slice(0, 40)).filter(Boolean);
+  const fn = find(/first/i); if (fn){ const o = gridObjs(fn[1]); [['masculine', 'masc'], ['feminine', 'fem'], ['either', 'neutral']].forEach(([h, k]) => { const v = col(o, h); if (v.length) t[k] = v; }); }
+  const ln = find(/last/i); if (ln){ const v = col(gridObjs(ln[1]), 'lastname'); if (v.length) t.last = v; }
+  const hd = find(/handle/i); if (hd){ const v = col(gridObjs(hd[1]), 'handle'); if (v.length) t.handles = v; }
+  const wp = find(/weapon/i); if (wp){
+    const v = gridObjs(wp[1]).filter(o => o.weapon && o.damage).map(o => { const g = o.guntype || '', gt = /melee/i.test(g) ? 'Melee' : Object.keys(CLIPS).find(x => x.toLowerCase() === g.toLowerCase()) || '';
+      return [o.weapon.slice(0, 30), o.damage.slice(0, 40), (o.notes || '').slice(0, 60), gt]; });
+    if (v.length) t.weapons = v;
+  }
+  const br = find(/brand/i); if (br){ const o = gridObjs(br[1]); const a = col(o, 'maker'), b = col(o, 'model'); if (a.length) t.makers = a; if (b.length) t.models = b; }
+  const it = find(/^items?$/i); if (it){
+    const g = {}; gridObjs(it[1]).forEach(o => { const ty = Object.keys(GEN_DEF.GEN.items).find(x => x.toLowerCase() === (o.type || '').toLowerCase()); if (!ty || !o.name) return;
+      (g[ty] || (g[ty] = [])).push(ty === 'Cyberware' ? [o.name.slice(0, 40), (o.effect || '').slice(0, 100), Math.max(0, parseInt(o.cyberwarecost) || 1)] : [o.name.slice(0, 40), (o.effect || '').slice(0, 100)]); });
+    if (Object.keys(g).length) t.items = g;
+  }
+  const ef = find(/effect/i); if (ef){
+    const g = {}; gridObjs(ef[1]).forEach(o => { const a = (o.appliesto || '').toLowerCase(), k = /ranged/.test(a) ? 'Weapon' : /melee/.test(a) ? 'Melee' : Object.keys(GEN_DEF.EFFECTS).find(x => x.toLowerCase() === a); if (!k || !o.effect) return; (g[k] || (g[k] = [])).push(o.effect.slice(0, 30)); });
+    if (Object.keys(g).length) t.effects = g;
+  }
+  const od = find(/odds/i); if (od){
+    const g = {}; gridObjs(od[1]).forEach(o => { const r = (o.roll || '').toLowerCase(), w = Math.max(0, parseFloat(o.weight) || 0); if (!o.option) return; (g[r] || (g[r] = [])).push([o.option.slice(0, 30), w]); });
+    const ok = a => a && a.some(x => x[1] > 0);
+    if (ok(g.gender)) t.genders = g.gender; if (ok(g.age)) t.ages = g.age; if (ok(g.origin)) t.originW = g.origin;
+    if (ok(g['item tier'])){ const tw = [0, 0, 0, 0]; g['item tier'].forEach(([n, w]) => { const i = parseInt(String(n).replace(/\D/g, '')) - 1; if (i >= 0 && i < 4) tw[i] = w; }); if (tw.some(x => x > 0)) t.tiers = tw; }
+  }
+  return t;
+}
+async function uploadTables(file){
+  let tabs;
+  try { const buf = await file.arrayBuffer(); tabs = /\.csv$/i.test(file.name) ? {[file.name.replace(/\.csv$/i, '')]: readCsv(new TextDecoder().decode(buf))} : await readXlsx(buf); }
+  catch(err){ tablesMsg = "That file couldn't be read. Save it as .xlsx and try again."; return renderLive(); }
+  const t = parseTables(tabs), same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  // Drop anything that still matches the defaults, so the summary names only what changed.
+  const D = GEN_DEF, dflt = {handles:D.HANDLES, tiers:D.TIER_WEIGHT};
+  Object.keys(t).forEach(k => {
+    if (k === 'items' || k === 'effects'){ const base = k === 'items' ? D.GEN.items : D.EFFECTS; Object.keys(t[k]).forEach(x => { if (same(t[k][x], base[x])) delete t[k][x]; }); if (!Object.keys(t[k]).length) delete t[k]; }
+    else if (k === 'weapons'){ if (same(t[k].map(w => w.slice(0, 3).concat('')), D.GEN.weapons.map(w => [w[0], w[1], w[2] || '', '']))) delete t[k]; }
+    else if (same(t[k], k in dflt ? dflt[k] : D.GEN[k])) delete t[k];
+  });
+  const keys = Object.keys(t);
+  if (!keys.length){ tablesMeta = null; try { localStorage.removeItem(TABLES_KEY); } catch(e){} applyTables(null); pushHandles(); tablesMsg = 'That file matches the defaults, so the rollers are on the default tables.'; return renderLive(); }
+  if (!keys.length){ tablesMsg = "Nothing to use in that file. Keep the template's tab names and column headers."; return renderLive(); }
+  tablesMeta = {t, file:file.name.slice(0, 60), at:Date.now()};
+  try { localStorage.setItem(TABLES_KEY, JSON.stringify(tablesMeta)); } catch(e){}
+  applyTables(t); pushHandles();
+  tablesMsg = ''; toast('Random tables updated.', true); sfx('receive'); renderLive();
+}
+function pushHandles(){
+  if (!(LS && LS.role === 'dm' && liveApi && liveState === 'on')) return;
+  const h = tablesMeta && tablesMeta.t.handles || null;
+  if (JSON.stringify((sessMeta && sessMeta.handles) || null) === JSON.stringify(h)) return;
+  liveApi.updateSession(LS.code, {handles:h}).then(() => { sessMeta = {...sessMeta, handles:h}; }).catch(() => {});
+}
+let tablesMsg = '';
+function tablesPanelHTML(){
+  const keys = tablesMeta ? Object.keys(tablesMeta.t) : [];
+  return `<div class="panel gap" id="tablesPanel"><div class="row"><h3>Random roller tables</h3></div>
+    <p style="font-size:14px;margin:6px 0 10px">Swap in your own names, weapons, brands, loot, effects and odds for the generators below. Download the tables, edit any tab, and upload the file. Tabs you leave empty keep the defaults.</p>
+    <div class="row gap"><a class="btn small" href="templates/daemon-random-tables.xlsx" download="Daemon random tables.xlsx">Download tables</a><label class="btn small primary" style="display:inline-block">Upload tables<input type="file" id="tablesFile" accept=".xlsx,.csv" hidden></label>${tablesMeta ? '<button class="btn small" data-live="tblreset">Reset to defaults</button>' : ''}</div>
+    <p class="muted" style="font-size:13px;margin:10px 0 0">${tablesMeta ? `Using your tables from <b>${esc(tablesMeta.file)}</b> for ${keys.map(k => TABLE_NAMES[k]).join(', ')}. Saved on this device.` : 'Using the default tables.'}</p>
+    ${tablesMsg ? `<p class="preres" style="font-size:14px;margin:8px 0 0">${tablesMsg}</p>` : ''}</div>`;
+}
+document.addEventListener('change', e => { if (e.target.id === 'tablesFile' && e.target.files[0]){ const f = e.target.files[0]; e.target.value = ''; uploadTables(f); } });
 const tierTag = (t, small) => `<span class="tagb tier t${(t || 0) + 1}" title="${esc(ITEM_TIERS[t || 0].name + '. ' + ITEM_TIERS[t || 0].buff)}">${small ? 'T' + ((t || 0) + 1) : ITEM_TIERS[t || 0].n}</span>`;
 const tierOpts = (sel, any) => (any ? `<option value="">Any tier</option>` : '') + ITEM_TIERS.map((x, i) => `<option value="${i}" ${String(sel) === String(i) ? 'selected' : ''}>${x.n} · ${x.name}</option>`).join('');
 function renderRuleStatus(){
@@ -4691,6 +4775,7 @@ async function startPlayer(){
 /* ---- dm side ---- */
 function startDM(){
   const api = liveApi;
+  setTimeout(pushHandles, 800);
   unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session closed.'); leaveLive(true); } else { renderLive(); checkSpotlight(); setMood(s.mood, false); if (s.reveal) lastReveal = s.reveal.at; } }));
   unsubs.push(api.watchDmNpcs(list => { npcsDM = list.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
@@ -4913,6 +4998,7 @@ function liveHTML(){
       <div class="row gap"><a class="btn small" href="templates/daemon-dm-preload.xlsx" download="Daemon DM preload.xlsx">Download template</a><label class="btn small primary" style="display:inline-block">Upload filled sheet<input type="file" id="preloadFile" accept=".xlsx,.csv" hidden></label></div>
       <p class="muted" style="font-size:12px;margin:8px 0 0">Takes .xlsx, or a .csv of one tab. Uploading again updates anything with the same name instead of making a copy. Rows named "Example" are skipped.</p>
       ${preloadMsg ? `<p class="preres" style="font-size:14px;margin:10px 0 0">${preloadMsg}</p>` : ''}</div>
+    ${tablesPanelHTML()}
     <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
       ${lib.length ? '' : '<button class="btn small" data-live="starter">Load starter pack</button>'}
       <button class="btn small" data-live="libcopy">Copy library</button><button class="btn small" data-live="libimp">${libImport ? 'Cancel import' : 'Import library'}</button></div>
@@ -4933,6 +5019,7 @@ $('#liveBody').addEventListener('click', async e => {
   const amt = () => Math.max(0, parseInt(($('#amt-' + u) || {}).value) || 0);
   const pname = id => (players.find(p => p.id === id) || {}).name || 'player';
   if (/^e(ice|npc|txt|hp|del|clear|reveal|send|end)$/.test(a) && await encAction(a, t)) return;
+  if (a === 'tblreset'){ tablesMeta = null; try { localStorage.removeItem(TABLES_KEY); } catch(e){} applyTables(null); pushHandles(); tablesMsg = 'Back to the default tables.'; toast('Default tables restored.', true); return renderLive(); }
   if (a === 'join'){
     const code = ($('#joinCode').value || '').trim().toUpperCase(), mercId = $('#joinMerc').value;
     if (code.length !== 6){ liveErr = 'Session codes are 6 characters.'; return renderLive(); }
