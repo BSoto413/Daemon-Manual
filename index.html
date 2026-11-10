@@ -353,6 +353,7 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .sbtn.ui{border-color:rgba(var(--crgb),.35)}.sbtn.big{border-color:var(--yellow);color:var(--yellow)}
 
 .wpnb{font:600 10px Orbitron,sans-serif;letter-spacing:1px;border:1px solid var(--yellow);color:var(--yellow);padding:2px 6px;display:inline-block;margin:0 4px 4px 0}.wpnb.conb{border-color:var(--cyan);color:var(--cyan)}.wpnb.nocb{border-color:rgba(255,79,216,.6);color:#ff8fe6}
+.dmgln{font-size:14px;margin:2px 0 6px}.dmgln b{font-weight:700;color:#fff}
 .ammo{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:2px 0 8px}.ammo .an{font:600 15px Orbitron,sans-serif;letter-spacing:1px;min-width:72px}.ammo .an small{font-size:11px;opacity:.6}.ammo .an.low{color:#ff4fd8}.ammo .abar{flex:1 1 80px;height:6px;background:rgba(var(--crgb),.15);min-width:60px}.ammo .abar i{display:block;height:100%;background:var(--cyan)}.ammo .abar i.low{background:#ff4fd8}
 
 .cwp.cap{border-color:var(--red)!important;background:rgba(255,60,90,.28)!important;box-shadow:0 0 8px rgba(255,60,90,.7)}
@@ -1050,6 +1051,16 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <h3>Rate of fire</h3>
           <p style="margin-top:8px">Every weapon has a Rate of Fire, or <b>ROF</b>, which varies weapon to weapon. ROF is how many times you can attack with that weapon on one ATTACK action. A 3-ROF weapon makes 3 separate d20 rolls to HIT.</p>
+          <h3 style="margin-top:18px">Weapon chart</h3>
+          <p style="margin-top:8px">Every weapon's ROF and damage at each tier. <b>Tier bonuses stack</b>. Each tier keeps what the tiers below it give, so the columns show the full damage at that tier.</p>
+          <div id="rWeapons"></div>
+          <table class="rtable" style="margin-top:10px"><thead><tr><th></th><th>Guns</th><th>Melee</th></tr></thead><tbody>
+            <tr><td><b>Tier 1</b></td><td>Base dice</td><td>Base dice + stat mod</td></tr>
+            <tr><td><b>Tier 2</b></td><td>+1 damage</td><td>+1 damage</td></tr>
+            <tr><td><b>Tier 3</b></td><td>+ the stat mod (REF or STR)</td><td>+1 more damage, so +2</td></tr>
+            <tr><td><b>Tier 4</b></td><td>+1 more damage, so +2, and a unique effect</td><td>+1d4 and a unique effect</td></tr>
+          </tbody></table>
+          <p style="margin-top:8px">Example. A Tier 4 Light Pistol does 2d6 + 2 + REF mod piercing. A Tier 4 Sword does 2d6 + 1d4 + 2 + REF mod slashing. The Tier 4 effect is different for every weapon, and the DM sets it. Your sheet does the math with your own mods on equipped weapons.</p>
           <h3 style="margin-top:18px">Weapon types</h3>
           <p style="margin-top:8px">Melee weapons come in two kinds, and ranged weapons split by whether you aim the gun or control it.</p>
           <table class="rtable"><thead><tr><th>Type</th><th>REF</th><th>STR</th></tr></thead><tbody>
@@ -1064,9 +1075,9 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <h3 style="margin-top:18px">Clip chart</h3>
           <p style="margin-top:8px">Every gun takes a Standard, Extended or Drum clip. The clip sets how many shots you get before you have to RELOAD. Each ATTACK fires as many shots as the gun's ROF.</p>
           <table class="rtable"><thead><tr><th>Type</th><th>Standard</th><th>Extended</th><th>Drum</th></tr></thead><tbody>
-            <tr><td><b>Medium Pistol</b></td><td>12</td><td>28</td><td>46</td></tr>
+            <tr><td><b>Light Pistol</b></td><td>12</td><td>28</td><td>46</td></tr>
             <tr><td><b>Heavy Pistol</b></td><td>8</td><td>24</td><td>38</td></tr>
-            <tr><td><b>Very Heavy Pistol</b></td><td>8</td><td>24</td><td>38</td></tr>
+            <tr><td><b>Hand Cannon</b></td><td>8</td><td>24</td><td>38</td></tr>
             <tr><td><b>SMG</b></td><td>30</td><td>50</td><td>60</td></tr>
             <tr><td><b>LMG</b></td><td>50</td><td>60</td><td>70</td></tr>
             <tr><td><b>Shotgun</b></td><td>4</td><td>18</td><td>26</td></tr>
@@ -1075,7 +1086,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Grenade Launcher</b></td><td>2</td><td>14</td><td>16</td></tr>
             <tr><td><b>Rocket Launcher</b></td><td>1</td><td>12</td><td>13</td></tr>
           </tbody></table>
-          <p class="muted" style="font-size:13px;margin-top:6px">Light Pistols count as Medium Pistols. Revolvers and Hand Cannons count as Very Heavy Pistols.</p>
+          <p class="muted" style="font-size:13px;margin-top:6px">Revolvers count as Hand Cannons.</p>
           <h3 style="margin-top:18px">Concealment</h3>
           <p style="margin-top:8px">Pistols, Revolvers, Hand Cannons and SMGs can be concealed, and so can <b>some</b> Assault Rifles. The DM decides which ones. A gun can only be concealed with a <b>Standard</b> clip. Swap in an Extended or Drum clip and everyone can see it.</p>
           <h3 style="margin-top:18px">Quick reload</h3>
@@ -1711,6 +1722,7 @@ function fixEq(c){
 const BAG_COLS = 6, BAG_MAX_W = 6, BAG_MAX_H = 8;
 const bagRows = m => Math.max(1, Math.min(12, 4 + mod(score('STR', m))));
 const SIZE_RULES = [
+  [/heavy hammer|sledge|maul/i, 'Weapon', [4, 1]], [/light hammer/i, 'Weapon', [2, 1]], [/grenade launcher/i, 'Weapon', [4, 1]], [/hand ?cannon/i, 'Weapon', [2, 1]],
   [/sniper|lmg|hmg|minigun|railgun|launcher/i, 'Weapon', [5, 1]],
   [/assault|rifle|shotgun|carbine|katana|sword|machete|bat\b|staff|spear/i, 'Weapon', [4, 1]],
   [/smg|uzi|machine pistol|club|baton|hammer|axe/i, 'Weapon', [3, 1]],
@@ -1728,6 +1740,8 @@ function defSize(type, name){
 // Rate of fire and reload speed. Defaults guess from the weapon's name; the DM sets the real numbers.
 const MELEE_RE = /knife|dagger|blade|katana|sword|machete|shiv|wire|mantis|fist|knuckle|club|bat\b|baton|hammer|axe|pipe|staff|spear|gorilla/i;
 function weaponDefaults(name, stats){
+  const c = WT[name] ? name : classGuess(name), w = WT[c];
+  if (w) return {rof:w.rof, reload: w.kind === 'melee' ? 'none' : /LMG|Launcher/.test(c) ? 'heavy' : 'light'};
   const n = (name || '').toLowerCase();
   if (MELEE_RE.test(n) || (!/piercing|round|shot|range/i.test(stats || '') && !/pistol|revolver|rifle|smg|uzi|shotgun|lmg|hmg|minigun|sniper|launcher|carbine|cannon|railgun|gun/i.test(n))) return {rof: /knife|dagger|shiv/.test(n) ? 2 : 1, reload:'none'};
   if (/lmg|hmg|minigun/.test(n)) return {rof:3, reload:'heavy'};
@@ -1738,15 +1752,38 @@ function weaponDefaults(name, stats){
   if (/pistol/.test(n)) return {rof:2, reload:'light'};
   return {rof:1, reload:'light'};
 }
-// Clip chart. Shots per clip for Standard, Extended and Drum. LMG replaced Heavy SMG, and every Extended and Drum clip got +10.
+// Clip chart. Shots per clip for Standard, Extended and Drum. LMG replaced Heavy SMG, every Extended and Drum clip got +10,
+// and the pistol rows follow the DM's weapon chart (Light Pistol, Heavy Pistol, Hand Cannon).
 const CLIPS = {
-  'Medium Pistol':[12, 28, 46], 'Heavy Pistol':[8, 24, 38], 'Very Heavy Pistol':[8, 24, 38], 'SMG':[30, 50, 60], 'LMG':[50, 60, 70],
+  'Light Pistol':[12, 28, 46], 'Heavy Pistol':[8, 24, 38], 'Hand Cannon':[8, 24, 38], 'SMG':[30, 50, 60], 'LMG':[50, 60, 70],
   'Shotgun':[4, 18, 26], 'Assault Rifle':[25, 45, 55], 'Sniper Rifle':[4, 18, 22], 'Grenade Launcher':[2, 14, 16], 'Rocket Launcher':[1, 12, 13]
 };
 const CLIP_KEYS = ['std', 'ext', 'drum'], CLIP_TXT = {std:'Standard', ext:'Extended', drum:'Drum'};
 // Pistols, hand cannons and SMGs can always be concealed. Some assault rifles can too, so the DM ticks those. Only with a Standard clip.
-const CONCEAL_AUTO = ['Medium Pistol', 'Heavy Pistol', 'Very Heavy Pistol', 'SMG'];
-function gunTypeOf(name, stats){
+const CONCEAL_AUTO = ['Light Pistol', 'Heavy Pistol', 'Hand Cannon', 'SMG'];
+const GUN_ALIAS = {'Medium Pistol':'Light Pistol', 'Very Heavy Pistol':'Hand Cannon', 'Heavy SMG':'SMG'};
+// The DM's weapon chart. Tier bonuses stack (see dmgBonus).
+const WEAPON_TABLE = [
+  {n:'Light Pistol', rof:2, dice:'2d6', dt:'piercing', st:'REF', kind:'gun', note:'range 60 ft'},
+  {n:'Heavy Pistol', rof:2, dice:'3d6', dt:'piercing', st:'REF', kind:'gun', note:'range 60 ft'},
+  {n:'Hand Cannon', rof:1, dice:'4d6', dt:'piercing', st:'STR', kind:'gun', note:'range 80 ft'},
+  {n:'SMG', rof:4, dice:'3d6', dt:'piercing', st:'REF', kind:'gun', note:'burst fire'},
+  {n:'LMG', rof:4, dice:'6d4', dt:'piercing', st:'STR', kind:'gun', note:'heavy, suppressing fire'},
+  {n:'Shotgun', rof:1, dice:'5d6', dt:'piercing', st:'STR', kind:'gun', note:'close range'},
+  {n:'Assault Rifle', rof:3, dice:'4d6', dt:'piercing', st:'REF', kind:'gun', note:'range 150 ft'},
+  {n:'Sniper Rifle', rof:1, dice:'6d6', dt:'piercing', st:'REF', kind:'gun', note:'range 300 ft'},
+  {n:'Grenade Launcher', rof:1, dice:'6d6', dt:'explosive', st:'STR', kind:'gun', note:'REF save for half'},
+  {n:'Rocket Launcher', rof:1, dice:'8d6', dt:'explosive', st:'STR', kind:'gun', note:'REF save for half'},
+  {n:'Sword', rof:2, dice:'2d6', dt:'slashing', st:'REF', kind:'melee', note:'finesse'},
+  {n:'Knife', rof:2, dice:'2d4', dt:'slashing', st:'REF', kind:'melee', note:'thrown, finesse'},
+  {n:'Club', rof:2, dice:'2d4', dt:'bludgeoning', st:'STR', kind:'melee', note:''},
+  {n:'Light Hammer', rof:2, dice:'2d6', dt:'bludgeoning', st:'STR', kind:'melee', note:''},
+  {n:'Heavy Hammer', rof:1, dice:'4d6', dt:'bludgeoning', st:'STR', kind:'melee', note:'heavy, two-handed'}
+];
+const WT = Object.fromEntries(WEAPON_TABLE.map(w => [w.n, w]));
+const MELEE_CLASSES = WEAPON_TABLE.filter(w => w.kind === 'melee').map(w => w.n);
+// Guess which chart weapon an item is from its name.
+function classGuess(name, stats){
   const n = (name || '') + ' ' + (stats || '');
   if (/rocket/i.test(n)) return 'Rocket Launcher';
   if (/launcher/i.test(n)) return 'Grenade Launcher';
@@ -1755,19 +1792,44 @@ function gunTypeOf(name, stats){
   if (/sniper/i.test(n)) return 'Sniper Rifle';
   if (/shotgun/i.test(n)) return 'Shotgun';
   if (/assault|rifle|carbine/i.test(n)) return 'Assault Rifle';
-  if (/revolver|hand ?cannon|very heavy pistol/i.test(n)) return 'Very Heavy Pistol';
+  if (/revolver|hand ?cannon|very heavy pistol/i.test(n)) return 'Hand Cannon';
   if (/heavy pistol/i.test(n)) return 'Heavy Pistol';
-  if (/pistol/i.test(n)) return 'Medium Pistol';
+  if (/pistol|taser/i.test(n)) return 'Light Pistol';
+  if (/heavy hammer|sledge|maul/i.test(n)) return 'Heavy Hammer';
+  if (/hammer/i.test(n)) return 'Light Hammer';
+  if (/club|\bbat\b|baseball|baton|tonfa|pipe|knuckle|fist/i.test(n)) return 'Club';
+  if (/knife|dagger|shiv/i.test(n)) return 'Knife';
+  if (/sword|katana|machete|blade|mantis/i.test(n)) return 'Sword';
   return '';
+}
+// Tier bonuses stack. Guns: T2 +1, T3 +1 and stat mod, T4 +2 and stat mod. Melee always adds its stat mod: T2 +1, T3 +2, T4 +2 and 1d4.
+function dmgBonus(cls, tier){
+  const w = WT[cls], t = Math.max(0, Math.min(3, tier || 0)); if (!w) return null;
+  return w.kind === 'gun' ? {flat:[0, 1, 1, 2][t], mod:t >= 2, d4:false, fx:t >= 3} : {flat:[0, 1, 2, 2][t], mod:true, d4:t >= 3, fx:t >= 3};
+}
+// "4d6 + 1 + REF mod piercing", or with a merc, "4d6 + 4 piercing".
+function dmgText(cls, tier, m, dice, dt){
+  const w = WT[cls], b = dmgBonus(cls, tier); if (!w) return '';
+  dice = dice || w.dice; dt = dt || w.dt;
+  let s = dice + (b.d4 ? ' + 1d4' : '');
+  if (m){ const n = b.flat + (b.mod ? mod(score(w.st, m)) : 0); if (n) s += n > 0 ? ` + ${n}` : ` − ${-n}`; }
+  else { if (b.flat) s += ` + ${b.flat}`; if (b.mod) s += ` + ${w.st} mod`; }
+  return `${s} ${dt}`;
+}
+function gunTypeOf(name, stats){
+  const c = classGuess(name, stats); return CLIPS[c] ? c : '';
 }
 function weaponOf(i){
   if (i.type !== 'Weapon') return {rof:null, reload:null};
-  const d = weaponDefaults(i.name, i.stats), r = parseInt(i.rof);
+  // A saved gun or melee type beats guessing from the name.
+  const g0 = GUN_ALIAS[i.gtype] || i.gtype, known = CLIPS[g0] ? g0 : WT[i.wclass] ? i.wclass : null;
+  const d = weaponDefaults(known || i.name, i.stats), r = parseInt(i.rof);
   const reload = ['light', 'heavy', 'none'].includes(i.reload) ? i.reload : d.reload;
-  const g0 = i.gtype === 'Heavy SMG' ? 'SMG' : i.gtype, gtype = reload === 'none' ? '' : CLIPS[g0] ? g0 : g0 === '' ? '' : gunTypeOf(i.name, i.stats);
+  const gtype = reload === 'none' ? '' : CLIPS[g0] ? g0 : g0 === '' ? '' : gunTypeOf(i.name, i.stats);
   const clip = CLIP_KEYS.includes(i.clip) ? i.clip : 'std', cap = gtype ? CLIPS[gtype][CLIP_KEYS.indexOf(clip)] : null;
   const a = parseInt(i.ammo);
-  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload, gtype, clip, conc: !!i.conc, ammo: cap == null ? null : Number.isFinite(a) ? Math.max(0, Math.min(cap, a)) : cap};
+  const wc = WT[i.wclass] && (reload === 'none') === (WT[i.wclass].kind === 'melee') ? i.wclass : i.wclass === '' ? '' : gtype && WT[gtype] ? gtype : reload === 'none' ? (MELEE_CLASSES.includes(classGuess(i.name, i.stats)) ? classGuess(i.name, i.stats) : '') : '';
+  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload, gtype, wclass: gtype && WT[gtype] ? gtype : wc, clip, conc: !!i.conc, ammo: cap == null ? null : Number.isFinite(a) ? Math.max(0, Math.min(cap, a)) : cap};
 }
 const clipCap = i => i.type === 'Weapon' && CLIPS[i.gtype] ? CLIPS[i.gtype][CLIP_KEYS.indexOf(i.clip || 'std')] : null;
 // Can this gun be concealed at all, and is it concealed right now (Standard clip only)?
@@ -2028,7 +2090,7 @@ function dmSheetHTML(p){
   const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
   const profs = [...new Set([...m.bgSkills, ...(ROLES[m.role] ? ROLES[m.role].prof : [])])];
   const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<div><span class="${pf.level ? 'p' : ''}">${pf.level === 2 ? '◆◆ ' : pf.level ? '◆ ' : ''}${n} <span class="muted">${st}</span></span><b>${sgn(mod(score(st, m)) + pb * pf.level)}</b></div>`; }).join('');
-  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}${clipCap(i) ? ` · Ammo ${i.ammo == null ? clipCap(i) : i.ammo}/${clipCap(i)} ${CLIP_TXT[i.clip || 'std']}` : ''}${concealed(i) ? ' · Concealable' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
+  const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}${WT[i.wclass] ? ` · ${esc(dmgText(i.wclass, i.tier, m))}` : ''}${clipCap(i) ? ` · Ammo ${i.ammo == null ? clipCap(i) : i.ammo}/${clipCap(i)} ${CLIP_TXT[i.clip || 'std']}` : ''}${concealed(i) ? ' · Concealable' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
   const ach = ACH.filter(a => m.ach[a.id]).length;
   return `<div class="dsheet">
     <div class="dsh">${avatar(m, 'av md', portraits[p.id])}<div style="min-width:0"><div class="nm">${esc(m.name)}</div>
@@ -2071,6 +2133,9 @@ function showDmSheet(u){
 function artKind(i){
   const n = (i.name || '').toLowerCase();
   if (i.type === 'Weapon'){
+    const WK = {'Hand Cannon':'cannon', 'Grenade Launcher':'glauncher', 'Rocket Launcher':'rocket', 'Knife':'knife', 'Light Hammer':'hammer', 'Heavy Hammer':'sledge', 'Sword':'blade', 'Club':'blunt',
+      'Light Pistol':'pistol', 'Heavy Pistol':'pistol', 'SMG':'smg', 'LMG':'lmg', 'Shotgun':'shotgun', 'Assault Rifle':'rifle', 'Sniper Rifle':'sniper'};
+    const k = WK[i.wclass] || WK[classGuess(i.name)]; if (k) return k;
     if (/sniper/.test(n)) return 'sniper';
     if (/lmg|hmg|minigun/.test(n)) return 'lmg';
     if (/shotgun/.test(n)) return 'shotgun';
@@ -2105,6 +2170,12 @@ function artShapes(k, L, S){
     case 'sniper': return p([[.02, .32], [.18, .38], [.18, .6], [.02, .72]]) + r(.18, .36, .42, .18) + r(.6, .41, .38, .07) + r(.3, .14, .26, .14) + c(.29, .21, .09) + c(.57, .21, .09) + p([[.24, .54], [.31, .54], [.29, .82], [.22, .82]]);
     case 'shotgun': return p([[.02, .3], [.22, .36], [.22, .6], [.02, .72]]) + r(.22, .34, .36, .2) + r(.58, .36, .4, .1) + r(.6, .48, .24, .12) + p([[.3, .54], [.38, .54], [.36, .82], [.28, .82]]);
     case 'lmg': return p([[.02, .25], [.16, .3], [.16, .55], [.02, .62]]) + r(.16, .28, .5, .24) + r(.66, .35, .32, .08) + r(.34, .52, .2, .3) + `<path class="ln" d="M${.82 * L} ${.43 * S} L ${.76 * L} ${.95 * S} M ${.82 * L} ${.43 * S} L ${.9 * L} ${.95 * S}"/>`;
+    case 'cannon': return r(.3, .2, .64, .22) + r(.88, .1, .06, .1) + c(.3, .36, .17) + p([[.12, .44], [.3, .44], [.26, .92], [.05, .92]]) + `<path class="ln" d="M${.36 * L} ${.5 * S} q ${.06 * L} ${.26 * S} ${-.04 * L} ${.26 * S}"/>`;
+    case 'glauncher': return p([[.02, .3], [.18, .34], [.18, .56], [.02, .66]]) + r(.18, .28, .6, .26) + r(.78, .22, .2, .38) + c(.44, .64, .2) + p([[.24, .54], [.32, .54], [.3, .88], [.22, .88]]);
+    case 'rocket': return r(.06, .3, .8, .3) + p([[.86, .22], [.98, .16], [.98, .74], [.86, .68]]) + r(.38, .1, .12, .2) + r(.3, .6, .07, .3) + r(.56, .6, .07, .26) + r(0, .34, .06, .22);
+    case 'knife': return r(.04, .38, .34, .24, 'rx="2"') + r(.38, .26, .05, .48) + p([[.43, .38], [.84, .38], [.98, .5], [.43, .62]]);
+    case 'hammer': return r(.04, .44, .62, .12) + r(.62, .14, .24, .72, 'rx="2"') + r(.86, .3, .1, .4);
+    case 'sledge': return r(.02, .44, .66, .12) + r(.66, .04, .3, .92, 'rx="2"') + r(.62, .34, .04, .32);
     case 'blade': return r(.04, .38, .26, .24) + r(.3, .2, .04, .6) + p([[.34, .4], [.9, .4], [.98, .5], [.9, .6], [.34, .6]]);
     case 'blunt': return p([[.04, .44], [.4, .4], [.96, .3], [.96, .7], [.4, .6], [.04, .56]]) + r(.04, .4, .2, .2);
     case 'vest': return p([[.22, .06], [.38, .06], [.42, .2], [.58, .2], [.62, .06], [.78, .06], [.92, .3], [.9, .94], [.1, .94], [.08, .3]]) + `<path class="ln" d="M${.5 * L} ${.22 * S} V ${.92 * S} M ${.2 * L} ${.55 * S} H ${.8 * L}"/>`;
@@ -2898,10 +2969,10 @@ function renderRuleIce(){
   el.innerHTML = `<table class="rtable"><thead><tr><th>Program</th><th>AC</th><th>HP</th><th>Hit</th><th>PER</th><th>Damage and effect</th></tr></thead><tbody>${BLACK_ICE.map(i => `<tr><td><b>${i.n}</b></td><td>${iceStat(i.ac)}</td><td>${iceStat(i.hp)}</td><td>${i.hit == null ? 'TBD' : '+' + i.hit}</td><td>${i.per == null ? 'TBD' : '+' + i.per}</td><td>${esc(i.dmg)}${i.fx ? `. <b>${i.fx}</b>` : ''}</td></tr>`).join('')}</tbody></table>`;
 }
 const ITEM_TIERS = [
-  {n:'Tier 1', name:'Street', buff:'No bonus. Standard street gear.', effect:'No effect slot.'},
-  {n:'Tier 2', name:'Custom', buff:'Placeholder · +1 to hit or +1 AC', effect:'Placeholder · 1 minor effect'},
-  {n:'Tier 3', name:'Military', buff:'Placeholder · +2 to hit or +2 AC', effect:'Placeholder · 1 major effect'},
-  {n:'Tier 4', name:'Iconic', buff:'Placeholder · +3 to hit or +3 AC', effect:'Placeholder · 1 signature effect'}
+  {n:'Tier 1', name:'Street', wpn:'Base damage. Melee adds its stat mod.', buff:'No bonus. Standard street gear.', effect:'No effect slot.'},
+  {n:'Tier 2', name:'Custom', wpn:'+1 damage', buff:'Placeholder · +1 AC', effect:'Placeholder · 1 minor effect'},
+  {n:'Tier 3', name:'Military', wpn:'Guns add their stat mod. Melee +2 damage instead of +1', buff:'Placeholder · +2 AC', effect:'Placeholder · 1 major effect'},
+  {n:'Tier 4', name:'Iconic', wpn:'Guns +2 damage instead of +1. Melee adds +1d4. Plus a unique effect for that weapon', buff:'Placeholder · +3 AC', effect:'Placeholder · 1 signature effect'}
 ];
 const TIER_WEIGHT = [50, 30, 15, 5];
 const EFFECTS = {
@@ -2923,13 +2994,7 @@ const GEN = {
   origins: ['Nomad','Corpo','Streetkid'],
   makers: ['Halcyon Arms','Vashti Dynamics','Kessler-Okoro','Redline Armory','Sato Heavy','Black Lantern','Cobalt Union','Ironclad','Ghostline','Mercer Ballistics'],
   models: ['Viper','Hornet','Jackal','Mamba','Wraith','Lynx','Bastion','Torque','Riot','Halo','Spectre','Grinder','Nomad','Cinder','Saint','Razorback','Howler','Mantle','Pike','Dusk'],
-  weapons: [
-    ['Light Pistol','1d8 piercing','range 60 ft'],['Heavy Pistol','2d6 piercing','range 60 ft'],['Revolver','2d6 piercing','range 80 ft'],
-    ['SMG','1d6 piercing','burst fire'],['Assault Rifle','2d8 piercing','range 150 ft'],['Shotgun','2d8 piercing','close range'],
-    ['Sniper Rifle','2d10 piercing','range 300 ft'],['LMG','2d8 piercing','heavy, suppressing fire'],
-    ['Katana','1d10 slashing','finesse'],['Combat Knife','1d4 slashing','thrown, finesse'],['Machete','1d8 slashing',''],
-    ['Baseball Bat','1d6 bludgeoning',''],['Sledgehammer','2d6 bludgeoning','heavy, two-handed'],['Tonfa','1d6 bludgeoning','light']
-  ],
+  weapons: WEAPON_TABLE.map(w => [w.n, `${w.dice} ${w.dt}`, w.note, w.kind === 'melee' ? w.n : w.n]),
   items: {
     Consumable: [['Med Injector','Heal 2d4'],['Trauma Stim','Heal 4d4, then 1 level of exhaustion'],['Frag Grenade','3d6 in a 10 ft radius'],['EMP Grenade','Shorts out cyberware and drones in 10 ft'],['Smoke Grenade','Heavy obscurement in 15 ft'],['Focus Shot','Advantage on your next INT check'],['Flash Grenade','Blinds for 1 round, DEX save']],
     Gear: [['Lockpick Kit','Advantage to pick mechanical locks'],['Handheld Scanner','Scan a target in 30 ft'],['Grapple Line','50 ft climb in one action'],['Burner Phone','Untraceable for one call'],['Data Shard','Holds one stolen file'],['Medkit','Stabilize a dying merc'],['Night Optics','Darkvision 60 ft while worn']],
@@ -2956,12 +3021,16 @@ function genNpcRoll(prev, lock){
   return o;
 }
 function genWeaponRoll(t, cls){
-  const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t), gt = w[3] || '', melee = gt === 'Melee';
+  const w = (cls && GEN.weapons.find(x => x[0] === cls)) || pick(GEN.weapons), tier = rollTier(t), gt = w[3] || '', melee = gt === 'Melee' || MELEE_CLASSES.includes(gt);
+  // Damage follows the DM's chart: base dice plus the stacked tier bonus. Tier 4 adds a unique effect.
+  const wc = WT[w[0]] ? w[0] : WT[gt] ? gt : classGuess(w[0]), mm = /^\s*([0-9d+\s]+?)\s*([a-z][a-z ]*)?$/i.exec(w[1] || '');
+  const dmg = WT[wc] ? dmgText(wc, tier, null, mm ? mm[1].trim() : null, mm && mm[2] ? mm[2].trim() : null) : w[1] + tierBit(tier, /piercing/.test(w[1]) ? 'Weapon' : 'Melee');
+  const fx = WT[wc] && tier >= 3 ? ` · Unique effect, like ${pick(EFFECTS[WT[wc].kind === 'melee' ? 'Melee' : 'Weapon'])} (DM sets)` : '';
   const o = {name:`${pick(GEN.makers)} ${pick(GEN.models)} ${w[0]}`.slice(0, 60), type:'Weapon', qty:1, tier, cw:0,
-    stats:(w[1] + (w[2] ? ', ' + w[2] : '') + tierBit(tier, /piercing/.test(w[1]) ? 'Weapon' : 'Melee')).slice(0, 120)};
-  const d = weaponDefaults(gt && !melee ? gt : w[0], w[1]);
-  return Object.assign(o, sizeOf({type:'Weapon', name:gt && !melee ? gt : w[0]}), weaponOf({type:'Weapon', name:w[0], stats:w[1], rof:d.rof,
-    reload: melee ? 'none' : gt ? (d.reload === 'none' ? 'light' : d.reload) : d.reload, gtype: melee ? '' : CLIPS[gt] ? gt : undefined}));
+    stats:(dmg + (w[2] ? ', ' + w[2] : '') + fx).slice(0, 120)};
+  const d = weaponDefaults(WT[wc] ? wc : w[0], w[1]);
+  return Object.assign(o, sizeOf({type:'Weapon', name:WT[wc] ? wc : w[0]}), weaponOf({type:'Weapon', name:w[0], stats:w[1], rof:d.rof,
+    reload: melee ? 'none' : gt ? (d.reload === 'none' ? 'light' : d.reload) : d.reload, gtype: melee ? '' : CLIPS[gt] ? gt : undefined, wclass: WT[wc] ? wc : undefined}));
 }
 function genItemRoll(t, type){
   type = type || pick(Object.keys(GEN.items));
@@ -2993,7 +3062,7 @@ function parseTables(tabs){
   const ln = find(/last/i); if (ln){ const v = col(gridObjs(ln[1]), 'lastname'); if (v.length) t.last = v; }
   const hd = find(/handle/i); if (hd){ const v = col(gridObjs(hd[1]), 'handle'); if (v.length) t.handles = v; }
   const wp = find(/weapon/i); if (wp){
-    const v = gridObjs(wp[1]).filter(o => o.weapon && o.damage).map(o => { const g = o.guntype || '', gt = /melee/i.test(g) ? 'Melee' : Object.keys(CLIPS).find(x => x.toLowerCase() === g.toLowerCase()) || '';
+    const v = gridObjs(wp[1]).filter(o => o.weapon && o.damage).map(o => { const g0 = o.weapontype || o.guntype || '', g = GUN_ALIAS[Object.keys(GUN_ALIAS).find(k => k.toLowerCase() === g0.toLowerCase())] || g0, gt = WEAPON_TABLE.map(w => w.n).find(x => x.toLowerCase() === g.toLowerCase()) || (/melee/i.test(g) ? 'Melee' : '');
       return [o.weapon.slice(0, 30), o.damage.slice(0, 40), (o.notes || '').slice(0, 60), gt]; });
     if (v.length) t.weapons = v;
   }
@@ -3057,10 +3126,15 @@ function renderRuleStatus(){
   const el = $('#rStatus'); if (!el) return;
   el.innerHTML = `<table class="rtable"><thead><tr><th>Effect</th><th>What it does</th></tr></thead><tbody>${STATUS.map(x => `<tr><td><b>${x.n}</b>${x.cyber ? ' <span class="muted" style="font-size:11px">DRAFT</span>' : ''}</td><td>${esc(x.d)}</td></tr>`).join('')}</tbody></table>`;
 }
+function renderRuleWeapons(){
+  const el = $('#rWeapons'); if (!el) return;
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Weapon</th><th>ROF</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Tier 4</th></tr></thead><tbody>${WEAPON_TABLE.map(w => `<tr><td><b>${w.n}</b></td><td>${w.rof}</td><td>${w.dice}${w.kind === 'melee' ? ` + ${w.st} mod` : ''} ${w.dt}${/save/.test(w.note) ? ' (REF save for half)' : ''}</td><td>${dmgText(w.n, 1)}</td><td>${dmgText(w.n, 2)}</td><td>${dmgText(w.n, 3)} + unique effect</td></tr>`).join('')}</tbody></table>`;
+}
 function renderRuleTiers(){
   const el = $('#rTiers'); if (!el) return;
-  el.innerHTML = `<table class="rtable"><thead><tr><th>Tier</th><th>Grade</th><th>Buff</th><th>Effects</th></tr></thead><tbody>${ITEM_TIERS.map(x => `<tr><td><b>${x.n}</b></td><td>${x.name}</td><td>${esc(x.buff)}</td><td>${esc(x.effect)}</td></tr>`).join('')}</tbody></table>
-    <p style="margin-top:14px">Placeholder effects by item type. Names only for now. The GM will write what each one does.</p>
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Tier</th><th>Grade</th><th>Weapons (stacks)</th><th>Armor and gear</th><th>Armor and gear effects</th></tr></thead><tbody>${ITEM_TIERS.map(x => `<tr><td><b>${x.n}</b></td><td>${x.name}</td><td>${esc(x.wpn)}</td><td>${esc(x.buff)}</td><td>${esc(x.effect)}</td></tr>`).join('')}</tbody></table>
+    <p style="margin-top:10px">Weapon bonuses stack, so each tier keeps what the tiers below it give. The full chart is under <a href="#r-attacks">Attacks and Weapons</a>.</p>
+    <p style="margin-top:14px">Placeholder effects by item type. Names only for now. The GM will write what each one does. On weapons they're only suggestions for the Tier 4 unique effect.</p>
     <table class="rtable"><thead><tr><th>Type</th><th>Effects</th></tr></thead><tbody>${Object.entries(EFFECTS).map(([k, v]) => `<tr><td><b>${k === 'Weapon' ? 'Ranged weapon' : k === 'Melee' ? 'Melee weapon' : k}</b></td><td>${v.join(', ')}</td></tr>`).join('')}</tbody></table>`;
 }
 
@@ -3119,7 +3193,7 @@ function renderCS(){
   const eqCard = (k, label) => {
     const i = it(C.eq[k]);
     return `<div class="eqslot ${i ? 'on' : ''}" data-eqslot="${k}"><span class="lbl">${label}</span>${i ? `<div class="gi eqart t${i.tier + 1}" data-gi="${i.id}" title="Drag back to the bag to unequip">${itemArt(i)}</div>` : ''}` + (i
-      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>${clipCap(i) ? ammoHTML(i) : ''}${i.reload !== 'none' && skillProf('Sleight of Hand', 'REF').level === 2 ? `<div class="muted" style="font-size:12px;margin:0 0 6px">Quick reload: sacrifice 1 ROF to RELOAD, so your next ATTACK is ${Math.max(0, i.rof - 1)}-ROF instead of spending an ACTION.</div>` : ''}` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
+      ? `<div class="eqn">${esc(i.name)}${hacked('weapons') ? ' <span class="stagb red gl" data-text="JAMMED">JAMMED</span>' : ''}</div><div class="muted" style="font-size:14px">${esc(i.stats || 'No stats added')}</div>${i.type === 'Weapon' ? `<div style="margin:4px 0">${wpnTag(i)}</div>${WT[i.wclass] ? `<div class="dmgln" title="${esc(dmgText(i.wclass, i.tier))}">Damage <b>${esc(dmgText(i.wclass, i.tier, C))}</b>${i.tier >= 3 ? ' + unique effect' : ''} <span class="muted">· ${esc(i.wclass)} chart</span></div>` : ''}${clipCap(i) ? ammoHTML(i) : ''}${i.reload !== 'none' && skillProf('Sleight of Hand', 'REF').level === 2 ? `<div class="muted" style="font-size:12px;margin:0 0 6px">Quick reload: sacrifice 1 ROF to RELOAD, so your next ATTACK is ${Math.max(0, i.rof - 1)}-ROF instead of spending an ACTION.</div>` : ''}` : ''}<div><button class="btn small" data-unequip="${k}">Unequip</button></div>`
       : `<div class="muted" style="font-size:14px">${k === 'armor' ? 'Empty. Drag armor here or hit Wear on it.' : `Empty. Drag a weapon here or hit ${k === 'primary' ? 'P' : 'S'} on it.`}</div>`) + `</div>`;
   };
   const ident = `<div class="ident">
@@ -3181,6 +3255,7 @@ function renderCS(){
       <label class="fl wide"><span>Stats or notes</span><input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Like 2d6 piercing, or +1 AC"></label>
       ${i.type === 'Weapon' ? `<label class="fl"><span>Rate of fire</span><input type="number" min="1" max="10" data-i="${i.id}" data-f="rof" value="${i.rof}" title="Attack rolls per ATTACK action"></label>
       <label class="fl"><span>Reload</span><small class="muted" style="font-size:11px;margin-top:-2px">LIGHT is an action, HEAVY is your whole turn</small><select data-i="${i.id}" data-f="reload">${Object.entries(RELOAD_TXT).map(([k, v]) => `<option value="${k}" ${i.reload === k ? 'selected' : ''}>${k === 'light' ? 'LIGHT' : k === 'heavy' ? 'HEAVY' : 'Melee'}</option>`).join('')}</select></label>
+      ${i.reload === 'none' ? `<label class="fl"><span>Melee type</span><select data-i="${i.id}" data-f="wclass"><option value="" ${!i.wclass ? 'selected' : ''}>Other (no chart)</option>${MELEE_CLASSES.map(g => `<option ${i.wclass === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>` : ''}
       ${i.reload !== 'none' ? `<label class="fl"><span>Gun type</span><select data-i="${i.id}" data-f="gtype"><option value="" ${!i.gtype ? 'selected' : ''}>Other (no clip)</option>${Object.keys(CLIPS).map(g => `<option ${i.gtype === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
       ${i.gtype ? `<label class="fl"><span>Clip</span><select data-i="${i.id}" data-f="clip">${CLIP_KEYS.map((c, n) => `<option value="${c}" ${i.clip === c ? 'selected' : ''}>${CLIP_TXT[c]} · ${CLIPS[i.gtype][n]}</option>`).join('')}</select></label>` : ''}
       ${i.gtype === 'Assault Rifle' ? `<label class="wide" style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer"><input type="checkbox" data-i="${i.id}" data-f="conc" ${i.conc ? 'checked' : ''} style="width:18px;height:18px;flex:none;accent-color:var(--cyan)">This rifle can be concealed, with a Standard clip only</label>` : ''}` : ''}` : ''}
@@ -3796,7 +3871,8 @@ $('#vCS').addEventListener('change', async e => {
     if (t.dataset.f === 'type'){ i.type = t.value; Object.assign(i, weaponOf({...i, rof:null, reload:null})); fixEq(C); return csSave(); }
     if (t.dataset.f === 'rof'){ i.rof = Math.max(1, Math.min(10, parseInt(t.value) || 1)); return csSave(); }
     if (t.dataset.f === 'reload'){ i.reload = t.value; Object.assign(i, weaponOf(i)); return csSave(); }
-    if (t.dataset.f === 'gtype'){ i.gtype = t.value; i.ammo = null; Object.assign(i, weaponOf(i)); return csSave(); }
+    if (t.dataset.f === 'gtype'){ i.gtype = t.value; i.wclass = t.value; i.ammo = null; Object.assign(i, weaponOf(i)); return csSave(); }
+    if (t.dataset.f === 'wclass'){ i.wclass = t.value; Object.assign(i, weaponOf(i)); return csSave(); }
     if (t.dataset.f === 'clip'){ i.clip = t.value; i.ammo = null; Object.assign(i, weaponOf(i)); toast(`${CLIP_TXT[i.clip]} clip, ${clipCap(i)} shots.${canConceal(i) && !concealed(i) ? ' Not concealable with this clip.' : ''}`); return csSave(); }
     if (t.dataset.f === 'conc'){ i.conc = t.checked; return csSave(); }
   }
@@ -4638,7 +4714,7 @@ function applyOp(op){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
     const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
     const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
+    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
@@ -5272,7 +5348,7 @@ $('#liveBody').addEventListener('click', async e => {
       const arr = JSON.parse($('#libImpTxt').value);
       if (!Array.isArray(arr)) throw 0;
       let n = 0;
-      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h}), ...weaponOf({type:r.type, name:r.name, stats:r.stats, rof:r.rof, reload:r.reload, gtype:r.gtype, clip:r.clip, conc:r.conc})}); n++; }
+      for (const r of arr){ if (!r || !r.name) continue; await liveApi.setLibItem({id:uid(), name:String(r.name).slice(0, 60), type:ITEM_TYPES.includes(r.type) ? r.type : 'Gear', qty:Math.max(1, parseInt(r.qty) || 1), stats:String(r.stats || '').slice(0, 120), cw:Math.max(0, parseInt(r.cw) || 0), tier:Math.max(0, Math.min(3, parseInt(r.tier) || 0)), ...sizeOf({type:r.type, name:r.name, w:r.w, h:r.h}), ...weaponOf({type:r.type, name:r.name, stats:r.stats, rof:r.rof, reload:r.reload, gtype:r.gtype, wclass:r.wclass, clip:r.clip, conc:r.conc})}); n++; }
       libImport = false; toast(`Imported ${n} items.`, true); renderLive();
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
@@ -5432,14 +5508,15 @@ async function preloadSheet(file){
       if (isExample(o)) continue;
       const name = (o.name || '').slice(0, kind === 'w' ? 60 : 40); if (!name){ res.skip++; continue; }
       if (kind === 'w'){
-        const gt = o.guntype || '', melee = /melee/i.test(gt), other = /^other/i.test(gt), gtype = Object.keys(CLIPS).find(g => g.toLowerCase() === gt.toLowerCase());
-        const d = weaponDefaults(gtype || name, o.damageandstats || o.stats), rl = /heavy/i.test(o.reload) ? 'heavy' : /light/i.test(o.reload) ? 'light' : null;
+        const gt0 = o.weapontype || o.guntype || '', gt = GUN_ALIAS[Object.keys(GUN_ALIAS).find(k => k.toLowerCase() === gt0.toLowerCase())] || gt0;
+        const mcls = MELEE_CLASSES.find(g => g.toLowerCase() === gt.toLowerCase()), melee = !!mcls || /melee/i.test(gt), other = /^other/i.test(gt), gtype = Object.keys(CLIPS).find(g => g.toLowerCase() === gt.toLowerCase());
+        const d = weaponDefaults(gtype || mcls || name, o.damageandstats || o.stats), rl = /heavy/i.test(o.reload) ? 'heavy' : /light/i.test(o.reload) ? 'light' : null;
         const ex = lib.find(x => x.type === 'Weapon' && x.name.toLowerCase() === name.toLowerCase());
         const tier = /4|iconic/i.test(o.tier) ? 3 : /3|military/i.test(o.tier) ? 2 : /2|custom/i.test(o.tier) ? 1 : 0;
         const item = {id: ex ? ex.id : uid(), name, type:'Weapon', qty:1, stats:String(o.damageandstats || o.stats || '').slice(0, 120), cw:0, tier, hidden: yesNo(o.hidden)};
-        Object.assign(item, sizeOf({type:'Weapon', name: gtype ? gtype : melee && !/blade|knife|sword|katana|bat|club|axe/i.test(name) ? `${name} knife` : name, w:parseInt(o.width) || null, h:parseInt(o.height) || null}), weaponOf({...item,
+        Object.assign(item, sizeOf({type:'Weapon', name: gtype || mcls || (melee && !/blade|knife|sword|katana|bat|club|axe|hammer/i.test(name) ? `${name} knife` : name), w:parseInt(o.width) || null, h:parseInt(o.height) || null}), weaponOf({...item,
           rof: parseInt(o.rof) || d.rof, reload: melee ? 'none' : rl || (gtype || other ? (d.reload === 'none' ? 'light' : d.reload) : d.reload),
-          gtype: gtype || (melee || other ? '' : undefined), clip: /ext/i.test(o.clip) ? 'ext' : /drum/i.test(o.clip) ? 'drum' : 'std', conc: yesNo(o.concealable)}));
+          gtype: gtype || (melee || other ? '' : undefined), wclass: mcls || gtype || (other ? '' : undefined), clip: /ext/i.test(o.clip) ? 'ext' : /drum/i.test(o.clip) ? 'drum' : 'std', conc: yesNo(o.concealable)}));
         try { await liveApi.setLibItem(item); ex ? res.wu++ : res.w++; } catch(err){ res.skip++; }
       } else {
         const ex = npcsDM.find(x => x.name.toLowerCase() === name.toLowerCase()), hm = Math.max(0, parseInt(o.maxhp) || 0);
@@ -5584,7 +5661,7 @@ function renderRulePerks(){
   }).join('');
   $('#lvlTrack').innerHTML = Array.from({length:20}, (_, i) => `<div class="${i === 0 ? 'one' : ASI_LEVELS.includes(i + 1) ? 'asi' : ''}">${i + 1}</div>`).join('');
 }
-renderRulePerks(); renderRuleTiers(); renderRuleStatus(); renderRuleIce(); renderRuleQh();
+renderRulePerks(); renderRuleTiers(); renderRuleWeapons(); renderRuleStatus(); renderRuleIce(); renderRuleQh();
 
 let rIndex = null;
 function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }
