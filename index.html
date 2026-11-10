@@ -4883,6 +4883,11 @@ function liveHTML(){
     ${dmTab === 'npcs' ? `${npcPanel}${genHTML('npc')}` : ''}
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
     ${dmTab === 'items' ? `${genHTML('items')}
+    <div class="panel gap" id="preloadPanel"><div class="row"><h3>Preload from a spreadsheet</h3></div>
+      <p style="font-size:14px;margin:6px 0 10px">Fill out weapons and NPCs anywhere, in Excel, Google Sheets or Numbers, then upload the sheet here to load them all at once. Weapons go into your item library and NPCs go into your private NPC list.</p>
+      <div class="row gap"><a class="btn small" href="templates/daemon-dm-preload.xlsx" download="Daemon DM preload.xlsx">Download template</a><label class="btn small primary" style="display:inline-block">Upload filled sheet<input type="file" id="preloadFile" accept=".xlsx,.csv" hidden></label></div>
+      <p class="muted" style="font-size:12px;margin:8px 0 0">Takes .xlsx, or a .csv of one tab. Uploading again updates anything with the same name instead of making a copy. Rows named "Example" are skipped.</p>
+      ${preloadMsg ? `<p class="preres" style="font-size:14px;margin:10px 0 0">${preloadMsg}</p>` : ''}</div>
     <div class="panel gap"><div class="row"><h3>Item library</h3><span class="spacer"></span>
       ${lib.length ? '' : '<button class="btn small" data-live="starter">Load starter pack</button>'}
       <button class="btn small" data-live="libcopy">Copy library</button><button class="btn small" data-live="libimp">${libImport ? 'Cancel import' : 'Import library'}</button></div>
@@ -5166,7 +5171,105 @@ $('#liveBody').addEventListener('click', async e => {
     } catch(err){ toast("That library text didn't work. Paste exactly what Copy library gave you."); }
   }
 });
-let npDraftPic = null;
+let npDraftPic = null, preloadMsg = '';
+// ---- Spreadsheet preload. Reads .xlsx (a zip of XML) with the browser's own unzip, or a .csv. ----
+async function unzipFiles(buf){
+  const dv = new DataView(buf), u8 = new Uint8Array(buf), td = new TextDecoder(); let e = buf.byteLength - 22;
+  while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--; if (e < 0) throw new Error('not a zip');
+  const n = dv.getUint16(e + 10, true), out = {}; let p = dv.getUint32(e + 16, true);
+  for (let i = 0; i < n; i++){
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), lo = dv.getUint32(p + 42, true);
+    const name = td.decode(u8.subarray(p + 46, p + 46 + nl)), ds = lo + 30 + dv.getUint16(lo + 26, true) + dv.getUint16(lo + 28, true), data = u8.slice(ds, ds + csize);
+    out[name] = async () => method === 0 ? td.decode(data) : new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+    p += 46 + nl + xl + cl;
+  }
+  return out;
+}
+async function readXlsx(buf){
+  const z = await unzipFiles(buf), xml = async n => z[n] ? new DOMParser().parseFromString(await z[n](), 'application/xml') : null;
+  const wbx = await xml('xl/workbook.xml'), rels = await xml('xl/_rels/workbook.xml.rels'), ssx = await xml('xl/sharedStrings.xml');
+  if (!wbx || !rels) throw new Error('not a spreadsheet');
+  const ss = ssx ? [...ssx.getElementsByTagName('si')].map(si => [...si.getElementsByTagName('t')].map(t => t.textContent).join('')) : [];
+  const tg = {}; [...rels.getElementsByTagName('Relationship')].forEach(r => { tg[r.getAttribute('Id')] = r.getAttribute('Target'); });
+  const out = {};
+  for (const sh of wbx.getElementsByTagName('sheet')){
+    const rid = sh.getAttribute('r:id') || sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id');
+    let t = tg[rid] || ''; t = t.startsWith('/') ? t.slice(1) : 'xl/' + t.replace(/^\.\//, '');
+    const d = await xml(t); if (!d) continue; const rows = [];
+    for (const c of d.getElementsByTagName('c')){
+      const m = /^([A-Z]+)(\d+)$/.exec(c.getAttribute('r') || ''); if (!m) continue;
+      const col = [...m[1]].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0) - 1, row = +m[2] - 1, ty = c.getAttribute('t'), v = c.getElementsByTagName('v')[0];
+      const val = ty === 's' ? ss[+(v ? v.textContent : -1)] : ty === 'inlineStr' ? [...c.getElementsByTagName('t')].map(x => x.textContent).join('') : v ? v.textContent : '';
+      (rows[row] || (rows[row] = []))[col] = val ?? '';
+    }
+    out[sh.getAttribute('name')] = rows;
+  }
+  return out;
+}
+function readCsv(txt){
+  const rows = []; let row = [], cur = '', q = false;
+  for (let i = 0; i < txt.length; i++){
+    const ch = txt[i];
+    if (q){ if (ch === '"'){ if (txt[i + 1] === '"'){ cur += '"'; i++; } else q = false; } else cur += ch; }
+    else if (ch === '"') q = true; else if (ch === ','){ row.push(cur); cur = ''; }
+    else if (ch === '\n' || ch === '\r'){ if (ch === '\r' && txt[i + 1] === '\n') i++; row.push(cur); rows.push(row); row = []; cur = ''; }
+    else cur += ch;
+  }
+  if (cur || row.length){ row.push(cur); rows.push(row); }
+  return rows;
+}
+// Turn a grid into objects keyed by a squashed header ("Max HP" -> "maxhp").
+function gridObjs(rows){
+  const hi = rows.findIndex(r => r && r.some(x => String(x ?? '').trim())); if (hi < 0) return [];
+  const keys = Array.from(rows[hi], h => String(h ?? '').toLowerCase().replace(/[^a-z]/g, ''));
+  return rows.slice(hi + 1).filter(r => r && r.some(x => String(x ?? '').trim())).map(r => Object.fromEntries(keys.map((k, j) => [k, String(r[j] ?? '').trim()])));
+}
+const yesNo = v => /^(y|yes|true|1|x)$/i.test(String(v || '').trim());
+const isExample = o => /^example\b/i.test(o.name || '');
+async function preloadSheet(file){
+  if (!liveApi) return toast('Open DM tools first.');
+  let tabs;
+  try {
+    const buf = await file.arrayBuffer();
+    tabs = /\.csv$/i.test(file.name) ? {[file.name]: readCsv(new TextDecoder().decode(buf))} : await readXlsx(buf);
+  } catch(err){ preloadMsg = "That file couldn't be read. Save it as .xlsx, or as a .csv of one tab, and try again."; return renderLive(); }
+  const res = {w:0, wu:0, n:0, nu:0, skip:0};
+  for (const [tname, rows] of Object.entries(tabs)){
+    const objs = gridObjs(rows); if (!objs.length) continue;
+    const ks = Object.keys(objs[0]);
+    const kind = /weapon/i.test(tname) || ks.includes('guntype') || ks.includes('rof') ? 'w' : /npc/i.test(tname) || ks.includes('origin') || ks.includes('maxhp') ? 'n' : null;
+    if (!kind) continue;
+    for (const o of objs){
+      if (isExample(o)) continue;
+      const name = (o.name || '').slice(0, kind === 'w' ? 60 : 40); if (!name){ res.skip++; continue; }
+      if (kind === 'w'){
+        const gt = o.guntype || '', melee = /melee/i.test(gt), other = /^other/i.test(gt), gtype = Object.keys(CLIPS).find(g => g.toLowerCase() === gt.toLowerCase());
+        const d = weaponDefaults(gtype || name, o.damageandstats || o.stats), rl = /heavy/i.test(o.reload) ? 'heavy' : /light/i.test(o.reload) ? 'light' : null;
+        const ex = lib.find(x => x.type === 'Weapon' && x.name.toLowerCase() === name.toLowerCase());
+        const tier = /4|iconic/i.test(o.tier) ? 3 : /3|military/i.test(o.tier) ? 2 : /2|custom/i.test(o.tier) ? 1 : 0;
+        const item = {id: ex ? ex.id : uid(), name, type:'Weapon', qty:1, stats:String(o.damageandstats || o.stats || '').slice(0, 120), cw:0, tier, hidden: yesNo(o.hidden)};
+        Object.assign(item, sizeOf({type:'Weapon', name: gtype ? gtype : melee && !/blade|knife|sword|katana|bat|club|axe/i.test(name) ? `${name} knife` : name, w:parseInt(o.width) || null, h:parseInt(o.height) || null}), weaponOf({...item,
+          rof: parseInt(o.rof) || d.rof, reload: melee ? 'none' : rl || (gtype || other ? (d.reload === 'none' ? 'light' : d.reload) : d.reload),
+          gtype: gtype || (melee || other ? '' : undefined), clip: /ext/i.test(o.clip) ? 'ext' : /drum/i.test(o.clip) ? 'drum' : 'std', conc: yesNo(o.concealable)}));
+        try { await liveApi.setLibItem(item); ex ? res.wu++ : res.w++; } catch(err){ res.skip++; }
+      } else {
+        const ex = npcsDM.find(x => x.name.toLowerCase() === name.toLowerCase()), hm = Math.max(0, parseInt(o.maxhp) || 0);
+        const n = {...(ex || {id:uid(), adv:'norm', portrait:null}), name, origin: ORIGINS.find(x => x.toLowerCase() === (o.origin || '').toLowerCase()) || (ex && ex.origin) || 'Unknown',
+          gender: o.gender || (ex && ex.gender) || '', age: o.age || (ex && ex.age) || '', notes: (o.notes || (ex && ex.notes) || '').slice(0, 2000)};
+        if (hm || !ex){ n.hpMax = hm; n.hp = ex && ex.hp != null && ex.hp < (ex.hpMax || 0) ? Math.min(ex.hp, hm) : hm; }
+        try { await liveApi.setDmNpc(n); ex ? res.nu++ : res.n++; } catch(err){ res.skip++; }
+      }
+    }
+  }
+  const tot = res.w + res.wu + res.n + res.nu;
+  const part = (a, u, word) => a + u ? `<b>${a + u}</b> ${word}${a + u === 1 ? '' : 's'}${u ? ` (${u} updated)` : ''}` : '';
+  preloadMsg = tot ? `Loaded ${[part(res.w, res.wu, 'weapon'), part(res.n, res.nu, 'NPC')].filter(Boolean).join(' and ')}.${res.skip ? ` Skipped ${res.skip} row${res.skip === 1 ? '' : 's'} with no name or that didn't save.` : ''}`
+    : "Nothing to load. Make sure the tabs are named Weapons and NPCs, or keep the template's column headers.";
+  if (tot){ toast(`Preloaded ${tot} from ${file.name}.`, true); sfx('receive'); }
+  renderLive();
+}
+document.addEventListener('change', e => { if (e.target.id === 'preloadFile' && e.target.files[0]){ const f = e.target.files[0]; e.target.value = ''; preloadSheet(f); } });
 $('#liveBody').addEventListener('change', async e => {
   const t = e.target;
   if (t.id === 'npPic'){ try { npDraftPic = await readPortrait(t.files[0]); renderLive(); } catch(err){ toast("That image didn't load."); } return; }
