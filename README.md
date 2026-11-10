@@ -65,6 +65,12 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Death saves live in `ds: {p, f}` and `dead`. Three passes brings a merc back with 1 HP. Three fails sets `dead` and plays the afterlife screen. Healing above 0 HP resets both.
 - Status effects live in `status: [{id, r, v}]`. `r` is rounds left (null means until removed) and `v` is the Exhaustion level. The DM applies them from the party card and ends rounds for everyone.
 
+## Flair
+- Signature color. Each merc picks one on the Profile tab. It shows on the roster, party cards, the DM's roster and the activity log
+- Low HP vision. Under a quarter HP (or Net HP) the screen edges pulse red and the vitals bar flickers. While down the screen goes nearly black and white with a heartbeat glow. Table mode keeps the red edge but stops the motion
+- Jacked in. The sheet gets scanlines, terminal headings and a NET LINK tag. Net HP moves to the front of the vitals bar and the Net panel moves to the top of Combat
+- Level up shows a firmware update card with what the new level gives. Tap to close. It's skipped when effects are off
+
 ## Saving
 - Mercs save automatically in the browser
 - Copy save code gives a `DMN1.` code to paste into Import on another device or in Discord

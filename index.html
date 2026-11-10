@@ -15,7 +15,7 @@
 <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root{
   --yellow:#ffe600; --cyan:#2fe6f0; --crgb:47,230,240; --cyan-dim:rgba(var(--crgb),.3);
@@ -602,6 +602,44 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 #vCS .cs-grid{scroll-margin-top:84px}
 #vCS[data-sub="combat"] [data-sub]:not([data-sub="combat"]),#vCS[data-sub="gear"] [data-sub]:not([data-sub="gear"]),#vCS[data-sub="chrome"] [data-sub]:not([data-sub="chrome"]),#vCS[data-sub="profile"] [data-sub]:not([data-sub="profile"]){display:none!important}
 .vtabs button[hidden]{display:none}
+/* Flair: signature colors */
+.sigpick{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.sigpick button{width:30px;height:30px;border:2px solid rgba(255,255,255,.15);background:var(--sig);cursor:pointer;padding:0;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.sigpick button.on{border-color:#fff;box-shadow:0 0 10px var(--sig)}.sigpick button.none{background:transparent;color:#aab3c5;font-size:13px}
+.card.sigd,.pcard.sigd{box-shadow:inset 4px 0 0 var(--sig)}.card.sigd .nm,.pcard.sigd .nm{color:var(--sig)}
+.drow-w.sigd{box-shadow:inset 4px 0 0 var(--sig)}.drow-w.sigd .dnm{color:var(--sig)}.drow-w.sigd.sel{box-shadow:inset 4px 0 0 var(--sig),0 0 0 1px var(--cyan)}
+.dfocus.sigd .nm{color:var(--sig)}.logrow.sigd .who{color:var(--sig)}.logrow.sigd .av{border-color:var(--sig)}
+#sheetHead.sigd .sheet-head .nm{text-shadow:0 0 14px var(--sig)}#sheetHead.sigd{box-shadow:inset 0 3px 0 var(--sig)}
+/* Flair: low HP vision */
+#hurtfx{position:fixed;inset:0;pointer-events:none;z-index:8;opacity:0;transition:opacity .6s}
+body.hurt #hurtfx{opacity:1;box-shadow:inset 0 0 110px 20px rgba(255,30,60,.45);animation:hurtPulse 1.8s ease-in-out infinite}
+body.hurt #vitalsBar{animation:vbFlick 3.2s steps(1) infinite}
+body.dying #hurtfx{opacity:1;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.72) 100%);box-shadow:inset 0 0 140px 30px rgba(255,20,50,.5);backdrop-filter:grayscale(.85);-webkit-backdrop-filter:grayscale(.85);animation:heartbeat 1.1s ease-in-out infinite}
+@keyframes hurtPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes vbFlick{0%,92%,100%{opacity:1}93%{opacity:.55}95%{opacity:1}96%{opacity:.7}}
+@keyframes heartbeat{0%,40%,100%{box-shadow:inset 0 0 140px 30px rgba(255,20,50,.35)}10%{box-shadow:inset 0 0 170px 45px rgba(255,20,50,.7)}22%{box-shadow:inset 0 0 120px 25px rgba(255,20,50,.4)}30%{box-shadow:inset 0 0 160px 40px rgba(255,20,50,.6)}}
+body.table #hurtfx{animation:none!important}body.table.dying #hurtfx{backdrop-filter:none;-webkit-backdrop-filter:none}body.table #vitalsBar{animation:none!important}
+/* Flair: jacked in */
+body.jacked #vSheet{position:relative}
+body.jacked #vSheet::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+body.jacked #vSheet .panel{border-color:rgba(var(--crgb),.55);box-shadow:0 0 0 1px rgba(var(--crgb),.12),0 0 18px rgba(var(--crgb),.08)}
+body.jacked #vSheet .panel h3{font-family:'Share Tech Mono',ui-monospace,Consolas,monospace;letter-spacing:1px}body.jacked #vSheet .panel h3::before{content:'> ';color:var(--cyan)}
+body.jacked #vitalsBar{border-color:var(--cyan);box-shadow:0 0 16px rgba(var(--crgb),.35)}body.jacked #vitalsBar::before{content:'NET LINK';font:600 9px Orbitron,sans-serif;letter-spacing:2px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
+body.jacked #vCS .csL{display:flex;flex-direction:column}body.jacked #vCS .csL > .netwrap{order:-1}
+body.table.jacked #vSheet::after{display:none}
+/* Flair: level-up card */
+#lvlCard{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(3,6,10,.72);cursor:pointer}#lvlCard[hidden]{display:none}
+#lvlCard .lc{width:min(420px,88vw);background:#05080d;border:1px solid var(--cyan);box-shadow:0 0 40px rgba(var(--crgb),.35);padding:20px 22px;font-family:'Share Tech Mono',ui-monospace,Consolas,monospace;color:#d5f9fb;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}
+#lvlCard .lc-top{display:flex;justify-content:space-between;font:600 10px Orbitron,sans-serif;letter-spacing:2px;color:var(--cyan);opacity:.8}
+#lvlCard .lc-name{margin-top:14px;font-size:14px;color:#aab3c5}#lvlCard .lc-patch{font:700 34px Orbitron,sans-serif;color:var(--yellow);letter-spacing:2px;text-shadow:0 0 18px rgba(255,210,63,.4)}
+#lvlCard .lc-bar{height:6px;background:rgba(var(--crgb),.15);margin:14px 0 6px}#lvlCard .lc-bar i{display:block;height:100%;width:0;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+#lvlCard .lc-st{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0}
+#lvlCard ul{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px}#lvlCard li{opacity:0;font-size:15px}#lvlCard li::before{content:'+ ';color:var(--cyan)}
+#lvlCard .lc-tap{margin-top:16px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7d8798;opacity:0}
+#lvlCard.go .lc{animation:lcIn .35s ease-out}#lvlCard.go .lc-bar i{animation:lcBar .8s .15s ease-in-out forwards}#lvlCard.go .lc-st{animation:lcFade .2s .95s forwards}
+#lvlCard.go li{animation:lcLine .25s ease-out forwards}#lvlCard.go .lc-tap{animation:lcFade .3s 1.8s forwards}
+@keyframes lcIn{0%{transform:scale(.92);opacity:0;filter:hue-rotate(80deg)}60%{opacity:1}100%{transform:none;filter:none}}
+@keyframes lcBar{to{width:100%}}@keyframes lcFade{to{opacity:1}}@keyframes lcLine{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#hurtfx,body.hurt #vitalsBar{animation:none!important}#lvlCard .lc,#lvlCard .lc-bar i,#lvlCard li,#lvlCard .lc-st,#lvlCard .lc-tap{animation:none!important;opacity:1!important;width:100%}}
 /* DM party view */
 body.dmwide .wrap{max-width:1440px}
 .dmalerts{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
@@ -1508,6 +1546,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 </div>
 <div class="toast" id="toast" role="status"></div>
 <div id="vignette" aria-hidden="true"></div>
+<div id="hurtfx" aria-hidden="true"></div>
+<div id="lvlCard" hidden></div>
 <div id="psyVig" aria-hidden="true"></div>
 <div id="idcard" hidden role="dialog" aria-label="NPC ID card"><div class="idc">
   <div class="idc-scan"></div>
@@ -1721,6 +1761,7 @@ const STATUS = [
   {id:'concussed', n:'Concussed', d:'Rattled from a heavy hit. Effect TBD.', cyber:true},
   {id:'fried', n:'Fried processors', d:"You flatlined in The Net. No Net access until a Ripper repairs you and your injuries heal.", cyber:true}
 ];
+const SIGS = ['#ff4a5e', '#ff9f1c', '#ffd23f', '#3ee08a', '#2de2e6', '#3f8cff', '#a66bff', '#ff4fd8'];
 const STATUSMAP = Object.fromEntries(STATUS.map(x => [x.id, x]));
 const CYBER_SLOTS = [
   ['os','Operating System',1],['cortex','Frontal Cortex',3],['ocular','Ocular',1],['circ','Circulatory',3],
@@ -1813,6 +1854,7 @@ function normalize0(c){
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
     jackLock: !!c.jackLock,
+    sig: SIGS.includes(c.sig) ? c.sig : null,
     xp: Math.max(0, parseInt(c.xp) || 0),
     ledger: (Array.isArray(c.ledger) ? c.ledger : []).filter(e => e && typeof e.d === 'number').slice(0, 150).map(e => ({at:+e.at || 0, d:Math.round(e.d), bal:Math.max(0, parseInt(e.bal) || 0), note:String(e.note || '').slice(0, 60)})),
     ctr: Object.fromEntries(CTR_KEYS.map(k => [k, Math.max(0, parseInt((c.ctr || {})[k]) || 0)])),
@@ -2399,7 +2441,7 @@ function renderRoster(){
     const del = pendingDelete === c.id
       ? `<button class="btn danger small" data-del="${c.id}">Confirm delete</button><button class="btn small" data-keep="1">Keep</button>`
       : `<button class="btn small" data-del="${c.id}">Delete</button>`;
-    return `<div class="card"><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background}${c.role ? ' · ' + c.role : ''} · Level ${c.level} · ${c.unlocked.length} perks · ★ ${ACH.filter(a => c.ach[a.id]).length}</div></div></div>
+    return `<div class="card ${sigOf(c) ? 'sigd' : ''}"${sigStyle(c)}><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background}${c.role ? ' · ' + c.role : ''} · Level ${c.level} · ${c.unlocked.length} perks · ★ ${ACH.filter(a => c.ach[a.id]).length}</div></div></div>
       <div class="mini-stats">${stats}</div>
       <div class="row"><button class="btn primary small" data-open="${c.id}">Open</button><span class="spacer"></span>${del}</div></div>`;
   }).join('');
@@ -2668,12 +2710,41 @@ function updateHeat(){
   document.body.classList.toggle('overheat', !!show);
 }
 // Always-visible strip at the top of the sheet. HP, Net HP (netrunners), RAM and AC. Tap it to jump to Combat.
+/* ---- flair: signature colors, low HP vision, jacked-in look, level-up card ---- */
+const sigOf = m => m && SIGS.includes(m.sig) ? m.sig : null;
+const sigStyle = m => sigOf(m) ? ` style="--sig:${sigOf(m)}"` : '';
+function syncBodyFx(){
+  const on = !!C && !$('#vSheet').hidden && location.hash.replace('#', '') !== 'live' && $('#vSheet').offsetParent !== null;
+  const hm = on && C.hpMax, down = hm && isDown(C) && !C.dead, low = hm && !down && Math.min(hpNow(C), netNow(C)) / hm <= .25;
+  document.body.classList.toggle('hurt', !!low);
+  document.body.classList.toggle('dying', !!down);
+  document.body.classList.toggle('jacked', on && !!ENVS.jack);
+}
+addEventListener('hashchange', () => setTimeout(syncBodyFx, 30));
+let lvlT = null;
+function levelCard(lv){
+  const el = $('#lvlCard'); if (!el || !flashOK()) return;
+  const gains = ['+1 perk point'];
+  if (ASI_LEVELS.includes(lv)) gains.push('+2 stat increases');
+  if (prof(lv) > prof(lv - 1)) gains.push(`Proficiency now ${sgn(prof(lv))}`);
+  if (C.hpMax) gains.push('Roll your new HP');
+  el.innerHTML = `<div class="lc"><div class="lc-top"><span>DAEMON OS</span><span>FIRMWARE UPDATE</span></div>
+    <div class="lc-name">${esc(C.name)}</div><div class="lc-patch">Patch ${lv}.0</div>
+    <div class="lc-bar"><i></i></div><div class="lc-st">Installed</div>
+    <ul>${gains.map((g, i) => `<li style="animation-delay:${0.9 + i * 0.18}s">${g}</li>`).join('')}</ul>
+    <div class="lc-tap">Tap to continue</div></div>`;
+  el.hidden = false; el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+  clearTimeout(lvlT); lvlT = setTimeout(() => { el.hidden = true; }, 5200);
+  el.onclick = () => { clearTimeout(lvlT); el.hidden = true; };
+}
 function renderVitalsBar(){
   const el = $('#vitalsBar'); if (!el || !C) return;
   const hm = C.hpMax, cell = (lbl, a, b, bar) => { const r = b ? a / b : 1, cls = bar ? (r <= .25 ? 'low' : r <= .5 ? 'mid' : '') : '';
     return `<div class="vb ${cls}" data-k="${lbl === 'HP' ? 'hp' : lbl === 'Net HP' ? 'net' : ''}"><small>${lbl}</small><b>${a}${b != null ? `<small> / ${b}</small>` : ''}</b>${bar ? `<span class="hb"><i style="width:${Math.max(0, Math.min(100, r * 100))}%"></i></span>` : ''}</div>`; };
   const showNet = hm && (hasPerk('INT.A.r') || netNow(C) < hm);
-  el.innerHTML = (hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set')) + (showNet ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C));
+  const hpC = hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set'), netC = hm ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '';
+  el.innerHTML = ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C));
+  syncBodyFx();
 }
 $('#vitalsBar').addEventListener('click', e => { const k = (e.target.closest('.vb') || {}).dataset; if (k && (k.k === 'hp' || k.k === 'net') && C && C.hpMax) return openPad(k.k); if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
 $('#vitalsBar').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.currentTarget.click(); } });
@@ -2725,6 +2796,7 @@ function renderSheetHead(){
   if (typeof updateCombatBar === 'function') updateCombatBar();
   renderVitalsBar();
   const p = prof(C.level), na = nextAsi(C.level);
+  $('#sheetHead').style.setProperty('--sig', sigOf(C) || 'transparent'); $('#sheetHead').classList.toggle('sigd', !!sigOf(C));
   $('#sheetHead').innerHTML = `<div class="sheet-head">
     <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'}${C.bgSkills.length ? ' · ' + C.bgSkills.join(' and ') : ''}</div></div></div>
     <div><span class="lbl">Level</span><div class="lvlbox stepper"><button id="lvDown" ${C.level <= 1 ? 'disabled' : ''} aria-label="Level down">−</button><span class="val big" id="lvVal">${C.level}</span><button id="lvUp" ${C.level >= 20 ? 'disabled' : ''} aria-label="Level up">+</button></div></div>
@@ -2795,6 +2867,7 @@ function setLevel(l){
   if (up){
     $('#sheetHead').classList.remove('lvlup'); void $('#sheetHead').offsetWidth; $('#sheetHead').classList.add('lvlup');
     const gotAsi = ASI_LEVELS.includes(C.level);
+    levelCard(C.level);
     toast(`Level ${C.level}. +1 perk point${gotAsi ? ' and +2 stat increases' : ''}.${C.hpMax ? ' Roll your HP on the Character sheet.' : ''}`, true);
   }
 }
@@ -3399,6 +3472,7 @@ function renderCS(){
       <div><span class="lbl">Origin</span><div class="v">${C.background}</div></div>
       <div><span class="lbl">Role</span><div class="v">${C.role ? `${C.role} <span class="muted" style="font-size:12px" title="Roles are locked once picked">🔒</span>` : `<select data-field="role" aria-label="Role"><option value="">Pick once, it locks</option>${Object.keys(ROLES).map(r => `<option>${r}</option>`).join('')}</select>`}</div></div>
       <div><span class="lbl">Level</span><div class="v">${C.level}</div></div>
+      <div style="grid-column:1/-1"><span class="lbl">Signature color</span><div class="sigpick" role="radiogroup" aria-label="Signature color">${SIGS.map(c => `<button role="radio" aria-checked="${C.sig === c}" class="${C.sig === c ? 'on' : ''}" data-act="sig" data-c="${c}" style="--sig:${c}" aria-label="Color ${c}"></button>`).join('')}<button role="radio" aria-checked="${!C.sig}" class="none ${C.sig ? '' : 'on'}" data-act="sig" data-c="" aria-label="No color">✕</button></div><p class="muted" style="font-size:12px;margin:4px 0 0">Shows on your party card, the DM's roster and the activity log so the table can tell who's who.</p></div>
       <div><span class="lbl">Eddies</span><div class="v"><input type="number" min="0" data-field="eddies" value="${C.eddies}" aria-label="Eddies" style="width:120px"> €$</div></div>
     </div>
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k))).join('')}</div>
@@ -3517,7 +3591,7 @@ function renderCS(){
     <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
       <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
-    <div data-sub="combat">${netPanel()}</div>
+    <div data-sub="combat" class="netwrap">${netPanel()}</div>
     </div><div class="csR">
     <div class="panel gap" id="invPanel" data-sub="gear"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
       <div>${rows}</div>
@@ -3944,7 +4018,8 @@ $('#vCS').addEventListener('click', e => {
       ENVS.jack = !ENVS.jack;
       if (ENVS.jack){ C.ctr.jack++; saveC(); }
       if (FXS.sfx && PREFS.big){ ENVS.jack ? [220, 440, 880, 1760].forEach((f, i) => tone(f, f * 1.5, .12, 'sawtooth', .03, i * .05)) : [1760, 880, 440].forEach((f, i) => tone(f, f * .6, .1, 'square', .03, i * .05)); }
-      if (flashOK()) glitchBurst(450, ENVS.jack ? 'JACKED IN' : '', ['rgba(var(--crgb),.6)', 'rgba(0,0,0,.6)', 'rgba(255,255,255,.4)']);
+      if (flashOK()) glitchBurst(ENVS.jack ? 450 : 380, ENVS.jack ? 'JACKED IN' : 'JACKED OUT', ['rgba(var(--crgb),.6)', 'rgba(0,0,0,.6)', 'rgba(255,255,255,.4)']);
+      renderVitalsBar();
       setTimeout(refreshEnv, flashOK() ? 200 : 0);
       toast(ENVS.jack ? 'Jacked in. Welcome to the Net.' : 'Jacked out.');
       return renderCS();
@@ -3994,6 +4069,7 @@ $('#vCS').addEventListener('click', e => {
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
+    case 'sig': C.sig = t.dataset.c || null; sfx('select'); renderSheetHead(); return csSave();
     case 'psyRoll': {
       const a = 1 + Math.floor(Math.random() * 20), b2 = 1 + Math.floor(Math.random() * 20), adv = hasPerk('BOD.A.ph'), d20 = adv ? Math.max(a, b2) : a;
       const tot = d20 + psyMod(C), dc = psyDC(C), pass = tot >= dc;
@@ -4568,8 +4644,8 @@ function logHTML(dm){
   const rows = shown.map(l => {
     const d = new Date(l.at || 0), dl = d.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
     const head = dl !== day ? `<div class="logday">${esc(dl)}</div>` : ''; day = dl;
-    const p = players.find(x => x.mercId === l.mercId);
-    return `${head}<div class="logrow"><span class="tm">${d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>${avatar({name:l.name || '?', portrait:null}, 'av sm', p ? portraits[p.id] : null)}
+    const p = players.find(x => x.mercId === l.mercId), sg = p && p.merc ? sigOf(p.merc) : null;
+    return `${head}<div class="logrow ${sg ? 'sigd' : ''}"${sg ? ` style="--sig:${sg}"` : ''}><span class="tm">${d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>${avatar({name:l.name || '?', portrait:null}, 'av sm', p ? portraits[p.id] : null)}
       <div><span class="who">${esc(l.name || 'Merc')}</span>${l.via ? `<span class="via">${esc(l.via.toUpperCase())}</span>` : ''}<ul>${(l.lines || []).map(x => `<li class="${x.k === 'bad' ? 'bad' : x.k === 'good' ? 'good' : ''}">${esc(x.t)}</li>`).join('')}</ul></div></div>`;
   }).join('');
   return `<div class="panel gap"><div class="row"><h3>Activity</h3><span class="spacer"></span>
@@ -5177,7 +5253,7 @@ function partyCard(p, dm){
       <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
         <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
       <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
-  return `<div class="pcard ${me ? 'me' : ''}">
+  return `<div class="pcard ${me ? 'me' : ''} ${sigOf(m) ? 'sigd' : ''}"${sigStyle(m)}>
       <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
         ${m.lost ? '<span class="stagb psy gl" data-text="LOST">LOST</span>' : ''}${m.dead ? '<span class="stagb red gl" data-text="DEAD">DEAD</span>' : hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
@@ -5226,7 +5302,7 @@ function dmAlertsHTML(){
 function dmRow(p){
   if (!p.merc) return '';
   const {m, hm, hp, net, rmx, rc} = dmVit(p), k = p.id, on = isOnline(p), fl = dmFlags(m);
-  return `<div class="drow-w ${dmSel === k ? 'sel' : ''} ${fl.some(f => !f[1]) ? 'alert' : fl.length ? 'warn' : ''}">
+  return `<div class="drow-w ${dmSel === k ? 'sel' : ''} ${fl.some(f => !f[1]) ? 'alert' : fl.length ? 'warn' : ''} ${sigOf(m) ? 'sigd' : ''}"${sigStyle(m)}>
     <label class="dchk" title="Include in party hits"><input type="checkbox" data-blast="${k}" ${blastSel.has(k) ? 'checked' : ''} aria-label="Include ${esc(m.name)} in party hits"></label>
     <button class="drow" data-live="dmsel" data-u="${k}" aria-expanded="${dmSel === k}">${avatar(m, 'av sm' + (on ? '' : ' off'), portraits[k])}
       <span class="dmid"><span class="dnm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</span>
@@ -5267,7 +5343,7 @@ function dmFocusHTML(p){
       <div class="chips2" style="margin-top:8px">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
       ${m.cyber.length ? `<div class="sub" style="margin-top:8px">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}
       <div class="row" style="margin-top:14px"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>`;
-  return `<div class="panel dfocus" id="dmFocus">
+  return `<div class="panel dfocus ${sigOf(m) ? 'sigd' : ''}" id="dmFocus"${sigStyle(m)}>
     <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0;flex:1"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</div>
       <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div>
       ${dmFlags(m).map(([t, c]) => `<span class="stagb ${c === 'psy' ? 'psy' : c === 'hk' ? 'hackt' : c === 'heat' ? 'heat' : 'red'}">${t}</span>`).join('')}${encumbered(m) ? '<span class="stagb red">ENCUMBERED</span>' : ''}</div>
@@ -6432,6 +6508,7 @@ function envCompute(){
   return {style, bg:pal.bg, trace:pal.trace, light:pal.light, accent:pal.accent, tod:m && m.tod && m.tod !== 'default' ? m.tod : PREFS.tod, weather:m && m.weather && m.weather !== 'default' ? m.weather : PREFS.weather, src};
 }
 function refreshEnv(){
+  syncBodyFx();
   const n = envCompute();
   if (['style', 'bg', 'trace', 'light', 'accent', 'tod', 'weather'].some(k => n[k] !== AT[k])) applyTheme(true);
 }
