@@ -42,7 +42,11 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Print or PDF prints a clean black and white one page sheet
 
 ## DM tools
-- The dashboard has four tabs. Party (player cards, progress, activity log), NPCs (master list, Black ICE, NPC generator), Items (library and generators) and Session (handouts, mood, notes, recap, backups)
+- The dashboard has four tabs. Party (party roster, encounter, progress, activity log), NPCs (master list, Black ICE, NPC generator), Items (library and generators) and Session (handouts, mood, notes, recap, backups)
+- Party tab. A compact roster of every merc shows HP and NET bars, AC, RAM, COOL and status tags. An alert strip above it flags anyone down, hacked, overheated, cyberpsycho or jack-out locked, and tapping an alert opens that merc
+- Tap a merc to open their controls, split into Vitals, Give, Chrome and Sheet tabs. On a tablet or laptop held sideways (900 px and wider) the roster sits on the left and the controls stay pinned on the right. On a phone the controls open right under the merc you tapped
+- Party hit. Tick the boxes beside several mercs, enter an amount, then Damage, NET dmg or Heal hits them all at once, like a grenade. End round for everyone shows while any timed status effect is running
+- Players on a screen 1000 px or wider see Combat and Gear side by side on their sheet
 - NPCs only reach the players' Codex once the DM hits Add to codex or Show ID card
 - Party progress. Milestone levels up the whole party. Award XP to everyone or one player
 - Handouts. Upload an image (compressed under 1 MB), then Show to everyone pops it up on every player's screen. Players can reopen any handout from the Live page
@@ -149,3 +153,5 @@ Slots are `A.r`, `B.r`, `A.p`, `S.p`, `B.p`, `A.ph`, `S.ph`, `B.ph`, `A.l`, `B.l
 Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Random roller tables. The DM's Items tab has Download tables (`templates/daemon-random-tables.xlsx`, the defaults) and Upload tables. Each filled tab replaces that list (Items and Tier effects per type, Odds per roll). Saved on the DM's device under `daemon-tables`, applied over `GEN`, `EFFECTS`, `HANDLES` and `TIER_WEIGHT` from a copy of the defaults (`GEN_DEF`). Custom handles go to the session doc as `handles` so players' Random button uses them
 - Player layout. Your Mercs (`#mercs` roster, `#sheet` sheet) and Live Session (`#live`) are separate pages. The sheet has tabs Combat, Gear, Chrome, Perks and skills, Party and Profile (`sheetTab`). Combat, Gear, Chrome and Profile are views of `#vCS`, chosen by `data-sub` on each section. While a player is in a session, `placeLive()` moves `#liveBody` into the Party tab (`#vParty`), and the Live Session page shows a pointer to it. `#vitalsBar` is the sticky HP, Net HP, RAM and AC strip. `‹ All mercs` and the browser back button go between sheet and roster
+- Table mode (`PREFS.table`, Settings > Comfort) hides the canvas, glitch layers and big flash text and puts solid backing behind panels. Tapping HP or Net HP in the vitals bar opens the quick HP pad (`#vpad`, `hitVital`). While connected to a live session the site holds a screen wake lock (`syncWake`, `PREFS.awake`)
+- Phone layout. Settings opens from the ⚙ link in the top menu (`#navSet`), with quick Sound, Motion and Table mode buttons; the old floating dock is hidden. Notifications show at the top. The sheet header keeps name, level, COOL Tokens and Undo, plus a yellow note when perk points or stat increases are waiting. The level-up tiles live at the top of Perks and skills (`#lvlTiles`), and Merc ID card and Print are in Profile (`#profTools`)

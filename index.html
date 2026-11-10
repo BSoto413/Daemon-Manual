@@ -602,6 +602,87 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 #vCS .cs-grid{scroll-margin-top:84px}
 #vCS[data-sub="combat"] [data-sub]:not([data-sub="combat"]),#vCS[data-sub="gear"] [data-sub]:not([data-sub="gear"]),#vCS[data-sub="chrome"] [data-sub]:not([data-sub="chrome"]),#vCS[data-sub="profile"] [data-sub]:not([data-sub="profile"]){display:none!important}
 .vtabs button[hidden]{display:none}
+/* DM party view */
+body.dmwide .wrap{max-width:1440px}
+.dmalerts{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.dmalert{border:1px solid #ff4f6d;background:rgba(255,79,109,.14);color:#ffd5dc;font:600 12px 'Exo 2',sans-serif;letter-spacing:.5px;padding:7px 11px;cursor:pointer}.dmalert b{color:#fff}
+.dmalert.psy{border-color:#ff4fd8;background:rgba(255,79,216,.12);color:#ffd0f6}.dmalert.hk{border-color:#3fd0ff;background:rgba(63,208,255,.1);color:#cdf3ff}.dmalert.heat{border-color:#ffa53f;background:rgba(255,165,63,.12);color:#ffe2bf}
+.dmsplit{display:grid;gap:16px;margin-top:14px}
+.dmleft{display:grid;gap:10px;align-content:start;min-width:0}.dmleft > .panel.gap{margin-top:4px}
+@media (min-width:900px){.dmsplit{grid-template-columns:minmax(320px,.85fr) minmax(0,1.15fr);align-items:start}.dmright{position:sticky;top:58px;max-height:calc(100vh - 68px);overflow:auto;overscroll-behavior:contain}}
+.dmbar{padding:12px 14px}.dmbar .row{gap:6px}.dmbar .lblb{font:600 11px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan)}
+.droster{display:grid;gap:8px}
+.drow-w{display:flex;align-items:stretch;background:var(--panel);border:1px solid rgba(var(--crgb),.2)}
+.drow-w.warn{border-color:rgba(255,79,216,.55)}.drow-w.alert{border-color:#ff4f6d;box-shadow:0 0 0 1px rgba(255,79,109,.35) inset}
+.drow-w.sel{border-color:var(--cyan);box-shadow:inset 4px 0 0 var(--cyan);background:rgba(var(--crgb),.07)}
+.dchk{display:flex;align-items:center;justify-content:center;padding:0 10px;border-right:1px solid rgba(var(--crgb),.15);cursor:pointer;min-width:44px}.dchk.all{border:0;padding:0 6px 0 0;min-width:0}
+.dchk input{width:20px;height:20px;accent-color:var(--cyan);margin:0;cursor:pointer}
+.drow{flex:1;display:flex;gap:10px;align-items:center;background:none;border:0;color:inherit;text-align:left;padding:10px 10px 10px 8px;cursor:pointer;min-width:0;font:inherit}
+.drow .av{flex:none}.drow .chev{color:var(--cyan);font-size:22px;opacity:.6;transition:transform .15s}.drow[aria-expanded="true"] .chev{opacity:1;transform:rotate(90deg)}
+@media (min-width:900px){.drow[aria-expanded="true"] .chev{transform:none}}
+.dmid{flex:1;min-width:0;display:grid;gap:4px}
+.dnm{color:#fff;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dsub{font-size:12px;color:#aab3c5}
+.dbar{display:grid;grid-template-columns:32px 1fr 52px;align-items:center;gap:6px;font-size:11px}.dbar b{font:600 9px Orbitron,sans-serif;letter-spacing:1px;color:#aab3c5}
+.dbar em{font-style:normal;color:#fff;text-align:right;font-variant-numeric:tabular-nums}
+.dbar .mb{height:7px;background:rgba(var(--crgb),.15)}.dbar .mb i{display:block;height:100%;background:#3ee08a}.dbar.net .mb i{background:#3fd0ff}
+.dbar.mid .mb i{background:#ffd23f}.dbar.low .mb i{background:#ff4f6d}.dbar.low em{color:#ff8fa3}
+.dtags{display:flex;flex-wrap:wrap;gap:4px}.dtags i{font-style:normal;font-size:10px;letter-spacing:.5px;padding:2px 6px;border:1px solid rgba(var(--crgb),.35);color:#cdeff2}
+.dtags i.t{font-family:Orbitron,sans-serif;letter-spacing:1px}.dtags i.red{border-color:#ff4f6d;color:#ff8fa3}.dtags i.psy{border-color:#ff4fd8;color:#ff9be9}.dtags i.hk{border-color:#3fd0ff;color:#9fe6ff}.dtags i.heat{border-color:#ffa53f;color:#ffc98a}
+.dfocus{display:grid;gap:12px;border-color:var(--cyan);scroll-margin-top:64px}.dfocus .head{display:flex;gap:12px;align-items:flex-start}.dfocus .nm{font-size:18px}
+.droster .dfocus{margin:-4px 0 4px;border-top:0}
+.dstrip{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px}
+.dstrip div{border:1px solid rgba(var(--crgb),.22);padding:6px 8px;background:rgba(255,255,255,.02)}.dstrip small{display:block;font:500 9px Orbitron,sans-serif;letter-spacing:1.5px;color:#aab3c5;text-transform:uppercase}
+.dstrip b{font:600 18px Orbitron,sans-serif;color:#fff}.dstrip b i{font-style:normal;font-size:12px;opacity:.6}.dstrip .mid b{color:#ffd23f}.dstrip .low b{color:#ff4f6d}
+.dsave{display:grid;gap:8px;border:1px solid #ff4f6d;padding:10px;background:rgba(255,79,109,.06)}
+.dsubs button{font-size:11px;padding:11px 4px}
+.dbody .ctlgrid{grid-template-columns:78px 1fr}.dbody .ctlgrid .row{flex-wrap:wrap}
+/* Wide screens: Combat and Gear side by side */
+@media (min-width:1000px){
+  #vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+  #vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2 [data-sub="combat"],#vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2 [data-sub="gear"]{display:block!important}
+  #vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2 .cs-grid[data-sub="combat"]{display:grid!important;grid-template-columns:1fr}
+  #vCS .csR > .panel:first-child{margin-top:14px}
+  #vCS .csR .invlay{grid-template-columns:minmax(0,1fr)}
+  #vCS .csR .inv-add{grid-template-columns:repeat(2,minmax(0,1fr))}#vCS .csR .inv-add > :first-child{grid-column:1/-1}
+}
+/* Slim sheet header */
+.headrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.coolchip{display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid rgba(var(--crgb),.25);background:rgba(255,255,255,.03)}.coolchip b{font:600 18px Orbitron,sans-serif;color:#fff}.coolchip.hot{border-color:var(--yellow)}.coolchip.hot b{color:var(--yellow)}
+.lvlnote{display:block;width:100%;margin-top:12px;text-align:left;background:rgba(255,210,63,.1);border:1px solid var(--yellow);color:var(--yellow);font-weight:600;font-size:14px;padding:10px 12px;cursor:pointer}
+#lvlTiles .vitals{margin-top:0}#lvlTiles .xprow{margin-top:12px}
+/* Readable small labels: the body font, at least 12px */
+.lbl{font-family:inherit;font-weight:700;font-size:12px;letter-spacing:1px;color:#d6dde4}
+.vital .lbl,.summary .lbl{font-size:12px;color:#c3ccd5}
+#vitalsBar .vb small{font:700 11px inherit;font-family:inherit;letter-spacing:1px;color:#c3ccd5}
+/* Settings lives in the top menu now */
+.dock{display:none!important}
+nav .navset{color:var(--cyan);opacity:.9}
+.setp{top:calc(env(safe-area-inset-top,0px) + 70px);bottom:auto}
+.setquick{display:flex;gap:6px;margin:0 0 10px}.setquick button{flex:1}
+/* Notifications at the top, clear of buttons */
+.toast{top:calc(env(safe-area-inset-top,0px) + 74px);bottom:auto;transform:translate(-50%,-14px);box-shadow:0 8px 24px rgba(0,0,0,.6);z-index:31}
+@media (max-width:560px){
+  .inv-add .btn{grid-column:1 / -1;justify-self:stretch;width:100%;min-height:46px;height:auto}
+  .inv-add + p{margin-top:8px!important}
+  .toast{font-size:13px;padding:10px 14px;max-width:92vw}
+  .btn.small{min-height:40px;padding-left:12px;padding-right:12px}
+  .stepper button,.lvlbox button{min-width:44px;min-height:44px}
+  input[type=number],input[type=text],select{min-height:44px}
+  nav{gap:14px 20px}
+}
+/* Readable tab bars (sheet, DM dashboard, Codex, Settings). Solid backing, bright text, a filled active tab. */
+.vtabs{background:rgba(6,8,14,.94);border:1px solid rgba(var(--crgb),.4);padding:4px;gap:4px}
+.vtabs button{color:#e8eef4;font-weight:600;font-size:12px;letter-spacing:1.5px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-bottom-width:1px;text-shadow:0 1px 2px rgba(0,0,0,.8)}
+.vtabs button:hover{background:rgba(var(--crgb),.16);color:#fff;border-color:rgba(var(--crgb),.5)}
+.vtabs button.on{background:var(--cyan);color:var(--on-accent,#05121a);border-color:var(--cyan);text-shadow:none;box-shadow:0 0 12px rgba(var(--crgb),.45)}
+.vtabs button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.stabs button{color:#e8eef4;font-weight:600;font-size:11px}
+.stabs button.on{color:var(--cyan)}
+@media (max-width:560px){
+  .vtabs:not(.dmtabs):not(.cxtabs){display:grid;grid-template-columns:repeat(3,1fr)}
+  .vtabs button{font-size:11px;letter-spacing:1px;padding:11px 4px;min-height:44px}
+}
 #liveStub .panel{border-left:3px solid var(--cyan)}
 .sethead{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;background:rgba(10,10,18,.98);padding:14px 0 8px;margin-bottom:2px}
 .setback{position:fixed;inset:0;z-index:6;background:rgba(0,0,0,.35);touch-action:none}
@@ -717,6 +798,19 @@ body.compact .cslot{padding:8px 10px}
 body.calm .gl::before,body.calm .gl::after{display:none}
 body.calm #vignette.on{animation:none}
 body.calm .tear{display:none}
+/* Table mode. Plain background, no glitch layers, solid panels. */
+body.table #circuit,body.table #vignette,body.table .tear,body.table .coolfx{display:none!important}
+body.table{background:#0a0c12!important}
+body.table .gl::before,body.table .gl::after{display:none!important}
+body.table .panel{background:#10141c!important;backdrop-filter:none!important}
+body.table .gl,body.table #combatFx .cf-t,body.table #combatBar .cb-t,body.table #vitalsBar *{animation:none!important}
+/* Quick HP pad */
+#vpad{position:fixed;left:50%;transform:translateX(-50%);z-index:30;width:min(94vw,420px);background:#0c1018;border:1px solid var(--cyan);box-shadow:0 12px 30px rgba(0,0,0,.7);padding:14px}
+#vpad[hidden]{display:none}#vpad .vp-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}#vpad .vp-h b{font:600 18px Orbitron,sans-serif;color:#fff;flex:1}#vpad .vp-h b small{font-size:13px;opacity:.6}
+#vpad .vp-q{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}#vpad .vp-q button{min-height:48px;font:600 18px Orbitron,sans-serif}
+#vpad .vp-q .dm{background:rgba(255,60,90,.14);border:1px solid rgba(255,60,90,.6);color:#ffb3c0}#vpad .vp-q .hl{background:rgba(60,255,160,.1);border:1px solid rgba(60,255,160,.5);color:#b6ffd9}
+#vpad .vp-c{display:flex;gap:8px;align-items:stretch}#vpad .vp-c input{flex:1;min-width:0;font-size:20px;text-align:center;min-height:48px}#vpad .vp-c button{min-height:48px;padding:0 14px}
+#vpad .vp-x{background:none;border:0;color:#fff;font-size:24px;cursor:pointer;padding:0 6px;min-height:40px}
 .styles{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 12px}
 .styles button{text-align:left;background:#08080f;border:1px solid rgba(var(--crgb),.2);padding:9px 10px;cursor:pointer;color:inherit;font:inherit}
 .styles button b{display:block;font-family:Orbitron,sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#fff}
@@ -937,7 +1031,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   <header>
     <h1 class="gl-title" data-text="Daemon Manual V0.77">Daemon Manual V0.77</h1>
     <div class="rule"></div>
-    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a><a href="#" id="navSearch" class="navsearch" aria-label="Search everything">⌕ Search</a></nav>
+    <nav id="topnav"><a href="#rules" data-pg="rules">Rules</a><a href="#mercs" data-pg="app">Your Mercs</a><a href="#live" data-pg="app">Live Session</a><a href="#codex" data-pg="codex">Codex</a><a href="#" id="navSearch" class="navsearch" aria-label="Search everything">⌕ Search</a><a href="#" id="navSet" class="navset" aria-label="Settings">⚙ Settings</a></nav>
   </header>
 
   <div id="pgRules" hidden>
@@ -1340,6 +1434,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <div class="panel" id="sheetHead"></div>
       <div class="vtabs" role="tablist"><button data-v="combat" class="on" role="tab">Combat</button><button data-v="gear" role="tab">Gear</button><button data-v="chrome" role="tab">Chrome</button><button data-v="perks" role="tab">Perks and skills</button><button data-v="party" role="tab" hidden>Party</button><button data-v="profile" role="tab">Profile</button></div>
       <div id="vPerks">
+      <div class="panel" id="lvlTiles" style="margin-bottom:14px"></div>
       <div class="tabs" id="tabs" role="tablist"></div>
       <div class="sim-grid">
         <div class="panel" id="treePanel">
@@ -1381,6 +1476,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       </div>
       <div id="vCS" hidden></div>
       <div id="vParty" hidden></div>
+      <div class="panel gap" id="profTools" hidden></div>
       <div id="vAch" hidden></div>
 
       <div id="vSave" hidden>
@@ -1425,6 +1521,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div id="heatVig" aria-hidden="true"></div>
 <div id="glitchFx" aria-hidden="true"></div>
 <div id="combatFx" hidden role="alert"></div>
+<div id="vpad" hidden role="dialog" aria-label="Quick HP"></div>
 <div id="flatline" hidden role="alert"><div class="fl-inner"><div class="fl-text gl" data-text="FLATLINED">FLATLINED</div>
   <svg class="ekg" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 H170 L185 40 L195 12 L208 70 L220 30 L232 40 H600"/></svg>
   <div class="fl-sub" id="flSub">Unconscious. Critical condition.</div><div class="fl-hint">Click to continue</div></div></div>
@@ -2574,12 +2671,55 @@ function updateHeat(){
 function renderVitalsBar(){
   const el = $('#vitalsBar'); if (!el || !C) return;
   const hm = C.hpMax, cell = (lbl, a, b, bar) => { const r = b ? a / b : 1, cls = bar ? (r <= .25 ? 'low' : r <= .5 ? 'mid' : '') : '';
-    return `<div class="vb ${cls}"><small>${lbl}</small><b>${a}${b != null ? `<small> / ${b}</small>` : ''}</b>${bar ? `<span class="hb"><i style="width:${Math.max(0, Math.min(100, r * 100))}%"></i></span>` : ''}</div>`; };
+    return `<div class="vb ${cls}" data-k="${lbl === 'HP' ? 'hp' : lbl === 'Net HP' ? 'net' : ''}"><small>${lbl}</small><b>${a}${b != null ? `<small> / ${b}</small>` : ''}</b>${bar ? `<span class="hb"><i style="width:${Math.max(0, Math.min(100, r * 100))}%"></i></span>` : ''}</div>`; };
   const showNet = hm && (hasPerk('INT.A.r') || netNow(C) < hm);
   el.innerHTML = (hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set')) + (showNet ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C));
 }
-$('#vitalsBar').addEventListener('click', () => { if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
+$('#vitalsBar').addEventListener('click', e => { const k = (e.target.closest('.vb') || {}).dataset; if (k && (k.k === 'hp' || k.k === 'net') && C && C.hpMax) return openPad(k.k); if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
 $('#vitalsBar').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.currentTarget.click(); } });
+// Quick HP pad. Tap HP or Net HP in the vitals bar to take damage or heal from any tab.
+let padFor = null;
+function hitVital(which, n){
+  if (!C || !C.hpMax || !n) return;
+  const hm = C.hpMax, key = which === 'net' ? 'netHp' : 'hp', pv = C[key] ?? hm;
+  C[key] = Math.max(0, Math.min(hm, pv + n)); sfx(n < 0 ? 'damage' : 'heal'); csSave();
+  if (pv > 0 && C[key] === 0) flatline(which === 'net' ? 'net' : 'body');
+  if (padFor) renderPad();
+}
+function renderPad(){
+  const el = $('#vpad'); if (!padFor || !C) return;
+  const hm = C.hpMax, cur = Math.max(0, padFor === 'net' ? netNow(C) : hpNow(C)), lbl = padFor === 'net' ? 'Net HP' : 'HP';
+  const bar = $('#vitalsBar').getBoundingClientRect(); el.style.top = Math.max(8, Math.min(bar.bottom + 6, innerHeight - 260)) + 'px';
+  el.innerHTML = `<div class="vp-h"><b>${lbl} ${cur}<small> / ${hm}</small></b><button class="vp-x" data-pad="close" aria-label="Close">✕</button></div>
+    <div class="vp-q"><button class="dm" data-pad="-1">−1</button><button class="dm" data-pad="-5">−5</button><button class="dm" data-pad="-10">−10</button><button class="hl" data-pad="1">+1</button><button class="hl" data-pad="5">+5</button><button class="hl" data-pad="10">+10</button></div>
+    <div class="vp-c"><input type="number" id="padAmt" min="1" inputmode="numeric" placeholder="Amount" aria-label="Amount"><button class="btn danger" data-pad="dmg">Damage</button><button class="btn" data-pad="heal">Heal</button></div>
+    <div class="row gap" style="margin-top:10px"><button class="btn small" data-pad="full">Full ${lbl}</button><span class="muted" style="font-size:12px">Tap outside to close</span></div>`;
+}
+function openPad(which){ padFor = which; $('#vpad').hidden = false; renderPad(); sfx('select'); }
+function closePad(){ padFor = null; $('#vpad').hidden = true; }
+$('#vpad').addEventListener('click', e => {
+  const b = e.target.closest('[data-pad]'); if (!b || !padFor) return;
+  const v = b.dataset.pad, amtIn = () => Math.max(0, parseInt(($('#padAmt') || {}).value) || 0);
+  if (v === 'close') return closePad();
+  if (v === 'full'){ const hm = C.hpMax; if (padFor === 'net') C.netHp = hm; else C.hp = hm; sfx('heal'); csSave(); return renderPad(); }
+  if (v === 'dmg' || v === 'heal'){ const n = amtIn(); if (!n){ toast('Type an amount first.'); return $('#padAmt').focus(); } return hitVital(padFor, v === 'dmg' ? -n : n); }
+  hitVital(padFor, parseInt(v));
+});
+document.addEventListener('pointerdown', e => { if (padFor && !e.target.closest('#vpad') && !e.target.closest('#vitalsBar')) closePad(); }, true);
+document.addEventListener('keydown', e => { if (padFor && e.key === 'Escape') closePad(); if (padFor && e.key === 'Enter' && e.target.id === 'padAmt'){ const n = parseInt(e.target.value) || 0; if (n) hitVital(padFor, -n); } });
+// ---- Keep the screen awake while connected to a live session (if the phone supports it) ----
+let wakeLock = null, wakeBusy = false;
+// One lock at a time. Live views redraw often, so a request in flight blocks new ones, and the result is checked again once it lands.
+async function syncWake(){
+  if (wakeBusy) return; wakeBusy = true;
+  try {
+    const want = () => !!(PREFS.awake && LS && liveState === 'on' && document.visibilityState === 'visible');
+    if (want() && !wakeLock && navigator.wakeLock){ const l = await navigator.wakeLock.request('screen'); wakeLock = l; l.addEventListener('release', () => { if (wakeLock === l) wakeLock = null; }); }
+    if (!want() && wakeLock){ const w = wakeLock; wakeLock = null; await w.release(); }
+  } catch(err){ wakeLock = null; }
+  wakeBusy = false;
+}
+document.addEventListener('visibilitychange', () => syncWake());
 function renderSheetHead(){
   updateVignette(); updateHeat(); if (typeof updatePsy === 'function'){ updatePsy(); updateHack(); }
   if (typeof updateCombatBar === 'function') updateCombatBar();
@@ -2589,23 +2729,30 @@ function renderSheetHead(){
     <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'}${C.bgSkills.length ? ' · ' + C.bgSkills.join(' and ') : ''}</div></div></div>
     <div><span class="lbl">Level</span><div class="lvlbox stepper"><button id="lvDown" ${C.level <= 1 ? 'disabled' : ''} aria-label="Level down">−</button><span class="val big" id="lvVal">${C.level}</span><button id="lvUp" ${C.level >= 20 ? 'disabled' : ''} aria-label="Level up">+</button></div></div>
   </div>
-  <div class="vitals">
+  ${(() => { const pl = perkLeft(), al = asiLeft(); return pl > 0 || al > 0 ? `<button class="lvlnote" id="goPerks">${[pl > 0 ? `${pl} perk point${pl === 1 ? '' : 's'}` : '', al > 0 ? `${al} stat increase${al === 1 ? '' : 's'}` : ''].filter(Boolean).join(' and ')} to spend ›</button>` : ''; })()}
+  <div class="headrow"><div class="coolchip ${C.cool ? 'hot' : ''}"><span class="lbl" style="margin:0">COOL Tokens</span><b>${C.cool}</b>${C.cool ? ` <button class="btn small" id="coolSpend" aria-expanded="${coolPick}">${coolPick ? 'Cancel' : 'Use'}</button>` : ''}</div><span class="spacer"></span><button class="btn small" id="stUndo" ${(UNDO[C.id] || []).length ? '' : 'disabled'} title="Ctrl+Z">Undo</button></div>
+  <template id="lvlTilesT"><div class="vitals">
     <div class="vital ${perkLeft() > 0 ? 'hot' : ''}"><span class="lbl">Perk points</span><div class="v">${perkLeft()} <small>/ ${perkTotal()}</small></div></div>
     <div class="vital ${asiLeft() > 0 ? 'hot' : ''}"><span class="lbl">Stat increases</span><div class="v">${asiLeft()} <small>${na ? 'next at lvl ' + na : 'all earned'}</small></div></div>
     <div class="vital"><span class="lbl">RAM</span><div class="v">${4 + mod(score('INT'))}</div></div>
     <div class="vital"><span class="lbl">HP per level</span><div class="v">10 + d10 <small>${sgn(mod(score('BOD')))}</small></div></div>
     <div class="vital"><span class="lbl">Proficiency</span><div class="v">${sgn(p)}</div></div>
-    <div class="vital cool ${C.cool ? 'hot' : ''}"><span class="lbl">COOL Tokens</span><div class="v">${C.cool}${C.cool ? ` <button class="btn small" id="coolSpend" aria-expanded="${coolPick}">${coolPick ? 'Cancel' : 'Use'}</button>` : ''}</div></div>
-  </div>
+  </div></template>
   ${coolPick && C.cool ? coolPickHTML() : ''}
   ${C.xp ? (() => { const nx = xpNext(C.level), pv = XP_TABLE[C.level - 1] || 0, ready = nx && C.xp >= nx; return `<div class="xprow"><span class="lbl" style="margin:0">XP</span><div class="bar thin" style="flex:1;margin:0"><i style="width:${nx ? Math.min(100, (C.xp - pv) / (nx - pv) * 100) : 100}%;background:var(--yellow)"></i></div><span>${C.xp.toLocaleString()}${nx ? ' / ' + nx.toLocaleString() : ''}</span>${ready ? '<b class="ready">Ready to level up</b>' : ''}</div>`; })() : ''}
-  <div class="sheettools"><button class="btn small" id="stUndo" ${(UNDO[C.id] || []).length ? '' : 'disabled'} title="Ctrl+Z">Undo</button><button class="btn small" id="stCard">Merc ID card</button><button class="btn small" id="stPrint">Print or PDF</button><span class="spacer"></span><span class="muted" style="font-size:12px">★ ${ACH.filter(a => C.ach[a.id]).length} of ${ACH.length} achievements</span></div>
+
   ${isOverheated() ? `<div class="heatbar"><b class="gl" data-text="OVERHEATED">OVERHEATED</b><div>Your RAM hit 0 and your system cooked. You're stunned and can't do anything until your RAM comes back.</div></div>` : ''}
   ${C.hacks.length ? `<div class="hackbar"><b class="gl" data-text="HACKED">HACKED</b>${C.hacks.map(h => `<div><span>${HACKS[h].n}</span> ${HACKS[h].d}</div>`).join('')}<div class="muted" style="font-size:12px">Only the DM can clear this.</div></div>` : ''}`;
   const cs = $('#coolSpend');
   if (cs) cs.onclick = () => { if (!coolPick && stunned()) return; coolPick = !coolPick; renderSheetHead(); };
   $('#sheetHead').querySelectorAll('[data-cooluse]').forEach(b => b.onclick = () => useCool(b.dataset.cooluse, b.dataset.who));
-  $('#stUndo').onclick = undo; $('#stCard').onclick = showIdCardMerc; $('#stPrint').onclick = printSheet;
+  $('#stUndo').onclick = undo;
+  const gp = $('#goPerks'); if (gp) gp.onclick = () => { setSheetTab('perks'); const t = document.querySelector('.vtabs'); if (t) t.scrollIntoView({behavior:'smooth', block:'start'}); };
+  // The level-up numbers live at the top of Perks and skills; the ID card and print tools live in Profile.
+  const lt = $('#lvlTiles'), tpl = $('#lvlTilesT'); if (lt && tpl) lt.innerHTML = tpl.innerHTML + `<div class="xpslot"></div>`;
+  const xr = $('#sheetHead .xprow'); if (lt && xr) lt.querySelector('.xpslot').appendChild(xr);
+  const pt = $('#profTools'); if (pt) pt.innerHTML = `<div class="sheettools" style="margin-top:0"><button class="btn small" id="stCard">Merc ID card</button><button class="btn small" id="stPrint">Print or PDF</button><span class="spacer"></span><span class="muted" style="font-size:13px">★ ${ACH.filter(a => C.ach[a.id]).length} of ${ACH.length} achievements</span></div>`;
+  const sc = $('#stCard'), sp = $('#stPrint'); if (sc) sc.onclick = showIdCardMerc; if (sp) sp.onclick = printSheet;
   $('#lvUp').onclick = () => setLevel(C.level + 1);
   $('#lvDown').onclick = () => setLevel(C.level - 1);
 }
@@ -3195,7 +3342,7 @@ function setSheetTab(t){
   if (t === 'party' && !partyOn()) t = 'combat';
   sheetTab = t;
   $('#vPerks').hidden = t !== 'perks';
-  $('#vCS').hidden = !CS_TABS.includes(t); $('#vAch').hidden = t !== 'profile'; $('#vSave').hidden = t !== 'profile'; $('#vParty').hidden = t !== 'party';
+  $('#vCS').hidden = !CS_TABS.includes(t); $('#vAch').hidden = t !== 'profile'; $('#profTools').hidden = t !== 'profile'; $('#vSave').hidden = t !== 'profile'; $('#vParty').hidden = t !== 'party';
   if (t === 'profile') renderAch();
   updateTabs();
   if (CS_TABS.includes(t)) renderCS(); else if (t === 'perks') requestAnimationFrame(layout); else if (t === 'party') placeLive();
@@ -3362,21 +3509,24 @@ function renderCS(){
     <div class="panel gap" data-sub="profile"><div class="idwrap"><div style="display:grid;gap:8px;justify-items:start">${avatar(C, 'av lg')}
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
+    <div class="cs2"><div class="csL">
     <div class="cs-grid" data-sub="combat">
       <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div></div>
     </div>
+    <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
+      <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
+      <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
+    <div data-sub="combat">${netPanel()}</div>
+    </div><div class="csR">
     <div class="panel gap" id="invPanel" data-sub="gear"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
       <div>${rows}</div>
       <span class="lbl" style="margin-top:18px">Add an item</span>
       <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><span class="nisz"><input type="number" id="niW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="niH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><button class="btn primary small" data-act="addItem">Add</button></div>
       <p class="muted" style="font-size:12px;margin:-4px 0 10px">Leave the size blank and it guesses from the type, like 4 × 1 for a rifle. Your GM tells you the real size.</p>
 </div>
-    <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
-      <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
-      <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
-    <div data-sub="combat">${netPanel()}</div>
     <div data-sub="gear">${fabPanel}${ledgerHTML()}</div>
+    </div></div>
     <div class="panel gap" data-sub="chrome"><h3 style="margin-bottom:14px">Chrome load</h3>${cwBlock}${psyBlock}</div>
     <div class="panel gap" data-sub="chrome"><div class="row"><h3>Cyberware</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM from cyberware ${sgn(cr)}</span></div>
       <p style="font-size:14px;margin-top:6px">${rip ? `You're a RipperDoc. You can install and remove chrome for yourself, and for the party in a live session. Hot-swap turns a part into one anyone can swap themselves, for ${HOTSWAP_COST} €$.` : `Installing chrome takes a RipperDoc. A party member with the RipperDoc perk, or the DM, can install it for you during a live session. Hot-swappable parts are the exception.`}</p>
@@ -5044,8 +5194,119 @@ function partyCard(p, dm){
       ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}${controls}
     </div>`;
 }
+/* ---- DM party view: roster on the left, one merc's controls on the right ---- */
+let dmSel = null, dmSub = 'vitals';
+const blastSel = new Set();
+const DM_WIDE = matchMedia('(min-width:900px)');
+DM_WIDE.addEventListener('change', () => { if (LS && LS.role === 'dm' && liveState === 'on') renderLive(); });
+function dmVit(p){
+  const m = normalize(p.merc), hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
+  const rmx = (p.merc.derived && p.merc.derived.ramMax) || ramMax(m), rc = m.ram == null ? rmx : Math.min(m.ram, rmx);
+  return {m, hm, hp, net, rmx, rc};
+}
+function dmFlags(m){
+  const f = [];
+  if (m.dead) f.push(['DEAD', '']);
+  else if (isDown(m)) f.push([`DOWN ${hpNow(m) <= 0 ? 'HP' : 'NET'} · ✓${m.ds.p} ✕${m.ds.f}`, '']);
+  if (m.lost) f.push(['LOST', 'psy']);
+  if (m.psycho) f.push(['CYBERPSYCHO', 'psy']);
+  if (m.hacks.length) f.push(['HACKED', 'hk']);
+  if (isOverheated(m)) f.push(['OVERHEATED', 'heat']);
+  if (m.jackLock) f.push(['JACK-OUT LOCKED', 'hk']);
+  return f;
+}
+const dmTone = (v, mx) => !mx ? '' : v / mx <= .25 ? 'low' : v / mx <= .5 ? 'mid' : '';
+const dmBar = (lbl, v, mx, cls) => `<span class="dbar ${cls || ''} ${dmTone(v, mx)}"><b>${lbl}</b><span class="mb"><i style="width:${mx ? Math.max(0, Math.min(100, v / mx * 100)) : 0}%"></i></span><em>${mx ? v + '/' + mx : '—'}</em></span>`;
+function dmAlertsHTML(){
+  const out = [];
+  players.forEach(p => { if (!p.merc) return; const m = normalize(p.merc); dmFlags(m).forEach(([t, c]) => out.push(`<button class="dmalert ${c}" data-live="dmsel" data-u="${p.id}"><b>${esc(m.name)}</b> ${t}</button>`)); });
+  return out.length ? `<div class="dmalerts" role="status">${out.join('')}</div>` : '';
+}
+function dmRow(p){
+  if (!p.merc) return '';
+  const {m, hm, hp, net, rmx, rc} = dmVit(p), k = p.id, on = isOnline(p), fl = dmFlags(m);
+  return `<div class="drow-w ${dmSel === k ? 'sel' : ''} ${fl.some(f => !f[1]) ? 'alert' : fl.length ? 'warn' : ''}">
+    <label class="dchk" title="Include in party hits"><input type="checkbox" data-blast="${k}" ${blastSel.has(k) ? 'checked' : ''} aria-label="Include ${esc(m.name)} in party hits"></label>
+    <button class="drow" data-live="dmsel" data-u="${k}" aria-expanded="${dmSel === k}">${avatar(m, 'av sm' + (on ? '' : ' off'), portraits[k])}
+      <span class="dmid"><span class="dnm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</span>
+        <span class="dsub">Lvl ${m.level} · AC ${acOf(m)} · RAM ${rc}/${rmx} · COOL ${m.cool}</span>
+        ${dmBar('HP', hp, hm)}${dmBar('NET', net, hm, 'net')}
+        ${fl.length || (m.status || []).length ? `<span class="dtags">${fl.map(([t, c]) => `<i class="t ${c || 'red'}">${t}</i>`).join('')}${(m.status || []).map(x => `<i>${STATUSMAP[x.id].n}${x.r != null ? ' ' + x.r : ''}</i>`).join('')}</span>` : ''}
+      </span><span class="chev" aria-hidden="true">›</span></button></div>`;
+}
+function dmFocusHTML(p){
+  const {m, hm, hp, net, rmx, rc} = dmVit(p), k = p.id, on = isOnline(p);
+  const nm = id => m.inv.find(i => i.id === id), pr = nm(m.eq.primary), se = nm(m.eq.secondary);
+  const amtRow = `<span class="ctl">Amount</span><div class="row"><input type="number" min="0" id="amt-${k}" placeholder="Amt" inputmode="numeric" aria-label="Amount for ${esc(m.name)}"></div>`;
+  const cyInv = m.inv.filter(i => i.type === 'Cyberware');
+  const tabs = [['vitals', 'Vitals'], ['give', 'Give'], ['chrome', 'Chrome'], ['session', 'Sheet']];
+  let body = '';
+  if (dmSub === 'vitals') body = `<div class="ctlgrid">${amtRow}
+      <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
+      <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
+      <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
+      <span class="ctl">Status</span><div class="row"><select id="sts-${k}" aria-label="Status effect for ${esc(m.name)}">${statusOpts()}</select><input type="number" min="1" id="str-${k}" placeholder="Rds" aria-label="Rounds, blank means until removed" style="width:70px"><button class="btn small" data-live="stApply" data-u="${k}">Apply</button></div>
+      <span class="ctl">COOL</span><div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 Token</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div></div>`;
+  if (dmSub === 'give') body = `<div class="ctlgrid">
+      <span class="ctl">Item</span><div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1;min-width:0">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select><button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
+      ${amtRow}
+      <span class="ctl">Eddies</span><div class="row"><button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button><span class="muted" style="font-size:12px">Has ${m.eddies} €$</span></div>
+      <span class="ctl">XP</span><div class="row"><button class="btn small" data-live="xp1" data-u="${k}">Award XP</button><span class="muted" style="font-size:12px">${m.xp ? m.xp.toLocaleString() + ' so far' : 'None yet'}</span></div></div>`;
+  if (dmSub === 'chrome') body = `<div class="ctlgrid">
+      <span class="ctl">Load</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button><span class="muted" style="font-size:12px">${cwLoad(m)} of ${cwTOf(m)} · Max ${cwMaxOf(m)}</span></div>
+      <span class="ctl">Install</span><div class="row"><select id="surg-${k}" aria-label="Cyberware to install" style="flex:1;min-width:0">${cyInv.length ? cyInv.map(i => `<option value="${i.id}">${esc(i.name)}${i.hot ? ' (hot)' : ''}</option>`).join('') : '<option value="">No cyberware in their bag</option>'}</select>
+        <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select><button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Install</button></div>
+      ${m.cyber.length ? `<span class="ctl">Installed</span><div class="row">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Remove ${esc(x.name)}</button>`).join('')}</div>` : ''}
+      <span class="ctl">Psyche</span><div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
+      <span class="ctl">Hack</span><div class="row"><select id="hk-${k}" aria-label="Hack to apply" style="flex:1;min-width:0">${Object.entries(HACKS).map(([hk, h]) => `<option value="${hk}" ${m.hacks.includes(hk) ? 'disabled' : ''}>${h.n}</option>`).join('')}</select><button class="btn small danger" data-live="hack" data-u="${k}">Hack</button>${m.hacks.length ? `<button class="btn small" data-live="unhack" data-u="${k}">Clear all</button>` : ''}</div>
+      <span class="ctl">Black ICE</span><div class="row"><button class="btn small danger" data-live="jackout" data-u="${k}">Force jack-out</button><button class="btn small ${m.jackLock ? '' : 'danger'}" data-live="jacklock" data-on="${m.jackLock ? '' : '1'}" data-u="${k}">${m.jackLock ? 'Unlock jack-out' : 'Lock jack-out'}</button></div></div>`;
+  if (dmSub === 'session') body = `<div class="row"><button class="btn small primary" data-live="viewsheet" data-u="${k}">Open full sheet</button><span class="muted" style="font-size:12px">Stats, skills, perks and inventory</span></div>
+      <div class="sub" style="color:#d5f9fb;margin-top:10px"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
+      <div class="chips2" style="margin-top:8px">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
+      ${m.cyber.length ? `<div class="sub" style="margin-top:8px">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}
+      <div class="row" style="margin-top:14px"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>`;
+  return `<div class="panel dfocus" id="dmFocus">
+    <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0;flex:1"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</div>
+      <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div>
+      ${dmFlags(m).map(([t, c]) => `<span class="stagb ${c === 'psy' ? 'psy' : c === 'hk' ? 'hackt' : c === 'heat' ? 'heat' : 'red'}">${t}</span>`).join('')}${encumbered(m) ? '<span class="stagb red">ENCUMBERED</span>' : ''}</div>
+      ${DM_WIDE.matches ? '' : `<button class="btn small" data-live="dmsel" data-u="${k}" aria-label="Close">✕</button>`}</div>
+    <div class="dstrip">
+      <div class="${dmTone(hp, hm)}"><small>HP</small><b>${hm ? hp + '<i>/' + hm + '</i>' : '—'}</b></div>
+      <div class="${dmTone(net, hm)}"><small>NET HP</small><b>${hm ? net + '<i>/' + hm + '</i>' : '—'}</b></div>
+      <div><small>AC</small><b>${acOf(m)}${m.acTemp ? `<i> ${sgn(m.acTemp)}</i>` : ''}</b></div>
+      <div class="${dmTone(rc, rmx)}"><small>RAM</small><b>${rc}<i>/${rmx}</i></b></div>
+      <div class="${cwOver(m) ? 'low' : ''}"><small>Chrome</small><b>${cwLoad(m)}<i>/${cwTOf(m)}</i></b></div>
+      <div><small>COOL</small><b style="color:var(--yellow)">${m.cool}</b></div>
+      <div><small>Eddies</small><b>${m.eddies}</b></div>
+    </div>
+    ${hm && isDown(m) ? `<div class="dsave">${seesawSVG(m, true)}${m.dead ? '' : `<div class="row"><span class="ctl" style="min-width:auto">Death save</span><button class="btn small" data-live="dsP" data-u="${k}">Pass</button><button class="btn small danger" data-live="dsF" data-u="${k}">Fail</button></div>`}</div>` : ''}
+    ${(m.status || []).length ? `<div class="schips">${statusChips(m, x => `<button class="sx" data-live="stRm" data-u="${k}" data-s="${x.id}" aria-label="Clear ${STATUSMAP[x.id].n}">✕</button>`)}</div>` : ''}
+    ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n} <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button></span>`).join('')}</div>` : ''}
+    <div class="seg dsubs" role="tablist">${tabs.map(([v, n]) => `<button role="tab" aria-selected="${dmSub === v}" class="${dmSub === v ? 'on' : ''}" data-live="dmsub" data-v="${v}">${n}</button>`).join('')}</div>
+    <div class="dbody">${body}</div></div>`;
+}
+function dmPartyHTML(){
+  if (!players.length) return `<div class="panel" style="margin-top:14px"><p>No one has joined yet. Share the code and have players hit Join on their own device.</p></div>${progressHTML()}${logHTML(true)}`;
+  const wide = DM_WIDE.matches, live = players.filter(p => p.merc);
+  if (dmSel && !live.some(p => p.id === dmSel)) dmSel = null;
+  if (wide && !dmSel && live.length) dmSel = live[0].id;
+  [...blastSel].forEach(id => { if (!live.some(p => p.id === id)) blastSel.delete(id); });
+  const sel = live.find(p => p.id === dmSel), timed = live.some(p => (p.merc.status || []).some(x => x.r != null));
+  const all = live.length && live.every(p => blastSel.has(p.id));
+  const rows = live.map(p => dmRow(p) + (!wide && sel && p.id === sel.id ? dmFocusHTML(p) : '')).join('');
+  const bar = `<div class="panel dmbar"><div class="row"><label class="dchk all"><input type="checkbox" data-blast="*" ${all ? 'checked' : ''} aria-label="Tick everyone"></label><b class="lblb">Party hit</b>
+      <input type="number" min="0" id="blastAmt" placeholder="Amt" inputmode="numeric" aria-label="Amount for ticked players" style="width:64px">
+      <button class="btn small danger" data-live="blast" data-k="hp-">Damage</button><button class="btn small danger" data-live="blast" data-k="net-">NET dmg</button><button class="btn small" data-live="blast" data-k="hp+">Heal</button></div>
+      <p class="muted" style="font-size:12px;margin-top:6px">${blastSel.size ? `${blastSel.size} ticked` : 'Tick mercs on the left of each row to hit or heal several at once, like a grenade'}</p>
+      ${timed ? `<div class="row" style="margin-top:8px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down timed status effects</span></div>` : ''}</div>`;
+  return `${dmAlertsHTML()}<div class="dmsplit">
+    <div class="dmleft">${bar}<div class="droster">${rows}</div>${encPanelHTML()}</div>
+    ${wide ? `<div class="dmright">${sel ? dmFocusHTML(sel) : '<div class="panel"><p class="muted">Pick a merc on the left.</p></div>'}</div>` : ''}
+  </div>${progressHTML()}${logHTML(true)}`;
+}
 function renderLive(){
-  placeLive();
+  placeLive(); syncWake();
+  document.body.classList.toggle('dmwide', !!(LS && LS.role === 'dm' && liveState === 'on'));
   const root = $('#liveBody');
   keepInputs(root, () => { root.innerHTML = liveHTML(); });
   if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
@@ -5088,8 +5349,6 @@ function liveHTML(){
       ${handouts.length ? `<div class="panel gap"><h3>Handouts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Everything the DM has shared this session. Tap one to open it.</p>${hoListHTML(false)}</div>` : ''}
       ${logHTML(false)}`;
   }
-  const playerCards = players.length ? players.map(p => partyCard(p, true)).join('')
-    : `<div class="panel"><p>No one has joined yet. Share the code and have players hit Join on their own device.</p></div>`;
   const opts = sel => ITEM_TYPES.map(t => `<option ${t === sel ? 'selected' : ''}>${t}</option>`).join('');
   const giveTargets = `<option value="">Library only</option><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}`;
   const npcCards = npcsDM.map(n => {
@@ -5119,7 +5378,7 @@ function liveHTML(){
       <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard saves everything as Session ${curPlay()}. Reopen it later to keep going or start Session ${curPlay() + 1}. Delete live game kicks everyone and erases it for good.</p></div>
     ${reopenAsk ? playAskHTML() : ''}
     <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
-    ${dmTab === 'party' ? `${players.some(p => p.merc && (p.merc.status || []).some(x => x.r != null)) ? `<div class="row" style="margin-top:14px;gap:10px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down every timed status effect by one round</span></div>` : ''}<div class="players" style="margin-top:14px">${playerCards}</div>${progressHTML()}${logHTML(true)}` : ''}
+    ${dmTab === 'party' ? dmPartyHTML() : ''}
     ${dmTab === 'npcs' ? `${encPanel}${npcPanel}${genHTML('npc')}` : ''}
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
     ${dmTab === 'items' ? `${genHTML('items')}
@@ -5143,6 +5402,12 @@ function liveHTML(){
     </div>` : ''}`;
 }
 
+$('#liveBody').addEventListener('change', e => {
+  const b = e.target.dataset && e.target.dataset.blast; if (b == null) return;
+  if (b === '*'){ players.forEach(p => { if (p.merc){ if (e.target.checked) blastSel.add(p.id); else blastSel.delete(p.id); } }); }
+  else if (e.target.checked) blastSel.add(b); else blastSel.delete(b);
+  renderLive();
+});
 $('#liveBody').addEventListener('click', async e => {
   const t = e.target.closest('button'); if (!t || !t.dataset.live) return;
   const a = t.dataset.live, u = t.dataset.u;
@@ -5207,6 +5472,25 @@ $('#liveBody').addEventListener('click', async e => {
   }
   if (await genClick(a, t)) return;
   if (a === 'dmtab'){ dmTab = t.dataset.k; sfx('tab'); return renderLive(); }
+  if (a === 'dmsel'){
+    dmSel = !DM_WIDE.matches && dmSel === u ? null : (u || null); sfx('tab'); renderLive();
+    if (dmSel){ dmTab = 'party'; const f = $('#dmFocus'); if (f && !DM_WIDE.matches) f.scrollIntoView({block:'nearest', behavior:'smooth'}); }
+    return;
+  }
+  if (a === 'dmsub'){ dmSub = t.dataset.v; sfx('tab'); return renderLive(); }
+  if (a === 'xp1'){
+    const n = amt(); if (!n) return toast('Enter an amount first.');
+    if (await sendOp(u, {kind:'xp', amount:n})) toast(`+${n.toLocaleString()} XP for ${pname(u)}.`, true);
+    return;
+  }
+  if (a === 'blast'){
+    const n = Math.max(0, parseInt(($('#blastAmt') || {}).value) || 0); if (!n) return toast('Enter an amount first.');
+    const ids = [...blastSel].filter(id => players.some(p => p.id === id)); if (!ids.length) return toast('Tick the mercs to hit first.');
+    const k2 = t.dataset.k, kind = k2.startsWith('net') ? 'net' : 'hp', sign = k2.endsWith('-') ? -1 : 1;
+    for (const id of ids) await sendOp(id, {kind, amount:sign * n});
+    toast(`${sign < 0 ? (kind === 'net' ? 'NET damage' : 'Damage') + ' ' + n : 'Healed ' + n} for ${ids.map(pname).join(', ')}.`, true);
+    return;
+  }
   if (a === 'viewsheet'){ sfx('tab'); return showDmSheet(t.dataset.u); }
   if (await progClick(a) || await hoClick(a, t) || await recapClick(a)) return;
   if (a === 'jackout' || a === 'jacklock'){
@@ -5844,10 +6128,10 @@ const PREF = k => { try { return localStorage.getItem(k) !== '0'; } catch(e){ re
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FXS = {sfx: PREF('daemon-sfx'), motion: reducedMotion ? false : PREF('daemon-motion')};
 const PREFS_KEY = 'daemon-prefs';
-const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', unl:[]};
+const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', unl:[]};
 let PREFS = {...PREFS_DEF};
 try { const p = JSON.parse(localStorage.getItem(PREFS_KEY)); if (p) PREFS = {...PREFS_DEF, ...p}; } catch(e){}
-const flashOK = () => FXS.motion && !PREFS.calm;
+const flashOK = () => FXS.motion && !PREFS.calm && !PREFS.table;
 const SND_CAT = {select:'ui', tab:'ui', up:'ui', down:'ui', deny:'ui', breach:'big', levelup:'big', cool:'big', flatline:'big', psycho:'big'};
 let actx = null, master = null, noiseBuf = null, verb = null, VMUL = 1;
 // Per-sound trims in dB so the groups sit on a ladder: UI quiet, game in the middle, big moments loudest.
@@ -6672,6 +6956,7 @@ function post(t, dt, RS){
 
 let lastT = performance.now(), running = false;
 function frame(now){
+  if (PREFS.table){ running = false; return; }
   if (PREFS.battery && FXS.motion && now - lastT < 31){ requestAnimationFrame(frame); return; }
   const rdt = Math.min(.05, (now - lastT) / 1000); lastT = now;
   const RS = reactNow();
@@ -6744,15 +7029,19 @@ function savePrefs(){ try { localStorage.setItem(PREFS_KEY, JSON.stringify(PREFS
 function applyPrefs(prev){
   prev = prev || {};
   const b = document.body, root = document.documentElement.style;
-  if (PREFS.accent && /^#[0-9a-f]{6}$/i.test(PREFS.accent)){ root.setProperty('--cyan', PREFS.accent); root.setProperty('--crgb', hexRgb(PREFS.accent)); }
-  else { root.removeProperty('--cyan'); root.removeProperty('--crgb'); }
+  if (PREFS.accent && /^#[0-9a-f]{6}$/i.test(PREFS.accent)){ root.setProperty('--cyan', PREFS.accent); root.setProperty('--crgb', hexRgb(PREFS.accent));
+    // Text on top of the accent (the active tab) goes dark on light accents and white on dark ones.
+    const [r, g, bl] = hexRgb(PREFS.accent).split(',').map(Number), lum = (.2126 * r + .7152 * g + .0722 * bl) / 255; root.setProperty('--on-accent', lum > .5 ? '#05121a' : '#ffffff'); }
+  else { root.removeProperty('--cyan'); root.removeProperty('--crgb'); root.removeProperty('--on-accent'); }
   if (['matchOrigin', 'dmMood', 'tod', 'weather'].some(k => prev[k] !== undefined && prev[k] !== PREFS[k])) refreshEnv();
   $('.wrap').style.zoom = PREFS.text === 100 ? '' : PREFS.text / 100;
   cv.style.opacity = PREFS.dim / 100;
-  b.classList.toggle('cb', PREFS.cb); b.classList.toggle('compact', PREFS.compact); b.classList.toggle('calm', PREFS.calm);
+  b.classList.toggle('cb', PREFS.cb); b.classList.toggle('compact', PREFS.compact); b.classList.toggle('calm', PREFS.calm); b.classList.toggle('table', !!PREFS.table);
   b.classList.toggle('fx', flashOK());
   if (master) master.gain.value = .7 * PREFS.vol / 100;
   if (prev.calm !== PREFS.calm){ updatePsy(); updateHack(); updateVignette(); }
+  if (prev.table !== undefined && prev.table !== PREFS.table){ updatePsy(); updateHack(); updateVignette(); if (!PREFS.table){ FXS.motion ? startBg() : drawStatic(); } }
+  if (prev.awake !== undefined && prev.awake !== PREFS.awake) syncWake();
   if (prev.battery !== undefined && prev.battery !== PREFS.battery){ sizeCanvas(); LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; FXS.motion ? startBg() : drawStatic(); }
   if (prev.text !== undefined && prev.text !== PREFS.text && C && !$('#vSheet').hidden && sheetTab === 'perks') requestAnimationFrame(build);
 }
@@ -6791,7 +7080,9 @@ function renderSettings(){
     ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
     <div class="row gap"><button class="btn small" data-set="reset">Reset colors</button></div>`;
   } else if (setTab === 'comfort'){
-    body = `${rng('text', 'Text size', 'Scales the whole site', 85, 140, 5, '%')}
+    body = `${tog('table', 'Table mode', 'For playing at the table. Turns off the moving background, glitches and flashing text, and puts solid backing behind every panel')}
+    ${tog('awake', 'Keep screen on in live sessions', 'Your phone won\'t dim or lock while you\'re connected to a session')}
+    ${rng('text', 'Text size', 'Scales the whole site', 85, 140, 5, '%')}
     ${tog('compact', 'Compact sheet', 'Tighter character sheet so more fits on screen in combat')}
     ${tog('cb', 'Color-blind friendly bars', 'HP is orange with stripes, NET HP is blue with dots')}
     ${tog('calm', 'Reduce flashing', 'Keeps the background but calms the glitches, flicker, pulsing and screen shake')}
@@ -6813,6 +7104,7 @@ function renderSettings(){
   }
   const keepScroll = $('#setPanel').scrollTop;
   $('#setPanel').innerHTML = `<div class="sethead"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
+    <div class="setquick"><button class="btn small ${FXS.sfx ? 'primary' : ''}" data-set="qsfx" aria-pressed="${FXS.sfx}">Sound ${FXS.sfx ? 'on' : 'off'}</button><button class="btn small ${FXS.motion ? 'primary' : ''}" data-set="qfx" aria-pressed="${FXS.motion}">Motion ${FXS.motion ? 'on' : 'off'}</button><button class="btn small ${PREFS.table ? 'primary' : ''}" data-set="qtable" aria-pressed="${!!PREFS.table}">Table mode ${PREFS.table ? 'on' : 'off'}</button></div>
     <p class="muted" style="font-size:13px;margin:0">${ACCT.google ? 'Synced to your Google account, so they follow you to every device.' : 'Saved on this device. Sign in with Google to sync them.'}</p>
     <div class="stabs" role="tablist">${tabs.map(([k, n]) => `<button role="tab" aria-selected="${setTab === k}" class="${setTab === k ? 'on' : ''}" data-stab="${k}">${n}</button>`).join('')}</div>
     ${body}`;
@@ -6826,6 +7118,13 @@ function toggleSettings(open){
 }
 $('#setBack').addEventListener('click', () => toggleSettings(false));
 $('#tSet').onclick = () => { sfx('select'); toggleSettings(); };
+$('#navSet').addEventListener('click', e => { e.preventDefault(); sfx('select'); toggleSettings(); });
+$('#setPanel').addEventListener('click', e => {
+  const b = e.target.closest('[data-set=qsfx], [data-set=qfx], [data-set=qtable]'); if (!b) return;
+  if (b.dataset.set === 'qsfx') $('#tSfx').click(); else if (b.dataset.set === 'qfx') $('#tFx').click();
+  else { const prev = {...PREFS}; PREFS.table = !PREFS.table; applyPrefs(prev); savePrefs(); }
+  renderSettings();
+});
 $('#setPanel').addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.dataset.set === 'close') return toggleSettings(false);
