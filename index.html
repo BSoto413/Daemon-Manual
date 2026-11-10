@@ -752,6 +752,27 @@ body.calm .tear{display:none}
 body.fx h2:hover{animation:jit .28s steps(2) 1}
 .tear{position:fixed;left:0;right:0;height:3px;z-index:7;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(var(--crgb),.9) 20%,rgba(255,42,109,.9) 60%,transparent);box-shadow:0 0 12px rgba(255,42,109,.8);animation:tear .22s linear forwards}
 @keyframes tear{0%{transform:translateX(-30%) scaleY(1);opacity:1}100%{transform:translateX(30%) scaleY(3);opacity:0}}
+/* ---------- encounters and combat alert ---------- */
+.iceart{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;color:#ff4f6d;flex:none}.iceart .f{fill:currentColor;stroke:none}
+.iceart.lg{width:64px;height:64px}
+.encadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.encrow{display:flex;align-items:center;gap:8px 10px;padding:8px 0;border-top:1px solid rgba(var(--crgb),.15);flex-wrap:wrap}.encrow .nm{flex:1 1 150px;min-width:150px;font-weight:600}.encrow .nm small{display:block;font-weight:400;opacity:.65;font-size:12px}
+.encrow .hpc{display:flex;align-items:center;gap:4px;font:600 14px Orbitron,sans-serif}.encrow .hpc.zero{color:#ff4f6d;text-decoration:line-through}
+.unk{display:grid;place-items:center;font:700 26px Orbitron,sans-serif;color:#ff8fa3;background:rgba(255,60,90,.12);border:1px solid rgba(255,60,90,.5)}
+.grunt{display:grid;place-items:center;color:#ffd23f;background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.4)}
+#combatFx{position:fixed;inset:0;z-index:21;display:grid;place-items:center;background:radial-gradient(ellipse at center,rgba(90,0,20,.92),rgba(5,0,4,.97));cursor:pointer;padding:20px;overflow:auto;animation:cfIn .35s ease}
+#combatFx .cf-in{width:min(94vw,760px);text-align:center}
+#combatFx .cf-t{font:700 clamp(34px,9vw,72px)/1 Orbitron,sans-serif;letter-spacing:4px;color:#ff3c5a;text-shadow:0 0 18px rgba(255,60,90,.8),0 0 40px rgba(255,60,90,.4);animation:cfPulse 1.1s ease-in-out infinite}
+#combatFx .cf-s{font:500 13px Orbitron,sans-serif;letter-spacing:3px;color:#ffd0d8;margin:12px 0 22px;text-transform:uppercase}
+#combatFx .cf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+#combatFx .cf-c{border:1px solid rgba(255,60,90,.55);background:rgba(20,0,6,.7);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;animation:cfCard .4s ease both}
+#combatFx .cf-c .av{width:64px;height:64px}#combatFx .cf-c b{color:#fff;font-size:15px;line-height:1.2}#combatFx .cf-c small{color:#ff8fa3;font:500 10px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
+#combatFx .cf-n{position:absolute;top:6px;right:8px;font:700 15px Orbitron,sans-serif;color:#ffd23f}
+#combatFx .cf-go{margin-top:22px;font:500 12px Orbitron,sans-serif;letter-spacing:3px;color:#ffd0d8;opacity:.8}
+@keyframes cfIn{from{opacity:0}to{opacity:1}}@keyframes cfPulse{50%{opacity:.75;text-shadow:0 0 30px rgba(255,60,90,1),0 0 60px rgba(255,60,90,.6)}}@keyframes cfCard{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#combatBar{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:10px 14px;border:1px solid rgba(255,60,90,.7);border-left:4px solid #ff3c5a;background:rgba(255,60,90,.1);cursor:pointer;flex-wrap:wrap}
+#combatBar[hidden]{display:none}#combatBar .cb-t{font:700 13px Orbitron,sans-serif;letter-spacing:2px;color:#ff3c5a;animation:cfPulse 1.6s ease-in-out infinite}#combatBar .cb-l{flex:1;min-width:0;font-size:14px;color:#ffd0d8}
+@media (prefers-reduced-motion:reduce){#combatFx .cf-t,#combatBar .cb-t{animation:none}}
 #flatline{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(0,0,0,0);animation:flBg 4.8s ease forwards;cursor:pointer}
 #flatline[hidden]{display:none}
 @keyframes flBg{0%{background:rgba(40,0,6,0)}12%{background:rgba(20,0,4,.82)}85%{background:rgba(20,0,4,.82)}100%{background:rgba(20,0,4,0)}}
@@ -1043,17 +1064,16 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <h3 style="margin-top:18px">Clip chart</h3>
           <p style="margin-top:8px">Every gun takes a Standard, Extended or Drum clip. The clip sets how many shots you get before you have to RELOAD. Each ATTACK fires as many shots as the gun's ROF.</p>
           <table class="rtable"><thead><tr><th>Type</th><th>Standard</th><th>Extended</th><th>Drum</th></tr></thead><tbody>
-            <tr><td><b>Medium Pistol</b></td><td>12</td><td>18</td><td>36</td></tr>
-            <tr><td><b>Heavy Pistol</b></td><td>8</td><td>14</td><td>28</td></tr>
-            <tr><td><b>Very Heavy Pistol</b></td><td>8</td><td>14</td><td>28</td></tr>
-            <tr><td><b>SMG</b></td><td>30</td><td>40</td><td>50</td></tr>
-            <tr><td><b>Heavy SMG</b></td><td>40</td><td>50</td><td>60</td></tr>
-            <tr><td><b>LMG</b></td><td>40</td><td>50</td><td>60</td></tr>
-            <tr><td><b>Shotgun</b></td><td>4</td><td>8</td><td>16</td></tr>
-            <tr><td><b>Assault Rifle</b></td><td>25</td><td>35</td><td>45</td></tr>
-            <tr><td><b>Sniper Rifle</b></td><td>4</td><td>8</td><td>12</td></tr>
-            <tr><td><b>Grenade Launcher</b></td><td>2</td><td>4</td><td>6</td></tr>
-            <tr><td><b>Rocket Launcher</b></td><td>1</td><td>2</td><td>3</td></tr>
+            <tr><td><b>Medium Pistol</b></td><td>12</td><td>28</td><td>46</td></tr>
+            <tr><td><b>Heavy Pistol</b></td><td>8</td><td>24</td><td>38</td></tr>
+            <tr><td><b>Very Heavy Pistol</b></td><td>8</td><td>24</td><td>38</td></tr>
+            <tr><td><b>SMG</b></td><td>30</td><td>50</td><td>60</td></tr>
+            <tr><td><b>LMG</b></td><td>50</td><td>60</td><td>70</td></tr>
+            <tr><td><b>Shotgun</b></td><td>4</td><td>18</td><td>26</td></tr>
+            <tr><td><b>Assault Rifle</b></td><td>25</td><td>45</td><td>55</td></tr>
+            <tr><td><b>Sniper Rifle</b></td><td>4</td><td>18</td><td>22</td></tr>
+            <tr><td><b>Grenade Launcher</b></td><td>2</td><td>14</td><td>16</td></tr>
+            <tr><td><b>Rocket Launcher</b></td><td>1</td><td>12</td><td>13</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:6px">Light Pistols count as Medium Pistols. Revolvers and Hand Cannons count as Very Heavy Pistols.</p>
           <h3 style="margin-top:18px">Concealment</h3>
@@ -1122,6 +1142,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <p style="margin-top:8px">If a SCAN warned you that Black ICE is ahead, you can try to <b>SLIDE</b> past it. A SLIDE is a STEALTH check against the Black ICE's passive PERCEPTION.</p>
           <h3 style="margin-top:18px">Fighting Black ICE</h3>
           <p style="margin-top:8px">If your SLIDE fails, or you choose to fight, the encounter starts. Black ICE moves first, and it goes right before you in the initiative order until you deal with it.</p>
+          <p style="margin-top:8px">The DM tracks Black ICE in the encounter, not as NPCs. Once your crew runs into a program, it shows up in the Black ICE tab of your Codex.</p>
           <p class="lbl" style="margin-top:16px">Black ICE programs</p>
           <div id="rIce"></div>
           <p style="margin-top:14px"><b>Forced jack-out.</b> You're kicked out of The Net right away. <b>Disable safe jack-out.</b> You can't jack out safely while it's active.</p>
@@ -1291,6 +1312,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
     <!-- SHEET -->
     <div id="vSheet" hidden>
+      <div id="combatBar" hidden></div>
       <div class="panel" id="sheetHead"></div>
       <div class="vtabs" role="tablist"><button data-v="perks" class="on" role="tab">Perks and skills</button><button data-v="cs" role="tab">Character sheet</button><button data-v="ach" role="tab">Achieve&shy;ments</button></div>
       <div id="vPerks">
@@ -1374,6 +1396,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div id="hackVig" aria-hidden="true"></div>
 <div id="heatVig" aria-hidden="true"></div>
 <div id="glitchFx" aria-hidden="true"></div>
+<div id="combatFx" hidden role="alert"></div>
 <div id="flatline" hidden role="alert"><div class="fl-inner"><div class="fl-text gl" data-text="FLATLINED">FLATLINED</div>
   <svg class="ekg" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 H170 L185 40 L195 12 L208 70 L220 30 L232 40 H600"/></svg>
   <div class="fl-sub" id="flSub">Unconscious. Critical condition.</div><div class="fl-hint">Click to continue</div></div></div>
@@ -1715,20 +1738,19 @@ function weaponDefaults(name, stats){
   if (/pistol/.test(n)) return {rof:2, reload:'light'};
   return {rof:1, reload:'light'};
 }
-// Clip chart. Shots per clip for Standard, Extended and Drum. LMG uses the Heavy SMG row.
+// Clip chart. Shots per clip for Standard, Extended and Drum. LMG replaced Heavy SMG, and every Extended and Drum clip got +10.
 const CLIPS = {
-  'Medium Pistol':[12, 18, 36], 'Heavy Pistol':[8, 14, 28], 'Very Heavy Pistol':[8, 14, 28], 'SMG':[30, 40, 50], 'Heavy SMG':[40, 50, 60], 'LMG':[40, 50, 60],
-  'Shotgun':[4, 8, 16], 'Assault Rifle':[25, 35, 45], 'Sniper Rifle':[4, 8, 12], 'Grenade Launcher':[2, 4, 6], 'Rocket Launcher':[1, 2, 3]
+  'Medium Pistol':[12, 28, 46], 'Heavy Pistol':[8, 24, 38], 'Very Heavy Pistol':[8, 24, 38], 'SMG':[30, 50, 60], 'LMG':[50, 60, 70],
+  'Shotgun':[4, 18, 26], 'Assault Rifle':[25, 45, 55], 'Sniper Rifle':[4, 18, 22], 'Grenade Launcher':[2, 14, 16], 'Rocket Launcher':[1, 12, 13]
 };
 const CLIP_KEYS = ['std', 'ext', 'drum'], CLIP_TXT = {std:'Standard', ext:'Extended', drum:'Drum'};
 // Pistols, hand cannons and SMGs can always be concealed. Some assault rifles can too, so the DM ticks those. Only with a Standard clip.
-const CONCEAL_AUTO = ['Medium Pistol', 'Heavy Pistol', 'Very Heavy Pistol', 'SMG', 'Heavy SMG'];
+const CONCEAL_AUTO = ['Medium Pistol', 'Heavy Pistol', 'Very Heavy Pistol', 'SMG'];
 function gunTypeOf(name, stats){
   const n = (name || '') + ' ' + (stats || '');
   if (/rocket/i.test(n)) return 'Rocket Launcher';
   if (/launcher/i.test(n)) return 'Grenade Launcher';
   if (/\blmg\b|\bhmg\b|minigun|machine ?gun/i.test(n)) return 'LMG';
-  if (/heavy smg/i.test(n)) return 'Heavy SMG';
   if (/\bsmg\b|\buzi\b|machine pistol/i.test(n)) return 'SMG';
   if (/sniper/i.test(n)) return 'Sniper Rifle';
   if (/shotgun/i.test(n)) return 'Shotgun';
@@ -1742,7 +1764,7 @@ function weaponOf(i){
   if (i.type !== 'Weapon') return {rof:null, reload:null};
   const d = weaponDefaults(i.name, i.stats), r = parseInt(i.rof);
   const reload = ['light', 'heavy', 'none'].includes(i.reload) ? i.reload : d.reload;
-  const gtype = reload === 'none' ? '' : CLIPS[i.gtype] ? i.gtype : i.gtype === '' ? '' : gunTypeOf(i.name, i.stats);
+  const g0 = i.gtype === 'Heavy SMG' ? 'SMG' : i.gtype, gtype = reload === 'none' ? '' : CLIPS[g0] ? g0 : g0 === '' ? '' : gunTypeOf(i.name, i.stats);
   const clip = CLIP_KEYS.includes(i.clip) ? i.clip : 'std', cap = gtype ? CLIPS[gtype][CLIP_KEYS.indexOf(clip)] : null;
   const a = parseInt(i.ammo);
   return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload, gtype, clip, conc: !!i.conc, ammo: cap == null ? null : Number.isFinite(a) ? Math.max(0, Math.min(cap, a)) : cap};
@@ -2460,6 +2482,7 @@ function updateHeat(){
 }
 function renderSheetHead(){
   updateVignette(); updateHeat(); if (typeof updatePsy === 'function'){ updatePsy(); updateHack(); }
+  if (typeof updateCombatBar === 'function') updateCombatBar();
   const p = prof(C.level), na = nextAsi(C.level);
   $('#sheetHead').innerHTML = `<div class="sheet-head">
     <div class="who" style="display:flex;gap:14px;align-items:center">${avatar(C, 'av md')}<div style="min-width:0"><div class="nm">${esc(C.name)}${LS && LS.role === 'player' && LS.mercId === C.id && liveApi ? `<span class="livebadge">LIVE ${esc(LS.code)}</span>` : ''}</div><div class="sub">${C.background} · ${C.role || 'No role yet'}${C.bgSkills.length ? ' · ' + C.bgSkills.join(' and ') : ''}</div></div></div>
@@ -2490,7 +2513,7 @@ function coolPickHTML(){
   const cm = mod(score('COO')), s = sgn(cm);
   const live = LS && liveApi && liveState === 'on';
   const allies = live ? players.filter(p => p.merc && p.mercId !== C.id) : [];
-  const foes = live ? npcsPub.filter(n => !n.down) : [];
+  const cb = live && sessMeta && sessMeta.combat, foes = cb ? cb.list.map(c => ({name: c.name})) : live ? npcsPub.filter(n => !n.down) : [];
   const btn = (k, who, label, cls) => `<button class="btn small ${cls || ''}" data-cooluse="${k}" data-who="${esc(who)}">${label}</button>`;
   return `<div class="coolpick"><div><b>Spend a COOL Token</b> <span class="muted">Adds your COOL mod (${s}) to a d20 roll. ${cm > 0 ? 'Best on you or an ally who just missed.' : cm < 0 ? 'Your mod is negative, so use it to make an enemy fail.' : "Your COOL mod is +0, so it won't change the roll yet."}</span></div>
     <div class="row" style="margin-top:8px">${btn('self', C.name, 'My roll', cm >= 0 ? 'primary' : '')}
@@ -2868,6 +2891,8 @@ const BLACK_ICE = [
   {id:'kraken', n:'Kraken', ac:14, hp:30, hit:8, per:6, dmg:'3d6 NET damage', fx:'Disables safe jack-out'}
 ];
 const iceStat = v => v == null ? 'TBD' : v;
+const ICE_ART = {"hellhound": "<path d=\"M14 44 L14 30 L20 22 L22 12 L28 20 L36 20 L42 12 L44 22 L50 30 L50 44 L42 52 L22 52 Z\"/><path d=\"M24 32 L29 34 M40 32 L35 34\"/><circle cx=\"26\" cy=\"34\" r=\"1.6\" class=\"f\"/><circle cx=\"38\" cy=\"34\" r=\"1.6\" class=\"f\"/><path d=\"M28 44 L32 47 L36 44 M26 48 L28 46 M38 48 L36 46\"/><path d=\"M10 26 Q6 18 12 10 Q12 18 16 20 M54 26 Q58 18 52 10 Q52 18 48 20\"/>", "cobra": "<path d=\"M32 8 Q22 8 18 18 Q14 30 24 38 L28 40 L36 40 L40 38 Q50 30 46 18 Q42 8 32 8 Z\"/><path d=\"M27 20 Q32 16 37 20 L36 30 Q32 33 28 30 Z\"/><circle cx=\"30\" cy=\"23\" r=\"1.4\" class=\"f\"/><circle cx=\"34\" cy=\"23\" r=\"1.4\" class=\"f\"/><path d=\"M32 31 L32 35 L30 37 M32 35 L34 37\"/><path d=\"M30 40 Q22 46 30 50 Q40 54 32 58 Q26 60 20 58 M34 40 Q40 44 36 47\"/>", "raven": "<path d=\"M8 30 L26 26 L32 18 L40 16 L46 20 L56 20 L48 24 L46 30 L38 40 L30 44 L22 54 L22 44 L14 44 L20 38 Z\"/><circle cx=\"41\" cy=\"21\" r=\"1.5\" class=\"f\"/><path d=\"M26 32 L38 30 M24 38 L34 36\"/>", "skunk": "<path d=\"M12 50 L44 50 Q50 50 50 44 L50 40 Q50 34 44 34 L22 34 Q14 34 12 42 Z\"/><path d=\"M44 34 Q40 22 46 12 Q56 6 58 16 Q60 26 52 30 Q50 34 50 40\"/><path d=\"M46 16 Q50 20 52 28\"/><circle cx=\"17\" cy=\"42\" r=\"1.5\" class=\"f\"/><path d=\"M8 44 L12 44 M18 50 L18 56 M40 50 L40 56\"/>", "scorpion": "<ellipse cx=\"30\" cy=\"42\" rx=\"10\" ry=\"7\"/><path d=\"M38 38 Q46 30 46 22 Q46 12 38 12 Q34 12 34 16 L38 18\"/><path d=\"M34 16 L32 20 L36 19 Z\" class=\"f\"/><path d=\"M20 40 L10 34 L6 38 M10 34 L8 28 M20 44 L10 50 L6 46 M10 50 L8 56\"/><path d=\"M24 48 L20 56 M30 49 L30 57 M36 48 L40 56\"/><circle cx=\"25\" cy=\"39\" r=\"1.3\" class=\"f\"/>", "wisp": "<path d=\"M32 8 Q44 20 42 32 Q40 44 32 46 Q24 44 22 32 Q20 20 32 8 Z\"/><path d=\"M32 22 Q37 28 35 34 Q33 38 32 38 Q29 36 29 31 Q29 26 32 22 Z\" class=\"f\"/><path d=\"M24 44 Q20 52 14 56 M32 46 Q32 54 28 60 M40 44 Q44 52 50 56\"/>", "liche": "<path d=\"M18 30 Q18 14 32 14 Q46 14 46 30 L46 38 L40 42 L40 50 L24 50 L24 42 L18 38 Z\"/><path d=\"M18 18 L18 8 L24 13 L32 4 L40 13 L46 8 L46 18\"/><path d=\"M23 30 L29 30 L28 36 L23 34 Z M41 30 L35 30 L36 36 L41 34 Z\" class=\"f\"/><path d=\"M32 38 L30 42 L34 42 Z M28 50 L28 46 M32 50 L32 46 M36 50 L36 46\"/>", "ogre": "<path d=\"M14 26 Q14 12 32 12 Q50 12 50 26 L50 40 Q50 54 32 56 Q14 54 14 40 Z\"/><path d=\"M14 24 L6 12 L18 18 M50 24 L58 12 L46 18\"/><path d=\"M20 28 L28 31 M44 28 L36 31\"/><circle cx=\"25\" cy=\"33\" r=\"1.8\" class=\"f\"/><circle cx=\"39\" cy=\"33\" r=\"1.8\" class=\"f\"/><path d=\"M22 44 L42 44 M24 44 L24 40 L27 44 M40 44 L40 40 L37 44\"/>", "kraken": "<path d=\"M20 26 Q20 8 32 8 Q44 8 44 26 Q44 32 40 34 L24 34 Q20 32 20 26 Z\"/><circle cx=\"27\" cy=\"24\" r=\"1.8\" class=\"f\"/><circle cx=\"37\" cy=\"24\" r=\"1.8\" class=\"f\"/><path d=\"M24 34 Q16 42 20 50 Q24 56 16 58 M29 34 Q26 46 30 52 Q32 58 26 60 M35 34 Q38 46 34 52 Q32 58 38 60 M40 34 Q48 42 44 50 Q40 56 48 58\"/><path d=\"M20 30 Q10 32 8 42 Q8 48 12 48 M44 30 Q54 32 56 42 Q56 48 52 48\"/>"};
+const iceArt = (id, cls = '') => `<svg class="iceart ${cls}" viewBox="0 0 64 64" aria-hidden="true">${ICE_ART[id] || '<circle cx="32" cy="32" r="20"/><path d="M24 26 L40 38 M40 26 L24 38"/>'}</svg>`;
 function renderRuleIce(){
   const el = $('#rIce'); if (!el) return;
   el.innerHTML = `<table class="rtable"><thead><tr><th>Program</th><th>AC</th><th>HP</th><th>Hit</th><th>PER</th><th>Damage and effect</th></tr></thead><tbody>${BLACK_ICE.map(i => `<tr><td><b>${i.n}</b></td><td>${iceStat(i.ac)}</td><td>${iceStat(i.hp)}</td><td>${i.hit == null ? 'TBD' : '+' + i.hit}</td><td>${i.per == null ? 'TBD' : '+' + i.per}</td><td>${esc(i.dmg)}${i.fx ? `. <b>${i.fx}</b>` : ''}</td></tr>`).join('')}</tbody></table>`;
@@ -4633,7 +4658,7 @@ async function startPlayer(){
   const api = liveApi;
   unsubs.push(api.watchSession(LS.code, s => {
     if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
-    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true); onReveal(s);
+    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true); onReveal(s); onCombat(s); saveCodex(); renderCodex();
   }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   if (sessMeta && sessMeta.dmUid) unsubs.push(api.watchLibraryOf(sessMeta.dmUid, list => { codexLib = list; saveCodex(); renderCodex(); }));
@@ -4864,9 +4889,9 @@ function liveHTML(){
       <div class="row"><button class="btn small primary" data-live="nshow" data-n="${n.id}">Show ID card</button><button class="btn small" data-live="ncodex" data-n="${n.id}" title="${pub ? 'Players can see this NPC in their Codex' : 'Players will not see this NPC until you add it'}">${pub ? 'In codex ✓' : 'Add to codex'}</button><label class="btn small" style="display:inline-block">Portrait<input type="file" accept="image/*" data-npic="${n.id}" hidden></label><span class="spacer"></span><button class="btn small ${npcDel === n.id ? 'danger' : ''}" data-live="ndel" data-n="${n.id}">${npcDel === n.id ? 'Confirm delete' : 'Delete'}</button></div>
     </div>`;
   }).join('');
+  const encPanel = encPanelHTML();
   const npcPanel = `<div class="panel gap"><div class="row"><h3>NPCs <span class="muted" style="font-size:14px">${npcsDM.length}</span></h3><span class="spacer"></span><span class="muted" style="font-size:13px">Your master list. HP, advantage and notes stay private. Players only see an NPC after you add it to the Codex or show its ID card. Even then, all they see of its health is a CRITICAL or FLATLINED stamp.</span></div>
       <div class="npadd gap"><input type="text" class="f" id="npName" placeholder="NPC name" aria-label="NPC name"><select id="npOrigin" aria-label="Origin">${ORIGINS.map(o => `<option>${o}</option>`).join('')}</select><input type="number" id="npHp" min="1" placeholder="Max HP" aria-label="Max HP"><label class="btn small" style="display:inline-block;align-self:center">Portrait<input type="file" accept="image/*" id="npPic" hidden></label></div>
-      <div class="row gap"><span class="muted" style="font-size:13px">Deploy Black ICE</span>${BLACK_ICE.map(i => `<button class="btn small danger" data-live="ice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
       <div class="row gap"><button class="btn small primary" data-live="nadd">Add NPC</button>${npDraftPic ? '<span class="muted" style="font-size:13px">Portrait ready</span>' : ''}</div>
       <div class="players">${npcCards || '<p class="muted">No NPCs yet.</p>'}</div></div>`;
   const libRows = lib.length ? lib.map(i => `<div class="lrow ${i.hidden ? 'hid' : ''}"><span class="n">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</span><span class="t">${tierTag(i.tier, true)} ${i.type}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}${i.type === 'Weapon' ? ' · ROF ' + weaponOf(i).rof + (weaponOf(i).reload !== 'none' ? ' ' + weaponOf(i).reload.toUpperCase() : '') : ''} <span class="nisz lsz" title="Backpack size"><input type="number" min="1" max="${BAG_MAX_W}" data-libsz="w" data-i="${i.id}" value="${sizeOf(i).w}" aria-label="${esc(i.name)} width"><span class="muted">×</span><input type="number" min="1" max="${BAG_MAX_H}" data-libsz="h" data-i="${i.id}" value="${sizeOf(i).h}" aria-label="${esc(i.name)} height"></span></span><span class="muted">${esc(i.stats || '')}</span>
@@ -4880,7 +4905,7 @@ function liveHTML(){
     ${reopenAsk ? playAskHTML() : ''}
     <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
     ${dmTab === 'party' ? `${players.some(p => p.merc && (p.merc.status || []).some(x => x.r != null)) ? `<div class="row" style="margin-top:14px;gap:10px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down every timed status effect by one round</span></div>` : ''}<div class="players" style="margin-top:14px">${playerCards}</div>${progressHTML()}${logHTML(true)}` : ''}
-    ${dmTab === 'npcs' ? `${npcPanel}${genHTML('npc')}` : ''}
+    ${dmTab === 'npcs' ? `${encPanel}${npcPanel}${genHTML('npc')}` : ''}
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
     ${dmTab === 'items' ? `${genHTML('items')}
     <div class="panel gap" id="preloadPanel"><div class="row"><h3>Preload from a spreadsheet</h3></div>
@@ -4907,6 +4932,7 @@ $('#liveBody').addEventListener('click', async e => {
   const a = t.dataset.live, u = t.dataset.u;
   const amt = () => Math.max(0, parseInt(($('#amt-' + u) || {}).value) || 0);
   const pname = id => (players.find(p => p.id === id) || {}).name || 'player';
+  if (/^e(ice|npc|txt|hp|del|clear|reveal|send|end)$/.test(a) && await encAction(a, t)) return;
   if (a === 'join'){
     const code = ($('#joinCode').value || '').trim().toUpperCase(), mercId = $('#joinMerc').value;
     if (code.length !== 6){ liveErr = 'Session codes are 6 characters.'; return renderLive(); }
@@ -4969,13 +4995,6 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'jackout' || a === 'jacklock'){
     const on = !!t.dataset.on;
     if (await sendOp(u, a === 'jackout' ? {kind:'jackout'} : {kind:'jacklock', on})) toast(a === 'jackout' ? `Forced ${pname(u)} out of the Net.` : on ? `Locked ${pname(u)}'s jack-out.` : `${pname(u)} can jack out again.`, true);
-    return;
-  }
-  if (a === 'ice'){
-    const ic = BLACK_ICE.find(x => x.id === t.dataset.i); if (!ic) return;
-    const n = {id:uid(), name:ic.n, origin:'Black ICE', hpMax:ic.hp || 0, hp:ic.hp || 0, adv:'norm', portrait:null,
-      notes:`AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}\n${ic.dmg}${ic.fx ? '. ' + ic.fx : ''}`};
-    try { await liveApi.setDmNpc(n); toast(`${ic.n} deployed to your NPCs.`, true); } catch(err){ toast("Couldn't add it."); }
     return;
   }
   if (a === 'moodset' || a === 'moodclear'){
@@ -5172,6 +5191,88 @@ $('#liveBody').addEventListener('click', async e => {
   }
 });
 let npDraftPic = null, preloadMsg = '';
+// ---- Encounters. The DM's list of who's in the fight. Kept apart from the NPC list, on this device. ----
+let enc = [];
+const ENC_KEY = 'daemon-enc';
+function loadEnc(){ try { enc = (JSON.parse(localStorage.getItem(ENC_KEY)) || {})[LS && LS.code] || []; } catch(e){ enc = []; } }
+function saveEnc(){ try { const all = JSON.parse(localStorage.getItem(ENC_KEY)) || {}; all[LS.code] = enc; localStorage.setItem(ENC_KEY, JSON.stringify(all)); } catch(e){} }
+const iceSeen = () => (sessMeta && sessMeta.ice) || [];
+function encPanelHTML(){
+  loadEnc();
+  const live = sessMeta && sessMeta.combat, seen = iceSeen();
+  const row = c => {
+    const ic = c.k === 'ice' && BLACK_ICE.find(x => x.id === c.ref), np = c.k === 'npc' && npcsDM.find(x => x.id === c.ref);
+    const pic = ic ? iceArt(ic.id) : np ? avatar(np, 'av sm') : `<div class="av sm grunt">⚔</div>`;
+    const sub = ic ? `Black ICE · AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}` : np ? (npcsPub.some(x => x.id === np.id) ? 'NPC · known to the party' : 'NPC · shows as Unknown') : 'Other combatant';
+    return `<div class="encrow">${pic}<div class="nm">${esc(c.name)}${c.cnt > 1 ? ` ×${c.cnt}` : ''}<small>${sub}</small></div>
+      ${c.hpMax ? `<div class="hpc ${c.hp <= 0 ? 'zero' : ''}"><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="-1" aria-label="Lower HP">−</button><span>${c.hp}/${c.hpMax}</span><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="1" aria-label="Raise HP">+</button></div>` : ''}
+      ${ic && !seen.includes(ic.id) ? `<button class="btn small" data-live="ereveal" data-i="${ic.id}" title="Add to the players' Codex">Reveal</button>` : ''}<button class="btn small" data-live="edel" data-e="${c.id}" aria-label="Remove">✕</button></div>`;
+  };
+  return `<div class="panel gap" id="encPanel"><div class="row"><h3>Encounter <span class="muted" style="font-size:14px">${enc.length}</span></h3>${live ? '<span class="stagb red gl" data-text="IN COMBAT">IN COMBAT</span>' : ''}<span class="spacer"></span>
+      <span class="muted" style="font-size:13px">Who's in the fight. Nothing here goes into your NPC list.</span></div>
+    <span class="lbl" style="margin-top:12px">Add Black ICE</span><div class="row gap" style="margin-top:4px">${BLACK_ICE.map(i => `<button class="btn small danger" data-live="eice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
+    <div class="encadd"><select id="encNpc" aria-label="NPC to add"><option value="">Add one of your NPCs</option>${npcsDM.filter(n => n.origin !== 'Black ICE').map(n => `<option value="${n.id}">${esc(n.name)}</option>`).join('')}</select><button class="btn small" data-live="enpc">Add NPC</button></div>
+    <div class="encadd"><input type="text" class="f" id="encTxt" placeholder="Other, like Tyger Claws ganger" aria-label="Other combatant" style="flex:1;min-width:160px"><input type="number" id="encCnt" min="1" value="1" aria-label="How many" style="width:64px"><button class="btn small" data-live="etxt">Add</button></div>
+    <div style="margin-top:10px">${enc.map(row).join('') || '<p class="muted" style="font-size:14px">Nobody yet. Add Black ICE, an NPC or a group of grunts.</p>'}</div>
+    <div class="row gap" style="margin-top:12px"><button class="btn small danger" data-live="esend" ${enc.length ? '' : 'disabled'}>${live ? 'Resend combat alert' : 'Send combat alert'}</button>${live ? '<button class="btn small" data-live="eend">End combat</button>' : ''}${enc.length ? '<button class="btn small" data-live="eclear">Clear encounter</button>' : ''}</div>
+    <p class="muted" style="font-size:12px;margin:8px 0 0">The alert pops up on every player's screen with who's coming, and an In combat bar stays on their sheet until you end combat. NPCs the party hasn't met show as Unknown. Sending it also adds that Black ICE to their Codex.</p></div>`;
+}
+// What players see. Black ICE always shows its name. NPCs the party hasn't met are Unknown.
+function encPublic(){
+  const out = [];
+  enc.forEach(c => {
+    if (c.k === 'ice'){ const ex = out.find(x => x.k === 'ice' && x.ref === c.ref); if (ex) ex.cnt += c.cnt || 1; else out.push({k:'ice', ref:c.ref, name:c.name, cnt:c.cnt || 1}); }
+    else if (c.k === 'npc'){ const pub = npcsPub.find(x => x.id === c.ref); out.push(pub ? {k:'npc', ref:c.ref, name:pub.name, pic:pub.portrait || null, cnt:1} : {k:'unk', name:'Unknown', cnt:1}); }
+    else out.push({k:'grunt', name:c.name, cnt:c.cnt || 1});
+  });
+  // Merge repeated Unknowns into one card with a count.
+  const unk = out.filter(x => x.k === 'unk'); if (unk.length > 1){ const n = unk.length; return [...out.filter(x => x.k !== 'unk'), {k:'unk', name:'Unknown', cnt:n}]; }
+  return out;
+}
+async function encAction(a, t){
+  if (a === 'eice'){ const ic = BLACK_ICE.find(x => x.id === t.dataset.i); if (!ic) return true; enc.push({id:uid(), k:'ice', ref:ic.id, name:ic.n, cnt:1, hp:ic.hp || 0, hpMax:ic.hp || 0}); saveEnc(); sfx('select'); renderLive(); return true; }
+  if (a === 'enpc'){ const n = npcsDM.find(x => x.id === ($('#encNpc') || {}).value); if (!n){ toast('Pick an NPC first.'); return true; } enc.push({id:uid(), k:'npc', ref:n.id, name:n.name, cnt:1, hp:n.hp ?? n.hpMax ?? 0, hpMax:n.hpMax || 0}); saveEnc(); renderLive(); return true; }
+  if (a === 'etxt'){ const name = (($('#encTxt') || {}).value || '').trim().slice(0, 40); if (!name){ toast('Type who it is.'); return true; } enc.push({id:uid(), k:'grunt', name, cnt:Math.max(1, Math.min(99, parseInt(($('#encCnt') || {}).value) || 1)), hp:0, hpMax:0}); saveEnc(); renderLive(); return true; }
+  if (a === 'ehp'){ const c = enc.find(x => x.id === t.dataset.e); if (c){ c.hp = Math.max(0, Math.min(c.hpMax, c.hp + (+t.dataset.d))); saveEnc(); renderLive(); } return true; }
+  if (a === 'edel'){ enc = enc.filter(x => x.id !== t.dataset.e); saveEnc(); renderLive(); return true; }
+  if (a === 'eclear'){ enc = []; saveEnc(); renderLive(); return true; }
+  if (a === 'ereveal'){ const ice = [...new Set([...iceSeen(), t.dataset.i])]; try { await liveApi.updateSession(LS.code, {ice}); sessMeta = {...sessMeta, ice}; toast('Added to the players\' Codex.', true); } catch(err){ toast("Couldn't reveal it."); } renderLive(); return true; }
+  if (a === 'esend'){
+    if (!enc.length) return true;
+    const list = encPublic(), ice = [...new Set([...iceSeen(), ...enc.filter(c => c.k === 'ice').map(c => c.ref)])], combat = {at:Date.now(), list};
+    try { await liveApi.updateSession(LS.code, {combat, ice}); sessMeta = {...sessMeta, combat, ice}; toast('Combat alert sent.', true); sfx('breach'); } catch(err){ toast("Couldn't send the alert."); }
+    renderLive(); return true;
+  }
+  if (a === 'eend'){ try { await liveApi.updateSession(LS.code, {combat:null}); sessMeta = {...sessMeta, combat:null}; toast('Combat ended.', true); } catch(err){ toast("Couldn't end combat."); } renderLive(); return true; }
+  return false;
+}
+// ---- Combat alert on the players' side ----
+let lastCombat = 0;
+const cfPic = c => c.k === 'ice' ? iceArt(c.ref, 'lg') : c.k === 'npc' ? avatar(c, 'av', c.pic) : c.k === 'unk' ? '<div class="av unk">?</div>' : '<div class="av grunt" style="font-size:26px">⚔</div>';
+const cfSub = c => c.k === 'ice' ? 'Black ICE' : c.k === 'npc' ? 'NPC' : c.k === 'unk' ? 'Unidentified' : 'Hostile';
+function showCombat(cb){
+  const el = $('#combatFx'); if (!el || !cb) return;
+  el.innerHTML = `<div class="cf-in"><div class="cf-t gl" data-text="COMBAT INCOMING">COMBAT INCOMING</div><div class="cf-s">Hostiles in the area · ${cb.list.reduce((a, c) => a + (c.cnt || 1), 0)} contact${cb.list.reduce((a, c) => a + (c.cnt || 1), 0) === 1 ? '' : 's'}</div>
+    <div class="cf-grid">${cb.list.map((c, i) => `<div class="cf-c" style="animation-delay:${0.15 + i * 0.08}s">${c.cnt > 1 ? `<span class="cf-n">×${c.cnt}</span>` : ''}${cfPic(c)}<b>${esc(c.name)}</b><small>${cfSub(c)}</small></div>`).join('')}</div>
+    <div class="cf-go">Tap to continue</div></div>`;
+  el.hidden = false;
+}
+$('#combatFx').addEventListener('click', () => { $('#combatFx').hidden = true; });
+function onCombat(s){
+  updateCombatBar();
+  const cb = s && s.combat; if (!cb || !cb.at || cb.at === lastCombat) return;
+  const first = lastCombat === 0 && Date.now() - cb.at > 10 * 60000; lastCombat = cb.at;
+  if (first) return;
+  sfx('psycho'); showCombat(cb);
+}
+function updateCombatBar(){
+  const el = $('#combatBar'); if (!el) return;
+  const cb = LS && LS.role === 'player' && liveState === 'on' && sessMeta && sessMeta.combat;
+  if (!cb){ el.hidden = true; el.innerHTML = ''; if (!$('#combatFx').hidden && LS && LS.role === 'player') $('#combatFx').hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = `<span class="cb-t">IN COMBAT</span><span class="cb-l">${cb.list.map(c => `${esc(c.name)}${c.cnt > 1 ? ' ×' + c.cnt : ''}`).join(' · ')}</span><span class="muted" style="font-size:12px">Tap to see</span>`;
+}
+$('#combatBar').addEventListener('click', () => { if (sessMeta && sessMeta.combat) showCombat(sessMeta.combat); });
 // ---- Spreadsheet preload. Reads .xlsx (a zip of XML) with the browser's own unzip, or a .csv. ----
 async function unzipFiles(buf){
   const dv = new DataView(buf), u8 = new Uint8Array(buf), td = new TextDecoder(); let e = buf.byteLength - 22;
@@ -5342,32 +5443,33 @@ $('#idcard').addEventListener('click', e => { if (e.target.id === 'idcCodex'){ h
 const CODEX_KEY = 'daemon-codex';
 let codexTab = 'npcs', codexQ = '';
 function codexData(){
-  if (LS && liveState === 'on') return {code:LS.code, sname:sessMeta && sessMeta.name || '', npcs:npcsPub, items:codexLib.filter(i => !i.hidden), at:Date.now(), live:true};
-  try { const c = JSON.parse(localStorage.getItem(CODEX_KEY)); if (c) return c; } catch(e){}
+  if (LS && liveState === 'on') return {code:LS.code, sname:sessMeta && sessMeta.name || '', npcs:npcsPub, items:codexLib.filter(i => !i.hidden), ice:iceSeen(), at:Date.now(), live:true};
+  try { const c = JSON.parse(localStorage.getItem(CODEX_KEY)); if (c){ c.ice = c.ice || []; return c; } } catch(e){}
   return null;
 }
 function saveCodex(){
   if (!LS || liveState !== 'on') return;
-  try { localStorage.setItem(CODEX_KEY, JSON.stringify({code:LS.code, sname:sessMeta && sessMeta.name || '', npcs:npcsPub, items:codexLib.filter(i => !i.hidden), at:Date.now()})); } catch(e){}
+  try { localStorage.setItem(CODEX_KEY, JSON.stringify({code:LS.code, sname:sessMeta && sessMeta.name || '', npcs:npcsPub, items:codexLib.filter(i => !i.hidden), ice:iceSeen(), at:Date.now()})); } catch(e){}
 }
-const CODEX_TABS = [['npcs', 'NPCs'], ['weapons', 'Weapons'], ['vehicles', 'Vehicles'], ['items', 'Items'], ['cyber', 'Cyberware']];
-const codexOf = (k, d) => k === 'npcs' ? d.npcs.slice().sort((a, b) => (b.metAt || 0) - (a.metAt || 0))
+const CODEX_TABS = [['npcs', 'NPCs'], ['ice', 'Black ICE'], ['weapons', 'Weapons'], ['vehicles', 'Vehicles'], ['items', 'Items'], ['cyber', 'Cyberware']];
+const codexOf = (k, d) => k === 'ice' ? BLACK_ICE.filter(i => (d.ice || []).includes(i.id)) : k === 'npcs' ? d.npcs.slice().sort((a, b) => (b.metAt || 0) - (a.metAt || 0))
   : d.items.filter(i => k === 'weapons' ? i.type === 'Weapon' : k === 'vehicles' ? i.type === 'Vehicle' : k === 'cyber' ? i.type === 'Cyberware' : !['Weapon', 'Vehicle', 'Cyberware'].includes(i.type)).sort((a, b) => a.name.localeCompare(b.name));
 function renderCodex(){
   const body = $('#codexBody'); if (!body || $('#pgCodex').hidden) return;
   const d = codexData();
   if (!d){ body.innerHTML = `<div class="panel"><h3>Nothing logged yet</h3><p style="margin-top:8px">Your Codex fills in during live sessions. It logs every NPC your crew meets and everything in the DM's library. Join a session from the Live Session page to start it. It stays here between sessions, even offline.</p><div class="row gap"><a class="btn primary" href="#live">Go to Live Session</a></div></div>`; return; }
   const q = codexQ.toLowerCase();
-  const match = x => !q || [x.name, x.origin, x.stats, x.type].some(v => v && String(v).toLowerCase().includes(q));
+  const match = x => !q || [x.name, x.n, x.origin, x.stats, x.type].some(v => v && String(v).toLowerCase().includes(q));
   const list = codexOf(codexTab, d).filter(match);
-  const cards = codexTab === 'npcs'
+  const cards = codexTab === 'ice' ? list.map(i => `<div class="cxcard npc">${iceArt(i.id)}<div style="min-width:0;text-align:left"><div class="nm">${esc(i.name || i.n)}</div><div class="sub">Black ICE</div></div></div>`).join('')
+    : codexTab === 'npcs'
     ? list.map(n => `<button class="cxcard npc ${n.critical || n.down ? 'crit' : ''}" data-cx="${n.id}">${avatar(n, 'av md')}<div style="min-width:0;text-align:left"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}</div>
         <div class="sub">${idNo(n.id)}</div>${n.down ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : n.critical ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></button>`).join('')
     : list.map(i => `<div class="cxcard"><div style="min-width:0"><div class="nm">${esc(i.name)}</div><div class="sub">${tierTag(i.tier)} ${esc(i.type)}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</div>${i.stats ? `<p style="margin:8px 0 0;font-size:14px">${esc(i.stats)}</p>` : ''}</div></div>`).join('');
   body.innerHTML = `<div class="panel"><div class="row"><div style="flex:1;min-width:200px"><span class="lbl">${d.live ? 'Live from session' : 'Last synced from session'}</span><div style="font-family:Orbitron,sans-serif;color:#fff;font-size:18px">${esc(d.code)}${d.sname ? ' · ' + esc(d.sname) : ''}</div>${d.live ? '' : `<p class="muted" style="font-size:13px;margin:4px 0 0">Updated ${ago(d.at)}. Join the session to get the latest.</p>`}</div>
       <input type="text" class="f" id="cxSearch" placeholder="Search the codex" value="${esc(codexQ)}" aria-label="Search the codex" style="max-width:280px"></div></div>
     <div class="vtabs cxtabs">${CODEX_TABS.map(([k, l]) => `<button data-cxt="${k}" class="${codexTab === k ? 'on' : ''}">${l} <span class="muted">${codexOf(k, d).length}</span></button>`).join('')}</div>
-    <div class="cxgrid">${cards || `<p class="muted">${q ? 'Nothing matches that search.' : codexTab === 'npcs' ? 'No NPCs met yet.' : 'Nothing logged here yet.'}</p>`}</div>`;
+    <div class="cxgrid">${cards || `<p class="muted">${q ? 'Nothing matches that search.' : codexTab === 'npcs' ? 'No NPCs met yet.' : codexTab === 'ice' ? 'No Black ICE encountered yet.' : 'Nothing logged here yet.'}</p>`}</div>`;
   const si = $('#cxSearch'); if (si && document.activeElement === document.body && codexQ) { si.focus(); si.setSelectionRange(codexQ.length, codexQ.length); }
 }
 $('#codexBody').addEventListener('click', e => {
