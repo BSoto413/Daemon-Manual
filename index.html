@@ -626,6 +626,10 @@ body.jacked #vSheet .panel h3{font-family:'Share Tech Mono',ui-monospace,Consola
 body.jacked #vitalsBar{border-color:var(--cyan);box-shadow:0 0 16px rgba(var(--crgb),.35)}body.jacked #vitalsBar::before{content:'NET LINK';font:600 9px Orbitron,sans-serif;letter-spacing:2px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
 body.jacked #vCS .csL{display:flex;flex-direction:column}body.jacked #vCS .csL > .netwrap{order:-1}
 body.table.jacked #vSheet::after{display:none}
+/* Vehicles */
+.drive{margin:6px 0 10px;padding:8px 10px;border-left:3px solid var(--cyan);background:rgba(var(--crgb),.06)}.drive b{color:#fff}
+.vrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;font-size:13px}.vrow b{color:#fff;margin-right:4px}
+.tagb.vkb,.tagb.vgood,.tagb.vweak{background:transparent;border:1px solid}.tagb.vkb{border-color:rgba(var(--crgb),.5);color:#cdeff2}.tagb.vgood{border-color:#3ee08a;color:#9ff5c4}.tagb.vweak{border-color:#ffd23f;color:#ffe48a}
 /* Net dives */
 .stagb.netb{border-color:#3ee08a;color:#9ff5c4;background:rgba(62,224,138,.1)}.dtags i.net{border-color:#3ee08a;color:#9ff5c4}
 .jnote{font-size:13px;margin:8px 0 0;padding:8px 10px;border-left:3px solid var(--cyan);background:rgba(var(--crgb),.07);color:#d5f9fb}
@@ -1133,6 +1137,12 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td>Investigation</td><td><b>Scan</b></td><td>INT</td></tr><tr><td>Nature</td><td><b>RAM</b></td><td>INT</td></tr>
             <tr><td>Religion</td><td><b>Code</b></td><td>INT</td></tr>
           </tbody></table>
+          <h3 style="margin-top:18px">Driving</h3>
+          <p style="margin-top:8px">Vehicles come in four kinds. Land vehicles are a <b>Car</b> or a <b>Bike</b>, plus <b>Water</b> and <b>Air</b> (Aerodynes, or AVs). Anyone can drive anything, but you only add your proficiency to Vehicle checks for the kinds you drive well. Everything else, roll without your proficiency.</p>
+          <table style="margin-top:8px"><tr><th>Vehicle skill</th><th>Drives well</th></tr>
+            <tr><td>No proficiency</td><td>Car or Bike, you pick one and add your proficiency bonus for it</td></tr>
+            <tr><td>Proficiency</td><td>Car, Bike and Water</td></tr>
+            <tr><td>Double proficiency</td><td>Car, Bike, Water and Air (AVs)</td></tr></table>
           <h3 style="margin-top:20px">Double proficiency</h3>
           <p style="margin-top:8px">You get one pick at a time, never one per stat. It opens on a level up when any of your stats reaches a tier you haven't used yet. If several stats qualify, you choose one skill among all of them, and the rest stay locked until each one reaches its next tier. A Bruiser with STR 15, TEC 12 and INT 10 picks Athletics, so TEC and INT give nothing until they hit 14. You only get one pick per level. New mercs don't get one at level 1, and their starting stats all count toward the pick on their first level up.</p>
           <p style="margin-top:8px">Use your pick to become proficient in a skill tied to that stat that you don't have yet, or to double a skill you're already proficient in once that stat has moved two tiers past where you got it. A Rookie Netrunner proficient in Hacking can double it at Phenom. If the skill's stat was under 10 when you got it, Rookie counts as its first tier, so you can double it at Pro. Perks that give proficiency count toward doubling under the same two-tier rule.</p>
@@ -1776,9 +1786,16 @@ const SIGS = ['#ff4a5e', '#ff9f1c', '#ffd23f', '#3ee08a', '#2de2e6', '#3f8cff', 
 const STATUSMAP = Object.fromEntries(STATUS.map(x => [x.id, x]));
 const CYBER_SLOTS = [
   ['os','Operating System',1],['cortex','Frontal Cortex',3],['ocular','Ocular',1],['circ','Circulatory',3],
-  ['immune','Immune',2],['nervous','Nervous',2],['integ','Integumentary',3],['skeleton','Skeleton',2],
+  ['nervous','Nervous',2],['integ','Integumentary',3],['skeleton','Skeleton',2],
   ['hands','Hands',2],['arms','Arms',1],['legs','Legs',1],['shard','Shard Slots',2]
 ];
+const VK = {car:'Car', bike:'Bike', water:'Water', air:'Air (AV)'};
+const vkGuess = t => /\b(av|avs|aerodyne|aero|heli|helicopter|copter|plane|jet|vtol|aircraft)\b/i.test(t) ? 'air' : /(boat|ship|jet ?ski|submarine|\bsub\b|yacht|hover ?craft|speedboat|raft|water)/i.test(t) ? 'water' : /(bike|motorcycle|motorbike|\bmoto|chopper|scooter|dirt ?bike|cycle)/i.test(t) ? 'bike' : 'car';
+const vkOf = i => VK[i.vk] ? i.vk : vkGuess(`${i.name || ''} ${i.stats || ''}`);
+function driveSet(c = C){
+  const lv = skillProf('Vehicle', 'TEC', c).level;
+  return lv >= 2 ? ['car', 'bike', 'water', 'air'] : lv === 1 ? ['car', 'bike', 'water'] : [c.vpick === 'car' ? 'car' : c.vpick === 'bike' ? 'bike' : null].filter(Boolean);
+}
 const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
 // AC is 10 + REF mod + TEC mod. Installed chrome can add to it, and meds or consumables can add a temporary bonus.
 const acIn = t => { const m = /([+\-−]\s*\d+)\s*AC\b/i.exec(t || ''); return m ? parseInt(m[1].replace(/[−\s]/g, c => c === '−' ? '-' : '')) : 0; };
@@ -1843,12 +1860,14 @@ function normalize0(c){
     unlocked: (c.unlocked || []).filter(k => typeof k === 'string'),
     active: ORDER.includes(c.active) ? c.active : 'REF',
     created: c.created || Date.now(),
-    inv: (Array.isArray(c.inv) ? c.inv : []).filter(i => i && i.name).map(i => ({
+    inv: [...(Array.isArray(c.inv) ? c.inv : []), ...(Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && x.slot === 'immune').map(x => ({id: x.id, name: x.name, type: 'Cyberware', qty: 1, stats: String(x.effect || '').slice(0, 120), tier: x.tier, cw: x.cw, hot: x.hot}))].filter(i => i && i.name).map(i => ({
       id: i.id || uid(), name: String(i.name).slice(0, 60), type: ITEM_TYPES.includes(i.type) ? i.type : 'Gear',
       qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
       tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0),
-      ...sizeOf(i), ...weaponOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null
+      ...sizeOf(i), ...weaponOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null,
+      ...(i.type === 'Vehicle' ? {vk: vkOf(i)} : {})
     })),
+    vpick: c.vpick === 'car' || c.vpick === 'bike' ? c.vpick : null,
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null, armor: (c.eq || {}).armor || null},
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
       id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), tier: Math.max(0, Math.min(3, parseInt(x.tier) || 0)), ac: x.ac != null && x.ac !== '' ? (parseInt(x.ac) || 0) : acIn(x.effect), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
@@ -2700,7 +2719,9 @@ $('#wbody').addEventListener('click', e => {
 /* ================= SHEET ================= */
 function openChar(id){
   const raw = DB.chars.find(x => x.id === id); if (!raw) return;
+  const movedImm = (raw.cyber || []).filter(x => x && x.slot === 'immune').map(x => x.name);
   C = normalize(raw); validate(); saveC(); ENVS.jack = !!C.jacked;
+  if (movedImm.length) setTimeout(() => toast(`The Immune chrome slot was removed. ${movedImm.join(', ')} went back to your backpack.`), 2500);
   sel = null; cyberForm = null; delItem = null; selItem = null; selCy = null; hlSlot = null; $('#codeOut').hidden = true;
   show('sheet'); setSheetTab(sheetTab); goTop();
   if (location.hash !== '#sheet') location.hash = '#sheet';
@@ -3424,7 +3445,14 @@ function renderRuleTiers(){
 
 const canFab = (c = C) => c.unlocked.includes(FABRICATOR);
 const upCost = i => FAB_COST.upgrade * (i.tier + 1);
-const itemTags = i => `${tierTag(i.tier)}${i.fort ? '<span class="tagb">FORT</span>' : ''}`;
+function driveHTML(){
+  const lv = skillProf('Vehicle', 'TEC').level, ds = driveSet(), vb = mod(score('TEC'));
+  const pick = lv ? '' : `<div class="row" style="gap:6px;margin-top:6px"><span class="muted" style="font-size:12px">No Vehicle proficiency. Pick the one you're good at</span><button class="btn small ${C.vpick === 'car' ? 'on' : ''}" data-act="vpick" data-v="car">Car</button><button class="btn small ${C.vpick === 'bike' ? 'on' : ''}" data-act="vpick" data-v="bike">Bike</button></div>`;
+  return `<div class="drive"><div><span class="muted" style="font-size:12px">Drives well</span> <b>${ds.length ? ds.map(k => VK[k]).join(', ') : 'Pick Car or Bike'}</b></div>
+    <div class="muted" style="font-size:12px;margin-top:2px">Vehicle checks ${sgn(lv ? skillBonus('Vehicle', 'TEC') : vb + prof(C.level))} for those, ${sgn(vb)} for anything else (no proficiency).${lv === 1 ? ' Double proficiency adds Air (AVs).' : ''}</div>${pick}</div>`;
+}
+const itemTags = i => `${tierTag(i.tier)}${i.fort ? '<span class="tagb">FORT</span>' : ''}${i.type === 'Vehicle' ? vkTag(i) : ''}`;
+const vkTag = (i, c = C) => { const k = vkOf(i), good = c && driveSet(c).includes(k); return `<span class="tagb vkb">${VK[k]}</span>${c ? `<span class="tagb ${good ? 'vgood' : 'vweak'}" title="${good ? 'Add your proficiency to Vehicle checks' : 'Roll Vehicle checks without your proficiency'}">${good ? 'Drives well' : 'Not their strength'}</span>` : ''}`; };
 const hotHalf = v => Math.ceil((+v || 0) / 2);
 const cyberRam = (c = C) => (c.hacks || []).includes('cyber') ? 0 : c.cyber.reduce((n, x) => n + (x.hot ? hotHalf(x.ram) : (+x.ram || 0)), 0);
 const canRip = (c = C) => c.unlocked.includes(RIPPER);
@@ -3559,6 +3587,7 @@ function renderCS(){
       <label class="fl"><span>Type</span><select data-i="${i.id}" data-f="type">${opts(i.type)}</select></label>
       <div class="fl"><span>Quantity</span><div class="q"><button data-qty="-1" data-i="${i.id}" aria-label="One less">−</button><span>${i.qty}</span><button data-qty="1" data-i="${i.id}" aria-label="One more">+</button></div></div>
       <label class="fl wide"><span>Stats or notes</span><input type="text" class="f" data-i="${i.id}" data-f="stats" value="${esc(i.stats)}" placeholder="Like 2d6 piercing, or +1 AC"></label>
+      ${i.type === 'Vehicle' ? `<label class="fl"><span>Kind</span><select data-i="${i.id}" data-f="vk">${Object.entries(VK).map(([k, v]) => `<option value="${k}" ${vkOf(i) === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>` : ''}
       ${i.type === 'Weapon' ? `<label class="fl"><span>Rate of fire</span><input type="number" min="1" max="10" data-i="${i.id}" data-f="rof" value="${i.rof}" title="Attack rolls per ATTACK action"></label>
       <label class="fl"><span>Reload</span><small class="muted" style="font-size:11px;margin-top:-2px">LIGHT is an action, HEAVY is your whole turn</small><select data-i="${i.id}" data-f="reload">${Object.entries(RELOAD_TXT).map(([k, v]) => `<option value="${k}" ${i.reload === k ? 'selected' : ''}>${k === 'light' ? 'LIGHT' : k === 'heavy' ? 'HEAVY' : 'Melee'}</option>`).join('')}</select></label>
       ${i.reload === 'none' ? `<label class="fl"><span>Melee type</span><select data-i="${i.id}" data-f="wclass"><option value="" ${!i.wclass ? 'selected' : ''}>Other (no chart)</option>${MELEE_CLASSES.map(g => `<option ${i.wclass === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>` : ''}
@@ -3592,7 +3621,7 @@ function renderCS(){
       ${enc ? '<div class="encb"><b>ENCUMBERED</b> Something is on the floor. The GM decides the penalty until you make room.</div>' : ''}
       ${bagHTML(C)}
       <div class="row" style="gap:8px;margin-top:10px"><button class="btn small" data-act="invSort">Auto sort</button><span class="muted" style="font-size:12px">Packs everything biggest first</span></div>
-      ${garage.length ? `<div class="garage"><span class="lbl">Garage</span><div class="floor">${garage.map(i => tileHTML(i, selItem === i.id ? 'sel' : '', '--w:2;--h:1')).join('')}</div></div>` : ''}
+      <div class="garage"><span class="lbl">Garage</span>${driveHTML()}${garage.length ? `<div class="floor">${garage.map(i => tileHTML(i, selItem === i.id ? 'sel' : '', '--w:2;--h:1')).join('')}</div>${garage.map(i => `<div class="vrow"><b>${esc(i.name)}</b>${vkTag(i)}</div>`).join('')}` : ''}</div>
     </div><div class="selcol">${selPanel}</div></div>`;
   const rip = canRip(), fab = canFab();
   const craft = mod(score('TEC')) + prof(C.level) * skillProf('Craft', 'TEC').level;
@@ -3685,7 +3714,7 @@ function tickStatus(m){
 }
 
 /* ---- Cyberware body map. Installed chrome lives here, not in the backpack. ---- */
-const CY_LEFT = ['cortex', 'ocular', 'circ', 'immune', 'nervous', 'integ'], CY_RIGHT = ['os', 'shard', 'skeleton', 'hands', 'arms', 'legs'];
+const CY_LEFT = ['cortex', 'ocular', 'circ', 'nervous', 'integ'], CY_RIGHT = ['os', 'shard', 'skeleton', 'hands', 'arms', 'legs'];
 const CY_ICON = {
   shard:'<path d="M8 3h8v13l-4 5-4-5z"/><path class="ln" d="M10 6h4M10 9h4M10 12h4"/>',
   os:'<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" class="vis"/><path class="ln" d="M8 2v3M12 2v3M16 2v3M8 19v3M12 19v3M16 19v3M2 8h3M2 12h3M2 16h3M19 8h3M19 12h3M19 16h3"/>',
@@ -3719,7 +3748,6 @@ function bodySVG(m, hl){
     <path ${p('skeleton')} class-extra d="M78 110 Q100 104 122 110 M76 124 Q100 118 124 124 M77 138 Q100 132 123 138 M80 152 Q100 146 120 152"/>
     <path ${p('nervous')} d="M100 92 V218 M100 120 L84 112 M100 120 L116 112 M100 160 L82 168 M100 160 L118 168"/>
     <path ${p('circ')} d="M112 140c-7-5-9-8-9-11a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-2 6-9 11z"/>
-    <path ${p('immune')} d="M100 178l11 4v7c0 7-5 11-11 13-6-2-11-6-11-13v-7z"/>
   </svg>`;
 }
 let selCy = null, hlSlot = null, capWarn = null;
@@ -4101,6 +4129,7 @@ $('#vCS').addEventListener('click', e => {
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
+    case 'vpick': C.vpick = t.dataset.v === 'bike' ? 'bike' : 'car'; sfx('select'); return csSave();
     case 'sig': C.sig = t.dataset.c || null; sfx('select'); renderSheetHead(); return csSave();
     case 'psyRoll': {
       const a = 1 + Math.floor(Math.random() * 20), b2 = 1 + Math.floor(Math.random() * 20), adv = hasPerk('BOD.A.ph'), d20 = adv ? Math.max(a, b2) : a;
@@ -4178,7 +4207,8 @@ $('#vCS').addEventListener('change', async e => {
     const i = C.inv.find(x => x.id === t.dataset.i); if (!i) return;
     if (t.dataset.f === 'name'){ const v = t.value.trim(); if (v) i.name = v.slice(0, 60); else t.value = i.name; return saveC(); }
     if (t.dataset.f === 'stats'){ i.stats = t.value.slice(0, 120); return saveC(); }
-    if (t.dataset.f === 'type'){ i.type = t.value; Object.assign(i, weaponOf({...i, rof:null, reload:null})); fixEq(C); return csSave(); }
+    if (t.dataset.f === 'type'){ i.type = t.value; if (i.type === 'Vehicle') i.vk = vkOf(i); Object.assign(i, weaponOf({...i, rof:null, reload:null})); fixEq(C); return csSave(); }
+    if (t.dataset.f === 'vk'){ i.vk = VK[t.value] ? t.value : 'car'; return csSave(); }
     if (t.dataset.f === 'rof'){ i.rof = Math.max(1, Math.min(10, parseInt(t.value) || 1)); return csSave(); }
     if (t.dataset.f === 'reload'){ i.reload = t.value; Object.assign(i, weaponOf(i)); return csSave(); }
     if (t.dataset.f === 'gtype'){ i.gtype = t.value; i.wclass = t.value; i.ammo = null; Object.assign(i, weaponOf(i)); return csSave(); }
@@ -5025,7 +5055,7 @@ function applyOp(op){
     const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
     const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
     const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
+    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(it.type === 'Vehicle' ? {vk: vkOf(it)} : {})}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
@@ -6090,7 +6120,7 @@ function renderCodex(){
     : codexTab === 'npcs'
     ? list.map(n => `<button class="cxcard npc ${n.critical || n.down ? 'crit' : ''}" data-cx="${n.id}">${avatar(n, 'av md')}<div style="min-width:0;text-align:left"><div class="nm">${esc(n.name)}</div><div class="sub">${esc(n.origin || 'Unknown')}</div>
         <div class="sub">${idNo(n.id)}</div>${n.down ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : n.critical ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></button>`).join('')
-    : list.map(i => `<div class="cxcard"><div style="min-width:0"><div class="nm">${esc(i.name)}</div><div class="sub">${tierTag(i.tier)} ${esc(i.type)}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}</div>${i.stats ? `<p style="margin:8px 0 0;font-size:14px">${esc(i.stats)}</p>` : ''}</div></div>`).join('');
+    : list.map(i => `<div class="cxcard"><div style="min-width:0"><div class="nm">${esc(i.name)}</div><div class="sub">${tierTag(i.tier)} ${esc(i.type)}${i.type === 'Cyberware' ? ' · CW ' + (i.cw || 0) : ''}${i.type === 'Vehicle' ? ' · ' + VK[vkOf(i)] : ''}</div>${i.stats ? `<p style="margin:8px 0 0;font-size:14px">${esc(i.stats)}</p>` : ''}</div></div>`).join('');
   body.innerHTML = `<div class="panel"><div class="row"><div style="flex:1;min-width:200px"><span class="lbl">${d.live ? 'Live from session' : 'Last synced from session'}</span><div style="font-family:Orbitron,sans-serif;color:#fff;font-size:18px">${esc(d.code)}${d.sname ? ' · ' + esc(d.sname) : ''}</div>${d.live ? '' : `<p class="muted" style="font-size:13px;margin:4px 0 0">Updated ${ago(d.at)}. Join the session to get the latest.</p>`}</div>
       <input type="text" class="f" id="cxSearch" placeholder="Search the codex" value="${esc(codexQ)}" aria-label="Search the codex" style="max-width:280px"></div></div>
     <div class="vtabs cxtabs">${CODEX_TABS.map(([k, l]) => `<button data-cxt="${k}" class="${codexTab === k ? 'on' : ''}">${l} <span class="muted">${codexOf(k, d).length}</span></button>`).join('')}</div>
