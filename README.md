@@ -65,6 +65,12 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Death saves live in `ds: {p, f}` and `dead`. Three passes brings a merc back with 1 HP. Three fails sets `dead` and plays the afterlife screen. Healing above 0 HP resets both.
 - Status effects live in `status: [{id, r, v}]`. `r` is rounds left (null means until removed) and `v` is the Exhaustion level. The DM applies them from the party card and ends rounds for everyone.
 
+## Vehicles
+- Vehicles have a Kind. Car, Bike, Water or Air (AV). It's guessed from the name and can be changed in the item editor
+- The garage on the Gear tab shows what the merc drives well. No Vehicle proficiency means they pick Car or Bike. Proficiency covers Car, Bike and Water. Double proficiency adds Air
+- Each vehicle is tagged Drives well (add proficiency) or Not their strength (roll without proficiency)
+- The Immune chrome slot is gone. Chrome that was installed there goes back to the backpack
+
 ## Net dives
 - Jacking in is saved on the merc and synced. The DM's roster and the party cards show IN THE NET, and moving around the site no longer jacks you out
 - Jacking in reminds you to stay within 15 ft of the access point. Jacking out asks Safe (an ACTION and 3 RAM) or Unsafe (free, but anything not de-rezzed gets a free hit)
