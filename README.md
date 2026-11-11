@@ -74,9 +74,27 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 ## Net dives
 - Jacking in is saved on the merc and synced. The DM's roster and the party cards show IN THE NET, and moving around the site no longer jacks you out
 - Jacking in reminds you to stay within 15 ft of the access point. Jacking out asks Safe (an ACTION and 3 RAM) or Unsafe (free, but anything not de-rezzed gets a free hit)
+- A Kraken lock only blocks a Safe Jack-Out. The player can still take an Unsafe one
+- Flatlining in The Net (0 NET HP) jacks the runner out automatically
 - The DM's Unsafe jack-out button is for a runner who's moved past 15 ft. It jacks them out on their device and logs it as unsafe
 - A runner's Net panel lists anyone else diving, in their signature color
 - The Rules page has a Diving during combat section
+
+## Encounters (DM)
+- Grunts are added with a threat preset (Gonk, Ganger, Corpo Security, Elite, Boss). Each grunt gets its own HP. Presets has a button to edit, add or reset them, saved on the DM's device
+- The ✎ button on any enemy edits its AC, to hit, damage, attacks and HP for this encounter. NPCs in the NPC list have the same fields, or fill them from a preset
+- Difficulty meter. Weighs the party's live HP, AC and equipped weapons against the enemies and rates the fight Easy, Medium, Hard or Deadly, with a suggestion to go up or down. Black ICE gets its own Net rating against the party's netrunners. Only the DM sees it, and cover and terrain aren't counted
+- Saved encounters. Name and save the current encounter, then load it later (it's added to whatever is already there)
+- Short rest and Long rest buttons in the Party hit box. Tap twice to confirm
+  - Short rest. RAM full, heal half max HP, timed effects end
+  - Long rest. HP, NET HP and RAM full, timed effects end, death saves reset. Fried processors stay
+- Undo. Most DM changes to a merc can be undone with the Undo button in the Party hit box (the last 15)
+
+## Ammo
+- The vitals bar shows ammo for the equipped primary gun with a ↻ reload button
+
+## Activity log
+- Shows the latest 40 entries, with a Show more button for older ones
 
 ## Flair
 - Signature color. Each merc picks one on the Profile tab. It shows on the roster, party cards, the DM's roster and the activity log

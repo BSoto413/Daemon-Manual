@@ -613,11 +613,13 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 #hurtfx{position:fixed;inset:0;pointer-events:none;z-index:8;opacity:0;transition:opacity .6s}
 body.hurt #hurtfx{opacity:1;box-shadow:inset 0 0 110px 20px rgba(255,30,60,.45);animation:hurtPulse 1.8s ease-in-out infinite}
 body.hurt #vitalsBar{animation:vbFlick 3.2s steps(1) infinite}
-body.dying #hurtfx{opacity:1;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.72) 100%);box-shadow:inset 0 0 140px 30px rgba(255,20,50,.5);backdrop-filter:grayscale(.85);-webkit-backdrop-filter:grayscale(.85);animation:heartbeat 1.1s ease-in-out infinite}
+body.dying #hurtfx{opacity:1;animation:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.72) 100%);box-shadow:inset 0 0 140px 30px rgba(255,20,50,.35);backdrop-filter:grayscale(.85);-webkit-backdrop-filter:grayscale(.85)}
+#hurtfx::before{content:'';position:absolute;inset:0;box-shadow:inset 0 0 170px 45px rgba(255,20,50,.6);opacity:0;will-change:opacity}
+body.dying #hurtfx::before{animation:heartbeat 1.1s ease-in-out infinite}
 @keyframes hurtPulse{0%,100%{opacity:.55}50%{opacity:1}}
 @keyframes vbFlick{0%,92%,100%{opacity:1}93%{opacity:.55}95%{opacity:1}96%{opacity:.7}}
-@keyframes heartbeat{0%,40%,100%{box-shadow:inset 0 0 140px 30px rgba(255,20,50,.35)}10%{box-shadow:inset 0 0 170px 45px rgba(255,20,50,.7)}22%{box-shadow:inset 0 0 120px 25px rgba(255,20,50,.4)}30%{box-shadow:inset 0 0 160px 40px rgba(255,20,50,.6)}}
-body.table #hurtfx{animation:none!important}body.table.dying #hurtfx{backdrop-filter:none;-webkit-backdrop-filter:none}body.table #vitalsBar{animation:none!important}
+@keyframes heartbeat{0%,40%,100%{opacity:0}10%{opacity:1}22%{opacity:.2}30%{opacity:.8}}
+body.table #hurtfx,body.table #hurtfx::before{animation:none!important}body.table.dying #hurtfx{backdrop-filter:none;-webkit-backdrop-filter:none}body.table #vitalsBar{animation:none!important}
 /* Flair: jacked in */
 body.jacked #vSheet{position:relative}
 body.jacked #vSheet::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
@@ -626,6 +628,17 @@ body.jacked #vSheet .panel h3{font-family:'Share Tech Mono',ui-monospace,Consola
 body.jacked #vitalsBar{border-color:var(--cyan);box-shadow:0 0 16px rgba(var(--crgb),.35)}body.jacked #vitalsBar::before{content:'NET LINK';font:600 9px Orbitron,sans-serif;letter-spacing:2px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
 body.jacked #vCS .csL{display:flex;flex-direction:column}body.jacked #vCS .csL > .netwrap{order:-1}
 body.table.jacked #vSheet::after{display:none}
+/* Encounter difficulty, presets, saves, rests */
+.dread{margin-top:12px;display:grid;gap:8px}
+.dmeter{border:1px solid rgba(var(--crgb),.25);padding:10px 12px;background:rgba(255,255,255,.02)}.dmeter p{margin:6px 0 0;font-size:13px;color:#d5f9fb}.dmeter .sug{color:#aab3c5;font-size:12px}
+.dlab{font:700 14px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase}.dbar4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}.dbar4 i{height:6px;background:rgba(var(--crgb),.15)}
+.dmeter.r0 .dlab{color:#3ee08a}.dmeter.r0 .dbar4 i.on{background:#3ee08a}.dmeter.r1 .dlab{color:#ffd23f}.dmeter.r1 .dbar4 i.on{background:#ffd23f}.dmeter.r2 .dlab{color:#ffa53f}.dmeter.r2 .dbar4 i.on{background:#ffa53f}.dmeter.r3 .dlab{color:#ff4f6d}.dmeter.r3 .dbar4 i.on{background:#ff4f6d}.dmeter.r3{border-color:rgba(255,79,109,.5)}
+.pedit{margin-top:8px;display:grid;gap:6px;padding:10px;border:1px dashed rgba(var(--crgb),.3)}
+.prow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.prow input,.prow select{font:500 13px 'Exo 2',sans-serif;padding:6px 8px;min-height:0;height:32px;letter-spacing:0}.prow input[type=text]:not(.f){width:90px!important}.prow label{display:flex;align-items:center;gap:4px;font-size:11px;color:#aab3c5;letter-spacing:.5px}.prow input[type=number]{width:58px}.prow input.f{flex:1;min-width:120px}
+.prow.eedit{margin:-2px 0 8px 46px}.prow.nstat select{max-width:130px}
+.encsave{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}.encsave input{flex:1;min-width:150px}
+.vb.ammo{position:relative;padding-right:34px}.vb .vrl{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:1px solid var(--cyan);background:rgba(var(--crgb),.12);color:var(--cyan);font-size:16px;cursor:pointer;padding:0}.vb .vrl:disabled{opacity:.35;cursor:default}
+.vb.ammo.low b{color:#ff4f6d}
 /* Vehicles */
 .drive{margin:6px 0 10px;padding:8px 10px;border-left:3px solid var(--cyan);background:rgba(var(--crgb),.06)}.drive b{color:#fff}
 .vrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;font-size:13px}.vrow b{color:#fff;margin-right:4px}
@@ -647,7 +660,7 @@ body.table.jacked #vSheet::after{display:none}
 #lvlCard.go li{animation:lcLine .25s ease-out forwards}#lvlCard.go .lc-tap{animation:lcFade .3s 1.8s forwards}
 @keyframes lcIn{0%{transform:scale(.92);opacity:0;filter:hue-rotate(80deg)}60%{opacity:1}100%{transform:none;filter:none}}
 @keyframes lcBar{to{width:100%}}@keyframes lcFade{to{opacity:1}}@keyframes lcLine{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){#hurtfx,body.hurt #vitalsBar{animation:none!important}#lvlCard .lc,#lvlCard .lc-bar i,#lvlCard li,#lvlCard .lc-st,#lvlCard .lc-tap{animation:none!important;opacity:1!important;width:100%}}
+@media (prefers-reduced-motion:reduce){#hurtfx,#hurtfx::before,body.hurt #vitalsBar{animation:none!important}#lvlCard .lc,#lvlCard .lc-bar i,#lvlCard li,#lvlCard .lc-st,#lvlCard .lc-tap{animation:none!important;opacity:1!important;width:100%}}
 /* DM party view */
 body.dmwide .wrap{max-width:1440px}
 .dmalerts{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
@@ -1816,7 +1829,6 @@ function tierFix(m){
   return m;
 }
 const maxHit = (m, k) => Math.max(-1, ...((m.tierHit || {})[k] || []).map(t => T_IDX[t] ?? -1));
-const pickedSkills = m => Object.values(m.tierPicks || {}).filter(v => v && v !== '-').map(v => v.replace(/^2:/, ''));
 const pendingPicks = m => (m.level || 1) <= (m.pickLv || 0) ? [] : ORDER.filter(k => maxHit(m, k) > ((m.tierUsed || {})[k] ?? -1)).map(k => ({k, t: TIER_ORDER[maxHit(m, k)]}));
 const lockedStats = m => ORDER.filter(k => SKILLS.some(x => x[1] === k) && maxHit(m, k) <= ((m.tierUsed || {})[k] ?? -1)).map(k => { const nx = TIER_ORDER.find(t => T_IDX[t] > maxHit(m, k)); return nx ? `${k} hits ${TIERS[nx].req}` : null; }).filter(Boolean);
 function usePick(m){ m.tierUsed = Object.fromEntries(ORDER.map(k => [k, maxHit(m, k)])); m.pickLv = m.level || 1; }
@@ -1885,7 +1897,7 @@ function normalize0(c){
     psycho: !!c.psycho,
     jackLock: !!c.jackLock,
     jacked: !!c.jacked,
-    lastOut: c.lastOut === 'unsafe' ? 'unsafe' : c.lastOut === 'safe' ? 'safe' : null,
+    lastOut: ['unsafe', 'safe', 'flat'].includes(c.lastOut) ? c.lastOut : null,
     sig: SIGS.includes(c.sig) ? c.sig : null,
     xp: Math.max(0, parseInt(c.xp) || 0),
     ledger: (Array.isArray(c.ledger) ? c.ledger : []).filter(e => e && typeof e.d === 'number').slice(0, 150).map(e => ({at:+e.at || 0, d:Math.round(e.d), bal:Math.max(0, parseInt(e.bal) || 0), note:String(e.note || '').slice(0, 60)})),
@@ -2281,7 +2293,7 @@ function dmSheetHTML(p){
   const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}${WT[i.wclass] ? ` · ${esc(dmgText(i.wclass, i.tier, m))}` : ''}${clipCap(i) ? ` · Ammo ${i.ammo == null ? clipCap(i) : i.ammo}/${clipCap(i)} ${CLIP_TXT[i.clip || 'std']}` : ''}${concealed(i) ? ' · Concealable' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
   const ach = ACH.filter(a => m.ach[a.id]).length;
   return `<div class="dsheet">
-    <div class="dsh">${avatar(m, 'av md', portraits[p.id])}<div style="min-width:0"><div class="nm">${esc(m.name)}</div>
+    <div class="dsh">${avatar(m, 'av md', pSrc(p.id))}<div style="min-width:0"><div class="nm">${esc(m.name)}</div>
       <div class="sub">${m.background} · ${m.role || 'No role yet'} · Level ${m.level} · Proficiency ${sgn(pb)} · ${isOnline(p) ? 'online' : 'last seen ' + ago(p.updatedAt)}</div></div></div>
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k, m))).join('')}</div>
     <div class="cols"><div>
@@ -2721,7 +2733,7 @@ function openChar(id){
   const raw = DB.chars.find(x => x.id === id); if (!raw) return;
   const movedImm = (raw.cyber || []).filter(x => x && x.slot === 'immune').map(x => x.name);
   C = normalize(raw); validate(); saveC(); ENVS.jack = !!C.jacked;
-  if (movedImm.length) setTimeout(() => toast(`The Immune chrome slot was removed. ${movedImm.join(', ')} went back to your backpack.`), 2500);
+  if (movedImm.length) setTimeout(() => toast(`The Immune chrome slot was removed. ${movedImm.join(', ')} went back to your backpack.`, false, true), 1500);
   sel = null; cyberForm = null; delItem = null; selItem = null; selCy = null; hlSlot = null; $('#codeOut').hidden = true;
   show('sheet'); setSheetTab(sheetTab); goTop();
   if (location.hash !== '#sheet') location.hash = '#sheet';
@@ -2745,6 +2757,12 @@ function updateHeat(){
 /* ---- flair: signature colors, low HP vision, jacked-in look, level-up card ---- */
 const sigOf = m => m && SIGS.includes(m.sig) ? m.sig : null;
 const sigStyle = m => sigOf(m) ? ` style="--sig:${sigOf(m)}"` : '';
+function netFlatOut(m){
+  if (!m || !m.jacked || !m.hpMax || netNow(m) > 0) return false;
+  m.jacked = false; m.lastOut = 'flat'; if (m === C || (C && m.id === C.id)) ENVS.jack = false;
+  return true;
+}
+const onSheet = () => !!C && !$('#vSheet').hidden && $('#vSheet').offsetParent !== null && !/^#?(live|rules|codex)\b/.test(location.hash);
 function setJack(on, how){
   ENVS.jack = !!on; C.jacked = !!on;
   if (on){ C.ctr.jack++; C.lastOut = null; } else C.lastOut = how || 'safe';
@@ -2753,10 +2771,10 @@ function setJack(on, how){
   renderVitalsBar(); setTimeout(refreshEnv, flashOK() ? 200 : 0);
 }
 function jackOutModal(){
-  const cost = netCost(3), ok = ramCur() >= cost;
+  const cost = netCost(3), locked = !!C.jackLock, ok = ramCur() >= cost && !locked;
   const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
   m.innerHTML = `<div class="mbox" style="max-width:440px"><div class="sethead"><h3>Jack out</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
-    <div class="jopt"><button class="btn primary" data-m="safe" ${ok ? '' : 'disabled'}>Safe jack-out</button><p>Costs an ACTION and ${cost} RAM.${ok ? '' : ` You only have ${ramCur()} RAM.`}</p></div>
+    <div class="jopt"><button class="btn primary" data-m="safe" ${ok ? '' : 'disabled'}>Safe jack-out</button><p>Costs an ACTION and ${cost} RAM.${locked ? ' Locked by Black ICE. Only an Unsafe Jack-Out gets you out.' : ok ? '' : ` You only have ${ramCur()} RAM.`}</p></div>
     <div class="jopt"><button class="btn danger" data-m="unsafe">Unsafe jack-out</button><p>A FREE ACTION with no RAM cost. Every Black ICE, Daemon and security measure you didn't de-rez gets a free hit on you, and enemy Netrunners get a bead on your location.</p></div></div>`;
   m.onclick = e => {
     const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return;
@@ -2764,11 +2782,11 @@ function jackOutModal(){
     closeModal();
     if (b.dataset.m === 'safe'){ C.ram = ramCur() - cost; setJack(false, 'safe'); toast(`Jacked out safely. −${cost} RAM. That used your ACTION.`, true); }
     else { setJack(false, 'unsafe'); sfx('breach'); toast("Unsafe jack-out. Anything you didn't de-rez gets a free hit. Tell the DM."); }
-    csSave(); if (isOverheated()) setTimeout(() => heatFx(), 200);
+    csSave(); if (liveMe()) flushLog(''); if (isOverheated()) setTimeout(() => heatFx(), 200);
   };
 }
 function syncBodyFx(){
-  const on = !!C && !$('#vSheet').hidden && location.hash.replace('#', '') !== 'live' && $('#vSheet').offsetParent !== null;
+  const on = onSheet();
   const hm = on && C.hpMax, down = hm && isDown(C) && !C.dead, low = hm && !down && Math.min(hpNow(C), netNow(C)) / hm <= .25;
   document.body.classList.toggle('hurt', !!low);
   document.body.classList.toggle('dying', !!down);
@@ -2797,10 +2815,12 @@ function renderVitalsBar(){
     return `<div class="vb ${cls}" data-k="${lbl === 'HP' ? 'hp' : lbl === 'Net HP' ? 'net' : ''}"><small>${lbl}</small><b>${a}${b != null ? `<small> / ${b}</small>` : ''}</b>${bar ? `<span class="hb"><i style="width:${Math.max(0, Math.min(100, r * 100))}%"></i></span>` : ''}</div>`; };
   const showNet = hm && (hasPerk('INT.A.r') || netNow(C) < hm);
   const hpC = hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set'), netC = hm ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '';
-  el.innerHTML = ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C));
+  const gun = C.inv.find(i => i.id === C.eq.primary && clipCap(i)), cap = gun && clipCap(gun), am = gun ? (gun.ammo == null ? cap : gun.ammo) : 0;
+  const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>Ammo</small><b>${am}<small> / ${cap}</small></b><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
+  el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
   syncBodyFx();
 }
-$('#vitalsBar').addEventListener('click', e => { const k = (e.target.closest('.vb') || {}).dataset; if (k && (k.k === 'hp' || k.k === 'net') && C && C.hpMax) return openPad(k.k); if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
+$('#vitalsBar').addEventListener('click', e => { if (e.target.closest('[data-ammo]')) return; const k = (e.target.closest('.vb') || {}).dataset; if (k && (k.k === 'hp' || k.k === 'net') && C && C.hpMax) return openPad(k.k); if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
 $('#vitalsBar').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.currentTarget.click(); } });
 // Quick HP pad. Tap HP or Net HP in the vitals bar to take damage or heal from any tab.
 let padFor = null;
@@ -3179,10 +3199,21 @@ $('#dec').onclick = () => { const st = C.active, i = C.asi.lastIndexOf(st); if (
 new ResizeObserver(() => layout()).observe(treeEl);
 
 let tt;
-function toast(msg, good){
-  if (!good) sfx('deny');
-  const t = $('#toast'); t.textContent = msg; t.classList.toggle('good', !!good); t.classList.add('show');
-  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2800);
+// Messages queue up so a new one doesn't wipe one nobody has read yet. Each stays at least 1.4s.
+const toastQ = []; let toastAt = 0, toastCur = '';
+function toast(msg, good, quiet){
+  if (!good && !quiet) sfx('deny');
+  if (msg === toastCur || toastQ.some(x => x[0] === msg)) return;
+  toastQ.push([msg, !!good]); if (toastQ.length > 4) toastQ.splice(0, toastQ.length - 4);
+  if (toastQ.length === 1) toastNext(Date.now() - toastAt < 1400 && toastCur ? 1400 - (Date.now() - toastAt) : 0);
+}
+function toastNext(wait){
+  clearTimeout(tt);
+  tt = setTimeout(() => {
+    const t = $('#toast'), x = toastQ.shift(); if (!x){ t.classList.remove('show'); toastCur = ''; return; }
+    toastCur = x[0]; toastAt = Date.now(); t.textContent = x[0]; t.classList.toggle('good', x[1]); t.classList.add('show');
+    tt = setTimeout(function step(){ if (toastQ.length) toastNext(0); else { t.classList.remove('show'); toastCur = ''; } }, toastQ.length ? 1400 : 2800);
+  }, wait || 0);
 }
 
 /* ================= CHARACTER SHEET TAB ================= */
@@ -3513,8 +3544,8 @@ document.addEventListener('click', e => {
   const a = i.ammo == null ? cap : i.ammo;
   if (b.dataset.ammo === 'fire'){ const n = Math.min(i.rof, a); i.ammo = a - n; if (!i.ammo) toast(`Clip's empty. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`); }
   else if (b.dataset.ammo === 'add') i.ammo = Math.min(cap, a + 1);
-  else { i.ammo = cap; toast(`Reloaded. ${cap} shots.`, true); }
-  saveC(); renderCS();
+  else { i.ammo = cap; toast(`Reloaded. ${cap} shots. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`, true); }
+  saveC(); renderCS(); renderVitalsBar();
 });
 function renderCS(){
   if (!C || !CS_TABS.includes(sheetTab)) return;
@@ -3548,7 +3579,7 @@ function renderCS(){
          <div class="row" style="margin-top:6px"><input type="number" min="1" max="10" id="lvHpRoll" placeholder="d10" aria-label="Your d10 roll" style="width:80px"><button class="btn small primary" data-act="lvHp">Add</button><button class="btn small" data-act="lvHpRoll">Roll for me</button><button class="btn small" data-act="lvHpSkip" title="Already added it by hand">Skip</button></div></div>` : ''}
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
-     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'disabled title="Black ICE locked your jack-out"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button></span></div>
+     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'title="Black ICE locked a Safe Jack-Out. Only an Unsafe one works"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button></span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
   const acc = acChrome(C), act = C.acTemp || 0;
@@ -3671,7 +3702,7 @@ function renderCS(){
       ${cyberMapHTML(C)}</div>
     <div class="panel gap" data-sub="profile"><h3 style="margin-bottom:10px">Notes</h3><textarea data-field="notes" class="notes" placeholder="Contacts, debts, jobs, who owes you eddies" aria-label="Notes">${esc(C.notes)}</textarea></div>`;
 }
-const csSave = () => { saveC(); renderCS(); renderSheetHead(); };
+const csSave = () => { if (C && netFlatOut(C)) setTimeout(refreshEnv, 0); saveC(); renderCS(); renderSheetHead(); };
 /* ---- Death saves. 3 live skulls vs 3 dead skulls on a seesaw. ---- */
 const SKULL = 'M12 2C6.5 2 3 5.8 3 10.4c0 2.7 1.2 4.6 3 5.8V19a1 1 0 0 0 1 1h1.5v-2h2v2h3v-2h2v2H17a1 1 0 0 0 1-1v-2.8c1.8-1.2 3-3.1 3-5.8C21 5.8 17.5 2 12 2z';
 const skull = (x, y, st) => `<g class="sk ${st}" transform="translate(${x - 12} ${y - 24})"><path d="${SKULL}"/><circle cx="8.6" cy="11" r="2.2" class="eye"/><circle cx="15.4" cy="11" r="2.2" class="eye"/></g>`;
@@ -4076,11 +4107,11 @@ $('#vCS').addEventListener('click', e => {
     case 'netHeal': C.netHp = Math.min(hm, (C.netHp ?? hm) + amt('netAmt')); return csSave();
     case 'netFull': C.netHp = hm; return csSave();
     case 'jack': {
-      if (ENVS.jack && C.jackLock) return toast("Black ICE locked your jack-out. The DM has to clear it.");
       if (ENVS.jack) return jackOutModal();
       if (C.status.some(x => x.id === 'fried')) return toast('Your processors are fried. No Net until a Ripper fixes you.');
       setJack(true); toast('Jacked in. Stay within 15 ft of the access point or you take an Unsafe Jack-Out.', true);
-      return csSave();
+      csSave(); if (liveMe()) flushLog('');
+      return;
     }
     case 'ram-1': if (blocked('lockout')) return; C.ram = Math.max(0, ramCur() - 1); return csSave();
     case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
@@ -4089,7 +4120,7 @@ $('#vCS').addEventListener('click', e => {
     case 'net': {
       if (stunned() || blocked('lockout')) return;
       if (C.status.some(x => x.id === 'fried')) return toast('Your processors are fried. No Net until a Ripper fixes you.');
-      if (t.dataset.n === 'jackout'){ if (!ENVS.jack) return toast("You're not jacked in."); if (C.jackLock) return toast("Black ICE locked your jack-out. The DM has to clear it."); }
+      if (t.dataset.n === 'jackout'){ if (!ENVS.jack) return toast("You're not jacked in."); if (C.jackLock) return toast("Black ICE locked a Safe Jack-Out. Tap Jack out for an Unsafe one."); }
       const n = t.dataset.n, cost = n === 'sword' ? swordCost(swordN) : netCost(n === 'shield' ? 2 : n === 'ping' ? 1 : 3);
       const label = n === 'sword' ? `SWORD ×${swordN}` : n === 'shield' ? 'SHIELD react' : n === 'ping' ? 'SCAN Ping' : 'Safe Jack-Out';
       if (ramCur() < cost) return toast(`${label} needs ${cost} RAM. You have ${ramCur()}.`);
@@ -4102,7 +4133,7 @@ $('#vCS').addEventListener('click', e => {
         : n === 'shield' ? `SHIELD react. Your SHIELD is ${10 + 2 * skillBonus('Code', 'INT')} against this hit. −${cost} RAM.`
         : n === 'ping' ? `SCAN Ping. Roll SCAN ${sgn(skillBonus('Scan', 'INT'))}. −${cost} RAM.` : `Jacked out safely. −${cost} RAM.`, true);
       if (n === 'jackout') setJack(false, 'safe');
-      csSave(); if (isOverheated()) setTimeout(() => heatFx(), 200);
+      csSave(); if (n === 'jackout' && live) flushLog(''); if (isOverheated()) setTimeout(() => heatFx(), 200);
       return;
     }
     case 'qh': {
@@ -4265,7 +4296,7 @@ const LIVE_OK = MOCK || (!framed && /^https?:$/.test(location.protocol));
 const LS_KEY = 'daemon-live', HOSTED_KEY = 'daemon-hosted';
 let LS = null; try { LS = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){}
 let liveApi = null, liveState = 'idle', liveErr = '', unsubs = [], players = [], lib = [], sessMeta = null, endConfirm = false, libImport = false;
-let portraits = {}, lastPortrait = null, restoreList = null, leaveConfirm = false;
+let portraits = {}, pBlob = {}, lastPortrait = null, restoreList = null, leaveConfirm = false;
 let npcsDM = [], npcsPub = [], npcDel = null, codexLib = [];
 const ORIGINS = ['Nomad', 'Corpo', 'Streetkid', 'Unknown', 'Black ICE'];
 const npcCrit = n => n.hpMax > 0 && n.hp > 0 && n.hp / n.hpMax < .3;
@@ -4660,7 +4691,7 @@ function diffMerc(a, b){
   (a.status || []).forEach(x => { if (!sn(b, x.id)) add(`${STATUSMAP[x.id].n} ended`, 'good'); });
   const sh = c => c.cyber.filter(x => x.slot === 'shard').map(x => x.name);
   sh(b).filter(n => !sh(a).includes(n)).forEach(n => add(`Slotted ${n}`, 'good')); sh(a).filter(n => !sh(b).includes(n)).forEach(n => add(`Pulled ${n}`));
-  if (!!a.jacked !== !!b.jacked) add(b.jacked ? 'Jacked in to The Net' : b.lastOut === 'unsafe' ? "Unsafe Jack-Out · ICE they didn't de-rez gets a free hit" : 'Jacked out safely', b.jacked ? '' : b.lastOut === 'unsafe' ? 'bad' : 'good');
+  if (!!a.jacked !== !!b.jacked) add(b.jacked ? 'Jacked in to The Net' : b.lastOut === 'unsafe' ? "Unsafe Jack-Out · ICE they didn't de-rez gets a free hit" : b.lastOut === 'flat' ? 'Flatlined in The Net and got dumped out' : 'Jacked out safely', b.jacked ? '' : b.lastOut === 'safe' ? 'good' : 'bad');
   if (a.jackLock !== b.jackLock) add(b.jackLock ? 'Jack-out locked by Black ICE' : 'Jack-out unlocked', b.jackLock ? 'bad' : 'good');
   if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
   b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
@@ -4699,16 +4730,17 @@ function flushLog(via){
   if (!lines.length) return;
   liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:cur.id, name:cur.name, via:via || '', lines:lines.slice(0, 20)}).catch(e => console.error(e));
 }
+let logShow = 40;
 function logHTML(dm){
   const who = [...new Map(logs.map(l => [l.mercId, l.name])).entries()];
   const ps = playsOf(sessMeta), lp = logPlay === 'cur' ? curPlay() : logPlay;
-  const shown = logs.filter(l => (!logFilter || l.mercId === logFilter) && (lp === 'all' || logPlayOf(l) === +lp));
+  const all = logs.filter(l => (!logFilter || l.mercId === logFilter) && (lp === 'all' || logPlayOf(l) === +lp)), shown = all.slice(0, logShow);
   let day = '';
   const rows = shown.map(l => {
     const d = new Date(l.at || 0), dl = d.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric'});
     const head = dl !== day ? `<div class="logday">${esc(dl)}</div>` : ''; day = dl;
     const p = players.find(x => x.mercId === l.mercId), sg = p && p.merc ? sigOf(p.merc) : null;
-    return `${head}<div class="logrow ${sg ? 'sigd' : ''}"${sg ? ` style="--sig:${sg}"` : ''}><span class="tm">${d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>${avatar({name:l.name || '?', portrait:null}, 'av sm', p ? portraits[p.id] : null)}
+    return `${head}<div class="logrow ${sg ? 'sigd' : ''}"${sg ? ` style="--sig:${sg}"` : ''}><span class="tm">${d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</span>${avatar({name:l.name || '?', portrait:null}, 'av sm', p ? pSrc(p.id) : null)}
       <div><span class="who">${esc(l.name || 'Merc')}</span>${l.via ? `<span class="via">${esc(l.via.toUpperCase())}</span>` : ''}<ul>${(l.lines || []).map(x => `<li class="${x.k === 'bad' ? 'bad' : x.k === 'good' ? 'good' : ''}">${esc(x.t)}</li>`).join('')}</ul></div></div>`;
   }).join('');
   return `<div class="panel gap"><div class="row"><h3>Activity</h3><span class="spacer"></span>
@@ -4716,7 +4748,7 @@ function logHTML(dm){
       <select id="logWho" aria-label="Filter by merc"><option value="">Everyone</option>${who.map(([id, n]) => `<option value="${esc(id)}" ${logFilter === id ? 'selected' : ''}>${esc(n || 'Merc')}</option>`).join('')}</select>
       ${dm && logs.length ? `<button class="btn small ${logClear ? 'danger' : ''}" data-live="logclear">${logClear ? 'Confirm clear' : 'Clear log'}</button>` : ''}</div>
     <p class="muted" style="font-size:13px;margin:6px 0 4px">Every change to a merc in this session, newest first. It stays with the session week to week. Changes made between sessions show up when the player reconnects.</p>
-    <div class="loglist">${rows || '<p class="muted" style="margin-top:10px">Nothing yet. Changes show up here as people play.</p>'}</div></div>`;
+    <div class="loglist">${rows || '<p class="muted" style="margin-top:10px">Nothing yet. Changes show up here as people play.</p>'}</div>${all.length > shown.length ? `<div class="row" style="margin-top:10px"><button class="btn small" data-live="logmore">Show ${Math.min(40, all.length - shown.length)} more</button><span class="muted" style="font-size:12px">${shown.length} of ${all.length}</span></div>` : ''}</div>`;
 }
 $('#liveBody').addEventListener('change', e => {
   if (e.target.id === 'logWho'){ logFilter = e.target.value; renderLive(); }
@@ -5000,7 +5032,7 @@ function backupHTML(){
   const list = backups.slice().sort((a, b) => (b.at || 0) - (a.at || 0));
   return `<div class="panel gap"><div class="row"><h3>Party backups</h3><span class="spacer"></span><span class="muted" style="font-size:13px">A copy of every merc that has played in your sessions, updated as they play.</span></div>
     <p class="muted" style="font-size:13px;margin:6px 0 8px">If a player deletes their merc, hit Send back and it reappears on their roster, even if they're offline. If they left the party or are on a new device, copy the save code and have them use Import a merc.</p>
-    ${list.length ? list.map(b => { const m = normalize(b.merc || {}); const here = b.code === LS.code; return `<div class="lrow trow">${avatar(m, 'av sm', portraits[b.playerUid])}<span class="n">${esc(m.name)}</span><span class="muted">Level ${m.level} · ${m.background}${m.role ? ' · ' + m.role : ''} · ${esc(b.code || '')}${b.sname ? ' ' + esc(b.sname) : ''} · saved ${ago(b.at)}</span>
+    ${list.length ? list.map(b => { const m = normalize(b.merc || {}); const here = b.code === LS.code; return `<div class="lrow trow">${avatar(m, 'av sm', pSrc(b.playerUid))}<span class="n">${esc(m.name)}</span><span class="muted">Level ${m.level} · ${m.background}${m.role ? ' · ' + m.role : ''} · ${esc(b.code || '')}${b.sname ? ' ' + esc(b.sname) : ''} · saved ${ago(b.at)}</span>
       <div class="row" style="justify-content:flex-end"><button class="btn small primary" data-live="bksend" data-b="${esc(b.id)}" ${here ? '' : 'disabled title="Only for players in this session"'}>Send back</button><button class="btn small" data-live="bkcode" data-b="${esc(b.id)}">Copy save code</button><button class="btn small ${bkDel === b.id ? 'danger' : ''}" data-live="bkdel" data-b="${esc(b.id)}">${bkDel === b.id ? 'Confirm' : '✕'}</button></div></div>`; }).join('')
       : '<p class="muted">No backups yet. They fill in as players join.</p>'}</div>`;
 }
@@ -5057,6 +5089,18 @@ function applyOp(op){
     const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
     if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(it.type === 'Vehicle' ? {vk: vkOf(it)} : {})}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
+  } else if (op.kind === 'undo' && op.f){
+    UNDO_F.forEach(k => { if (k in op.f) m[k] = op.f[k] === null && k !== 'ram' && k !== 'hp' && k !== 'netHp' ? (k === 'status' || k === 'hacks' ? [] : k === 'ds' ? {p:0, f:0} : 0) : op.f[k]; });
+    if (!Array.isArray(m.status)) m.status = []; if (!Array.isArray(m.hacks)) m.hacks = [];
+    msg = 'The DM undid their last change.'; sound = 'heal';
+  } else if (op.kind === 'rest'){
+    if (m.dead){ msg = ''; sound = null; }
+    else {
+      const hm = m.hpMax; m.ram = null; m.status = m.status.filter(x => x.r == null);
+      if (op.long){ if (hm){ m.hp = hm; m.netHp = hm; } m.ds = {p:0, f:0}; msg = 'Long rest. HP, NET HP and RAM are full, and timed effects are gone.'; }
+      else { if (hm){ const was = hpNow(m); m.hp = Math.min(hm, Math.max(0, was) + Math.floor(hm / 2)); if (was <= 0 && m.hp > 0) m.ds = {p:0, f:0}; } msg = `Short rest. RAM is full${hm ? ` and you healed ${Math.floor(hm / 2)} HP` : ''}. Timed effects are gone.`; }
+      sound = 'heal';
+    }
   } else if (op.kind === 'eddies'){
     const n = parseInt(op.amount) || 0; m.eddies = Math.max(0, m.eddies + n);
     edNote = n >= 0 ? (op.fromName ? 'From ' + op.fromName : 'From the DM') : 'Taken by the DM';
@@ -5111,7 +5155,7 @@ function applyOp(op){
     const n = parseInt(op.amount) || 0, cur = m.netHp == null ? m.hpMax : m.netHp;
     m.netHp = Math.max(0, Math.min(m.hpMax, cur + n));
     msg = n < 0 ? `The DM dealt ${-n} NET damage.` : `The DM restored ${n} NET HP.`; sound = n < 0 ? 'damage' : 'heal';
-    if (cur > 0 && m.netHp === 0) setTimeout(() => flatline('net'), 50);
+    if (cur > 0 && m.netHp === 0){ netFlatOut(m); setTimeout(() => { flatline('net'); if (C) ENVS.jack = !!C.jacked; refreshEnv(); }, 50); }
   } else if (op.kind === 'cwDelta'){
     const n = parseInt(op.amount) || 0, nl = Math.max(0, Math.min(cwMaxOf(m), cwLoad(m) + n));
     m.cwAdj += nl - cwLoad(m);
@@ -5165,9 +5209,9 @@ async function startPlayer(){
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   if (sessMeta && sessMeta.dmUid) unsubs.push(api.watchLibraryOf(sessMeta.dmUid, list => { codexLib = list; saveCodex(); renderCodex(); }));
   unsubs.push(api.watchPlayers(LS.code, list => {
-    const before = players.map(p => p.id).join();
+    const sig = () => players.map(p => p.id + (p.merc && p.merc.jacked ? '*' : '')).join(), before = sig();
     players = dedupe(list).keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive();
-    if (players.map(p => p.id).join() !== before && CS_TABS.includes(sheetTab) && C) renderCS();
+    if (sig() !== before && CS_TABS.includes(sheetTab) && C) renderCS();
   }));
   unsubs.push(api.watchPortraits(LS.code, list => { portraits = Object.fromEntries(list.map(x => [x.id, x.img])); renderLive(); }));
   unsubs.push(api.watchInbox(LS.code, api.uid, ops => {
@@ -5221,7 +5265,24 @@ const STARTER = [
   ['Frag Grenade','Consumable','3d6 in a 10 ft radius'],['Med Injector','Consumable','Heal 2d4'],
   ['Armored Jacket','Armor','+1 AC'],['Ammo Box','Ammo','20 rounds']
 ];
+const UNDOABLE = new Set(['hp-', 'hp+', 'net-', 'net+', 'irl-', 'ramd-', 'ramd+', 'ram', 'cw-', 'cw+', 'ed+', 'ed-', 'cool+', 'cool-', 'stApply', 'stRm', 'hack', 'unhack', 'unhack1', 'psy', 'xp1', 'dsP', 'dsF', 'jacklock', 'blast', 'restS', 'restL']);
+const UNDO_F = ['hp', 'netHp', 'ram', 'eddies', 'cool', 'xp', 'status', 'hacks', 'cwAdj', 'psycho', 'jackLock', 'ds', 'dead'];
+const UNDO_TXT = {'hp-':'Damage', 'hp+':'Heal', 'net-':'NET damage', 'net+':'NET heal', 'irl-':'Net to body', 'ramd-':'RAM drain', 'ramd+':'RAM add', ram:'RAM restore', 'cw-':'Chrome −1', 'cw+':'Chrome +1', 'ed+':'Eddies', 'ed-':'Eddies', 'cool+':'COOL +1', 'cool-':'COOL −1', stApply:'Status', stRm:'Status cleared', hack:'Hack', unhack:'Hacks cleared', unhack1:'Hack cleared', psy:'Cyberpsycho', xp1:'XP', dsP:'Death save', dsF:'Death save', jacklock:'Jack-out lock', blast:'Party hit', restS:'Short rest', restL:'Long rest'};
+let undoCap = null; const undoStack = [];
+document.addEventListener('click', e => {
+  const t = e.target.closest && e.target.closest('#liveBody button[data-live]'); if (!t || !LS || LS.role !== 'dm' || !UNDOABLE.has(t.dataset.live)) return;
+  const a = t.dataset.live, ids = a === 'blast' ? [...blastSel] : /^rest/.test(a) ? players.filter(p => p.merc).map(p => p.id) : [t.dataset.u];
+  const snaps = {}; ids.forEach(id => { const p = players.find(x => x.id === id); if (p && p.merc){ const m = normalize(p.merc); snaps[id] = Object.fromEntries(UNDO_F.map(f => [f, m[f] === undefined ? null : JSON.parse(JSON.stringify(m[f]))])); } });
+  const n = parseInt((($(a === 'blast' ? '#blastAmt' : '#amt-' + t.dataset.u) || {}).value)) || 0, who = ids.length === 1 ? ((players.find(p => p.id === ids[0]) || {}).name || '') : `${ids.length} mercs`;
+  undoCap = {at:Date.now(), snaps, label:`${UNDO_TXT[a] || a}${n && /[-+]$|blast|xp1/.test(a) ? ' ' + n : ''} · ${who}`, done:false};
+}, true);
+async function dmUndo(){
+  const x = undoStack.pop(); if (!x) return toast('Nothing to undo.');
+  for (const [id, f] of Object.entries(x.snaps)) await liveApi.sendInbox(LS.code, id, {kind:'undo', f, from:liveApi.uid, at:Date.now()}).catch(() => {});
+  toast(`Undid ${x.label}.`, true); renderLive();
+}
 async function sendOp(u, op){
+  if (undoCap && !undoCap.done && Date.now() - undoCap.at < 8000 && undoCap.snaps[u]){ undoCap.done = true; undoStack.push(undoCap); if (undoStack.length > 15) undoStack.shift(); }
   try {
     await liveApi.sendInbox(LS.code, u, {...op, from:liveApi.uid, at:Date.now()});
     const p = players.find(x => x.id === u);
@@ -5278,64 +5339,55 @@ function keepInputs(root, fn){
   });
   if (actId){ const el = document.getElementById(actId); if (el){ el.focus(); try { if (selS != null) el.setSelectionRange(selS, selE); } catch(e){} } }
 }
-function partyCard(p, dm){
+// Portraits arrive as data URLs. Pages render a short blob: URL instead so every redraw doesn't re-parse them.
+function pSrc(k){
+  const d = portraits[k]; if (!d) return null;
+  const c = pBlob[k]; if (c && c.d === d) return c.u;
+  if (c) URL.revokeObjectURL(c.u);
+  try {
+    const [h, b64] = d.split(','), bin = atob(b64), a = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+    const u = URL.createObjectURL(new Blob([a], {type: (h.match(/data:([^;]+)/) || [])[1] || 'image/jpeg'}));
+    pBlob[k] = {d, u}; return u;
+  } catch(e){ return d; }
+}
+function partyCard(p){
   const m = p.merc ? normalize(p.merc) : null; if (!m) return '';
   const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
   const rmx = (p.merc.derived && p.merc.derived.ramMax) || ramMax(m), rc = m.ram == null ? rmx : Math.min(m.ram, rmx);
   const nm = id => m.inv.find(i => i.id === id);
   const pr = nm(m.eq.primary), se = nm(m.eq.secondary);
   const on = isOnline(p), k = p.id, me = liveApi && p.id === liveApi.uid;
-  const myMerc = !dm && LS && DB.chars.find(x => x.id === LS.mercId);
-  const surgeon = !me && (dm || (myMerc && normalize(myMerc).unlocked.includes(RIPPER)));
+  const myMerc = LS && DB.chars.find(x => x.id === LS.mercId);
+  const surgeon = !me && myMerc && normalize(myMerc).unlocked.includes(RIPPER);
   const cyInv = m.inv.filter(i => i.type === 'Cyberware');
   const surgery = surgeon ? `
-      <div class="surg"><span class="lbl">${dm ? 'Install chrome' : 'RipperDoc'}</span>
+      <div class="surg"><span class="lbl">RipperDoc</span>
         <div class="row"><select id="surg-${k}" aria-label="Cyberware to install" style="flex:1">${cyInv.length ? cyInv.map(i => `<option value="${i.id}">${esc(i.name)}${i.hot ? ' (hot)' : ''}</option>`).join('') : '<option value="">No cyberware in their bag</option>'}</select>
           <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select>
           <button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Install</button></div>
         ${m.cyber.length ? `<div class="row" style="margin-top:6px">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Remove ${esc(x.name)}</button>`).join('')}</div>` : ''}</div>` : '';
-  const pay = !dm && !me && myMerc ? `
+  const pay = !me && myMerc ? `
       <div class="row"><input type="number" min="1" id="pe-${k}" placeholder="€$" aria-label="Eddies to send ${esc(m.name)}"><button class="btn small" data-live="sendEd" data-u="${k}">Send €$</button></div>` : '';
-  const controls = dm ? `
-      <div class="row"><button class="btn small primary" data-live="viewsheet" data-u="${k}">View sheet</button><span class="muted" style="font-size:12px">Stats, skills, perks and inventory</span></div>
-      <div class="ctlgrid">
-        <span class="ctl">Amount</span><div class="row"><input type="number" min="0" id="amt-${k}" placeholder="Amt" aria-label="Amount for ${esc(m.name)}"></div>
-        <span class="ctl">Status</span><div class="row"><select id="sts-${k}" aria-label="Status effect for ${esc(m.name)}">${statusOpts()}</select><input type="number" min="1" id="str-${k}" placeholder="Rds" aria-label="Rounds, blank means until removed" style="width:70px"><button class="btn small" data-live="stApply" data-u="${k}">Apply</button></div>
-        ${isDown(m) && !m.dead ? `<span class="ctl">Death save</span><div class="row"><button class="btn small" data-live="dsP" data-u="${k}">Pass</button><button class="btn small danger" data-live="dsF" data-u="${k}">Fail</button></div>` : ''}
-        <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
-        <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
-        <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
-        <span class="ctl">Chrome</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button>
-          <span class="muted" style="font-size:11px">Threshold ${cwTOf(m)} · Max ${cwMaxOf(m)}</span></div>
-        <span class="ctl">Eddies</span><div class="row"><button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button></div>
-      </div>
-      <div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
-      <div class="row"><select id="hk-${k}" aria-label="Hack to apply" style="flex:1">${Object.entries(HACKS).map(([hk, h]) => `<option value="${hk}" ${m.hacks.includes(hk) ? 'disabled' : ''}>${h.n}</option>`).join('')}</select>
-        <button class="btn small danger" data-live="hack" data-u="${k}">Hack</button>${m.hacks.length ? `<button class="btn small" data-live="unhack" data-u="${k}">Clear all</button>` : ''}</div>
-      <div class="row"><span class="ctl" style="min-width:auto">Black ICE</span><button class="btn small danger" data-live="jackout" data-u="${k}" title="Use when they're moved past 15 ft from the access point">Unsafe jack-out</button><button class="btn small ${m.jackLock ? '' : 'danger'}" data-live="jacklock" data-on="${m.jackLock ? '' : '1'}" data-u="${k}">${m.jackLock ? 'Unlock jack-out' : 'Lock jack-out'}</button></div>
-      <div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 COOL Token</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div>
-      <div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select>
-        <button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
-      <div class="row"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''} ${sigOf(m) ? 'sigd' : ''}"${sigStyle(m)}>
-      <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
+      <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), pSrc(k))}<div style="min-width:0"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}${me ? ' <span class="muted" style="font-size:12px">(you)</span>' : ''}</div>
         ${m.jacked ? '<span class="stagb netb">IN THE NET</span>' : ''}${m.lost ? '<span class="stagb psy gl" data-text="LOST">LOST</span>' : ''}${m.dead ? '<span class="stagb red gl" data-text="DEAD">DEAD</span>' : hm && hp <= 0 ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : ''}${m.psycho ? '<span class="stagb psy gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : ''}${encumbered(m) ? '<span class="stagb red" title="Something is on the floor">ENCUMBERED</span>' : ''}${m.jackLock ? '<span class="stagb hackt" data-text="JACK-OUT LOCKED">JACK-OUT LOCKED</span>' : ''}${m.hacks.length ? '<span class="stagb hackt gl" data-text="HACKED">HACKED</span>' : ''}${isOverheated(m) ? '<span class="stagb heat gl" data-text="OVERHEATED">OVERHEATED</span>' : ''}
         <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div></div></div>
       <div><div class="stat"><span>AC</span><b>${acOf(m)}${m.acTemp ? ` <span class="muted" style="font-size:12px">(${sgn(m.acTemp)} temp)</span>` : ''}</b></div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${Math.max(0, Math.min(100, hp / hm * 100))}%"></i></div>` : ''}
-        ${hm && isDown(m) ? seesawSVG(m, true) : ''}${(m.status || []).length ? `<div class="schips" style="margin:2px 0 8px">${statusChips(m, dm ? x => `<button class="sx" data-live="stRm" data-u="${k}" data-s="${x.id}" aria-label="Clear ${STATUSMAP[x.id].n}">✕</button>` : null)}</div>` : ''}
+        ${hm && isDown(m) ? seesawSVG(m, true) : ''}${(m.status || []).length ? `<div class="schips" style="margin:2px 0 8px">${statusChips(m, null)}</div>` : ''}
         ${hm ? `<div class="stat"><span>NET HP</span><b>${net} / ${hm}</b></div><div class="bar net"><i style="width:${Math.max(0, Math.min(100, net / hm * 100))}%"></i></div>` : ''}
         <div class="stat"><span>RAM</span><b>${rc} / ${rmx}</b></div><div class="pips">${Array.from({length: rmx}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
         <div class="stat"><span>Eddies</span><b>${m.eddies} €$</b></div>
         <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${cwTOf(m)}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
         ${m.xp ? `<div class="stat"><span>XP</span><b>${m.xp.toLocaleString()}</b></div>` : ''}<div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
-      ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}${dm ? ` <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button>` : ''}</span>`).join('')}</div>` : ''}
+      ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}</span>`).join('')}</div>` : ''}
       <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
       <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
-      ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}${controls}
+      ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}
     </div>`;
 }
 /* ---- DM party view: roster on the left, one merc's controls on the right ---- */
-let dmSel = null, dmSub = 'vitals';
+let dmSel = null, dmSub = 'vitals', restArm = null;
 const blastSel = new Set();
 const DM_WIDE = matchMedia('(min-width:900px)');
 DM_WIDE.addEventListener('change', () => { if (LS && LS.role === 'dm' && liveState === 'on') renderLive(); });
@@ -5368,7 +5420,7 @@ function dmRow(p){
   const {m, hm, hp, net, rmx, rc} = dmVit(p), k = p.id, on = isOnline(p), fl = dmFlags(m);
   return `<div class="drow-w ${dmSel === k ? 'sel' : ''} ${fl.some(f => !f[1]) ? 'alert' : fl.length ? 'warn' : ''} ${sigOf(m) ? 'sigd' : ''}"${sigStyle(m)}>
     <label class="dchk" title="Include in party hits"><input type="checkbox" data-blast="${k}" ${blastSel.has(k) ? 'checked' : ''} aria-label="Include ${esc(m.name)} in party hits"></label>
-    <button class="drow" data-live="dmsel" data-u="${k}" aria-expanded="${dmSel === k}">${avatar(m, 'av sm' + (on ? '' : ' off'), portraits[k])}
+    <button class="drow" data-live="dmsel" data-u="${k}" aria-expanded="${dmSel === k}">${avatar(m, 'av sm' + (on ? '' : ' off'), pSrc(k))}
       <span class="dmid"><span class="dnm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</span>
         <span class="dsub">Lvl ${m.level} · AC ${acOf(m)} · RAM ${rc}/${rmx} · COOL ${m.cool}</span>
         ${dmBar('HP', hp, hm)}${dmBar('NET', net, hm, 'net')}
@@ -5408,7 +5460,7 @@ function dmFocusHTML(p){
       ${m.cyber.length ? `<div class="sub" style="margin-top:8px">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}
       <div class="row" style="margin-top:14px"><button class="btn small" data-live="prestore" data-u="${k}" title="Puts this merc back on their roster if they deleted it">Restore merc</button><span class="spacer"></span><button class="btn small" data-live="kick" data-u="${k}">Remove from party</button></div>`;
   return `<div class="panel dfocus ${sigOf(m) ? 'sigd' : ''}" id="dmFocus"${sigStyle(m)}>
-    <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), portraits[k])}<div style="min-width:0;flex:1"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</div>
+    <div class="head">${avatar(m, 'av md' + (on ? '' : ' off'), pSrc(k))}<div style="min-width:0;flex:1"><div class="nm"><span class="dot ${on ? 'on' : ''}"></span>${esc(m.name)}</div>
       <div class="sub">${m.background} · Level ${m.level}${m.unlocked.includes(RIPPER) ? ' · RipperDoc' : ''} · ${on ? 'online' : 'offline, last seen ' + ago(p.updatedAt)}</div>
       ${dmFlags(m).map(([t, c]) => `<span class="stagb ${c === 'psy' ? 'psy' : c === 'hk' ? 'hackt' : c === 'heat' ? 'heat' : 'red'}">${t}</span>`).join('')}${encumbered(m) ? '<span class="stagb red">ENCUMBERED</span>' : ''}${m.jacked ? '<span class="stagb netb">IN THE NET</span>' : ''}</div>
       ${DM_WIDE.matches ? '' : `<button class="btn small" data-live="dmsel" data-u="${k}" aria-label="Close">✕</button>`}</div>
@@ -5440,17 +5492,27 @@ function dmPartyHTML(){
       <input type="number" min="0" id="blastAmt" placeholder="Amt" inputmode="numeric" aria-label="Amount for ticked players" style="width:64px">
       <button class="btn small danger" data-live="blast" data-k="hp-">Damage</button><button class="btn small danger" data-live="blast" data-k="net-">NET dmg</button><button class="btn small danger" data-live="blast" data-k="irl-" title="IRL HP damage from Black ICE or a Daemon. Halved for Insulated Wires">Net to body</button><button class="btn small" data-live="blast" data-k="hp+">Heal</button></div>
       <p class="muted" style="font-size:12px;margin-top:6px">${blastSel.size ? `${blastSel.size} ticked` : 'Tick mercs on the left of each row to hit or heal several at once, like a grenade'}</p>
-      ${timed ? `<div class="row" style="margin-top:8px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down timed status effects</span></div>` : ''}</div>`;
+      ${timed ? `<div class="row" style="margin-top:8px"><button class="btn small primary" data-live="tickAll">End round for everyone</button><span class="muted" style="font-size:12px">Counts down timed status effects</span></div>` : ''}
+      <div class="row" style="margin-top:8px;gap:6px"><button class="btn small ${restArm === 'restS' ? 'danger' : ''}" data-live="restS" title="RAM full, heal half max HP, timed effects end">${restArm === 'restS' ? 'Tap again to confirm' : 'Short rest'}</button><button class="btn small ${restArm === 'restL' ? 'danger' : ''}" data-live="restL" title="HP, NET HP and RAM full, timed effects end, death saves reset">${restArm === 'restL' ? 'Tap again to confirm' : 'Long rest'}</button>
+        ${undoStack.length ? `<span class="spacer"></span><button class="btn small" data-live="dmundo" title="Undo your last change to a merc">↶ Undo ${esc(undoStack[undoStack.length - 1].label)}</button>` : ''}</div></div>`;
   return `${dmAlertsHTML()}<div class="dmsplit">
     <div class="dmleft">${bar}<div class="droster">${rows}</div>${encPanelHTML()}</div>
     ${wide ? `<div class="dmright">${sel ? dmFocusHTML(sel) : '<div class="panel"><p class="muted">Pick a merc on the left.</p></div>'}</div>` : ''}
   </div>${progressHTML()}${logHTML(true)}`;
 }
+let liveLast = '', liveDirty = false, liveForce = false;
+// A redraw while the DM has a dropdown open would close it. Hold it until they pick or tap away.
+document.addEventListener('focusout', e => { if (liveDirty && e.target && e.target.tagName === 'SELECT') setTimeout(() => { if (liveDirty) renderLive(); }, 60); });
+document.addEventListener('change', e => { if (e.target && e.target.tagName === 'SELECT' && $('#liveBody').contains(e.target)) liveForce = true; }, true);
 function renderLive(){
   placeLive(); syncWake();
   document.body.classList.toggle('dmwide', !!(LS && LS.role === 'dm' && liveState === 'on'));
-  const root = $('#liveBody');
-  keepInputs(root, () => { root.innerHTML = liveHTML(); });
+  const root = $('#liveBody'), ae = document.activeElement;
+  if (ae && ae.tagName === 'SELECT' && root.contains(ae) && !liveForce){ liveDirty = true; return; }
+  liveForce = false; liveDirty = false;
+  const html = liveHTML(); if (html === liveLast && root.childElementCount) return;
+  liveLast = html;
+  keepInputs(root, () => { root.innerHTML = html; });
   if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
 }
 function liveHTML(){
@@ -5487,7 +5549,7 @@ function liveHTML(){
       <button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
       <h3 style="margin:22px 0 0">Your party</h3>
-      <div class="players">${players.map(p => partyCard(p, false)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
+      <div class="players">${players.map(p => partyCard(p)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
       ${handouts.length ? `<div class="panel gap"><h3>Handouts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Everything the DM has shared this session. Tap one to open it.</p>${hoListHTML(false)}</div>` : ''}
       ${logHTML(false)}`;
   }
@@ -5500,6 +5562,8 @@ function liveHTML(){
         ${npcDown(n) ? '<span class="stagb red gl" data-text="FLATLINED">FLATLINED</span>' : npcCrit(n) ? '<span class="stagb red gl" data-text="CRITICAL">CRITICAL</span>' : ''}</div></div>
       <div><div class="stat"><span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b></div>${hm ? `<div class="bar"><i style="width:${pct}%"></i></div>` : ''}</div>
       <div class="row"><input type="number" min="0" id="na-${n.id}" placeholder="Amt" aria-label="Amount for ${esc(n.name)}"><button class="btn small danger" data-live="nhp-" data-n="${n.id}">Damage</button><button class="btn small" data-live="nhp+" data-n="${n.id}">Heal</button><button class="btn small" data-live="nfull" data-n="${n.id}">Full</button></div>
+      <div class="prow nstat"><label>AC<input type="number" min="1" value="${n.ac || ''}" data-nst="${n.id}" data-sf="ac"></label><label>Hit<input type="number" value="${n.hit ?? ''}" data-nst="${n.id}" data-sf="hit"></label><label>Damage<input type="text" value="${esc(n.dmg || '')}" data-nst="${n.id}" data-sf="dmg" style="width:80px"></label><label>×<input type="number" min="1" max="6" value="${n.atk || 1}" data-nst="${n.id}" data-sf="atk"></label>
+        <select data-nst="${n.id}" data-sf="pre" aria-label="Fill from a preset"><option value="">From preset</option>${presets.map((p, k) => `<option value="${k}">${esc(p.n)}</option>`).join('')}</select></div>
       <div class="seg">${['adv', 'norm', 'dis'].map(v => `<button class="${(n.adv || 'norm') === v ? 'on' : ''}" data-live="nadv" data-v="${v}" data-n="${n.id}">${v === 'adv' ? 'Advantage' : v === 'dis' ? 'Disadvantage' : 'Normal'}</button>`).join('')}</div>
       <textarea id="nn-${n.id}" data-nnote="${n.id}" placeholder="DM notes, stats, motives" aria-label="Notes for ${esc(n.name)}" style="min-height:60px;font-family:'Exo 2',sans-serif;font-size:13px">${esc(n.notes || '')}</textarea>
       <div class="row"><button class="btn small primary" data-live="nshow" data-n="${n.id}">Show ID card</button><button class="btn small" data-live="ncodex" data-n="${n.id}" title="${pub ? 'Players can see this NPC in their Codex' : 'Players will not see this NPC until you add it'}">${pub ? 'In codex ✓' : 'Add to codex'}</button><label class="btn small" style="display:inline-block">Portrait<input type="file" accept="image/*" data-npic="${n.id}" hidden></label><span class="spacer"></span><button class="btn small ${npcDel === n.id ? 'danger' : ''}" data-live="ndel" data-n="${n.id}">${npcDel === n.id ? 'Confirm delete' : 'Delete'}</button></div>
@@ -5545,7 +5609,11 @@ function liveHTML(){
 }
 
 $('#liveBody').addEventListener('change', e => {
-  const b = e.target.dataset && e.target.dataset.blast; if (b == null) return;
+  const d = e.target.dataset || {};
+  if (d.pre != null){ const p = presets[+d.pre]; if (!p) return; const v = e.target.value; p[d.pf] = d.pf === 'n' ? (v.trim().slice(0, 30) || p.n) : d.pf === 'dmg' ? v.trim().slice(0, 20) : Math.max(d.pf === 'hit' ? -5 : 1, parseInt(v) || 0); savePresets(); return renderLive(); }
+  if (d.ee){ const c = enc.find(x => x.id === d.ee); if (!c) return; const v = e.target.value; if (d.ef === 'dmg') c.dmg = v.trim().slice(0, 20); else if (d.ef === 'hpMax'){ c.hpMax = Math.max(0, parseInt(v) || 0); c.hp = Math.min(c.hp || c.hpMax, c.hpMax) || c.hpMax; } else c[d.ef] = d.ef === 'hit' ? (parseInt(v) || 0) : Math.max(1, parseInt(v) || 0); saveEnc(); return renderLive(); }
+  if (d.nst){ const n = npcsDM.find(x => x.id === d.nst); if (!n) return; const v = e.target.value; if (d.sf === 'pre'){ const p = presets[+v]; if (p) Object.assign(n, {ac:p.ac, hit:p.hit, dmg:p.dmg, atk:p.atk, hpMax:n.hpMax || p.hp, hp:n.hp ?? p.hp}); } else n[d.sf] = d.sf === 'dmg' ? v.trim().slice(0, 20) : d.sf === 'hit' ? (parseInt(v) || 0) : Math.max(1, parseInt(v) || 0); liveApi.setDmNpc(n).catch(() => {}); return renderLive(); }
+  const b = d.blast; if (b == null) return;
   if (b === '*'){ players.forEach(p => { if (p.merc){ if (e.target.checked) blastSel.add(p.id); else blastSel.delete(p.id); } }); }
   else if (e.target.checked) blastSel.add(b); else blastSel.delete(b);
   renderLive();
@@ -5555,7 +5623,7 @@ $('#liveBody').addEventListener('click', async e => {
   const a = t.dataset.live, u = t.dataset.u;
   const amt = () => Math.max(0, parseInt(($('#amt-' + u) || {}).value) || 0);
   const pname = id => (players.find(p => p.id === id) || {}).name || 'player';
-  if (/^e(ice|npc|txt|hp|del|clear|reveal|send|end)$/.test(a) && await encAction(a, t)) return;
+  if (/^e(ice|npc|txt|hp|del|clear|reveal|send|end|edit|pedit|padd|pdel|preset|save|load|sdel)$/.test(a) && await encAction(a, t)) return;
   if (a === 'tblreset'){ tablesMeta = null; try { localStorage.removeItem(TABLES_KEY); } catch(e){} applyTables(null); pushHandles(); tablesMsg = 'Back to the default tables.'; toast('Default tables restored.', true); return renderLive(); }
   if (a === 'join'){
     const code = ($('#joinCode').value || '').trim().toUpperCase(), mercId = $('#joinMerc').value;
@@ -5619,6 +5687,14 @@ $('#liveBody').addEventListener('click', async e => {
     if (dmSel){ dmTab = 'party'; const f = $('#dmFocus'); if (f && !DM_WIDE.matches) f.scrollIntoView({block:'nearest', behavior:'smooth'}); }
     return;
   }
+  if (a === 'dmundo') return dmUndo();
+  if (a === 'restS' || a === 'restL'){
+    const ids = players.filter(p => p.merc).map(p => p.id); if (!ids.length) return;
+    if (restArm !== a){ restArm = a; renderLive(); setTimeout(() => { if (restArm === a){ restArm = null; renderLive(); } }, 4000); return; }
+    restArm = null; for (const id of ids) await sendOp(id, {kind:'rest', long:a === 'restL'});
+    toast(`${a === 'restL' ? 'Long' : 'Short'} rest for the whole party.`, true); return renderLive();
+  }
+  if (a === 'logmore'){ logShow += 40; return renderLive(); }
   if (a === 'dmsub'){ dmSub = t.dataset.v; sfx('tab'); return renderLive(); }
   if (a === 'xp1'){
     const n = amt(); if (!n) return toast('Enter an amount first.');
@@ -5851,6 +5927,100 @@ const ENC_KEY = 'daemon-enc';
 function loadEnc(){ try { enc = (JSON.parse(localStorage.getItem(ENC_KEY)) || {})[LS && LS.code] || []; } catch(e){ enc = []; } }
 function saveEnc(){ try { const all = JSON.parse(localStorage.getItem(ENC_KEY)) || {}; all[LS.code] = enc; localStorage.setItem(ENC_KEY, JSON.stringify(all)); } catch(e){} }
 const iceSeen = () => (sessMeta && sessMeta.ice) || [];
+/* ---- Encounter difficulty. A soft read for the DM, never a rule. ---- */
+const PRESET_DEF = [
+  {n:'Gonk', hp:9, ac:12, hit:3, dmg:'1d6+1', atk:1},
+  {n:'Ganger', hp:16, ac:13, hit:4, dmg:'2d6', atk:1},
+  {n:'Corpo Security', hp:26, ac:15, hit:4, dmg:'1d8+2', atk:2},
+  {n:'Elite', hp:45, ac:16, hit:5, dmg:'2d6+3', atk:2},
+  {n:'Boss', hp:85, ac:17, hit:7, dmg:'2d6+4', atk:3}
+];
+const PRESET_KEY = 'daemon-presets', ENC_SAVES = 'daemon-enc-saves';
+let presets = (() => { try { const p = JSON.parse(localStorage.getItem(PRESET_KEY)); return Array.isArray(p) && p.length ? p : PRESET_DEF.map(x => ({...x})); } catch(e){ return PRESET_DEF.map(x => ({...x})); } })();
+const savePresets = () => { try { localStorage.setItem(PRESET_KEY, JSON.stringify(presets)); } catch(e){} };
+const encSaves = () => { try { return JSON.parse(localStorage.getItem(ENC_SAVES)) || []; } catch(e){ return []; } };
+const putSaves = l => { try { localStorage.setItem(ENC_SAVES, JSON.stringify(l.slice(0, 40))); } catch(e){} };
+let presetEdit = false, encEdit = null;
+// Average of every dice group and flat bonus in a string. "2d6+3" is 10, "2d6 NET and 1d6 fire" is 10.5.
+function avgDice(s){
+  s = String(s || ''); let t = 0, hit = false;
+  s.replace(/(\d*)d(\d+)/gi, (_, n, m) => { t += (parseInt(n) || 1) * (+m + 1) / 2; hit = true; return ''; })
+   .replace(/([+−-])\s*(\d+)(?!\s*d)/g, (_, sg, n) => { t += (sg === '+' ? 1 : -1) * +n; return ''; });
+  return hit ? t : (parseFloat(s) || 0);
+}
+const pHit = (bonus, ac) => Math.max(.05, Math.min(.95, (21 - (ac - bonus)) / 20));
+const RATINGS = [['Easy', 3], ['Medium', 1.8], ['Hard', 1.15], ['Deadly', 0]];
+const rateOf = r => RATINGS.findIndex(([, min]) => r >= min);
+// One merc's attack: to hit, average damage and attacks per turn, from their primary weapon and the DM's chart.
+function mercAttack(m){
+  const i = m.inv.find(x => x.id === m.eq.primary), lv = prof(m.level || 1);
+  if (i && i.type === 'Weapon'){
+    const w = WT[i.wclass], t = i.tier || 0;
+    if (w) return {hit: mod(score(w.st, m)) + lv + t, avg: avgDice(dmgText(i.wclass, t, m)), n: w.kind === 'melee' ? 1 : (i.rof || w.rof || 1)};
+    const d = avgDice(i.stats); return {hit: mod(score('REF', m)) + lv + t, avg: d || 5, n: i.reload === 'none' ? 1 : (i.rof || 1)};
+  }
+  return {hit: mod(score('STR', m)) + lv, avg: Math.max(1, 1 + mod(score('STR', m))), n: 1};
+}
+const encUnits = () => enc.filter(c => c.k !== 'ice' && c.hpMax && c.hp > 0 && c.ac);
+function combatRate(extra){
+  const ps = players.filter(p => p.merc).map(p => normalize(p.merc)).filter(m => !m.dead && m.hpMax);
+  const units = [...encUnits(), ...(extra || [])].map(c => ({hp:c.hp ?? c.hpMax, ac:+c.ac || 10, hit:+c.hit || 0, dpt:(+c.atk || 1) * avgDice(c.dmg)}));
+  if (!ps.length || !units.length) return null;
+  const eHP = units.reduce((a, c) => a + c.hp, 0), eAC = units.reduce((a, c) => a + c.ac * c.hp, 0) / eHP;
+  const up = ps.filter(m => hpNow(m) > 0), pHP = up.reduce((a, m) => a + hpNow(m), 0) || 0;
+  const pAC = up.length ? up.reduce((a, m) => a + acOf(m), 0) / up.length : 10;
+  const pd = up.reduce((a, m) => { const k = mercAttack(m); return a + k.n * k.avg * pHit(k.hit, eAC) * (m.hacks.includes('weapons') ? 0 : 1); }, 0);
+  const ed = units.reduce((a, c) => a + c.dpt * pHit(c.hit, pAC), 0);
+  const win = pd ? eHP / pd : Infinity, lose = ed ? pHP / ed : Infinity, r = win === Infinity ? 0 : lose / win;
+  return {win, lose, r, i: rateOf(r), eHP, pHP};
+}
+function netRate(){
+  const ice = enc.filter(c => c.k === 'ice' && c.hp > 0).map(c => { const b = BLACK_ICE.find(x => x.id === c.ref) || {}; const net = String(b.dmg || '').split(/ and /i)[0]; return {hp:c.hp, ac:b.ac || 12, hit:b.hit || 0, dpt:/NET|d\d/i.test(net) ? avgDice(net) : 0}; });
+  if (!ice.length) return null;
+  const rs = players.filter(p => p.merc).map(p => normalize(p.merc)).filter(m => !m.dead && m.hpMax && m.unlocked.includes('INT.A.r') && netNow(m) > 0 && !m.status.some(x => x.id === 'fried'));
+  if (!rs.length) return {none:true};
+  const iHP = ice.reduce((a, c) => a + c.hp, 0), iAC = ice.reduce((a, c) => a + c.ac * c.hp, 0) / iHP;
+  const sh = rs.reduce((a, m) => a + shieldOf(m), 0) / rs.length, nHP = rs.reduce((a, m) => a + netNow(m), 0);
+  const pd = rs.reduce((a, m) => a + 9 * pHit(skillBonus('Hacking', 'INT', m), iAC), 0);
+  const ed = ice.reduce((a, c) => a + c.dpt * pHit(c.hit, sh), 0);
+  const turns = rs.reduce((a, m) => a + Math.floor(ramNow(m) / Math.max(1, swordCost(1, m))), 0);
+  const win = pd ? iHP / pd : Infinity, lose = ed ? nHP / ed : Infinity;
+  let i = rateOf(win === Infinity ? 0 : lose / win); const ramShort = win * rs.length > turns;
+  if (ramShort) i = Math.min(3, i + 1);
+  return {win, lose, i, ramShort, turns, n: rs.length};
+}
+const rounds = n => n === Infinity ? 'never' : n < 1.5 ? 'about 1 round' : `about ${Math.round(n)} rounds`;
+function meterHTML(title, i, line, extra){
+  return `<div class="dmeter r${i}"><div class="row" style="gap:8px"><span class="lbl" style="margin:0">${title}</span><b class="dlab">${RATINGS[i][0]}</b></div>
+    <div class="dbar4">${RATINGS.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div><p>${line}</p>${extra || ''}</div>`;
+}
+function diffHTML(){
+  const out = [], cr = combatRate(), unrated = enc.filter(c => c.k !== 'ice' && !(c.hpMax && c.ac)).length;
+  if (cr){
+    const ref = (() => { const n = {}; enc.forEach(c => { if (c.pre) n[c.pre] = (n[c.pre] || 0) + 1; }); const top = Object.entries(n).sort((a, b) => b[1] - a[1])[0]; return presets.find(p => p.n === (top ? top[0] : 'Ganger')) || presets[1] || presets[0]; })();
+    const sug = [];
+    if (ref && cr.i < 3){ for (let k = 1; k <= 12; k++){ const r = combatRate(Array.from({length:k}, () => ({...ref, hpMax:ref.hp}))); if (r && r.i > cr.i){ sug.push(`Add ${k} ${esc(ref.n)}${k > 1 ? 's' : ''} for ${RATINGS[r.i][0]}`); break; } } }
+    if (cr.i > 0){ const keep = enc.slice(); for (let f = .9; f >= .3; f -= .1){ enc = keep.map(c => c.k === 'ice' ? c : {...c, hp: Math.round((c.hp || 0) * f)}); const r = combatRate(); if (r && r.i < cr.i){ sug.push(`Cut enemy HP to ${Math.round(f * 100)}% for ${RATINGS[r.i][0]}`); break; } } enc = keep; }
+    out.push(meterHTML('Combat', cr.i, `The party drops them in ${rounds(cr.win)}. They'd drop the party in ${rounds(cr.lose)}.`, `${sug.length ? `<p class="sug">${sug.join(' · ')}</p>` : ''}${unrated ? `<p class="sug">${unrated} without stats ${unrated === 1 ? "isn't" : "aren't"} counted.</p>` : ''}`));
+  } else if (enc.some(c => c.k !== 'ice')) out.push(`<p class="muted" style="font-size:13px;margin-top:10px">Give the enemies stats (pick a preset, or set AC, to hit and damage) and have players in the party to see a difficulty read.</p>`);
+  const nr = netRate();
+  if (nr && nr.none) out.push(`<div class="dmeter r3"><span class="lbl" style="margin:0">Net</span><p>No netrunner in the party can fight this Black ICE.</p></div>`);
+  else if (nr) out.push(meterHTML('Net', nr.i, `${nr.n} runner${nr.n > 1 ? 's' : ''} de-rez it in ${rounds(nr.win)}. It flatlines them in ${rounds(nr.lose)}.`, nr.ramShort ? `<p class="sug">They'll likely run out of RAM first (${nr.turns} SWORD turns between them).</p>` : ''));
+  return out.length ? `<div class="dread">${out.join('')}<p class="muted" style="font-size:11px;margin:6px 0 0">A rough read from live stats. Only you see it. Cover and terrain aren't counted.</p></div>` : '';
+}
+function presetEditHTML(){
+  if (!presetEdit) return '';
+  return `<div class="pedit">${presets.map((p, k) => `<div class="prow"><input type="text" class="f" value="${esc(p.n)}" data-pre="${k}" data-pf="n" aria-label="Preset name">
+      <label>HP<input type="number" min="1" value="${p.hp}" data-pre="${k}" data-pf="hp"></label><label>AC<input type="number" min="1" value="${p.ac}" data-pre="${k}" data-pf="ac"></label><label>Hit<input type="number" value="${p.hit}" data-pre="${k}" data-pf="hit"></label>
+      <label>Damage<input type="text" value="${esc(p.dmg)}" data-pre="${k}" data-pf="dmg" style="width:80px"></label><label>×<input type="number" min="1" max="6" value="${p.atk}" data-pre="${k}" data-pf="atk"></label>
+      <button class="btn small" data-live="epdel" data-k="${k}" aria-label="Delete ${esc(p.n)}">✕</button></div>`).join('')}
+    <div class="row gap"><button class="btn small" data-live="epadd">Add preset</button><button class="btn small" data-live="epreset">Reset to defaults</button><span class="muted" style="font-size:12px">Damage is per attack. × is attacks per turn.</span></div></div>`;
+}
+const statLine = c => c.ac ? `AC ${c.ac} · Hit ${sgn(+c.hit || 0)} · ${esc(c.dmg || '—')}${(+c.atk || 1) > 1 ? ' ×' + c.atk : ''}` : 'No stats yet';
+function encEditHTML(c){
+  return `<div class="prow eedit">${[['ac', 'AC'], ['hit', 'Hit'], ['hpMax', 'HP']].map(([f, l]) => `<label>${l}<input type="number" value="${c[f] ?? ''}" data-ee="${c.id}" data-ef="${f}"></label>`).join('')}
+    <label>Damage<input type="text" value="${esc(c.dmg || '')}" data-ee="${c.id}" data-ef="dmg" style="width:80px"></label><label>×<input type="number" min="1" max="6" value="${c.atk || 1}" data-ee="${c.id}" data-ef="atk"></label></div>`;
+}
 function encPanelHTML(){
   loadEnc();
   const live = sessMeta && sessMeta.combat, seen = iceSeen();
@@ -5858,16 +6028,19 @@ function encPanelHTML(){
     const ic = c.k === 'ice' && BLACK_ICE.find(x => x.id === c.ref), np = c.k === 'npc' && npcsDM.find(x => x.id === c.ref);
     const pic = ic ? iceArt(ic.id) : np ? avatar(np, 'av sm') : `<div class="av sm grunt">⚔</div>`;
     const sub = ic ? `Black ICE · AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}` : np ? (npcsPub.some(x => x.id === np.id) ? 'NPC · known to the party' : 'NPC · shows as Unknown') : 'Other combatant';
-    return `<div class="encrow">${pic}<div class="nm">${esc(c.name)}${c.cnt > 1 ? ` ×${c.cnt}` : ''}<small>${sub}</small></div>
+    return `<div class="encrow">${pic}<div class="nm">${esc(c.name)}${c.cnt > 1 ? ` ×${c.cnt}` : ''}<small>${ic ? sub : statLine(c) + (np ? ' · ' + sub : '')}</small></div>
       ${c.hpMax ? `<div class="hpc ${c.hp <= 0 ? 'zero' : ''}"><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="-1" aria-label="Lower HP">−</button><span>${c.hp}/${c.hpMax}</span><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="1" aria-label="Raise HP">+</button></div>` : ''}
-      ${ic && !seen.includes(ic.id) ? `<button class="btn small" data-live="ereveal" data-i="${ic.id}" title="Add to the players' Codex">Reveal</button>` : ''}<button class="btn small" data-live="edel" data-e="${c.id}" aria-label="Remove">✕</button></div>`;
+      ${ic && !seen.includes(ic.id) ? `<button class="btn small" data-live="ereveal" data-i="${ic.id}" title="Add to the players' Codex">Reveal</button>` : ''}${ic ? '' : `<button class="btn small ${encEdit === c.id ? 'on' : ''}" data-live="eedit" data-e="${c.id}" aria-label="Edit stats">✎</button>`}<button class="btn small" data-live="edel" data-e="${c.id}" aria-label="Remove">✕</button></div>`;
   };
   return `<div class="panel gap" id="encPanel"><div class="row"><h3>Encounter <span class="muted" style="font-size:14px">${enc.length}</span></h3>${live ? '<span class="stagb red gl" data-text="IN COMBAT">IN COMBAT</span>' : ''}<span class="spacer"></span>
       <span class="muted" style="font-size:13px">Who's in the fight. Nothing here goes into your NPC list.</span></div>
     <span class="lbl" style="margin-top:12px">Add Black ICE</span><div class="row gap" style="margin-top:4px">${BLACK_ICE.map(i => `<button class="btn small danger" data-live="eice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
     <div class="encadd"><select id="encNpc" aria-label="NPC to add"><option value="">Add one of your NPCs</option>${npcsDM.filter(n => n.origin !== 'Black ICE').map(n => `<option value="${n.id}">${esc(n.name)}</option>`).join('')}</select><button class="btn small" data-live="enpc">Add NPC</button></div>
-    <div class="encadd"><input type="text" class="f" id="encTxt" placeholder="Other, like Tyger Claws ganger" aria-label="Other combatant" style="flex:1;min-width:160px"><input type="number" id="encCnt" min="1" value="1" aria-label="How many" style="width:64px"><button class="btn small" data-live="etxt">Add</button></div>
-    <div style="margin-top:10px">${enc.map(row).join('') || '<p class="muted" style="font-size:14px">Nobody yet. Add Black ICE, an NPC or a group of grunts.</p>'}</div>
+    <div class="encadd"><input type="text" class="f" id="encTxt" placeholder="Grunts, like Tyger Claws" aria-label="Grunt name" style="flex:1;min-width:160px"><select id="encPre" aria-label="Threat preset"><option value="">No stats</option>${presets.map((p, k) => `<option value="${k}" ${p.n === 'Ganger' ? 'selected' : ''}>${esc(p.n)}</option>`).join('')}</select><input type="number" id="encCnt" min="1" value="1" aria-label="How many" style="width:64px"><button class="btn small" data-live="etxt">Add</button><button class="btn small ${presetEdit ? 'on' : ''}" data-live="epedit">Presets</button></div>${presetEditHTML()}
+    <div style="margin-top:10px">${enc.map(c => row(c) + (encEdit === c.id && c.k !== 'ice' ? encEditHTML(c) : '')).join('') || '<p class="muted" style="font-size:14px">Nobody yet. Add Black ICE, an NPC or a group of grunts.</p>'}</div>
+    ${diffHTML()}
+    <div class="encsave"><input type="text" class="f" id="encSaveName" placeholder="Name this encounter" aria-label="Encounter name"><button class="btn small" data-live="esave" ${enc.length ? '' : 'disabled'}>Save</button>
+      ${encSaves().length ? `<select id="encLoad" aria-label="Saved encounter">${encSaves().map(x => `<option value="${x.id}">${esc(x.name)} · ${x.list.length}</option>`).join('')}</select><button class="btn small" data-live="eload">Load</button><button class="btn small" data-live="esdel" aria-label="Delete saved encounter">✕</button>` : '<span class="muted" style="font-size:12px">Saved encounters show up here.</span>'}</div>
     <div class="row gap" style="margin-top:12px"><button class="btn small danger" data-live="esend" ${enc.length ? '' : 'disabled'}>${live ? 'Resend combat alert' : 'Send combat alert'}</button>${live ? '<button class="btn small" data-live="eend">End combat</button>' : ''}${enc.length ? '<button class="btn small" data-live="eclear">Clear encounter</button>' : ''}</div>
     <p class="muted" style="font-size:12px;margin:8px 0 0">The alert pops up on every player's screen with who's coming, and an In combat bar stays on their sheet until you end combat. NPCs the party hasn't met show as Unknown. Sending it also adds that Black ICE to their Codex.</p></div>`;
 }
@@ -5877,7 +6050,7 @@ function encPublic(){
   enc.forEach(c => {
     if (c.k === 'ice'){ const ex = out.find(x => x.k === 'ice' && x.ref === c.ref); if (ex) ex.cnt += c.cnt || 1; else out.push({k:'ice', ref:c.ref, name:c.name, cnt:c.cnt || 1}); }
     else if (c.k === 'npc'){ const pub = npcsPub.find(x => x.id === c.ref); out.push(pub ? {k:'npc', ref:c.ref, name:pub.name, pic:pub.portrait || null, cnt:1} : {k:'unk', name:'Unknown', cnt:1}); }
-    else out.push({k:'grunt', name:c.name, cnt:c.cnt || 1});
+    else { const ex = out.find(x => x.k === 'grunt' && x.name === c.name); if (ex) ex.cnt += c.cnt || 1; else out.push({k:'grunt', name:c.name, cnt:c.cnt || 1}); }
   });
   // Merge repeated Unknowns into one card with a count.
   const unk = out.filter(x => x.k === 'unk'); if (unk.length > 1){ const n = unk.length; return [...out.filter(x => x.k !== 'unk'), {k:'unk', name:'Unknown', cnt:n}]; }
@@ -5885,8 +6058,20 @@ function encPublic(){
 }
 async function encAction(a, t){
   if (a === 'eice'){ const ic = BLACK_ICE.find(x => x.id === t.dataset.i); if (!ic) return true; enc.push({id:uid(), k:'ice', ref:ic.id, name:ic.n, cnt:1, hp:ic.hp || 0, hpMax:ic.hp || 0}); saveEnc(); sfx('select'); renderLive(); return true; }
-  if (a === 'enpc'){ const n = npcsDM.find(x => x.id === ($('#encNpc') || {}).value); if (!n){ toast('Pick an NPC first.'); return true; } enc.push({id:uid(), k:'npc', ref:n.id, name:n.name, cnt:1, hp:n.hp ?? n.hpMax ?? 0, hpMax:n.hpMax || 0}); saveEnc(); renderLive(); return true; }
-  if (a === 'etxt'){ const name = (($('#encTxt') || {}).value || '').trim().slice(0, 40); if (!name){ toast('Type who it is.'); return true; } enc.push({id:uid(), k:'grunt', name, cnt:Math.max(1, Math.min(99, parseInt(($('#encCnt') || {}).value) || 1)), hp:0, hpMax:0}); saveEnc(); renderLive(); return true; }
+  if (a === 'enpc'){ const n = npcsDM.find(x => x.id === ($('#encNpc') || {}).value); if (!n){ toast('Pick an NPC first.'); return true; } enc.push({id:uid(), k:'npc', ref:n.id, name:n.name, cnt:1, hp:n.hp ?? n.hpMax ?? 0, hpMax:n.hpMax || 0, ac:n.ac || null, hit:n.hit ?? null, dmg:n.dmg || '', atk:n.atk || 1}); saveEnc(); renderLive(); return true; }
+  if (a === 'etxt'){ const pr = presets[parseInt(($('#encPre') || {}).value)], name = (($('#encTxt') || {}).value || '').trim().slice(0, 40) || (pr && pr.n); if (!name){ toast('Type who it is.'); return true; }
+    const cnt = Math.max(1, Math.min(99, parseInt(($('#encCnt') || {}).value) || 1));
+    if (pr) for (let k = 0; k < Math.min(cnt, 20); k++) enc.push({id:uid(), k:'grunt', name, cnt:1, pre:pr.n, hp:pr.hp, hpMax:pr.hp, ac:pr.ac, hit:pr.hit, dmg:pr.dmg, atk:pr.atk});
+    else enc.push({id:uid(), k:'grunt', name, cnt, hp:0, hpMax:0});
+    saveEnc(); renderLive(); return true; }
+  if (a === 'eedit'){ encEdit = encEdit === t.dataset.e ? null : t.dataset.e; renderLive(); return true; }
+  if (a === 'epedit'){ presetEdit = !presetEdit; renderLive(); return true; }
+  if (a === 'epadd'){ presets.push({n:'New preset', hp:20, ac:13, hit:4, dmg:'2d6', atk:1}); savePresets(); renderLive(); return true; }
+  if (a === 'epdel'){ presets.splice(+t.dataset.k, 1); if (!presets.length) presets = PRESET_DEF.map(x => ({...x})); savePresets(); renderLive(); return true; }
+  if (a === 'epreset'){ presets = PRESET_DEF.map(x => ({...x})); savePresets(); toast('Presets back to the defaults.', true); renderLive(); return true; }
+  if (a === 'esave'){ const name = (($('#encSaveName') || {}).value || '').trim().slice(0, 40) || `Encounter ${encSaves().length + 1}`; putSaves([{id:uid(), name, at:Date.now(), list:enc.map(c => ({...c, hp:c.hpMax || c.hp}))}, ...encSaves()]); toast(`Saved "${name}".`, true); renderLive(); return true; }
+  if (a === 'eload'){ const x = encSaves().find(y => y.id === ($('#encLoad') || {}).value); if (!x) return true; enc = [...enc, ...x.list.map(c => ({...c, id:uid(), hp:c.hpMax || c.hp}))]; saveEnc(); toast(`Loaded "${x.name}".`, true); renderLive(); return true; }
+  if (a === 'esdel'){ const id = ($('#encLoad') || {}).value; putSaves(encSaves().filter(y => y.id !== id)); renderLive(); return true; }
   if (a === 'ehp'){ const c = enc.find(x => x.id === t.dataset.e); if (c){ c.hp = Math.max(0, Math.min(c.hpMax, c.hp + (+t.dataset.d))); saveEnc(); renderLive(); } return true; }
   if (a === 'edel'){ enc = enc.filter(x => x.id !== t.dataset.e); saveEnc(); renderLive(); return true; }
   if (a === 'eclear'){ enc = []; saveEnc(); renderLive(); return true; }
@@ -6565,7 +6750,7 @@ const originStyle = bg => ({Nomad:'nomad', Corpo:'corpo', Streetkid:'streetkid'}
 function envCompute(){
   let style = THEME.style, src = 'theme';
   const m = ENVS.mood && PREFS.dmMood ? ENVS.mood : null;
-  if (ENVS.jack && C && !$('#vSheet').hidden && !/^#?(live|rules|codex)/.test(location.hash)){ style = 'net'; src = 'jack'; }
+  if (ENVS.jack && onSheet()){ style = 'net'; src = 'jack'; }
   else if (m && STYLES[m.style]){ style = m.style; src = 'mood'; }
   else if (PREFS.matchOrigin && C && !$('#vSheet').hidden){ const o = originStyle(C.background); if (o){ style = o; src = 'origin'; } }
   const pal = style === THEME.style ? THEME : STYLES[style].pal;
@@ -7041,7 +7226,6 @@ function todOverlay(){
   cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = 1;
 }
 let WX = {key:'', rain:[], fog:[], sand:[]}, storm = {next:0, start:-1, toastAt:-1};
-const wxBuiltin = (scene, kind) => { const w = AT.weather || 'default'; return w === 'default' || w === kind; };
 function wxInit(){
   const k = [VW, VH, PREFS.battery].join('|'); if (k === WX.key) return; WX.key = k;
   const d = PREFS.battery ? .45 : 1;
