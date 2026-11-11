@@ -922,7 +922,7 @@ body.fx h2:hover{animation:jit .28s steps(2) 1}
 .iceart.lg{width:64px;height:64px}
 .encadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
 .encrow{display:flex;align-items:center;gap:8px 10px;padding:8px 0;border-top:1px solid rgba(var(--crgb),.15);flex-wrap:wrap}.encrow .nm{flex:1 1 150px;min-width:150px;font-weight:600}.encrow .nm small{display:block;font-weight:400;opacity:.65;font-size:12px}
-.encrow .hpc{display:flex;align-items:center;gap:4px;font:600 14px Orbitron,sans-serif}.encrow .hpc.zero{color:#ff4f6d;text-decoration:line-through}
+.encrow .hpc{display:flex;align-items:center;gap:4px;font:600 14px Orbitron,sans-serif}.hpc span{min-width:60px;text-align:right;margin-right:4px}.hpc.zero span{color:#ff4f6d}.hpc .eamt{width:62px;height:32px;padding:4px 6px;font:500 14px 'Exo 2',sans-serif}.encrow .hpc.zero{color:#ff4f6d;text-decoration:line-through}
 .unk{display:grid;place-items:center;font:700 26px Orbitron,sans-serif;color:#ff8fa3;background:rgba(255,60,90,.12);border:1px solid rgba(255,60,90,.5)}
 .grunt{display:grid;place-items:center;color:#ffd23f;background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.4)}
 #combatFx{position:fixed;inset:0;z-index:21;display:grid;place-items:center;background:radial-gradient(ellipse at center,rgba(90,0,20,.92),rgba(5,0,4,.97));cursor:pointer;padding:20px;overflow:auto;animation:cfIn .35s ease}
@@ -5608,6 +5608,7 @@ function liveHTML(){
     </div>` : ''}`;
 }
 
+$('#liveBody').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset && e.target.dataset.eamt){ e.preventDefault(); const b = $(`[data-live="ehp"][data-e="${e.target.dataset.eamt}"][data-d="dmg"]`); if (b) b.click(); } });
 $('#liveBody').addEventListener('change', e => {
   const d = e.target.dataset || {};
   if (d.pre != null){ const p = presets[+d.pre]; if (!p) return; const v = e.target.value; p[d.pf] = d.pf === 'n' ? (v.trim().slice(0, 30) || p.n) : d.pf === 'dmg' ? v.trim().slice(0, 20) : Math.max(d.pf === 'hit' ? -5 : 1, parseInt(v) || 0); savePresets(); return renderLive(); }
@@ -6029,7 +6030,7 @@ function encPanelHTML(){
     const pic = ic ? iceArt(ic.id) : np ? avatar(np, 'av sm') : `<div class="av sm grunt">⚔</div>`;
     const sub = ic ? `Black ICE · AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}` : np ? (npcsPub.some(x => x.id === np.id) ? 'NPC · known to the party' : 'NPC · shows as Unknown') : 'Other combatant';
     return `<div class="encrow">${pic}<div class="nm">${esc(c.name)}${c.cnt > 1 ? ` ×${c.cnt}` : ''}<small>${ic ? sub : statLine(c) + (np ? ' · ' + sub : '')}</small></div>
-      ${c.hpMax ? `<div class="hpc ${c.hp <= 0 ? 'zero' : ''}"><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="-1" aria-label="Lower HP">−</button><span>${c.hp}/${c.hpMax}</span><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="1" aria-label="Raise HP">+</button></div>` : ''}
+      ${c.hpMax ? `<div class="hpc ${c.hp <= 0 ? 'zero' : ''}"><span>${c.hp}/${c.hpMax}</span><input type="number" min="0" id="ea-${c.id}" class="eamt" placeholder="Amt" inputmode="numeric" aria-label="Amount for ${esc(c.name)}" data-eamt="${c.id}"><button class="btn small danger" data-live="ehp" data-e="${c.id}" data-d="dmg">Dmg</button><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="heal">Heal</button></div>` : ''}
       ${ic && !seen.includes(ic.id) ? `<button class="btn small" data-live="ereveal" data-i="${ic.id}" title="Add to the players' Codex">Reveal</button>` : ''}${ic ? '' : `<button class="btn small ${encEdit === c.id ? 'on' : ''}" data-live="eedit" data-e="${c.id}" aria-label="Edit stats">✎</button>`}<button class="btn small" data-live="edel" data-e="${c.id}" aria-label="Remove">✕</button></div>`;
   };
   return `<div class="panel gap" id="encPanel"><div class="row"><h3>Encounter <span class="muted" style="font-size:14px">${enc.length}</span></h3>${live ? '<span class="stagb red gl" data-text="IN COMBAT">IN COMBAT</span>' : ''}<span class="spacer"></span>
@@ -6072,7 +6073,14 @@ async function encAction(a, t){
   if (a === 'esave'){ const name = (($('#encSaveName') || {}).value || '').trim().slice(0, 40) || `Encounter ${encSaves().length + 1}`; putSaves([{id:uid(), name, at:Date.now(), list:enc.map(c => ({...c, hp:c.hpMax || c.hp}))}, ...encSaves()]); toast(`Saved "${name}".`, true); renderLive(); return true; }
   if (a === 'eload'){ const x = encSaves().find(y => y.id === ($('#encLoad') || {}).value); if (!x) return true; enc = [...enc, ...x.list.map(c => ({...c, id:uid(), hp:c.hpMax || c.hp}))]; saveEnc(); toast(`Loaded "${x.name}".`, true); renderLive(); return true; }
   if (a === 'esdel'){ const id = ($('#encLoad') || {}).value; putSaves(encSaves().filter(y => y.id !== id)); renderLive(); return true; }
-  if (a === 'ehp'){ const c = enc.find(x => x.id === t.dataset.e); if (c){ c.hp = Math.max(0, Math.min(c.hpMax, c.hp + (+t.dataset.d))); saveEnc(); renderLive(); } return true; }
+  if (a === 'ehp'){
+    const c = enc.find(x => x.id === t.dataset.e); if (!c) return true;
+    const d = t.dataset.d, n = d === 'dmg' || d === 'heal' ? Math.max(0, parseInt(($('#ea-' + c.id) || {}).value) || 0) : +d;
+    if (!n){ toast('Enter an amount first.'); return true; }
+    const was = c.hp; c.hp = Math.max(0, Math.min(c.hpMax, c.hp + (d === 'dmg' ? -n : n)));
+    if (was > 0 && c.hp === 0) toast(`${c.name} is down.`, true); else sfx(d === 'dmg' ? 'damage' : 'heal');
+    saveEnc(); renderLive(); return true;
+  }
   if (a === 'edel'){ enc = enc.filter(x => x.id !== t.dataset.e); saveEnc(); renderLive(); return true; }
   if (a === 'eclear'){ enc = []; saveEnc(); renderLive(); return true; }
   if (a === 'ereveal'){ const ice = [...new Set([...iceSeen(), t.dataset.i])]; try { await liveApi.updateSession(LS.code, {ice}); sessMeta = {...sessMeta, ice}; toast('Added to the players\' Codex.', true); } catch(err){ toast("Couldn't reveal it."); } renderLive(); return true; }

@@ -82,6 +82,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 
 ## Encounters (DM)
 - Grunts are added with a threat preset (Gonk, Ganger, Corpo Security, Elite, Boss). Each grunt gets its own HP. Presets has a button to edit, add or reset them, saved on the DM's device
+- Each enemy has an amount box with Dmg and Heal (Enter also deals damage)
 - The ✎ button on any enemy edits its AC, to hit, damage, attacks and HP for this encounter. NPCs in the NPC list have the same fields, or fill them from a preset
 - Difficulty meter. Weighs the party's live HP, AC and equipped weapons against the enemies and rates the fight Easy, Medium, Hard or Deadly, with a suggestion to go up or down. Black ICE gets its own Net rating against the party's netrunners. Only the DM sees it, and cover and terrain aren't counted
 - Saved encounters. Name and save the current encounter, then load it later (it's added to whatever is already there)
