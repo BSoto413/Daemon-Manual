@@ -516,6 +516,7 @@ textarea.notes{font-family:'Exo 2',sans-serif;font-size:15px;color:#fff;min-heig
 /* ---------- rules page ---------- */
 nav a.on{opacity:1;color:var(--cyan)}
 .rules-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;margin-top:10px}
+.rsec .panel a:not(.btn){color:var(--cyan);text-decoration:underline;text-underline-offset:2px}
 .toc{position:sticky;top:16px;display:grid;gap:2px;max-height:calc(100vh - 32px);overflow:auto;padding-top:52px}
 .toc input{margin-bottom:10px}
 .toc a{color:var(--muted);text-decoration:none;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 10px;border-left:2px solid transparent}
@@ -1457,12 +1458,13 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-psycho"><h2>Cyberpsychosis</h2>
         <div class="panel">
-          <p>Cyberpsychosis saves are a TEC roll. Roll <b>1d20 + your TEC mod</b> to keep from going over the edge.</p>
+          <p>Everything has a limit, and so does your body. There's only so much cybernetic enhancement a nervous system can handle. This limit is represented by your Cyberware Threshold and your Overflow. See <a href="#r-chrome">Cyberware</a> for Threshold rules.</p>
           <table class="rtable"><tbody>
-            <tr><td><b>DC</b></td><td>10 + 2 for each point of overflow, meaning each point your tally is over your threshold</td></tr>
-            <tr><td><b>Overflow cap</b></td><td>Half your threshold, rounded up. A threshold of 10 caps at 5 and a threshold of 11 caps at 6</td></tr>
-            <tr><td><b>Point of no return</b></td><td>The last overflow hex is red. Fill it and your merc is lost to cyberpsychosis for good. They can't be brought back</td></tr>
+            <tr><td><b>Save</b></td><td>Roll <b>1d20 + your TEC mod</b> against the DC</td></tr>
+            <tr><td><b>DC</b></td><td>10, plus 2 for every point in your Cyberware Overflow</td></tr>
+            <tr><td><b>Point of No Return</b></td><td>There's an upper limit where your body can take no more, shown as a red hexagon in your Cyberware Threshold bar. Push past your Overflow into that red and it's AUTOMATIC Cyberpsychosis. Your merc is lost for good</td></tr>
           </tbody></table>
+          <p class="muted" style="font-size:14px;margin-top:8px">Example. 2 points of Overflow makes the DC 14. Roll 1d20 + TEC and meet or beat 14.</p>
           <p style="margin-top:12px">A few perks help. <b>Theseus</b> (BOD) gives advantage on the save. <b>Tranquility</b> (COO) adds your COOL mod to your own and your allies' saves. <b>Limit Setter</b> (TEC) means the first piece of cyberware that pushes you past your threshold doesn't make you a Cyberpsycho.</p>
           <p class="muted" style="font-size:13px">Your sheet shows the current DC and has a button to roll the save whenever you're in overflow.</p>
         </div>
@@ -1490,7 +1492,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-coming"><h2>In the Works</h2>
         <div class="panel">
           <p>The GM is still building these. They'll land here as they're posted.</p>
-          <ul class="rlist"><li>Cyberpsychosis rules</li><li>Damage for Short Circuit and Sonic, and effects for Distract, Memory Wipe, Overheat, Burnout and Detonate</li><li>The CODE score</li></ul>
+          <ul class="rlist"><li>Damage for Short Circuit and Sonic, and effects for Distract, Memory Wipe, Overheat, Burnout and Detonate</li><li>The CODE score</li></ul>
         </div>
       </section>
     </div>
