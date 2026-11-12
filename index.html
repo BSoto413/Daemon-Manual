@@ -628,6 +628,23 @@ body.jacked #vSheet .panel h3{font-family:'Share Tech Mono',ui-monospace,Consola
 body.jacked #vitalsBar{border-color:var(--cyan);box-shadow:0 0 16px rgba(var(--crgb),.35)}body.jacked #vitalsBar::before{content:'NET LINK';font:600 9px Orbitron,sans-serif;letter-spacing:2px;color:#03161a;background:var(--cyan);padding:3px 6px;align-self:center}
 body.jacked #vCS .csL{display:flex;flex-direction:column}body.jacked #vCS .csL > .netwrap{order:-1}
 body.table.jacked #vSheet::after{display:none}
+/* Cyberware deck */
+.art.sl,.art.sl *{fill:none!important;stroke:currentColor}.gi .art.sl{color:var(--cyan);padding:4px}
+.cwgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.cwmini{background:none;border:0;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;color:inherit;font:inherit}.cwmini.gone{opacity:.45}
+.cwleft{font-size:12px;color:var(--cyan)}.cwmini.gone .cwleft{color:#ff8fa3}
+.cwc{background:#08080f;border:1px solid var(--tc);display:flex;flex-direction:column;min-height:120px}.cwc-top{background:var(--tc);color:#03161a;font:700 10px Orbitron,sans-serif;letter-spacing:1.5px;padding:5px 9px;display:flex;justify-content:space-between;gap:6px}
+.cwc-body{padding:9px 10px;display:grid;gap:6px}.cwc-name{font-weight:600;color:#fff;font-size:15px;line-height:1.2}.cwc-tags{display:flex;flex-wrap:wrap;gap:5px}.cwc-tags span{font-size:11px;padding:1px 6px;border:1px solid rgba(var(--crgb),.5);color:#d5f9fb}
+.cwc-tags .cw{border-color:#ffd23f;color:#ffd23f}.cwc-tags .rm{border-color:#3fd0ff;color:#3fd0ff}.cwc-fx{font-size:12px;color:#d5f9fb;line-height:1.4}
+.cwc.big{width:min(300px,100%);margin:10px auto 0;box-shadow:0 0 30px color-mix(in srgb,var(--tc) 35%,transparent);border-width:2px}.cwc.big .cwc-top{font-size:11px;padding:8px 12px}
+.cwc.big .cwc-name{font:700 19px Orbitron,sans-serif;letter-spacing:1px}.cwc.big .cwc-fx{font-size:14px}.cwc.big .cwc-body{padding:14px 16px;gap:10px}
+.cwc-art{height:74px;display:flex;align-items:center;justify-content:center;color:var(--tc);border-bottom:1px solid rgba(var(--crgb),.25);background:repeating-linear-gradient(0deg,rgba(var(--crgb),.05) 0 1px,transparent 1px 6px)}.cwc-art svg{width:50px;height:50px}.cwc.big .cwc-art{height:140px}.cwc.big .cwc-art svg{width:96px;height:96px}
+.cwc.back{width:110px;height:156px;min-height:0;flex:none;border:2px solid var(--cyan);box-shadow:5px 5px 0 -1px #08080f,5px 5px 0 0 rgba(var(--crgb),.5),10px 10px 0 -1px #08080f,10px 10px 0 0 rgba(var(--crgb),.3);align-items:center;justify-content:center;gap:10px;color:var(--cyan);background:#06060c repeating-linear-gradient(45deg,rgba(var(--crgb),.08) 0 2px,transparent 2px 12px)}
+.cwc.back svg{width:44px;height:50px}.cwc.back span{font:600 10px Orbitron,sans-serif;letter-spacing:2px;color:#fff}
+.dkp{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.dkhand{margin-top:16px;border-top:1px solid rgba(var(--crgb),.2);padding-top:12px;display:grid;gap:8px}.dkrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dkform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.dkform .fl{display:flex;flex-direction:column;gap:4px}.dkform textarea{width:100%}
+@media (max-width:560px){.dkform{grid-template-columns:1fr}}
 /* Encounter difficulty, presets, saves, rests */
 .dread{margin-top:12px;display:grid;gap:8px}
 .dmeter{border:1px solid rgba(var(--crgb),.25);padding:10px 12px;background:rgba(255,255,255,.02)}.dmeter p{margin:6px 0 0;font-size:13px;color:#d5f9fb}.dmeter .sug{color:#aab3c5;font-size:12px}
@@ -641,10 +658,11 @@ body.table.jacked #vSheet::after{display:none}
 .vb.ammo.low b{color:#ff4f6d}
 .revive{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #ff4fd8;padding:10px;background:rgba(255,79,216,.07)}.revive b{color:#fff}
 /* Vehicles */
+.rex{border-left:3px solid var(--cyan);padding:8px 12px;background:rgba(var(--crgb),.06);color:#d5f9fb;font-size:15px}
 .vkinds{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.vkinds span{font:600 11px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;border:1px solid rgba(var(--crgb),.45);color:#d5f9fb}
 .drv{display:grid;gap:8px;margin-top:12px}.drv div{display:grid;gap:4px;padding:10px 12px;border:1px solid rgba(var(--crgb),.25);border-left:3px solid var(--cyan);background:rgba(var(--crgb),.05)}
 .drv b{font:600 11px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}.drv span{font-size:15px;line-height:1.45}.drv em{font-style:normal;color:#fff}
-@media (min-width:760px){.drv{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:760px){.drv{grid-template-columns:repeat(3,1fr)}.drv.two{grid-template-columns:repeat(2,1fr)}}
 .drive{margin:6px 0 10px;padding:8px 10px;border-left:3px solid var(--cyan);background:rgba(var(--crgb),.06)}.drive b{color:#fff}
 .vrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;font-size:13px}.vrow b{color:#fff;margin-right:4px}
 .tagb.vkb,.tagb.vgood,.tagb.vweak{background:transparent;border:1px solid}.tagb.vkb{border-color:rgba(var(--crgb),.5);color:#cdeff2}.tagb.vgood{border-color:#3ee08a;color:#9ff5c4}.tagb.vweak{border-color:#ffd23f;color:#ffe48a}
@@ -1163,9 +1181,11 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <div><b>Proficiency</b><span>Car, Bike and Water.</span></div>
             <div><b>Double proficiency</b><span>Car, Bike, Water and Air (AVs).</span></div>
           </div>
-          <h3 style="margin-top:20px">Double proficiency</h3>
-          <p style="margin-top:8px">You get one pick at a time, never one per stat. It opens on a level up when any of your stats reaches a tier you haven't used yet. If several stats qualify, you choose one skill among all of them, and the rest stay locked until each one reaches its next tier. A Bruiser with STR 15, TEC 12 and INT 10 picks Athletics, so TEC and INT give nothing until they hit 14. You only get one pick per level. New mercs don't get one at level 1, and their starting stats all count toward the pick on their first level up.</p>
-          <p style="margin-top:8px">Use your pick to become proficient in a skill tied to that stat that you don't have yet, or to double a skill you're already proficient in once that stat has moved two tiers past where you got it. A Rookie Netrunner proficient in Hacking can double it at Phenom. If the skill's stat was under 10 when you got it, Rookie counts as its first tier, so you can double it at Pro. Perks that give proficiency count toward doubling under the same two-tier rule.</p>
+          <h3 style="margin-top:18px">Skill proficiencies</h3>
+          <p style="margin-top:8px">Proficiencies are unlockable. The skill proficiency is available when any of your stats reach a higher tier. If several stats qualify, you choose ONE skill among all of them, and the rest stay locked until each stat reaches its next tier. You only get one pick per level. New Mercs don't get one at level 1, and their starting stats all count toward the pick on their first level up.</p>
+          <p class="rex">For example: A Bruiser with STR 15, TEC 12 and INT 10 picks Athletics, so TEC and INT give nothing until they hit 14.</p>
+          <p>Double proficiencies are also attainable, but only once the stat containing the skill you wish to have double proficiency in moves TWO tiers up.</p>
+          <p class="rex">For Example: A Rookie Netrunner proficient in Hacking can't double their proficiency in Hacking until they've reached the Phenom tier in INT.</p>
         </div>
       </section>
 
@@ -1347,6 +1367,13 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-chrome"><h2>Cyberware and RipperDocs</h2>
         <div class="panel">
           <p>Chrome goes into body slots. Every piece adds to your cyberware threshold. Only chrome designed for it adds RAM.</p>
+          <h3 style="margin-top:18px">Getting chrome</h3>
+          <p style="margin-top:8px">New chrome comes from the DM's cyberware deck. When the DM gives you a draw, a face-down deck shows up on your Party tab. Tap <b>Draw a card</b> to pull one at random, or the DM can hand you a specific card.</p>
+          <div class="drv two">
+            <div><b>Add to inventory</b><span>The card goes in your backpack as cyberware. A RipperDoc still has to install it.</span></div>
+            <div><b>Put it back</b><span>The card goes back into the deck for someone else.</span></div>
+          </div>
+          <p>Cards you keep leave the deck for good, unless the DM sends one back out. Nobody but the DM knows how many cards are left.</p>
           <h3 style="margin-top:18px">Shards</h3>
           <p style="margin-top:8px">Shards are data sticks you slot into one of your two Shard Slots. The DM decides what each one does, like a skill boost, a language or intel. Anyone can slot or pull a shard without a RipperDoc, and it doesn't count against your cyberware threshold. The effect lasts while it's slotted. Pull it out and the effect ends and the shard goes back in your bag.</p>
           <h3 style="margin-top:18px">Cyberware threshold</h3>
@@ -1904,6 +1931,7 @@ function normalize0(c){
     psycho: !!c.psycho,
     jackLock: !!c.jackLock,
     jacked: !!c.jacked,
+    deckDraws: Math.max(0, parseInt(c.deckDraws) || 0), deckPend: Array.isArray(c.deckPend) ? c.deckPend.slice(-10) : [], deckHand: Array.isArray(c.deckHand) ? c.deckHand.slice(0, 10) : [], deckQ: Array.isArray(c.deckQ) ? c.deckQ.slice(-10) : [],
     lastOut: ['unsafe', 'safe', 'flat'].includes(c.lastOut) ? c.lastOut : null,
     sig: SIGS.includes(c.sig) ? c.sig : null,
     xp: Math.max(0, parseInt(c.xp) || 0),
@@ -2400,7 +2428,23 @@ function artShapes(k, L, S){
     default: return r(.1, .18, .8, .72, 'rx="2"') + `<path class="ln" d="M${.1 * L} ${.18 * S} L ${.9 * L} ${.9 * S} M ${.9 * L} ${.18 * S} L ${.1 * L} ${.9 * S}"/>`;
   }
 }
+const SLOT_ART = {
+  os: '<rect x="8" y="12" width="48" height="34" rx="2"/><path d="M8 40h48M26 54h12M32 46v8"/><path d="M20 22l-5 5 5 5M44 22l5 5-5 5M35 19l-6 16"/>',
+  cortex: '<path d="M30 10c-8-4-18 2-17 10-6 2-8 10-3 15-2 7 4 13 11 12 3 6 11 7 15 2V12c-2-2-4-2-6-2z"/><path d="M34 12c8-4 18 2 17 10 6 2 8 10 3 15 2 7-4 13-11 12-3 6-11 7-15 2"/><circle cx="24" cy="26" r="2.5"/><circle cx="42" cy="34" r="2.5"/><path d="M24 28.5v8h8M42 31.5V22h-8"/>',
+  ocular: '<path d="M4 32s10-16 28-16 28 16 28 16-10 16-28 16S4 32 4 32z"/><circle cx="32" cy="32" r="10"/><circle cx="32" cy="32" r="3.5"/><path d="M32 6v6M32 52v6M2 32h4M58 32h4"/>',
+  circ: '<path d="M32 54S8 40 8 24c0-8 6-13 13-13 5 0 9 3 11 7 2-4 6-7 11-7 7 0 13 5 13 13 0 16-24 30-24 30z"/><path d="M10 32h12l4-8 5 16 5-12 3 4h15"/>',
+  nervous: '<circle cx="32" cy="16" r="6"/><path d="M32 22v34M32 30l-12 8-6-2M32 30l12 8 6-2M32 42l-10 8-4 6M32 42l10 8 4 6M26 14l-8-6M38 14l8-6"/><circle cx="14" cy="36" r="2"/><circle cx="50" cy="36" r="2"/>',
+  integ: '<path d="M32 4l24 10v16c0 14-10 24-24 30C18 54 8 44 8 30V14z"/><path d="M20 20l6 4v8l-6 4-6-4v-8zM38 20l6 4v8l-6 4-6-4v-8zM29 36l6 4v8l-6 4-6-4v-8z"/>',
+  skeleton: '<path d="M20 6h24M22 14h20M20 22h24M22 30h20M20 38h24M22 46h20M20 54h24"/><path d="M32 4v56"/><circle cx="32" cy="6" r="0.5"/>',
+  hands: '<path d="M20 56V30l-6-8c-2-3 2-6 4-4l6 6V10c0-3 5-3 5 0v16-20c0-3 5-3 5 0v20-18c0-3 5-3 5 0v18-14c0-3 5-3 5 0v26c0 10-6 16-14 18H20z"/><path d="M28 44h10"/>',
+  arms: '<path d="M8 56h22M14 56l5-14"/><rect x="15" y="30" width="8" height="14" rx="2" transform="rotate(20 19 37)"/><path d="M23 32l13-9"/><circle cx="38" cy="22" r="4"/><path d="M41 19l9-9"/><path d="M50 10l7-1M50 10l1 7M47 13l4 4"/>',
+  legs: '<path d="M24 4h14l-2 22 4 18-2 12h12v4H22l2-16-4-18z"/><path d="M26 26h12M24 44h14"/><circle cx="31" cy="35" r="2.5"/>',
+  shard: '<path d="M22 6h20v40l-10 12-10-12z"/><path d="M27 14h10M27 20h10M27 26h10M27 32h6"/>'
+};
+const slotArt = k => `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SLOT_ART[k] || SLOT_ART.os}</svg>`;
+const cwSlotOf = i => { const m = /(Operating System|Frontal Cortex|Ocular|Circulatory|Nervous|Integumentary|Skeleton|Hands|Arms|Legs|Shard Slots) slot/.exec(i.stats || ''); return m ? (CYBER_SLOTS.find(x => x[1] === m[1]) || [])[0] : null; };
 function itemArt(i, w, h){
+  if (i.type === 'Cyberware'){ const k = cwSlotOf(i); if (k) return `<svg class="art sl" viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SLOT_ART[k]}</svg>`; }
   w = w || i.w; h = h || i.h;
   const U = 20, W = w * U, H = h * U, tall = h > w, L = (tall ? H : W) - 6, S = (tall ? W : H) - 6;
   const body = artShapes(artKind(i), L, S);
@@ -5107,6 +5151,16 @@ function applyOp(op){
     if (m.lost){ m.lost = false; m.psycho = false; m.lostSave = cwLoad(m); }
     if (m.dead || isDown(m)){ m.dead = false; m.ds = {p:0, f:0}; if (m.hpMax){ if (hpNow(m) <= 0) m.hp = 1; if (netNow(m) <= 0) m.netHp = 1; } }
     msg = `The DM brought ${m.name} back. They were ${was}.`; sound = 'levelup';
+  } else if (op.kind === 'draws'){
+    m.deckDraws = (m.deckDraws || 0) + Math.max(1, parseInt(op.n) || 1);
+    msg = `The DM gave you ${op.n > 1 ? op.n + ' cyberware draws' : 'a cyberware draw'}. Check your Party tab.`; sound = 'receive';
+  } else if (op.kind === 'deckcard' && op.card){
+    m.deckHand = [...(m.deckHand || []), {...op.card, how:op.how || 'draw'}]; if (op.req) m.deckPend = (m.deckPend || []).filter(x => x !== op.req);
+    msg = op.how === 'gift' ? 'The DM handed you a cyberware card.' : 'Your cyberware card is in.'; sound = 'receive';
+    setTimeout(deckReveal, 300);
+  } else if (op.kind === 'deckempty'){
+    m.deckPend = (m.deckPend || []).filter(x => x !== op.req); m.deckDraws = (m.deckDraws || 0) + 1;
+    msg = "The DM's deck came up empty. Your draw is saved for later."; good = false; sound = 'deny';
   } else if (op.kind === 'rest'){
     if (m.dead){ msg = ''; sound = null; }
     else {
@@ -5215,6 +5269,7 @@ async function sendPlayerOp(u, op){
 }
 function flashSheet(){ const h = $('#sheetHead'); if (!h) return; h.classList.remove('flash'); void h.offsetWidth; h.classList.add('flash'); }
 async function startPlayer(){
+  setTimeout(deckReveal, 1200);
   const api = liveApi;
   unsubs.push(api.watchSession(LS.code, s => {
     if (!s && LS){ toast('The DM ended the session.'); leaveLive(true); return; }
@@ -5258,7 +5313,7 @@ function startDM(){
   unsubs.push(api.watchPlayers(LS.code, list => {
     const {keep, stale} = dedupe(list);
     stale.forEach(p => { api.removePlayer(LS.code, p.id).catch(() => {}); api.removePortrait(LS.code, p.id).catch(() => {}); });
-    players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); scheduleBackup();
+    players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); scheduleBackup(); deckServe();
   }));
   unsubs.push(api.watchLog(LS.code, list => { logs = list; renderLive(); }));
   unsubs.push(api.watchBackups(list => {
@@ -5459,6 +5514,7 @@ function dmFocusHTML(p){
       <span class="ctl">Item</span><div class="row"><select id="give-${k}" aria-label="Item to give" style="flex:1;min-width:0">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select><button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
       ${amtRow}
       <span class="ctl">Eddies</span><div class="row"><button class="btn small" data-live="ed+" data-u="${k}">+€$</button><button class="btn small" data-live="ed-" data-u="${k}">−€$</button><span class="muted" style="font-size:12px">Has ${m.eddies} €$</span></div>
+      <span class="ctl">Cyberware</span><div class="row"><button class="btn small" data-live="dkdraw" data-u="${k}">+1 deck draw</button>${deck.cards.some(c => cardLeft(c)) ? `<select id="dkc-${k}" aria-label="Deck card to give" style="flex:1;min-width:0">${deck.cards.filter(c => cardLeft(c)).map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select><button class="btn small" data-live="dkgive1" data-u="${k}">Give</button>` : '<span class="muted" style="font-size:12px">Deck is empty</span>'}${m.deckDraws ? `<span class="muted" style="font-size:12px">${m.deckDraws} waiting</span>` : ''}</div>
       <span class="ctl">XP</span><div class="row"><button class="btn small" data-live="xp1" data-u="${k}">Award XP</button><span class="muted" style="font-size:12px">${m.xp ? m.xp.toLocaleString() + ' so far' : 'None yet'}</span></div></div>`;
   if (dmSub === 'chrome') body = `<div class="ctlgrid">
       <span class="ctl">Load</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button><span class="muted" style="font-size:12px">${cwLoad(m)} of ${cwTOf(m)} · Max ${cwMaxOf(m)}</span></div>
@@ -5519,6 +5575,132 @@ let liveLast = '', liveDirty = false, liveForce = false;
 // A redraw while the DM has a dropdown open would close it. Hold it until they pick or tap away.
 document.addEventListener('focusout', e => { if (liveDirty && e.target && e.target.tagName === 'SELECT') setTimeout(() => { if (liveDirty) renderLive(); }, 60); });
 document.addEventListener('change', e => { if (e.target && e.target.tagName === 'SELECT' && $('#liveBody').contains(e.target)) liveForce = true; }, true);
+/* ---- Cyberware deck. The DM preps cards, players draw at random or get a card handed to them. ---- */
+const DECK_KEY = 'daemon-cw-deck';
+let deck = (() => { try { const d = JSON.parse(localStorage.getItem(DECK_KEY)); if (d && Array.isArray(d.cards)) return {cards:d.cards, out:d.out || [], seen:d.seen || []}; } catch(e){} return {cards:[], out:[], seen:[]}; })();
+const saveDeck = () => { deck.seen = deck.seen.slice(-300); try { localStorage.setItem(DECK_KEY, JSON.stringify(deck)); } catch(e){} };
+const TIER_COL = ['#9aa6b2', '#3ee08a', '#3fd0ff', '#c21bff'];
+const cardLeft = c => Math.max(0, (c.copies || 0) - deck.out.filter(o => o.cid === c.id).length);
+const deckLeft = () => deck.cards.reduce((a, c) => a + cardLeft(c), 0);
+const slotName = k => (SLOTMAP[k] || [k, 'Any slot'])[1];
+const cardPub = c => ({cid:c.id, name:c.name, slot:c.slot, tier:c.tier || 0, cw:c.cw || 0, ram:c.ram || 0, effect:c.effect || '', hot:!!c.hot});
+function cardHTML(c, big){
+  return `<div class="cwc ${big ? 'big' : ''}" style="--tc:${TIER_COL[c.tier || 0]}"><div class="cwc-top"><span>${esc(slotName(c.slot)).toUpperCase()}</span><span>T${(c.tier || 0) + 1}</span></div>
+    <div class="cwc-art">${slotArt(c.slot)}</div>
+    <div class="cwc-body"><div class="cwc-name">${esc(c.name)}</div><div class="cwc-tags"><span class="cw">CW ${c.cw || 0}</span>${c.ram ? `<span class="rm">RAM ${sgn(c.ram)}</span>` : ''}${c.hot ? '<span>HOT-SWAP</span>' : ''}</div>
+    ${c.effect ? `<div class="cwc-fx">${esc(c.effect)}</div>` : ''}</div></div>`;
+}
+const cardBack = () => `<div class="cwc back"><svg viewBox="0 0 64 72" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M32 2 62 19v34L32 70 2 53V19z"/><path d="M20 26h24M20 36h24M20 46h14"/></svg><span>CYBERWARE</span></div>`;
+// DM: the Items tab panel.
+function deckPanelHTML(){
+  const live = players.filter(p => p.merc), left = deckLeft();
+  const opts = deck.cards.filter(c => cardLeft(c) > 0).map(c => `<option value="${c.id}">${esc(c.name)} · ${esc(slotName(c.slot))}</option>`).join('');
+  return `<div class="panel gap" id="deckPanel"><div class="row"><h3>Cyberware deck</h3><span class="spacer"></span>
+      <button class="btn small" data-live="dkshuffle" ${left ? '' : 'disabled'}>Shuffle</button><button class="btn small primary" data-live="dkadd">+ Add card</button></div>
+    <p class="muted" style="font-size:13px;margin:4px 0 12px">${deck.cards.length ? `${left} in the deck · ${deck.out.length} handed out. Players never see how many are left.` : 'Build a deck of cyberware cards. Players pull from it at random when you give them draws, or you hand out a specific card. Fill it here or from the preload sheet below.'}</p>
+    ${deck.cards.length ? `<div class="cwgrid">${deck.cards.map(c => `<button class="cwmini ${cardLeft(c) ? '' : 'gone'}" data-live="dkedit" data-c="${c.id}" aria-label="Edit ${esc(c.name)}">${cardHTML(c)}<span class="cwleft">${cardLeft(c) ? `×${cardLeft(c)} left` : 'All handed out'}</span></button>`).join('')}</div>` : ''}
+    ${live.length && deck.cards.length ? `<div class="dkhand"><span class="lbl">Hand out</span>
+      ${live.map(p => { const n = normalize(p.merc).deckDraws || 0; return `<div class="dkrow"><b style="${sigOf(p.merc) ? `color:${sigOf(p.merc)}` : ''}">${esc(p.merc.name)}</b><span class="muted" style="font-size:12px;flex:1">${n ? `${n} draw${n > 1 ? 's' : ''} waiting` : 'No draws'}</span><button class="btn small" data-live="dkdraw" data-u="${p.id}">+1 draw</button></div>`; }).join('')}
+      <div class="row" style="margin-top:10px;gap:6px"><select id="dkTo" aria-label="Player to give a card">${live.map(p => `<option value="${p.id}">${esc(p.merc.name)}</option>`).join('')}</select>
+        <select id="dkCard" aria-label="Card to give" style="flex:1;min-width:0">${opts || '<option value="">Deck is empty</option>'}</select><button class="btn small primary" data-live="dkgive" ${opts ? '' : 'disabled'}>Give card</button></div></div>` : ''}
+    ${deck.out.length ? `<div class="dkhand"><span class="lbl">Handed out</span>${deck.out.slice().reverse().slice(0, 30).map(o => `<div class="dkrow"><span style="flex:1">${esc(o.name)} <span class="muted">→ ${esc(o.toName || 'someone')}</span></span><button class="btn small" data-live="dkback" data-o="${o.id}" title="Puts this copy back in the deck so it can come out again">Back in deck</button></div>`).join('')}</div>` : ''}
+  </div>`;
+}
+function deckEditor(id){
+  const c = deck.cards.find(x => x.id === id) || {id:null, name:'', slot:'arms', tier:0, cw:1, ram:0, effect:'', hot:false, copies:1};
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  const f = (l, h) => `<label class="fl"><span>${l}</span>${h}</label>`;
+  m.innerHTML = `<div class="mbox" style="max-width:640px"><div class="sethead"><h3>${c.id ? 'Edit card' : 'Add a cyberware card'}</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
+    <div class="dkform">${f('Name', `<input type="text" class="f" id="dkN" value="${esc(c.name)}" maxlength="40">`)}
+      ${f('Slot', `<select id="dkS">${CYBER_SLOTS.map(([k, n]) => `<option value="${k}" ${c.slot === k ? 'selected' : ''}>${n}</option>`).join('')}</select>`)}
+      ${f('Tier', `<select id="dkT">${[0, 1, 2, 3].map(t => `<option value="${t}" ${c.tier === t ? 'selected' : ''}>Tier ${t + 1}</option>`).join('')}</select>`)}
+      ${f('CW load', `<input type="number" id="dkC" min="0" max="20" value="${c.cw}">`)}${f('RAM bonus', `<input type="number" id="dkR" min="-10" max="10" value="${c.ram}">`)}
+      ${f('Copies in the deck', `<input type="number" id="dkQ" min="0" max="20" value="${c.copies}">`)}
+      <label class="fl" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="dkH" ${c.hot ? 'checked' : ''}><span>Hot-swap part</span></label>
+      <label class="fl" style="grid-column:1/-1"><span>Effect</span><textarea id="dkE" rows="3" maxlength="300">${esc(c.effect)}</textarea></label></div>
+    <div class="row" style="margin-top:14px"><button class="btn primary" data-m="save">Save card</button>${c.id ? '' : '<button class="btn" data-m="again">Save and add another</button>'}<span class="spacer"></span>${c.id ? '<button class="btn danger" data-m="del">Delete card</button>' : ''}</div></div>`;
+  m.onclick = e => {
+    const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return;
+    const a = b.dataset.m; if (a === 'close') return closeModal();
+    if (a === 'del'){ deck.cards = deck.cards.filter(x => x.id !== c.id); saveDeck(); closeModal(); toast(`Deleted ${c.name}.`, true); return renderLive(); }
+    const name = $('#dkN').value.trim(); if (!name) return toast('Give the card a name.');
+    const card = {id:c.id || uid(), name, slot:$('#dkS').value, tier:+$('#dkT').value, cw:Math.max(0, parseInt($('#dkC').value) || 0), ram:parseInt($('#dkR').value) || 0,
+      copies:Math.max(0, parseInt($('#dkQ').value) || 0), hot:$('#dkH').checked, effect:$('#dkE').value.trim().slice(0, 300)};
+    const i = deck.cards.findIndex(x => x.id === card.id); if (i >= 0) deck.cards[i] = card; else deck.cards.push(card);
+    saveDeck(); toast(`Saved ${card.name}.`, true); renderLive();
+    if (a === 'again') deckEditor(null); else closeModal();
+  };
+}
+async function deckHandOut(u, c, how){
+  const p = players.find(x => x.id === u); if (!p) return false;
+  deck.out.push({id:uid(), cid:c.id, name:c.name, to:u, toName:p.merc ? p.merc.name : p.name, at:Date.now()}); saveDeck();
+  return sendOp(u, {kind:'deckcard', card:cardPub(c), how});
+}
+// DM: answer draw requests and returned cards that players put on their merc.
+async function deckServe(){
+  if (!LS || LS.role !== 'dm') return;
+  for (const p of players){
+    const q = (p.merc && Array.isArray(p.merc.deckQ)) ? p.merc.deckQ : [];
+    for (const r of q){
+      if (!r || !r.id || deck.seen.includes(r.id)) continue;
+      deck.seen.push(r.id); saveDeck();
+      if (r.k === 'return' && r.card){
+        const i = deck.out.findIndex(o => o.cid === r.card.cid && o.to === p.id); if (i >= 0) deck.out.splice(i, 1); else { const j = deck.out.findIndex(o => o.cid === r.card.cid); if (j >= 0) deck.out.splice(j, 1); }
+        saveDeck(); toast(`${p.merc.name} put ${r.card.name} back in the deck.`, true);
+      } else if (r.k === 'draw'){
+        const pool = deck.cards.flatMap(c => Array(cardLeft(c)).fill(c));
+        if (!pool.length){ await sendOp(p.id, {kind:'deckempty', req:r.id}); toast(`${p.merc.name} tried to draw, but the cyberware deck is empty.`); continue; }
+        const c = pool[Math.floor(Math.random() * pool.length)];
+        deck.out.push({id:uid(), cid:c.id, name:c.name, to:p.id, toName:p.merc.name, at:Date.now()}); saveDeck();
+        await sendOp(p.id, {kind:'deckcard', card:cardPub(c), how:'draw', req:r.id});
+      }
+    }
+  }
+  renderLive();
+}
+// Player: the live merc, wherever it is loaded.
+function withLiveMerc(fn){
+  if (!LS) return;
+  if (C && C.id === LS.mercId){ fn(C); saveC(); if (typeof update === 'function') update(false); return; }
+  const i = DB.chars.findIndex(x => x.id === LS.mercId); if (i < 0) return;
+  const m = normalize(DB.chars[i]); fn(m); DB.chars[i] = m; persist();
+}
+const liveMerc = () => LS && (C && C.id === LS.mercId ? C : DB.chars.find(x => x.id === LS.mercId));
+function deckPlayerHTML(){
+  const m = liveMerc(); if (!m) return '';
+  const n = m.deckDraws || 0, pend = (m.deckPend || []).length, hand = (m.deckHand || []).length;
+  if (!n && !pend && !hand) return '';
+  return `<div class="panel gap dkplayer"><div class="row"><h3>Cyberware deck</h3></div>
+    <div class="dkp">${cardBack()}<div style="flex:1;min-width:180px">
+      <p style="margin:0 0 10px;color:var(--yellow)">${hand ? `You have a card to look at.` : pend ? 'Drawing from the DM\'s deck…' : `The DM gave you ${n} draw${n > 1 ? 's' : ''}.`}</p>
+      ${hand ? '<button class="btn primary" data-live="dkreveal">See your card</button>' : `<button class="btn primary" data-live="dkpull" ${n && !pend ? '' : 'disabled'}>Draw a card</button>`}
+      ${n && (hand || pend) ? `<p class="muted" style="font-size:12px;margin-top:8px">${n} more draw${n > 1 ? 's' : ''} after this.</p>` : ''}</div></div></div>`;
+}
+let dkShowing = false;
+function deckReveal(){
+  const m = liveMerc(); if (!m || !(m.deckHand || []).length || dkShowing) return;
+  const md = $('#modal'); if (!md.hidden) return;
+  const c = m.deckHand[0]; dkShowing = true;
+  md.hidden = false; document.documentElement.classList.add('noscroll');
+  md.innerHTML = `<div class="mbox dkreveal" style="max-width:380px"><p class="lbl" style="text-align:center;color:var(--yellow)">${c.how === 'gift' ? 'THE DM GAVE YOU' : 'YOU PULLED'}</p>${cardHTML(c, true)}
+    <div class="row" style="margin-top:14px;justify-content:center;gap:8px"><button class="btn primary" data-m="keep">Add to inventory</button><button class="btn" data-m="back">Put it back</button></div>
+    <p class="muted" style="font-size:12px;text-align:center;margin-top:10px">It goes in your backpack. A RipperDoc installs it.</p></div>`;
+  if (flashOK()) sfx('receive');
+  md.onclick = e => {
+    const b = e.target.closest('[data-m]'); if (!b) return;
+    dkShowing = false; closeModal();
+    withLiveMerc(mm => {
+      const card = mm.deckHand.shift(); if (!card) return;
+      if (b.dataset.m === 'keep'){
+        mm.inv.push({id:uid(), name:card.name, type:'Cyberware', qty:1, cw:card.cw || 0, hot:!!card.hot, tier:card.tier || 0, gx:null, gy:null,
+          stats:[card.ram ? 'RAM ' + sgn(card.ram) : '', slotName(card.slot) + ' slot', card.effect].filter(Boolean).join(' · ').slice(0, 300)});
+        toast(`${card.name} is in your backpack. A RipperDoc installs it.`, true);
+      } else { mm.deckQ = [...(mm.deckQ || []).slice(-9), {id:uid(), k:'return', card:{cid:card.cid, name:card.name}, at:Date.now()}]; toast(`${card.name} went back in the deck.`, true); }
+    });
+    if (liveMe()) flushLog('');
+    renderLive(); setTimeout(deckReveal, 400);
+  };
+}
 function renderLive(){
   placeLive(); syncWake();
   document.body.classList.toggle('dmwide', !!(LS && LS.role === 'dm' && liveState === 'on'));
@@ -5563,6 +5745,7 @@ function liveHTML(){
       <p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · Playing as ${m ? esc(m.name) : 'unknown merc'}</p></div>
       <button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
+      ${deckPlayerHTML()}
       <h3 style="margin:22px 0 0">Your party</h3>
       <div class="players">${players.map(p => partyCard(p)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
       ${handouts.length ? `<div class="panel gap"><h3>Handouts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Everything the DM has shared this session. Tap one to open it.</p>${hoListHTML(false)}</div>` : ''}
@@ -5602,9 +5785,9 @@ function liveHTML(){
     ${dmTab === 'party' ? dmPartyHTML() : ''}
     ${dmTab === 'npcs' ? `${encPanel}${npcPanel}${genHTML('npc')}` : ''}
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
-    ${dmTab === 'items' ? `${genHTML('items')}
+    ${dmTab === 'items' ? `${deckPanelHTML()}${genHTML('items')}
     <div class="panel gap" id="preloadPanel"><div class="row"><h3>Preload from a spreadsheet</h3></div>
-      <p style="font-size:14px;margin:6px 0 10px">Fill out weapons and NPCs anywhere, in Excel, Google Sheets or Numbers, then upload the sheet here to load them all at once. Weapons go into your item library and NPCs go into your private NPC list.</p>
+      <p style="font-size:14px;margin:6px 0 10px">Fill out weapons, NPCs and cyberware cards anywhere, in Excel, Google Sheets or Numbers, then upload the sheet here to load them all at once. Weapons go into your item library and NPCs go into your private NPC list.</p>
       <div class="row gap"><a class="btn small" href="templates/daemon-dm-preload.xlsx" download="Daemon DM preload.xlsx">Download template</a><label class="btn small primary" style="display:inline-block">Upload filled sheet<input type="file" id="preloadFile" accept=".xlsx,.csv" hidden></label></div>
       <p class="muted" style="font-size:12px;margin:8px 0 0">Takes .xlsx, or a .csv of one tab. Uploading again updates anything with the same name instead of making a copy. Rows named "Example" are skipped.</p>
       ${preloadMsg ? `<p class="preres" style="font-size:14px;margin:10px 0 0">${preloadMsg}</p>` : ''}</div>
@@ -5704,6 +5887,22 @@ $('#liveBody').addEventListener('click', async e => {
     return;
   }
   if (a === 'dmundo') return dmUndo();
+  if (a === 'dkadd'){ deckEditor(null); return; }
+  if (a === 'dkedit'){ deckEditor(t.dataset.c); return; }
+  if (a === 'dkshuffle'){ sfx('select'); toast('Deck shuffled.', true); return; }
+  if (a === 'dkdraw'){ if (await sendOp(u, {kind:'draws', n:1})) toast(`Gave ${pname(u)} a cyberware draw.`, true); return; }
+  if (a === 'dkgive' || a === 'dkgive1'){
+    const to = a === 'dkgive' ? ($('#dkTo') || {}).value : u, cid = ($(a === 'dkgive' ? '#dkCard' : '#dkc-' + u) || {}).value, c = deck.cards.find(x => x.id === cid);
+    if (!to || !c || !cardLeft(c)) return toast('Pick a card that is still in the deck.');
+    if (await deckHandOut(to, c, 'gift')) toast(`Gave ${c.name} to ${pname(to)}.`, true); return renderLive();
+  }
+  if (a === 'dkback'){ const o = deck.out.find(x => x.id === t.dataset.o); deck.out = deck.out.filter(x => x.id !== t.dataset.o); saveDeck(); if (o) toast(`${o.name} is back in the deck.`, true); return renderLive(); }
+  if (a === 'dkpull'){
+    let req = null;
+    withLiveMerc(m => { if (!m.deckDraws || (m.deckPend || []).length) return; m.deckDraws--; req = uid(); m.deckPend = [...(m.deckPend || []), req]; m.deckQ = [...(m.deckQ || []).slice(-9), {id:req, k:'draw', at:Date.now()}]; });
+    if (req){ sfx('select'); if (liveMe()) flushLog(''); } return renderLive();
+  }
+  if (a === 'dkreveal'){ dkShowing = false; deckReveal(); return; }
   if (a === 'revive'){
     if (reviveArm !== u){ reviveArm = u; renderLive(); setTimeout(() => { if (reviveArm === u){ reviveArm = null; renderLive(); } }, 4000); return; }
     reviveArm = null; if (await sendOp(u, {kind:'revive'})) toast(`Brought ${pname(u)} back.`, true); return renderLive();
@@ -6201,15 +6400,23 @@ async function preloadSheet(file){
     const buf = await file.arrayBuffer();
     tabs = /\.csv$/i.test(file.name) ? {[file.name]: readCsv(new TextDecoder().decode(buf))} : await readXlsx(buf);
   } catch(err){ preloadMsg = "That file couldn't be read. Save it as .xlsx, or as a .csv of one tab, and try again."; return renderLive(); }
-  const res = {w:0, wu:0, n:0, nu:0, skip:0};
+  const res = {w:0, wu:0, n:0, nu:0, c:0, cu:0, skip:0};
   for (const [tname, rows] of Object.entries(tabs)){
     const objs = gridObjs(rows); if (!objs.length) continue;
     const ks = Object.keys(objs[0]);
-    const kind = /weapon/i.test(tname) || ks.includes('guntype') || ks.includes('rof') ? 'w' : /npc/i.test(tname) || ks.includes('origin') || ks.includes('maxhp') ? 'n' : null;
+    const kind = /cyber/i.test(tname) || ks.includes('slot') ? 'c' : /weapon/i.test(tname) || ks.includes('guntype') || ks.includes('rof') ? 'w' : /npc/i.test(tname) || ks.includes('origin') || ks.includes('maxhp') ? 'n' : null;
     if (!kind) continue;
     for (const o of objs){
       if (isExample(o)) continue;
       const name = (o.name || '').slice(0, kind === 'w' ? 60 : 40); if (!name){ res.skip++; continue; }
+      if (kind === 'c'){
+        const sl = String(o.slot || '').toLowerCase(), slot = (CYBER_SLOTS.find(([k, n]) => n.toLowerCase() === sl || k === sl || n.toLowerCase().startsWith(sl) && sl) || CYBER_SLOTS.find(x => x[0] === 'arms'))[0];
+        const ex = deck.cards.find(x => x.name.toLowerCase() === name.toLowerCase()), tier = /4|iconic/i.test(o.tier) ? 3 : /3|military/i.test(o.tier) ? 2 : /2|custom/i.test(o.tier) ? 1 : 0;
+        const card = {id: ex ? ex.id : uid(), name, slot, tier, cw: Math.max(0, parseInt(o.cwload || o.cw) || 0), ram: parseInt(String(o.rambonus || o.ram || '').replace('−', '-')) || 0,
+          effect: String(o.effect || '').slice(0, 300), copies: Math.max(0, parseInt(o.copiesinthedeck || o.copies) || 1), hot: yesNo(o.hotswap)};
+        if (ex) Object.assign(ex, card); else deck.cards.push(card);
+        ex ? res.cu++ : res.c++; continue;
+      }
       if (kind === 'w'){
         const gt0 = o.weapontype || o.guntype || '', gt = GUN_ALIAS[Object.keys(GUN_ALIAS).find(k => k.toLowerCase() === gt0.toLowerCase())] || gt0;
         const mcls = MELEE_CLASSES.find(g => g.toLowerCase() === gt.toLowerCase()), melee = !!mcls || /melee/i.test(gt), other = /^other/i.test(gt), gtype = Object.keys(CLIPS).find(g => g.toLowerCase() === gt.toLowerCase());
@@ -6230,10 +6437,11 @@ async function preloadSheet(file){
       }
     }
   }
-  const tot = res.w + res.wu + res.n + res.nu;
+  saveDeck();
+  const tot = res.w + res.wu + res.n + res.nu + res.c + res.cu;
   const part = (a, u, word) => a + u ? `<b>${a + u}</b> ${word}${a + u === 1 ? '' : 's'}${u ? ` (${u} updated)` : ''}` : '';
-  preloadMsg = tot ? `Loaded ${[part(res.w, res.wu, 'weapon'), part(res.n, res.nu, 'NPC')].filter(Boolean).join(' and ')}.${res.skip ? ` Skipped ${res.skip} row${res.skip === 1 ? '' : 's'} with no name or that didn't save.` : ''}`
-    : "Nothing to load. Make sure the tabs are named Weapons and NPCs, or keep the template's column headers.";
+  preloadMsg = tot ? `Loaded ${[part(res.w, res.wu, 'weapon'), part(res.n, res.nu, 'NPC'), part(res.c, res.cu, 'cyberware card')].filter(Boolean).join(' and ')}.${res.skip ? ` Skipped ${res.skip} row${res.skip === 1 ? '' : 's'} with no name or that didn't save.` : ''}`
+    : "Nothing to load. Make sure the tabs are named Weapons, NPCs and Cyberware, or keep the template's column headers.";
   if (tot){ toast(`Preloaded ${tot} from ${file.name}.`, true); sfx('receive'); }
   renderLive();
 }

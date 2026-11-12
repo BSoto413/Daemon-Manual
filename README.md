@@ -80,6 +80,14 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - A runner's Net panel lists anyone else diving, in their signature color
 - The Rules page has a Diving during combat section
 
+## Cyberware deck (DM)
+- The Items tab has a Cyberware deck. Add cards with + Add card (name, slot, tier, CW load, RAM bonus, effect, copies, hot-swap) or fill the Cyberware tab of the preload sheet. Tap a card to edit or delete it
+- Hand out. +1 draw lets a player pull a random card. Give card hands over a specific one. Both are also on each merc's Give tab
+- The player sees a face-down deck on their Party tab, taps Draw a card, and the card flips. Add to inventory puts it in their backpack as cyberware (a RipperDoc still installs it). Put it back returns it to the deck
+- Every card shows art for its slot category (eye for Ocular, heart for Circulatory and so on). Deck cyberware in the backpack uses the same art
+- Drawn cards leave the deck for good. The Handed out list has Back in deck to send a copy out again. Players never see how many cards are left
+- The deck is saved on the DM's device. The DM's device has to be in the session for a draw to go through, otherwise the draw waits
+
 ## Encounters (DM)
 - Grunts are added with a threat preset (Gonk, Ganger, Corpo Security, Elite, Boss). Each grunt gets its own HP. Presets has a button to edit, add or reset them, saved on the DM's device
 - Each enemy has an amount box with Dmg and Heal (Enter also deals damage)
@@ -89,6 +97,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 - Short rest and Long rest buttons in the Party hit box. Tap twice to confirm
   - Short rest. RAM full, heal half max HP, timed effects end
   - Long rest. HP, NET HP and RAM full, timed effects end, death saves reset. Fried processors stay
+- Bring back. A merc who is Lost to cyberpsychosis or Dead shows a Bring back button at the top of their controls (tap twice). Lost mercs come back playable with their chrome, and only get lost again if their chrome load goes up. Dead mercs come back at 1 HP with death saves reset
 - Undo. Most DM changes to a merc can be undone with the Undo button in the Party hit box (the last 15)
 
 ## Ammo
