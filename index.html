@@ -639,6 +639,7 @@ body.table.jacked #vSheet::after{display:none}
 .encsave{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}.encsave input{flex:1;min-width:150px}
 .vb.ammo{position:relative;padding-right:34px}.vb .vrl{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:1px solid var(--cyan);background:rgba(var(--crgb),.12);color:var(--cyan);font-size:16px;cursor:pointer;padding:0}.vb .vrl:disabled{opacity:.35;cursor:default}
 .vb.ammo.low b{color:#ff4f6d}
+.revive{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #ff4fd8;padding:10px;background:rgba(255,79,216,.07)}.revive b{color:#fff}
 /* Vehicles */
 .drive{margin:6px 0 10px;padding:8px 10px;border-left:3px solid var(--cyan);background:rgba(var(--crgb),.06)}.drive b{color:#fff}
 .vrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;font-size:13px}.vrow b{color:#fff;margin-right:4px}
@@ -1906,7 +1907,7 @@ function normalize0(c){
     hpLv: Math.max(1, parseInt(c.hpLv) || (numOrNull(c.hpMax) > 0 ? Math.max(1, +c.level || 1) : 1)),
     hacks: (Array.isArray(c.hacks) ? c.hacks : []).filter((h, i, a) => HACKS[h] && a.indexOf(h) === i),
     cool: Math.max(0, parseInt(c.cool) || 0),
- cwAdj: parseInt(c.cwAdj) || 0, lost: !!c.lost,
+ cwAdj: parseInt(c.cwAdj) || 0, lost: !!c.lost, lostSave: Number.isFinite(c.lostSave) ? c.lostSave : null,
     portrait: typeof c.portrait === 'string' && c.portrait.length < 300000 && PORTRAIT_RE.test(c.portrait) ? c.portrait : null
   };
 }
@@ -3226,7 +3227,7 @@ const cwCap = c => Math.ceil(cwTOf(c) / 2);
 const cwMaxOf = c => cwTOf(c) + cwCap(c);
 const psyDC = c => 10 + 2 * cwOver(c);
 const psyMod = c => mod(score('TEC', c)) + (c.unlocked.includes('COO.A.l') ? mod(score('COO', c)) : 0);
-function lostFix(m){ if (!Array.isArray(m.cyber)) return false; if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
+function lostFix(m){ if (!Array.isArray(m.cyber)) return false; if (m.lostSave != null && cwLoad(m) <= m.lostSave) return false; if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
 function lostFx(){
   const el = $('#flatline'); if (!el) return;
   const tx = el.querySelector('.fl-text');
@@ -4693,6 +4694,8 @@ function diffMerc(a, b){
   sh(b).filter(n => !sh(a).includes(n)).forEach(n => add(`Slotted ${n}`, 'good')); sh(a).filter(n => !sh(b).includes(n)).forEach(n => add(`Pulled ${n}`));
   if (!!a.jacked !== !!b.jacked) add(b.jacked ? 'Jacked in to The Net' : b.lastOut === 'unsafe' ? "Unsafe Jack-Out · ICE they didn't de-rez gets a free hit" : b.lastOut === 'flat' ? 'Flatlined in The Net and got dumped out' : 'Jacked out safely', b.jacked ? '' : b.lastOut === 'safe' ? 'good' : 'bad');
   if (a.jackLock !== b.jackLock) add(b.jackLock ? 'Jack-out locked by Black ICE' : 'Jack-out unlocked', b.jackLock ? 'bad' : 'good');
+  if (a.lost && !b.lost) add('Brought back by the DM', 'good');
+  if (a.dead && !b.dead && !b.lost) add('Back from the dead', 'good');
   if (a.psycho !== b.psycho) add(b.psycho ? 'Went cyberpsycho' : 'Pulled back from cyberpsychosis', b.psycho ? 'bad' : 'good');
   b.hacks.filter(h => !a.hacks.includes(h)).forEach(h => add(`Hacked · ${HACKS[h].n}`, 'bad'));
   a.hacks.filter(h => !b.hacks.includes(h)).forEach(h => add(`${HACKS[h].n} cleared`, 'good'));
@@ -5090,9 +5093,14 @@ function applyOp(op){
     if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(it.type === 'Vehicle' ? {vk: vkOf(it)} : {})}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'undo' && op.f){
-    UNDO_F.forEach(k => { if (k in op.f) m[k] = op.f[k] === null && k !== 'ram' && k !== 'hp' && k !== 'netHp' ? (k === 'status' || k === 'hacks' ? [] : k === 'ds' ? {p:0, f:0} : 0) : op.f[k]; });
+    UNDO_F.forEach(k => { if (k in op.f) m[k] = op.f[k] === null && !['ram', 'hp', 'netHp', 'lostSave'].includes(k) ? (k === 'status' || k === 'hacks' ? [] : k === 'ds' ? {p:0, f:0} : 0) : op.f[k]; });
     if (!Array.isArray(m.status)) m.status = []; if (!Array.isArray(m.hacks)) m.hacks = [];
     msg = 'The DM undid their last change.'; sound = 'heal';
+  } else if (op.kind === 'revive'){
+    const was = m.lost ? 'lost to cyberpsychosis' : 'dead';
+    if (m.lost){ m.lost = false; m.psycho = false; m.lostSave = cwLoad(m); }
+    if (m.dead || isDown(m)){ m.dead = false; m.ds = {p:0, f:0}; if (m.hpMax){ if (hpNow(m) <= 0) m.hp = 1; if (netNow(m) <= 0) m.netHp = 1; } }
+    msg = `The DM brought ${m.name} back. They were ${was}.`; sound = 'levelup';
   } else if (op.kind === 'rest'){
     if (m.dead){ msg = ''; sound = null; }
     else {
@@ -5265,9 +5273,9 @@ const STARTER = [
   ['Frag Grenade','Consumable','3d6 in a 10 ft radius'],['Med Injector','Consumable','Heal 2d4'],
   ['Armored Jacket','Armor','+1 AC'],['Ammo Box','Ammo','20 rounds']
 ];
-const UNDOABLE = new Set(['hp-', 'hp+', 'net-', 'net+', 'irl-', 'ramd-', 'ramd+', 'ram', 'cw-', 'cw+', 'ed+', 'ed-', 'cool+', 'cool-', 'stApply', 'stRm', 'hack', 'unhack', 'unhack1', 'psy', 'xp1', 'dsP', 'dsF', 'jacklock', 'blast', 'restS', 'restL']);
-const UNDO_F = ['hp', 'netHp', 'ram', 'eddies', 'cool', 'xp', 'status', 'hacks', 'cwAdj', 'psycho', 'jackLock', 'ds', 'dead'];
-const UNDO_TXT = {'hp-':'Damage', 'hp+':'Heal', 'net-':'NET damage', 'net+':'NET heal', 'irl-':'Net to body', 'ramd-':'RAM drain', 'ramd+':'RAM add', ram:'RAM restore', 'cw-':'Chrome −1', 'cw+':'Chrome +1', 'ed+':'Eddies', 'ed-':'Eddies', 'cool+':'COOL +1', 'cool-':'COOL −1', stApply:'Status', stRm:'Status cleared', hack:'Hack', unhack:'Hacks cleared', unhack1:'Hack cleared', psy:'Cyberpsycho', xp1:'XP', dsP:'Death save', dsF:'Death save', jacklock:'Jack-out lock', blast:'Party hit', restS:'Short rest', restL:'Long rest'};
+const UNDOABLE = new Set(['hp-', 'hp+', 'net-', 'net+', 'irl-', 'ramd-', 'ramd+', 'ram', 'cw-', 'cw+', 'ed+', 'ed-', 'cool+', 'cool-', 'stApply', 'stRm', 'hack', 'unhack', 'unhack1', 'psy', 'xp1', 'dsP', 'dsF', 'jacklock', 'blast', 'restS', 'restL', 'revive']);
+const UNDO_F = ['hp', 'netHp', 'ram', 'eddies', 'cool', 'xp', 'status', 'hacks', 'cwAdj', 'psycho', 'jackLock', 'ds', 'dead', 'lost', 'lostSave'];
+const UNDO_TXT = {'hp-':'Damage', 'hp+':'Heal', 'net-':'NET damage', 'net+':'NET heal', 'irl-':'Net to body', 'ramd-':'RAM drain', 'ramd+':'RAM add', ram:'RAM restore', 'cw-':'Chrome −1', 'cw+':'Chrome +1', 'ed+':'Eddies', 'ed-':'Eddies', 'cool+':'COOL +1', 'cool-':'COOL −1', stApply:'Status', stRm:'Status cleared', hack:'Hack', unhack:'Hacks cleared', unhack1:'Hack cleared', psy:'Cyberpsycho', xp1:'XP', dsP:'Death save', dsF:'Death save', jacklock:'Jack-out lock', blast:'Party hit', restS:'Short rest', restL:'Long rest', revive:'Bring back'};
 let undoCap = null; const undoStack = [];
 document.addEventListener('click', e => {
   const t = e.target.closest && e.target.closest('#liveBody button[data-live]'); if (!t || !LS || LS.role !== 'dm' || !UNDOABLE.has(t.dataset.live)) return;
@@ -5387,7 +5395,7 @@ function partyCard(p){
     </div>`;
 }
 /* ---- DM party view: roster on the left, one merc's controls on the right ---- */
-let dmSel = null, dmSub = 'vitals', restArm = null;
+let dmSel = null, dmSub = 'vitals', restArm = null, reviveArm = null;
 const blastSel = new Set();
 const DM_WIDE = matchMedia('(min-width:900px)');
 DM_WIDE.addEventListener('change', () => { if (LS && LS.role === 'dm' && liveState === 'on') renderLive(); });
@@ -5473,6 +5481,7 @@ function dmFocusHTML(p){
       <div><small>COOL</small><b style="color:var(--yellow)">${m.cool}</b></div>
       <div><small>Eddies</small><b>${m.eddies.toLocaleString()}</b></div>
     </div>
+    ${m.lost || m.dead ? `<div class="revive"><div><b>${m.lost ? 'Lost to cyberpsychosis' : 'Dead'}</b><span class="muted" style="font-size:12px;display:block">${m.lost ? 'Brings them back to playable and clears Cyberpsycho. Their chrome stays, and they only become lost again if their chrome load goes up from here.' : 'Brings them back at 1 HP with death saves reset.'}</span></div><button class="btn small ${reviveArm === k ? 'danger' : 'primary'}" data-live="revive" data-u="${k}">${reviveArm === k ? 'Tap again to confirm' : 'Bring back'}</button></div>` : ''}
     ${hm && isDown(m) ? `<div class="dsave">${seesawSVG(m, true)}${m.dead ? '' : `<div class="row"><span class="ctl" style="min-width:auto">Death save</span><button class="btn small" data-live="dsP" data-u="${k}">Pass</button><button class="btn small danger" data-live="dsF" data-u="${k}">Fail</button></div>`}</div>` : ''}
     ${(m.status || []).length ? `<div class="schips">${statusChips(m, x => `<button class="sx" data-live="stRm" data-u="${k}" data-s="${x.id}" aria-label="Clear ${STATUSMAP[x.id].n}">✕</button>`)}</div>` : ''}
     ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n} <button class="x" data-live="unhack1" data-h="${h}" data-u="${k}" aria-label="Clear ${HACKS[h].n}">✕</button></span>`).join('')}</div>` : ''}
@@ -5689,6 +5698,10 @@ $('#liveBody').addEventListener('click', async e => {
     return;
   }
   if (a === 'dmundo') return dmUndo();
+  if (a === 'revive'){
+    if (reviveArm !== u){ reviveArm = u; renderLive(); setTimeout(() => { if (reviveArm === u){ reviveArm = null; renderLive(); } }, 4000); return; }
+    reviveArm = null; if (await sendOp(u, {kind:'revive'})) toast(`Brought ${pname(u)} back.`, true); return renderLive();
+  }
   if (a === 'restS' || a === 'restL'){
     const ids = players.filter(p => p.merc).map(p => p.id); if (!ids.length) return;
     if (restArm !== a){ restArm = a; renderLive(); setTimeout(() => { if (restArm === a){ restArm = null; renderLive(); } }, 4000); return; }
