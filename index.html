@@ -641,6 +641,10 @@ body.table.jacked #vSheet::after{display:none}
 .vb.ammo.low b{color:#ff4f6d}
 .revive{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #ff4fd8;padding:10px;background:rgba(255,79,216,.07)}.revive b{color:#fff}
 /* Vehicles */
+.vkinds{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.vkinds span{font:600 11px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;border:1px solid rgba(var(--crgb),.45);color:#d5f9fb}
+.drv{display:grid;gap:8px;margin-top:12px}.drv div{display:grid;gap:4px;padding:10px 12px;border:1px solid rgba(var(--crgb),.25);border-left:3px solid var(--cyan);background:rgba(var(--crgb),.05)}
+.drv b{font:600 11px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}.drv span{font-size:15px;line-height:1.45}.drv em{font-style:normal;color:#fff}
+@media (min-width:760px){.drv{grid-template-columns:repeat(3,1fr)}}
 .drive{margin:6px 0 10px;padding:8px 10px;border-left:3px solid var(--cyan);background:rgba(var(--crgb),.06)}.drive b{color:#fff}
 .vrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;font-size:13px}.vrow b{color:#fff;margin-right:4px}
 .tagb.vkb,.tagb.vgood,.tagb.vweak{background:transparent;border:1px solid}.tagb.vkb{border-color:rgba(var(--crgb),.5);color:#cdeff2}.tagb.vgood{border-color:#3ee08a;color:#9ff5c4}.tagb.vweak{border-color:#ffd23f;color:#ffe48a}
@@ -1152,11 +1156,13 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td>Religion</td><td><b>Code</b></td><td>INT</td></tr>
           </tbody></table>
           <h3 style="margin-top:18px">Driving</h3>
-          <p style="margin-top:8px">Vehicles come in four kinds. Land vehicles are a <b>Car</b> or a <b>Bike</b>, plus <b>Water</b> and <b>Air</b> (Aerodynes, or AVs). Anyone can drive anything, but you only add your proficiency to Vehicle checks for the kinds you drive well. Everything else, roll without your proficiency.</p>
-          <table style="margin-top:8px"><tr><th>Vehicle skill</th><th>Drives well</th></tr>
-            <tr><td>No proficiency</td><td>Car or Bike, you pick one and add your proficiency bonus for it</td></tr>
-            <tr><td>Proficiency</td><td>Car, Bike and Water</td></tr>
-            <tr><td>Double proficiency</td><td>Car, Bike, Water and Air (AVs)</td></tr></table>
+          <div class="vkinds"><span>Car</span><span>Bike</span><span>Water</span><span>Air (AV)</span></div>
+          <p style="margin-top:10px">Anyone can drive anything. Add your proficiency to Vehicle checks only for the kinds you drive well. For everything else, roll without it.</p>
+          <div class="drv">
+            <div><b>No proficiency</b><span>Car <em>or</em> Bike. Pick one and add your proficiency for it.</span></div>
+            <div><b>Proficiency</b><span>Car, Bike and Water.</span></div>
+            <div><b>Double proficiency</b><span>Car, Bike, Water and Air (AVs).</span></div>
+          </div>
           <h3 style="margin-top:20px">Double proficiency</h3>
           <p style="margin-top:8px">You get one pick at a time, never one per stat. It opens on a level up when any of your stats reaches a tier you haven't used yet. If several stats qualify, you choose one skill among all of them, and the rest stay locked until each one reaches its next tier. A Bruiser with STR 15, TEC 12 and INT 10 picks Athletics, so TEC and INT give nothing until they hit 14. You only get one pick per level. New mercs don't get one at level 1, and their starting stats all count toward the pick on their first level up.</p>
           <p style="margin-top:8px">Use your pick to become proficient in a skill tied to that stat that you don't have yet, or to double a skill you're already proficient in once that stat has moved two tiers past where you got it. A Rookie Netrunner proficient in Hacking can double it at Phenom. If the skill's stat was under 10 when you got it, Rookie counts as its first tier, so you can double it at Pro. Perks that give proficiency count toward doubling under the same two-tier rule.</p>
