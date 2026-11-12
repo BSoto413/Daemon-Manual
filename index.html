@@ -946,6 +946,8 @@ body.fx h2:hover{animation:jit .28s steps(2) 1}
 .iceart.lg{width:64px;height:64px}
 .encadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
 .encrow{display:flex;align-items:center;gap:8px 10px;padding:8px 0;border-top:1px solid rgba(var(--crgb),.15);flex-wrap:wrap}.encrow .nm{flex:1 1 150px;min-width:150px;font-weight:600}.encrow .nm small{display:block;font-weight:400;opacity:.65;font-size:12px}
+.ltags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.ltag{font:600 10px Orbitron,sans-serif;letter-spacing:.5px;color:#ff4f6d;border:1px solid rgba(255,79,109,.45);background:rgba(255,79,109,.08);padding:2px 6px}
+.limbpick .btn.on{border-color:#ff4f6d;color:#ff4f6d}
 .encrow .hpc{display:flex;align-items:center;gap:4px;font:600 14px Orbitron,sans-serif}.hpc span{min-width:60px;text-align:right;margin-right:4px}.hpc.zero span{color:#ff4f6d}.hpc .eamt{width:62px;height:32px;padding:4px 6px;font:500 14px 'Exo 2',sans-serif}.encrow .hpc.zero{color:#ff4f6d;text-decoration:line-through}
 .unk{display:grid;place-items:center;font:700 26px Orbitron,sans-serif;color:#ff8fa3;background:rgba(255,60,90,.12);border:1px solid rgba(255,60,90,.5)}
 .grunt{display:grid;place-items:center;color:#ffd23f;background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.4)}
@@ -1414,6 +1416,9 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <h3 style="margin-top:14px">The effects</h3>
           <div id="rStatus"></div>
           <p class="muted" style="font-size:13px">The 5e conditions work like 5e. The cyber ones are drafts until the GM writes them.</p>
+          <h3 style="margin-top:14px" id="r-limbs">Dismemberment</h3>
+          <p>With the REF perk <b>Blender</b>, CRITing a foe below 50 HP takes a limb. Roll 1d6. If that limb is already gone, reroll. A lost limb is gone for good.</p>
+          <table class="rtable"><thead><tr><th>1d6</th><th>Limb</th><th>Effect</th></tr></thead><tbody><tr><td><b>1</b></td><td>Head</td><td>Death</td></tr><tr><td><b>2</b></td><td>L. Arm</td><td>Drop weapon, DISADV on attacks</td></tr><tr><td><b>3</b></td><td>R. Arm</td><td>Drop weapon, DISADV on attacks</td></tr><tr><td><b>4</b></td><td>L. Leg</td><td>Prone, 1/4 MOVE</td></tr><tr><td><b>5</b></td><td>R. Leg</td><td>Prone, 1/4 MOVE</td></tr><tr><td><b>6</b></td><td>Gut</td><td>DISADV on everything, 1/2 MOVE</td></tr></tbody></table>
         </div>
       </section>
 
@@ -1465,7 +1470,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Point of No Return</b></td><td>There's an upper limit where your body can take no more, shown as a red hexagon in your Cyberware Threshold bar. Push past your Overflow into that red and it's AUTOMATIC Cyberpsychosis. Your merc is lost for good</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:14px;margin-top:8px">Example. 2 points of Overflow makes the DC 14. Roll 1d20 + TEC and meet or beat 14.</p>
-          <p style="margin-top:12px">A few perks help. <b>Theseus</b> (BOD) gives advantage on the save. <b>Tranquility</b> (COO) adds your COOL mod to your own and your allies' saves. <b>Limit Setter</b> (TEC) means the first piece of cyberware that pushes you past your threshold doesn't make you a Cyberpsycho.</p>
+          <p style="margin-top:12px">A few perks help. <b>Theseus</b> (BOD) gives advantage on the save. <b>Tranquility</b> (COO) adds your COOL mod to your own and your allies' saves. <b>Limit Setter</b> (TEC) means the first piece of cyberware that pushes you past your threshold doesn't make you a Cyberpsycho. <b>I'm Special</b> (BOD) halves the Overflow penalty, so each point adds +1 to the DC instead of +2. The red hex is still automatic.</p>
           <p class="muted" style="font-size:13px">Your sheet shows the current DC and has a button to roll the save whenever you're in overflow.</p>
         </div>
       </section>
@@ -1743,7 +1748,7 @@ const PERKS = {
     'A.ph':{n:'Fox Swipe', d:'Use your REACT to deflect DMG equal to a roll of your blade\'s damage.'},
     'S.ph':{n:'Pop Goes the Weasel', d:'Your first Surprise ATK is an automatic crit.'},
     'B.ph':{n:'Focus Fire', d:'Your last ATK crits on 18, 19 and 20.'},
-    'A.l': {n:'Blender', d:'CRITing a foe below 50 HP dismembers them.'},
+    'A.l': {n:'Blender', d:'CRITing a foe below 50 HP dismembers them. Roll 1d6 for the limb, and reroll one that\'s already gone. A lost limb is gone for good. See Dismemberment under Status Effects.'},
     'B.l': {n:'High Noon', d:'CRITs add an ACTION.'}
   },
   INT:{
@@ -1779,7 +1784,7 @@ const PERKS = {
     'A.ph':{n:'Theseus', d:'ADV on Cyberpsychosis saves.'},
     'S.ph':{n:'Adrenaline Rush', d:'Heal 2d6 every round.'},
     'B.ph':{n:'Built to Last', d:'Add your BOD mod to all healing.'},
-    'A.l': {n:"I'm Special", d:'TBD. This used to shrink the old −5 Cyberpsychosis save penalty, which no longer exists. The GM will rewrite it.'},
+    'A.l': {n:"I'm Special", d:'Overflow adds +1 to your Cyberpsychosis DC instead of +2.'},
     'B.l': {n:'Can Tank This', d:'+100 HP.'}
   }
 };
@@ -3277,7 +3282,10 @@ const cwOver = (c = C) => Math.max(0, cwLoad(c) - cwTOf(c));
 const cwTOf = c => Math.max(0, 10 + mod(score('TEC', c)) + prof(c.level || 1) * skillProf('Cyberware', 'TEC', c).level);
 const cwCap = c => Math.ceil(cwTOf(c) / 2);
 const cwMaxOf = c => cwTOf(c) + cwCap(c);
-const psyDC = c => 10 + 2 * cwOver(c);
+const LIMBS = [{k:'head', n:'Head', s:'HEAD', e:'Death'}, {k:'larm', n:'L. Arm', s:'L. ARM', e:'Drop weapon, DISADV on attacks'}, {k:'rarm', n:'R. Arm', s:'R. ARM', e:'Drop weapon, DISADV on attacks'},
+  {k:'lleg', n:'L. Leg', s:'L. LEG', e:'Prone, 1/4 MOVE'}, {k:'rleg', n:'R. Leg', s:'R. LEG', e:'Prone, 1/4 MOVE'}, {k:'gut', n:'Gut', s:'GUT', e:'DISADV on everything, 1/2 MOVE'}];
+const LIMB = k => LIMBS.find(x => x.k === k);
+const psyDC = c => 10 + (c.unlocked.includes('BOD.A.l') ? 1 : 2) * cwOver(c);
 const psyMod = c => mod(score('TEC', c)) + (c.unlocked.includes('COO.A.l') ? mod(score('COO', c)) : 0);
 function lostFix(m){ if (!Array.isArray(m.cyber)) return false; if (m.lostSave != null && cwLoad(m) <= m.lostSave) return false; if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
 function lostFx(){
@@ -3656,7 +3664,7 @@ function renderCS(){
       <div class="num">${cwl} <small>/ ${cwTOf(C)}</small>${cwo ? ` <span class="ovtag">Overflow ${cwo} of ${cwCap(C)} · Save DC ${psyDC(C)}</span>` : ''}</div>
       ${cwPips(C)}
       ${C.lost ? '<div class="losttag gl" data-text="LOST TO CYBERPSYCHOSIS">LOST TO CYBERPSYCHOSIS</div><p class="muted" style="font-size:12px;margin:2px 0 8px">The red hex filled. This merc is gone for good.</p>'
-        : cwo ? `<div class="psysave"><button class="btn small danger" data-act="psyRoll">Roll Cyberpsychosis save</button><span class="muted" style="font-size:12px">d20 ${sgn(psyMod(C))} (TEC${hasPerk('COO.A.l') ? ' + COOL from Tranquility' : ''})${hasPerk('BOD.A.ph') ? ' with advantage from Theseus' : ''} against DC ${psyDC(C)}</span></div>` : ''}
+        : cwo ? `<div class="psysave"><button class="btn small danger" data-act="psyRoll">Roll Cyberpsychosis save</button><span class="muted" style="font-size:12px">d20 ${sgn(psyMod(C))} (TEC${hasPerk('COO.A.l') ? ' + COOL from Tranquility' : ''})${hasPerk('BOD.A.ph') ? ' with advantage from Theseus' : ''} against DC ${psyDC(C)}${hasPerk('BOD.A.l') ? ', halved by I\'m Special' : ''}</span></div>` : ''}
       <div class="row"><button class="btn small" data-act="cw-">−1</button><button class="btn small" data-act="cw+">+1</button><span class="muted" style="font-size:12px">Installed chrome fills this on its own. The DM sets your threshold, and your max is that plus half, rounded up.</span></div>
       ${hasPerk('TEC.A.l') ? '<p class="muted" style="font-size:12px;margin:8px 0 0">Limit Setter: the first piece that pushes you past your threshold won\'t make you a Cyberpsycho.</p>' : ''}</div>`;
   const ramBlock = `<div class="track"><div class="head"><span class="lbl" style="margin:0">RAM</span><span class="muted" style="font-size:12px">4 base ${sgn(mod(score('INT')))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
@@ -3733,7 +3741,7 @@ function renderCS(){
     <div class="cs2"><div class="csL">
     <div class="cs-grid" data-sub="combat">
       <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>
-      <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div></div>
+      <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div>${hasPerk('REF.A.l') ? '<div class="row gap" style="margin-top:12px;align-items:center"><button class="btn small danger" data-act="limbRoll">Blender · Roll limb</button><span class="muted" style="font-size:12px">After a CRIT on a foe below 50 HP</span></div>' : ''}</div>
     </div>
     <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
       <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
@@ -4215,6 +4223,10 @@ $('#vCS').addEventListener('click', e => {
     case 'rmPortrait': C.portrait = null; return csSave();
     case 'vpick': C.vpick = t.dataset.v === 'bike' ? 'bike' : 'car'; sfx('select'); return csSave();
     case 'sig': C.sig = t.dataset.c || null; sfx('select'); renderSheetHead(); return csSave();
+    case 'limbRoll': {
+      const r = 1 + Math.floor(Math.random() * 6), L = LIMBS[r - 1];
+      toast(`Blender · rolled ${r} · ${L.n} · ${L.e}. If it's already gone, roll again.`, true); sfx('damage'); return;
+    }
     case 'psyRoll': {
       const a = 1 + Math.floor(Math.random() * 20), b2 = 1 + Math.floor(Math.random() * 20), adv = hasPerk('BOD.A.ph'), d20 = adv ? Math.max(a, b2) : a;
       const tot = d20 + psyMod(C), dc = psyDC(C), pass = tot >= dc;
@@ -5764,6 +5776,7 @@ function liveHTML(){
       <div class="row"><input type="number" min="0" id="na-${n.id}" placeholder="Amt" aria-label="Amount for ${esc(n.name)}"><button class="btn small danger" data-live="nhp-" data-n="${n.id}">Damage</button><button class="btn small" data-live="nhp+" data-n="${n.id}">Heal</button><button class="btn small" data-live="nfull" data-n="${n.id}">Full</button></div>
       <div class="prow nstat"><label>AC<input type="number" min="1" value="${n.ac || ''}" data-nst="${n.id}" data-sf="ac"></label><label>Hit<input type="number" value="${n.hit ?? ''}" data-nst="${n.id}" data-sf="hit"></label><label>Damage<input type="text" value="${esc(n.dmg || '')}" data-nst="${n.id}" data-sf="dmg" style="width:80px"></label><label>×<input type="number" min="1" max="6" value="${n.atk || 1}" data-nst="${n.id}" data-sf="atk"></label>
         <select data-nst="${n.id}" data-sf="pre" aria-label="Fill from a preset"><option value="">From preset</option>${presets.map((p, k) => `<option value="${k}">${esc(p.n)}</option>`).join('')}</select></div>
+      ${(n.limbs || []).length ? `<div>${limbTags(n)}</div>` : ''}
       <div class="seg">${['adv', 'norm', 'dis'].map(v => `<button class="${(n.adv || 'norm') === v ? 'on' : ''}" data-live="nadv" data-v="${v}" data-n="${n.id}">${v === 'adv' ? 'Advantage' : v === 'dis' ? 'Disadvantage' : 'Normal'}</button>`).join('')}</div>
       <textarea id="nn-${n.id}" data-nnote="${n.id}" placeholder="DM notes, stats, motives" aria-label="Notes for ${esc(n.name)}" style="min-height:60px;font-family:'Exo 2',sans-serif;font-size:13px">${esc(n.notes || '')}</textarea>
       <div class="row"><button class="btn small primary" data-live="nshow" data-n="${n.id}">Show ID card</button><button class="btn small" data-live="ncodex" data-n="${n.id}" title="${pub ? 'Players can see this NPC in their Codex' : 'Players will not see this NPC until you add it'}">${pub ? 'In codex ✓' : 'Add to codex'}</button><label class="btn small" style="display:inline-block">Portrait<input type="file" accept="image/*" data-npic="${n.id}" hidden></label><span class="spacer"></span><button class="btn small ${npcDel === n.id ? 'danger' : ''}" data-live="ndel" data-n="${n.id}">${npcDel === n.id ? 'Confirm delete' : 'Delete'}</button></div>
@@ -5833,7 +5846,7 @@ $('#liveBody').addEventListener('click', async e => {
   const a = t.dataset.live, u = t.dataset.u;
   const amt = () => Math.max(0, parseInt(($('#amt-' + u) || {}).value) || 0);
   const pname = id => (players.find(p => p.id === id) || {}).name || 'player';
-  if (/^e(ice|npc|txt|hp|del|clear|reveal|send|end|edit|pedit|padd|pdel|preset|save|load|sdel)$/.test(a) && await encAction(a, t)) return;
+  if (/^e(ice|npc|txt|hp|del|clear|reveal|send|end|edit|pedit|padd|pdel|preset|save|load|sdel|limb|lroll|lpick)$/.test(a) && await encAction(a, t)) return;
   if (a === 'tblreset'){ tablesMeta = null; try { localStorage.removeItem(TABLES_KEY); } catch(e){} applyTables(null); pushHandles(); tablesMsg = 'Back to the default tables.'; toast('Default tables restored.', true); return renderLive(); }
   if (a === 'join'){
     const code = ($('#joinCode').value || '').trim().toUpperCase(), mercId = $('#joinMerc').value;
@@ -6152,7 +6165,7 @@ $('#liveBody').addEventListener('click', async e => {
 });
 let npDraftPic = null, preloadMsg = '', goPartyAfter = false;
 // ---- Encounters. The DM's list of who's in the fight. Kept apart from the NPC list, on this device. ----
-let enc = [];
+let enc = [], limbEdit = null;
 const ENC_KEY = 'daemon-enc';
 function loadEnc(){ try { enc = (JSON.parse(localStorage.getItem(ENC_KEY)) || {})[LS && LS.code] || []; } catch(e){ enc = []; } }
 function saveEnc(){ try { const all = JSON.parse(localStorage.getItem(ENC_KEY)) || {}; all[LS.code] = enc; localStorage.setItem(ENC_KEY, JSON.stringify(all)); } catch(e){} }
@@ -6193,7 +6206,7 @@ function mercAttack(m){
 }
 // NPC entries read their stats from the NPC list, so NPCs made before stats existed (or given stats later) still count.
 const encStat = c => { if (c.k !== 'npc') return c; const n = npcsDM.find(x => x.id === c.ref); if (!n) return c;
-  const hpMax = c.hpMax || n.hpMax || 0; return {...c, hpMax, hp: c.hpMax ? c.hp : (n.hp ?? hpMax), ac: n.ac || c.ac || null, hit: n.hit ?? c.hit ?? null, dmg: n.dmg || c.dmg || '', atk: n.atk || c.atk || 1}; };
+  const hpMax = c.hpMax || n.hpMax || 0; return {...c, limbs: [...new Set([...(c.limbs || []), ...(n.limbs || [])])], hpMax, hp: c.hpMax ? c.hp : (n.hp ?? hpMax), ac: n.ac || c.ac || null, hit: n.hit ?? c.hit ?? null, dmg: n.dmg || c.dmg || '', atk: n.atk || c.atk || 1}; };
 const encUnits = () => enc.map(encStat).filter(c => c.k !== 'ice' && c.hpMax && c.hp > 0 && c.ac);
 function combatRate(extra){
   const ps = players.filter(p => p.merc).map(p => normalize(p.merc)).filter(m => !m.dead && m.hpMax);
@@ -6250,6 +6263,12 @@ function presetEditHTML(){
     <div class="row gap"><button class="btn small" data-live="epadd">Add preset</button><button class="btn small" data-live="epreset">Reset to defaults</button><span class="muted" style="font-size:12px">Damage is per attack. × is attacks per turn.</span></div></div>`;
 }
 const statLine = c0 => { const c = encStat(c0); return c.ac ? `AC ${c.ac} · Hit ${sgn(+c.hit || 0)} · ${esc(c.dmg || '—')}${(+c.atk || 1) > 1 ? ' ×' + c.atk : ''}` : (c.k === 'npc' ? 'No stats yet. Tap ✎' : 'No stats yet'); };
+function limbTags(c){ const l = c.limbs || []; return l.length ? `<span class="ltags">${l.map(k => LIMB(k)).filter(Boolean).map(L => `<span class="ltag" title="${esc(L.e)}">NO ${L.s}${L.k === 'head' ? '' : ` · ${esc(L.e)}`}</span>`).join('')}</span>` : ''; }
+function limbPickHTML(c0){
+  const c = encStat(c0), gone = c.limbs || [];
+  return `<div class="prow eedit limbpick"><button class="btn small danger" data-live="elroll" data-e="${c.id}" ${gone.includes('head') || gone.length >= 6 ? 'disabled' : ''}>Roll 1d6</button>${LIMBS.map((L, i) => `<button class="btn small ${gone.includes(L.k) ? 'on' : ''}" data-live="elpick" data-e="${c.id}" data-l="${L.k}" title="${esc(L.e)}">${i + 1} ${L.n}</button>`).join('')}
+    <span class="muted" style="font-size:11px;flex-basis:100%">Roll skips limbs already gone. Tap a limb to set it by hand, or tap a lit one to undo.${c.k === 'npc' ? ' Saved to this NPC for good.' : ''}</span></div>`;
+}
 function encEditHTML(c0){
   const c = encStat(c0);
   return `<div class="prow eedit">${[['ac', 'AC'], ['hit', 'Hit'], ['hpMax', 'HP']].map(([f, l]) => `<label>${l}<input type="number" value="${c[f] ?? ''}" data-ee="${c.id}" data-ef="${f}"></label>`).join('')}
@@ -6264,16 +6283,16 @@ function encPanelHTML(){
     const ic = c.k === 'ice' && BLACK_ICE.find(x => x.id === c.ref), np = c.k === 'npc' && npcsDM.find(x => x.id === c.ref);
     const pic = ic ? iceArt(ic.id) : np ? avatar(np, 'av sm') : `<div class="av sm grunt">⚔</div>`;
     const sub = ic ? `Black ICE · AC ${iceStat(ic.ac)} · Hit ${ic.hit == null ? 'TBD' : '+' + ic.hit} · PER ${ic.per == null ? 'TBD' : '+' + ic.per}` : np ? (npcsPub.some(x => x.id === np.id) ? 'NPC · known to the party' : 'NPC · shows as Unknown') : 'Other combatant';
-    return `<div class="encrow">${pic}<div class="nm">${esc(c.name)}${c.cnt > 1 ? ` ×${c.cnt}` : ''}<small>${ic ? sub : statLine(c) + (np ? ' · ' + sub : '')}</small></div>
+    return `<div class="encrow">${pic}<div class="nm">${esc(c.name)}${c.cnt > 1 ? ` ×${c.cnt}` : ''}<small>${ic ? sub : statLine(c) + (np ? ' · ' + sub : '')}</small>${limbTags(encStat(c))}</div>
       ${c.hpMax ? `<div class="hpc ${c.hp <= 0 ? 'zero' : ''}"><span>${c.hp}/${c.hpMax}</span><input type="number" min="0" id="ea-${c.id}" class="eamt" placeholder="Amt" inputmode="numeric" aria-label="Amount for ${esc(c.name)}" data-eamt="${c.id}"><button class="btn small danger" data-live="ehp" data-e="${c.id}" data-d="dmg">Dmg</button><button class="btn small" data-live="ehp" data-e="${c.id}" data-d="heal">Heal</button></div>` : ''}
-      ${ic && !seen.includes(ic.id) ? `<button class="btn small" data-live="ereveal" data-i="${ic.id}" title="Add to the players' Codex">Reveal</button>` : ''}${ic ? '' : `<button class="btn small ${encEdit === c.id ? 'on' : ''}" data-live="eedit" data-e="${c.id}" aria-label="Edit stats">✎</button>`}<button class="btn small" data-live="edel" data-e="${c.id}" aria-label="Remove">✕</button></div>`;
+      ${ic && !seen.includes(ic.id) ? `<button class="btn small" data-live="ereveal" data-i="${ic.id}" title="Add to the players' Codex">Reveal</button>` : ''}${ic ? '' : `<button class="btn small ${limbEdit === c.id ? 'on' : ''}" data-live="elimb" data-e="${c.id}" aria-label="Dismember" title="Dismember">✂</button><button class="btn small ${encEdit === c.id ? 'on' : ''}" data-live="eedit" data-e="${c.id}" aria-label="Edit stats">✎</button>`}<button class="btn small" data-live="edel" data-e="${c.id}" aria-label="Remove">✕</button></div>`;
   };
   return `<div class="panel gap" id="encPanel"><div class="row"><h3>Encounter <span class="muted" style="font-size:14px">${enc.length}</span></h3>${live ? '<span class="stagb red gl" data-text="IN COMBAT">IN COMBAT</span>' : ''}<span class="spacer"></span>
       <span class="muted" style="font-size:13px">Who's in the fight. Nothing here goes into your NPC list.</span></div>
     <span class="lbl" style="margin-top:12px">Add Black ICE</span><div class="row gap" style="margin-top:4px">${BLACK_ICE.map(i => `<button class="btn small danger" data-live="eice" data-i="${i.id}">${i.n}</button>`).join('')}</div>
     <div class="encadd"><select id="encNpc" aria-label="NPC to add"><option value="">Add one of your NPCs</option>${npcsDM.filter(n => n.origin !== 'Black ICE').map(n => `<option value="${n.id}">${esc(n.name)}</option>`).join('')}</select><button class="btn small" data-live="enpc">Add NPC</button></div>
     <div class="encadd"><input type="text" class="f" id="encTxt" placeholder="Grunts, like Tyger Claws" aria-label="Grunt name" style="flex:1;min-width:160px"><select id="encPre" aria-label="Threat preset"><option value="">No stats</option>${presets.map((p, k) => `<option value="${k}" ${p.n === 'Ganger' ? 'selected' : ''}>${esc(p.n)}</option>`).join('')}</select><input type="number" id="encCnt" min="1" value="1" aria-label="How many" style="width:64px"><button class="btn small" data-live="etxt">Add</button><button class="btn small ${presetEdit ? 'on' : ''}" data-live="epedit">Presets</button></div>${presetEditHTML()}
-    <div style="margin-top:10px">${enc.map(c => row(c) + (encEdit === c.id && c.k !== 'ice' ? encEditHTML(c) : '')).join('') || '<p class="muted" style="font-size:14px">Nobody yet. Add Black ICE, an NPC or a group of grunts.</p>'}</div>
+    <div style="margin-top:10px">${enc.map(c => row(c) + (limbEdit === c.id && c.k !== 'ice' ? limbPickHTML(c) : '') + (encEdit === c.id && c.k !== 'ice' ? encEditHTML(c) : '')).join('') || '<p class="muted" style="font-size:14px">Nobody yet. Add Black ICE, an NPC or a group of grunts.</p>'}</div>
     ${diffHTML()}
     <div class="encsave"><input type="text" class="f" id="encSaveName" placeholder="Name this encounter" aria-label="Encounter name"><button class="btn small" data-live="esave" ${enc.length ? '' : 'disabled'}>Save</button>
       ${encSaves().length ? `<select id="encLoad" aria-label="Saved encounter">${encSaves().map(x => `<option value="${x.id}">${esc(x.name)} · ${x.list.length}</option>`).join('')}</select><button class="btn small" data-live="eload">Load</button><button class="btn small" data-live="esdel" aria-label="Delete saved encounter">✕</button>` : '<span class="muted" style="font-size:12px">Saved encounters show up here.</span>'}</div>
@@ -6300,6 +6319,21 @@ async function encAction(a, t){
     if (pr) for (let k = 0; k < Math.min(cnt, 20); k++) enc.push({id:uid(), k:'grunt', name, cnt:1, pre:pr.n, hp:pr.hp, hpMax:pr.hp, ac:pr.ac, hit:pr.hit, dmg:pr.dmg, atk:pr.atk});
     else enc.push({id:uid(), k:'grunt', name, cnt, hp:0, hpMax:0});
     saveEnc(); renderLive(); return true; }
+  if (a === 'elimb'){ limbEdit = limbEdit === t.dataset.e ? null : t.dataset.e; renderLive(); return true; }
+  if (a === 'elroll' || a === 'elpick'){
+    const c = enc.find(x => x.id === t.dataset.e); if (!c) return true;
+    const n = c.k === 'npc' && npcsDM.find(x => x.id === c.ref), gone = encStat(c).limbs || [];
+    let k = t.dataset.l, add = true;
+    if (a === 'elroll'){ if (gone.includes('head')) return true; let r, tries = 0; do { r = 1 + Math.floor(Math.random() * 6); tries++; } while (gone.includes(LIMBS[r - 1].k) && tries < 60); k = LIMBS[r - 1].k; if (gone.includes(k)) return true; toast(`Rolled ${r} · ${c.name} loses ${LIMB(k).n === 'Gut' ? 'their gut' : 'the ' + LIMB(k).n}. ${LIMB(k).e}.`, true); }
+    else if (gone.includes(k)) add = false;
+    const upd = l => add ? [...new Set([...(l || []), k])] : (l || []).filter(x => x !== k);
+    c.limbs = upd(c.limbs);
+    if (add && k === 'head'){ c.hp = 0; if (a === 'elpick') toast(`${c.name} is dead.`, true); }
+    sfx(add ? 'damage' : 'heal');
+    saveEnc();   // before the NPC sync, which can re-render and reload enc
+    if (n){ n.limbs = upd(n.limbs); if (add && k === 'head' && n.hpMax) n.hp = 0; liveApi.setDmNpc(n).catch(() => {}); }
+    renderLive(); return true;
+  }
   if (a === 'eedit'){ encEdit = encEdit === t.dataset.e ? null : t.dataset.e; renderLive(); return true; }
   if (a === 'epedit'){ presetEdit = !presetEdit; renderLive(); return true; }
   if (a === 'epadd'){ presets.push({n:'New preset', hp:20, ac:13, hit:4, dmg:'2d6', atk:1}); savePresets(); renderLive(); return true; }
