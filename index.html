@@ -5810,8 +5810,17 @@ $('#liveBody').addEventListener('keydown', e => { if (e.key === 'Enter' && e.tar
 $('#liveBody').addEventListener('change', e => {
   const d = e.target.dataset || {};
   if (d.pre != null){ const p = presets[+d.pre]; if (!p) return; const v = e.target.value; p[d.pf] = d.pf === 'n' ? (v.trim().slice(0, 30) || p.n) : d.pf === 'dmg' ? v.trim().slice(0, 20) : Math.max(d.pf === 'hit' ? -5 : 1, parseInt(v) || 0); savePresets(); return renderLive(); }
-  if (d.ee){ const c = enc.find(x => x.id === d.ee); if (!c) return; const v = e.target.value; if (d.ef === 'dmg') c.dmg = v.trim().slice(0, 20); else if (d.ef === 'hpMax'){ c.hpMax = Math.max(0, parseInt(v) || 0); c.hp = Math.min(c.hp || c.hpMax, c.hpMax) || c.hpMax; } else c[d.ef] = d.ef === 'hit' ? (parseInt(v) || 0) : Math.max(1, parseInt(v) || 0); saveEnc(); return renderLive(); }
-  if (d.nst){ const n = npcsDM.find(x => x.id === d.nst); if (!n) return; const v = e.target.value; if (d.sf === 'pre'){ const p = presets[+v]; if (p) Object.assign(n, {ac:p.ac, hit:p.hit, dmg:p.dmg, atk:p.atk, hpMax:n.hpMax || p.hp, hp:n.hp ?? p.hp}); } else n[d.sf] = d.sf === 'dmg' ? v.trim().slice(0, 20) : d.sf === 'hit' ? (parseInt(v) || 0) : Math.max(1, parseInt(v) || 0); liveApi.setDmNpc(n).catch(() => {}); return renderLive(); }
+  if (d.ee){
+    const c = enc.find(x => x.id === d.ee); if (!c) return; const v = e.target.value;
+    if (d.ef === 'pre'){ const p = presets[+v]; if (!p) return; Object.assign(c, {ac:p.ac, hit:p.hit, dmg:p.dmg, atk:p.atk}); if (!c.hpMax){ c.hpMax = p.hp; c.hp = p.hp; } }
+    else if (d.ef === 'dmg') c.dmg = v.trim().slice(0, 20);
+    else if (d.ef === 'hpMax'){ c.hpMax = Math.max(0, parseInt(v) || 0); c.hp = Math.min(c.hp || c.hpMax, c.hpMax) || c.hpMax; }
+    else c[d.ef] = d.ef === 'hit' ? (parseInt(v) || 0) : Math.max(1, parseInt(v) || 0);
+    saveEnc();   // save first, the NPC sync below can trigger a render that reloads enc
+    if (c.k === 'npc'){ const n = npcsDM.find(x => x.id === c.ref); if (n){ Object.assign(n, {ac:c.ac || null, hit:c.hit ?? null, dmg:c.dmg || '', atk:c.atk || 1}); if (c.hpMax && !n.hpMax){ n.hpMax = c.hpMax; n.hp = c.hp; } liveApi.setDmNpc(n).catch(() => {}); } }
+    return renderLive();
+  }
+  if (d.nst){ const n = npcsDM.find(x => x.id === d.nst); if (!n) return; const v = e.target.value; if (d.sf === 'pre'){ const p = presets[+v]; if (p) Object.assign(n, {ac:p.ac, hit:p.hit, dmg:p.dmg, atk:p.atk, hpMax:n.hpMax || p.hp, hp:n.hpMax ? n.hp : p.hp}); } else n[d.sf] = d.sf === 'dmg' ? v.trim().slice(0, 20) : d.sf === 'hit' ? (parseInt(v) || 0) : Math.max(1, parseInt(v) || 0); liveApi.setDmNpc(n).catch(() => {}); return renderLive(); }
   const b = d.blast; if (b == null) return;
   if (b === '*'){ players.forEach(p => { if (p.merc){ if (e.target.checked) blastSel.add(p.id); else blastSel.delete(p.id); } }); }
   else if (e.target.checked) blastSel.add(b); else blastSel.delete(b);
@@ -6180,7 +6189,10 @@ function mercAttack(m){
   }
   return {hit: mod(score('STR', m)) + lv, avg: Math.max(1, 1 + mod(score('STR', m))), n: 1};
 }
-const encUnits = () => enc.filter(c => c.k !== 'ice' && c.hpMax && c.hp > 0 && c.ac);
+// NPC entries read their stats from the NPC list, so NPCs made before stats existed (or given stats later) still count.
+const encStat = c => { if (c.k !== 'npc') return c; const n = npcsDM.find(x => x.id === c.ref); if (!n) return c;
+  const hpMax = c.hpMax || n.hpMax || 0; return {...c, hpMax, hp: c.hpMax ? c.hp : (n.hp ?? hpMax), ac: n.ac || c.ac || null, hit: n.hit ?? c.hit ?? null, dmg: n.dmg || c.dmg || '', atk: n.atk || c.atk || 1}; };
+const encUnits = () => enc.map(encStat).filter(c => c.k !== 'ice' && c.hpMax && c.hp > 0 && c.ac);
 function combatRate(extra){
   const ps = players.filter(p => p.merc).map(p => normalize(p.merc)).filter(m => !m.dead && m.hpMax);
   const units = [...encUnits(), ...(extra || [])].map(c => ({hp:c.hp ?? c.hpMax, ac:+c.ac || 10, hit:+c.hit || 0, dpt:(+c.atk || 1) * avgDice(c.dmg)}));
@@ -6214,14 +6226,14 @@ function meterHTML(title, i, line, extra){
     <div class="dbar4">${RATINGS.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div><p>${line}</p>${extra || ''}</div>`;
 }
 function diffHTML(){
-  const out = [], cr = combatRate(), unrated = enc.filter(c => c.k !== 'ice' && !(c.hpMax && c.ac)).length;
+  const out = [], cr = combatRate(), unratedL = enc.map(encStat).filter(c => c.k !== 'ice' && !(c.hpMax && c.ac)), unrated = unratedL.length;
   if (cr){
     const ref = (() => { const n = {}; enc.forEach(c => { if (c.pre) n[c.pre] = (n[c.pre] || 0) + 1; }); const top = Object.entries(n).sort((a, b) => b[1] - a[1])[0]; return presets.find(p => p.n === (top ? top[0] : 'Ganger')) || presets[1] || presets[0]; })();
     const sug = [];
     if (ref && cr.i < 3){ for (let k = 1; k <= 12; k++){ const r = combatRate(Array.from({length:k}, () => ({...ref, hpMax:ref.hp}))); if (r && r.i > cr.i){ sug.push(`Add ${k} ${esc(ref.n)}${k > 1 ? 's' : ''} for ${RATINGS[r.i][0]}`); break; } } }
     if (cr.i > 0){ const keep = enc.slice(); for (let f = .9; f >= .3; f -= .1){ enc = keep.map(c => c.k === 'ice' ? c : {...c, hp: Math.round((c.hp || 0) * f)}); const r = combatRate(); if (r && r.i < cr.i){ sug.push(`Cut enemy HP to ${Math.round(f * 100)}% for ${RATINGS[r.i][0]}`); break; } } enc = keep; }
-    out.push(meterHTML('Combat', cr.i, `The party drops them in ${rounds(cr.win)}. They'd drop the party in ${rounds(cr.lose)}.`, `${sug.length ? `<p class="sug">${sug.join(' · ')}</p>` : ''}${unrated ? `<p class="sug">${unrated} without stats ${unrated === 1 ? "isn't" : "aren't"} counted.</p>` : ''}`));
-  } else if (enc.some(c => c.k !== 'ice')) out.push(`<p class="muted" style="font-size:13px;margin-top:10px">Give the enemies stats (pick a preset, or set AC, to hit and damage) and have players in the party to see a difficulty read.</p>`);
+    out.push(meterHTML('Combat', cr.i, `The party drops them in ${rounds(cr.win)}. They'd drop the party in ${rounds(cr.lose)}.`, `${sug.length ? `<p class="sug">${sug.join(' · ')}</p>` : ''}${unrated ? `<p class="sug">Not counted yet: ${[...new Set(unratedL.map(c => esc(c.name)))].join(', ')}. Tap ✎ on ${unrated === 1 ? 'it' : 'each'} to pick a preset or set AC, to hit, damage and HP.</p>` : ''}`));
+  } else if (enc.some(c => c.k !== 'ice')) out.push(`<p class="muted" style="font-size:13px;margin-top:10px">${!players.some(p => p.merc) ? 'The difficulty read shows once players are in the party.' : `No enemy has stats yet${unrated ? ` (${[...new Set(unratedL.map(c => esc(c.name)))].join(', ')})` : ''}. Tap ✎ on an enemy to pick a preset or set AC, to hit, damage and HP.`}</p>`);
   const nr = netRate();
   if (nr && nr.none) out.push(`<div class="dmeter r3"><span class="lbl" style="margin:0">Net</span><p>No netrunner in the party can fight this Black ICE.</p></div>`);
   else if (nr) out.push(meterHTML('Net', nr.i, `${nr.n} runner${nr.n > 1 ? 's' : ''} de-rez it in ${rounds(nr.win)}. It flatlines them in ${rounds(nr.lose)}.`, nr.ramShort ? `<p class="sug">They'll likely run out of RAM first (${nr.turns} SWORD turns between them).</p>` : ''));
@@ -6235,10 +6247,13 @@ function presetEditHTML(){
       <button class="btn small" data-live="epdel" data-k="${k}" aria-label="Delete ${esc(p.n)}">✕</button></div>`).join('')}
     <div class="row gap"><button class="btn small" data-live="epadd">Add preset</button><button class="btn small" data-live="epreset">Reset to defaults</button><span class="muted" style="font-size:12px">Damage is per attack. × is attacks per turn.</span></div></div>`;
 }
-const statLine = c => c.ac ? `AC ${c.ac} · Hit ${sgn(+c.hit || 0)} · ${esc(c.dmg || '—')}${(+c.atk || 1) > 1 ? ' ×' + c.atk : ''}` : 'No stats yet';
-function encEditHTML(c){
+const statLine = c0 => { const c = encStat(c0); return c.ac ? `AC ${c.ac} · Hit ${sgn(+c.hit || 0)} · ${esc(c.dmg || '—')}${(+c.atk || 1) > 1 ? ' ×' + c.atk : ''}` : (c.k === 'npc' ? 'No stats yet. Tap ✎' : 'No stats yet'); };
+function encEditHTML(c0){
+  const c = encStat(c0);
   return `<div class="prow eedit">${[['ac', 'AC'], ['hit', 'Hit'], ['hpMax', 'HP']].map(([f, l]) => `<label>${l}<input type="number" value="${c[f] ?? ''}" data-ee="${c.id}" data-ef="${f}"></label>`).join('')}
-    <label>Damage<input type="text" value="${esc(c.dmg || '')}" data-ee="${c.id}" data-ef="dmg" style="width:80px"></label><label>×<input type="number" min="1" max="6" value="${c.atk || 1}" data-ee="${c.id}" data-ef="atk"></label></div>`;
+    <label>Damage<input type="text" value="${esc(c.dmg || '')}" data-ee="${c.id}" data-ef="dmg" style="width:80px"></label><label>×<input type="number" min="1" max="6" value="${c.atk || 1}" data-ee="${c.id}" data-ef="atk"></label>
+    <select data-ee="${c.id}" data-ef="pre" aria-label="Fill from a preset"><option value="">From preset</option>${presets.map((p, k) => `<option value="${k}">${esc(p.n)}</option>`).join('')}</select>
+    ${c.k === 'npc' ? '<span class="muted" style="font-size:11px;flex-basis:100%">Saved to this NPC in your NPC list too.</span>' : ''}</div>`;
 }
 function encPanelHTML(){
   loadEnc();
