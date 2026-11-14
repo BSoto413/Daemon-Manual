@@ -244,3 +244,9 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - The DM's session recap has a Show to the party button. Players get a Previously in Night City popup once
 - Keep screen awake and text size were already in Settings
 - For now every up and down sound (steppers, +/− buttons, point buy) plays the select sound. Remove the first line of `sfx()` to bring them back
+
+## Role perk, stash grid, COOL stacking
+- New opener at the top of the rules, in the DM's words
+- Role perk. Every merc gets one free perk at level 1 from one of their role's key stat trees (Soldier REF or STR, Technician TEC or INT, Bruiser STR or BOD, Netrunner INT, Shinobi REF). Normal stat requirements apply. Picked on the last builder step or later on the Perks tab. Existing mercs get it too. Roles stay locked
+- Crew stash is a 10 × 8 spatial grid. Items land in the first spot that fits. Tap an item to Take, Rotate or move it (tap an empty space). The DM can Remove items and Auto sort. A full stash refuses new items
+- COOL Tokens stack. Several can go on one roll, each adding the spender's COOL mod

@@ -321,6 +321,13 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .peqs{display:grid;gap:8px;margin-top:10px}
 .crewp .pool{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 10px}.crewp .pool b,.credn{font:600 22px Orbitron,sans-serif;color:var(--yellow)}
 .cred{font:500 12px Orbitron,sans-serif;color:#9aa6b2;letter-spacing:1px}.cred b{color:var(--yellow);font-size:16px;margin-left:4px}
+.stashg{grid-template-columns:repeat(10,minmax(0,1fr));max-width:640px;margin-top:6px}
+.stashg button.bc{padding:0;margin:0;font:inherit;color:inherit;cursor:default;border-radius:0}
+.stashg.moving button.bc{cursor:pointer}.stashg.moving button.bc:hover{background:rgba(var(--crgb),.18)}
+.stashg button.gi{padding:0;font:inherit;background:transparent;cursor:pointer;text-align:left}
+.stashg .gi .gn{font-size:9.5px}
+.stdet{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border:1px solid rgba(var(--crgb),.3);background:rgba(0,0,0,.3)}
+.stdet b{color:#fff}.stdet small{display:block;color:#9aa6b2;font-size:12px}
 .stashl{display:grid;gap:6px;margin-top:6px}.sti{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid rgba(var(--crgb),.2);padding:6px 8px}.sti span{color:#fff;min-width:0}.sti small{display:block;color:#9aa6b2;font-size:12px}
 .tierb{font:600 10px Orbitron,sans-serif;padding:1px 4px;border:1px solid currentColor;margin-left:4px}.tierb.t2{color:var(--cyan)}.tierb.t3{color:var(--yellow)}.tierb.t4{color:var(--red)}
 .gig{border:1px solid rgba(var(--crgb),.25);border-left:3px solid var(--yellow);padding:10px 12px;margin-top:10px;background:rgba(0,0,0,.25)}.gig.done,.gig.failed{opacity:.6;border-left-color:#9aa6b2}.gig.taken{border-left-color:var(--cyan)}
@@ -1180,8 +1187,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-basics"><h2>How Daemon Works</h2>
         <div class="panel">
-          <p>Daemon is a twisted take on 5e set in Night City. Every merc is a 5e Fighter and keeps all of its normal Fighter features.</p>
-          <p>There are no classes and no feats. Every merc fills a role instead. What really makes your merc yours is the perk trees you climb with your stats, ported from Cyberpunk 2077.</p>
+          <p>Daemon is a twisted take on 5e set in Night City. Every merc uses the skeleton of a 5e Fighter but is tweaked for better integration.</p>
+          <p>There are no classes or feats. Every merc fills a specialized role for gigs instead. What really makes your merc YOURS are the perk trees you sync up with your stats, inspired by Cyberpunk 2077.</p>
           <div class="row gap"><a class="btn primary" href="#mercs">Make a merc</a><a class="btn" href="#r-perks">Browse every perk</a></div>
         </div>
       </section>
@@ -1203,6 +1210,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <section class="rsec" id="r-roles"><h2>Roles</h2>
         <div class="panel">
           <p>Instead of classes, every merc fills a specialized role. Pick your role at level 1. It gives you proficiency in two skills and locks for good.</p>
+          <p><b>Role perk.</b> At level 1 you also unlock ONE perk from one of your role's key stat trees. It follows the normal perk rules, so that stat has to be 10 or higher. Pick it when you make your merc or later on your Perks tab. Mercs made before this rule get it too.</p>
           <table class="rtable"><thead><tr><th>Role</th><th>Proficiencies</th><th>Key stats</th></tr></thead><tbody>
             <tr><td><b>Netrunner</b></td><td>Hacking and Code</td><td>INT</td></tr>
             <tr><td><b>Soldier</b></td><td>Athletics and Sleight of Hand</td><td>REF and STR</td></tr>
@@ -1263,7 +1271,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Feats</b></td><td>None</td></tr>
           </tbody></table>
           <div class="lvltrack" id="lvlTrack" aria-label="Level 1 to 20 track"></div>
-          <p class="muted" style="font-size:13px;margin-top:8px">Every level after 1 gives a perk point. Yellow levels also give 2 stat increases.</p>
+          <p class="muted" style="font-size:13px;margin-top:8px">Level 1 gives your role perk. Every level after that gives a perk point. Yellow levels also give 2 stat increases.</p>
         </div>
       </section>
 
@@ -1519,7 +1527,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <h3 style="margin-top:18px" id="r-cool">COOL Tokens</h3>
           <p style="margin-top:8px">The DM hands out COOL Tokens whenever they want, like inspiration in 5e. There's no cap on how many you can hold, and using one is free.</p>
           <p>Whenever anyone rolls a d20, you can spend a COOL Token to help or hinder that roll. The token adds <b>your</b> COOL mod to the roll, whether it's yours, an ally's or an enemy's.</p>
-          <ul class="rlist"><li>With a positive COOL mod you can turn a failure into a success for you or your allies.</li><li>With a negative COOL mod you can turn an enemy's success into a failure.</li></ul>
+          <ul class="rlist"><li>With a positive COOL mod you can turn a failure into a success for you or your allies.</li><li>With a negative COOL mod you can turn an enemy's success into a failure.</li><li><b>Tokens stack.</b> More than one COOL Token can go on the same roll, from you or from other mercs. Each one adds the COOL mod of whoever spent it.</li></ul>
           <p><b>Example.</b> The team's Netrunner has +3 COOL. An ally rolls to hit and misses by 2. The Netrunner spends a COOL Token and adds +3 to the attack, and it hits.</p>
           <p>If you have the COO perk You Ready to Rock?!, spending a token also gives every ally its COOL buffs and one free ACTION.</p>
           <p class="muted" style="font-size:13px;margin-top:10px">The hack list is a draft until the GM finalizes hacking rules.</p>
@@ -2593,8 +2601,15 @@ function bagHTML(m, ro){
 
 /* ================= CHARACTER MATH ================= */
 const score = (st, c = C) => c.base[st] + c.asi.filter(k => k === st).length;
-const perkTotal = (c = C) => Math.max(0, c.level - 1);
+// Role perk. Every merc gets one extra perk at level 1, and it has to come from one of their role's key stat trees.
+const roleStats = (c = C) => c && ROLES[c.role] ? ROLES[c.role].k.match(/[A-Z]{3}/g) : [];
+const normalPts = (c = C) => Math.max(0, c.level - 1);
+const perkTotal = (c = C) => normalPts(c) + (roleStats(c).length ? 1 : 0);
 const perkLeft = (c = C) => perkTotal(c) - c.unlocked.length;
+const offRole = (c = C) => { const rs = roleStats(c); return c.unlocked.filter(k => !rs.includes(k.split('.')[0])).length; };
+// Points you can spend in one tree. Outside your role's trees the role perk can't be used.
+const ptsFor = (st, c = C) => roleStats(c).includes(st) ? perkLeft(c) : Math.min(perkLeft(c), normalPts(c) - offRole(c));
+const rolePerkOpen = (c = C) => roleStats(c).length && perkLeft(c) > 0 && ptsFor('___', c) < perkLeft(c);
 const asiPool = (lvl) => 2 * ASI_LEVELS.filter(l => l <= lvl).length;
 const asiLeft = () => asiPool(C.level) - C.asi.length;
 const prof = lvl => 2 + Math.floor((lvl - 1) / 4);
@@ -2624,10 +2639,11 @@ function validate(){
       }
     }
   }
-  while (C.unlocked.length > perkTotal()){
+  while (C.unlocked.length > perkTotal() || offRole() > normalPts()){
     let victim = null;
+    const only = offRole() > normalPts() ? k => !roleStats().includes(k.split('.')[0]) : () => true;
     for (const t of ['l','ph','p','r']){
-      victim = [...C.unlocked].reverse().find(k => { const [st, sl] = split(k); return SLOT[sl].tier === t && !(CHILDREN[sl] || []).some(c => isUn(st, c)); });
+      victim = [...C.unlocked].reverse().find(k => { const [st, sl] = split(k); return only(k) && SLOT[sl].tier === t && !(CHILDREN[sl] || []).some(c => isUn(st, c)); });
       if (victim) break;
     }
     if (!victim) break;
@@ -2799,7 +2815,7 @@ const ROLES = {
 };
 const HANDLES = ['Static','Ghostwire','Neon Jackal','Rook','Hex','Vandal','Cinder','Byte','Lockjaw','Mirage','Switchblade','Halogen','Kestrel','Rust','Glitch','Saint','Volt','Nomi','Razor','Echo'];
 function startWizard(){
-  W = {name:'', portrait:null, background:null, bgSkills:[], role:null, base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
+  W = {name:'', portrait:null, background:null, bgSkills:[], role:null, rolePerk:null, base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
   wStep = 0; lastStep = -1; show('wizard'); renderWizard(); goTop();
 }
 const statBox = (k, v) => `<div class="statbox"><div class="ab">${k}</div><div class="sc">${v}</div><div class="md">${sgn(mod(v))}</div><div class="nmx">${STATS[k].name}</div></div>`;
@@ -2830,7 +2846,8 @@ function renderWizard(){
     h = `<h3>Pick your role</h3>
       <p class="muted" style="margin:6px 0 0">Your role is what you do for the crew. It gives you proficiency in two skills. <b style="color:var(--yellow)">You can't change it later</b>, so pick carefully.</p>
       <div class="bgs roles">${Object.entries(ROLES).map(([k, v]) =>
-        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span><span class="sk">Proficient in ${v.prof.join(' and ')}</span></button>`).join('')}</div>
+        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span><span class="sk">Proficient in ${v.prof.join(' and ')}</span><span class="sk">Role perk from ${v.k.match(/[A-Z]{3}/g).join(' or ')}</span></button>`).join('')}</div>
+      <p class="muted" style="margin:14px 0 0;font-size:14px">Every role also gets one free perk at level 1 from one of its key stat trees. You pick it at the end.</p>
       <div class="err" id="wErr"></div>`;
   } else if (wStep === 3){
     const left = PB_TOTAL - pbSpent();
@@ -2853,7 +2870,14 @@ function renderWizard(){
         <div><span class="lbl">Role</span><div class="v">${W.role}</div><div class="muted" style="font-size:14px">${ROLES[W.role].prof.join(' and ')}</div></div>
       </div>
       <div class="statgrid">${ORDER.map(k => statBox(k, W.base[k])).join('')}</div>
-      <p class="muted" style="margin-top:16px">You start at level 1. You earn your first perk point when you hit level 2.</p>`;
+      ${(() => {
+        const rs = ROLES[W.role].k.match(/[A-Z]{3}/g), opts = rs.filter(st => W.base[st] >= 10).flatMap(st => ['A.r', 'B.r'].map(sl => st + '.' + sl));
+        if (W.rolePerk && !opts.includes(W.rolePerk)) W.rolePerk = null;
+        return `<h4 style="margin:22px 0 4px">Role perk</h4>
+        <p class="muted" style="margin:0 0 10px;font-size:14px">One free perk from ${rs.join(' or ')}. ${opts.length ? 'Pick one now or skip it and pick it on your Perks tab later.' : `Your ${rs.join(' and ')} ${rs.length > 1 ? 'are' : 'is'} under 10, so no ${rs.length > 1 ? 'tree is' : 'tree is'} online yet. Go back and raise one to 10, or pick your role perk later.`}</p>
+        <div class="bgs rperks">${opts.map(k => { const [st, sl] = split(k), pk = perk(st, sl); return `<button class="bg ${W.rolePerk === k ? 'on' : ''}" data-rp="${k}"><span class="t">${esc(pk.n)}</span><span class="rk">${st} · Rookie</span><span class="d" style="margin-top:6px">${esc(pk.d)}</span></button>`; }).join('')}</div>`;
+      })()}
+      <p class="muted" style="margin-top:16px">You start at level 1. You earn your next perk point when you hit level 2.</p>`;
   }
   const back = wStep > 0 ? `<button class="btn" id="wBack">Back</button>` : `<button class="btn" id="wCancel">Cancel</button>`;
   const next = wStep < 4 ? `<button class="btn primary" id="wNext">Next</button>` : `<button class="btn primary" id="wDone">Jack in</button>`;
@@ -2891,6 +2915,7 @@ $('#wbody').addEventListener('click', e => {
     else { W.bgSkills.push(s); if (W.bgSkills.length > 2) W.bgSkills.shift(); }
     return renderWizard();
   }
+  if (t.dataset.rp){ W.rolePerk = W.rolePerk === t.dataset.rp ? null : t.dataset.rp; return renderWizard(); }
   if (t.dataset.pb){
     const k = t.dataset.pb, v = W.base[k] + (+t.dataset.d);
     if (v < 8 || v > 15) return;
@@ -2899,7 +2924,7 @@ $('#wbody').addEventListener('click', e => {
     return renderWizard();
   }
   if (t.id === 'wDone'){
-    const c = normalize({...W, pv:3, id:uid(), level:1, unlocked:[], asi:[], created:Date.now(), hpMax:Math.max(1, 20 + mod(W.base.BOD)), hpLv:1,
+    const c = normalize({...W, pv:3, id:uid(), level:1, unlocked:W.rolePerk ? [W.rolePerk] : [], asi:[], created:Date.now(), hpMax:Math.max(1, 20 + mod(W.base.BOD)), hpLv:1,
       active: ORDER.slice().sort((a, b) => W.base[b] - W.base[a])[0]});
     DB.chars.push(c); persist();
     toast(`${c.name} is online. Welcome to Night City.`, true);
@@ -3272,7 +3297,7 @@ function drawEdge(e, delay){
 function update(mode = true){
   const st = C.active;
   treeEl.classList.toggle('offline', score(st) < 10);
-  const nowRev = new Set(), pts = perkLeft();
+  const nowRev = new Set(), pts = ptsFor(st);
   SLOTS.forEach(s => {
     const el = nodeEls[s.slot]; if (!el) return;
     const rev = revealed(st, s.slot), un = isUn(st, s.slot), ok = meets(st, s.slot);
@@ -3314,6 +3339,7 @@ function act(sl){
   if (!revealed(st, sl)) return;
   if (!meets(st, sl)) return toast(`${st} needs to be ${TIERS[SLOT[sl].tier].req} for ${TIERS[SLOT[sl].tier].name} perks.`);
   if (perkLeft() <= 0) return toast('No perk points left. Level up to earn more.');
+  if (ptsFor(st) <= 0) return toast(`Your role perk has to come from ${roleStats().join(' or ')}. Level up for a point you can spend here.`);
   C.unlocked.push(key(st, sl));
   sel = sl; sfx('perk');
   const el = nodeEls[sl];
@@ -3336,14 +3362,14 @@ function changed(){
 function renderDetail(){
   const d = $('#detail'), st = C.active;
   if (!sel){
-    const pts = perkLeft();
+    const pts = perkLeft(), here = ptsFor(st), rs = roleStats();
     d.innerHTML = `<div class="tag">${STATS[st].name}</div><h3>Pick a perk</h3>
       <p>Click a node to see what it does, then install it from here. Double-clicking a node installs or uninstalls it.</p>
-      <p>${pts > 0 ? `You have ${pts} perk point${pts > 1 ? 's' : ''} to spend.` : C.level === 1 ? 'You earn your first perk point at level 2. Use the level buttons up top when your GM levels you up.' : 'No perk points left. Level up to earn more.'}</p>`;
+      <p>${pts > 0 ? `You have ${pts} perk point${pts > 1 ? 's' : ''} to spend.${rolePerkOpen() ? ` ${pts === 1 ? "It's" : "One is"} your role perk, so it has to go in ${rs.join(' or ')}.` : ''}${here < pts ? ` You can't spend ${here ? 'all of them' : 'it'} in ${st}.` : ''}` : C.level === 1 ? 'Your role perk is spent. You earn your next perk point at level 2.' : 'No perk points left. Level up to earn more.'}</p>`;
     return;
   }
   const s = SLOT[sel], p = perk(st, sel), t = TIERS[s.tier];
-  const un = isUn(st, sel), ok = meets(st, sel), pts = perkLeft();
+  const un = isUn(st, sel), ok = meets(st, sel), pts = ptsFor(st);
   const branch = STATS[st][s.col.toLowerCase()];
   const from = s.parents.length ? s.parents.map(x => perk(st, x).n).join(' or ') : `${st} at 10 or higher`;
   let status, btn;
@@ -3356,7 +3382,7 @@ function renderDetail(){
     status = `<p class="status bad">Your ${st} is ${score(st)}. ${t.name} perks need ${t.req}.</p>`;
     btn = `<button class="btn primary" disabled>Install</button>`;
   } else if (pts <= 0){
-    status = `<p class="status bad">No perk points left. Level up to earn more.</p>`;
+    status = `<p class="status bad">${perkLeft() > 0 ? `Your role perk has to come from ${roleStats().join(' or ')}.` : 'No perk points left. Level up to earn more.'}</p>`;
     btn = `<button class="btn primary" disabled>Install</button>`;
   } else {
     status = `<p class="status">Ready to install.</p>`;
@@ -5383,6 +5409,54 @@ function gigHTML(g, dm){
       ${g.status === 'done' ? '' : `<button class="btn small primary" data-live="gigDone" data-id="${g.id}">Done, pay the crew</button><button class="btn small" data-live="gigSt" data-id="${g.id}" data-st="failed">Failed</button>`}
       <button class="btn small danger" data-live="gigDel" data-id="${g.id}">Remove</button></div>` : ''}</div>`;
 }
+// ---- Crew stash grid. One big shared grid, 10 × 8. Spots live on each stash doc as gx and gy.
+const ST_COLS = 10, ST_ROWS = 8;
+let stashSel = null;
+const stSize = x => { const z = x.item && x.item.w >= 1 && x.item.h >= 1 ? x.item : sizeOf(x.item || {}); return {w:Math.min(ST_COLS, z.w), h:Math.min(ST_ROWS, z.h)}; };
+function stOcc(list){ return Array.from({length:ST_ROWS}, () => Array(ST_COLS).fill(null)); }
+function stFits(occ, x, y, w, h, id){
+  if (x < 0 || y < 0 || x + w > ST_COLS || y + h > ST_ROWS) return false;
+  for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) if (occ[yy][xx] && occ[yy][xx] !== id) return false;
+  return true;
+}
+const stMark = (occ, p) => { for (let y = p.gy; y < p.gy + p.h; y++) for (let x = p.gx; x < p.gx + p.w; x++) occ[y][x] = p.id; };
+function stFind(occ, w, h){
+  for (const [ww, hh] of w === h ? [[w, h]] : [[w, h], [h, w]])
+    for (let y = 0; y + hh <= ST_ROWS; y++) for (let x = 0; x + ww <= ST_COLS; x++) if (stFits(occ, x, y, ww, hh)) return {gx:x, gy:y, w:ww, h:hh};
+  return null;
+}
+// Where everything sits. Saved spots win, oldest first. Anything without a valid spot gets the first free one, or goes on the overflow list.
+function stashLayout(except){
+  const occ = stOcc(), out = [], over = [], later = [];
+  crewOf('stash').forEach(x => {
+    if (x.id === except) return;
+    const z = stSize(x);
+    if (Number.isInteger(x.gx) && Number.isInteger(x.gy) && stFits(occ, x.gx, x.gy, z.w, z.h)){ const p = {id:x.id, x, gx:x.gx, gy:x.gy, ...z}; stMark(occ, p); out.push(p); }
+    else later.push([x, z]);
+  });
+  later.forEach(([x, z]) => { const f = stFind(occ, z.w, z.h); if (f){ const p = {id:x.id, x, ...f}; stMark(occ, p); out.push(p); } else over.push(x); });
+  return {occ, out, over};
+}
+const stUsed = L => L.out.reduce((n, p) => n + p.w * p.h, 0);
+function stashGridHTML(dm){
+  const L = stashLayout(), cells = [], tiles = [];
+  for (let y = 0; y < ST_ROWS; y++) for (let x = 0; x < ST_COLS; x++)
+    cells.push(`<button type="button" class="bc" data-live="stMove" data-x="${x}" data-y="${y}" style="grid-area:${y + 1}/${x + 1}" aria-label="Stash space ${x + 1}, ${y + 1}" tabindex="-1"></button>`);
+  L.out.forEach(p => {
+    const it = {...p.x.item, id:p.id, w:p.w, h:p.h};
+    tiles.push(tileHTML(it, stashSel === p.id ? 'sel' : '', `grid-area:${p.gy + 1}/${p.gx + 1}/span ${p.h}/span ${p.w}`)
+      .replace('<div class="gi', '<button type="button" class="gi').replace(/<\/div>$/, '</button>').replace(`data-gi="${p.id}"`, `data-live="stSel" data-id="${p.id}" aria-label="${esc(it.name)}${(it.qty || 1) > 1 ? ' ×' + it.qty : ''}"`));
+  });
+  const sel = crewOf('stash').find(x => x.id === stashSel);
+  const detail = sel ? `<div class="stdet"><div><b>${esc(sel.item.name)}</b>${(sel.item.qty || 1) > 1 ? ` ×${sel.item.qty}` : ''}<small>${esc(sel.item.type || '')}${sel.item.tier ? ' · ' + MK[sel.item.tier] : ''}${sel.item.stats ? ' · ' + esc(sel.item.stats) : ''} · from ${esc(sel.by || 'the crew')}</small></div>
+      <div class="row" style="gap:6px">${dm ? `<button class="btn small danger" data-live="stDel" data-id="${sel.id}">Remove</button>` : `<button class="btn small primary" data-live="stOut" data-id="${sel.id}">Take</button>`}<button class="btn small" data-live="stRot" data-id="${sel.id}">Rotate</button><button class="btn small" data-live="stSel" data-id="${sel.id}">Done</button></div>
+      <p class="muted" style="font-size:12px;margin:6px 0 0;flex-basis:100%">Tap an empty space to move it there.</p></div>` : '';
+  return `<div class="row" style="gap:8px;margin-top:14px"><span class="lbl" style="margin:0">In the stash</span><span class="muted" style="font-size:12px">${ST_COLS} × ${ST_ROWS} · ${stUsed(L)} of ${ST_COLS * ST_ROWS} spaces</span>${dm && L.out.length ? '<span class="spacer"></span><button class="btn small" data-live="stSort">Auto sort</button>' : ''}</div>
+    <div class="bag stashg ${stashSel ? 'moving' : ''}">${cells.join('')}${tiles.join('')}</div>${detail}
+    ${L.over.length ? `<p class="muted" style="font-size:13px;margin:6px 0 0">No room in the grid for ${L.over.map(x => esc(x.item.name)).join(', ')}. ${dm ? 'Hit Auto sort or remove something.' : 'Ask the DM to sort the stash.'}</p>` : ''}
+    ${!L.out.length && !L.over.length ? '<p class="muted" style="font-size:14px;margin:4px 0">Empty. Put something in from your bag.</p>' : ''}`;
+}
+const stDoc = x => { const {id, ...rest} = x; return rest; };
 function crewPlayerHTML(){
   const m = liveMerc(); if (!m) return '';
   const stash = crewOf('stash'), gigs = crewOf('gig').filter(g => g.status !== 'failed').sort((a, b) => (a.status === 'done') - (b.status === 'done') || (b.at || 0) - (a.at || 0));
@@ -5396,8 +5470,7 @@ function crewPlayerHTML(){
     <div class="panel gap crewp"><div class="row"><h3>Crew stash</h3><span class="spacer"></span><span class="cred">Street Cred <b>${credOf()}</b></span></div>
       <div class="pool"><span class="lbl" style="margin:0">Crew eddies</span><b>${crewPool().toLocaleString()} €$</b></div>
       <div class="row" style="gap:6px"><input type="number" min="1" id="poolAmt" placeholder="Amount" aria-label="Eddies amount" style="width:110px"><button class="btn small" data-live="poolIn">Put in</button><button class="btn small" data-live="poolOut">Take out</button></div>
-      <span class="lbl" style="margin-top:14px">In the stash</span>
-      ${stash.length ? `<div class="stashl">${stash.map(x => `<div class="sti"><span>${itemLine(x.item)}<small>from ${esc(x.by || 'the crew')}</small></span><button class="btn small" data-live="stOut" data-id="${x.id}">Take</button></div>`).join('')}</div>` : '<p class="muted" style="font-size:14px;margin:4px 0">Empty.</p>'}
+      ${stashGridHTML(false)}
       ${bag.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="stashItem" aria-label="Item to put in the stash" style="flex:1;min-width:0">${bag.map(i => `<option value="${i.id}">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</option>`).join('')}</select><input type="number" min="1" value="1" id="stashQty" aria-label="How many" style="width:64px"><button class="btn small primary" data-live="stIn">Put in</button></div>` : ''}
       <p class="muted" style="font-size:12px;margin:8px 0 0">Anyone in the crew can put things in or take them out. It all shows in the activity log.</p></div>`;
 }
@@ -5435,11 +5508,11 @@ function crewDMHTML(){
         <input type="number" min="0" value="${x.price || 0}" data-shopp="${x.id}" aria-label="Price of ${esc(x.item.name)}" style="width:84px"><button class="btn small danger" data-live="shopDel" data-id="${x.id}" aria-label="Remove ${esc(x.item.name)}">✕</button></div>`).join('')}</div>` : ''}</div>
     <div class="panel gap"><div class="row"><h3>Crew stash</h3><span class="spacer"></span><b class="credn">${crewPool().toLocaleString()} €$</b></div>
       <div class="row" style="gap:6px;margin-top:8px"><input type="number" min="1" id="poolAmt" placeholder="Amount" aria-label="Eddies amount" style="width:110px"><button class="btn small" data-live="poolIn">Add</button><button class="btn small" data-live="poolOut">Remove</button></div>
-      ${stash.length ? `<div class="stashl">${stash.map(x => `<div class="sti"><span>${itemLine(x.item)}<small>from ${esc(x.by || 'the crew')}</small></span><button class="btn small danger" data-live="stDel" data-id="${x.id}">Remove</button></div>`).join('')}</div>` : '<p class="muted" style="font-size:14px;margin:8px 0 0">Nothing in the stash.</p>'}
+      ${stashGridHTML(true)}
       ${lib.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="stashLib" aria-label="Library item to stash" style="flex:1;min-width:0">${libOpts}</select><button class="btn small" data-live="stLib">Put in stash</button></div>` : ''}</div>`;
 }
 async function crewClick(a, t){
-  const K = ['poolIn', 'poolOut', 'stIn', 'stOut', 'stDel', 'stLib', 'buy', 'cred', 'gigAdd', 'gigSt', 'gigDone', 'gigDel', 'shopTog', 'shopName', 'shopAdd', 'shopDel', 'drOk', 'drNo'];
+  const K = ['poolIn', 'poolOut', 'stIn', 'stOut', 'stDel', 'stLib', 'stSel', 'stMove', 'stRot', 'stSort', 'buy', 'cred', 'gigAdd', 'gigSt', 'gigDone', 'gigDel', 'shopTog', 'shopName', 'shopAdd', 'shopDel', 'drOk', 'drNo'];
   if (!K.includes(a)) return false;
   const api = liveApi, code = LS.code, dm = LS.role === 'dm', me = liveMerc(), myName = dm ? 'The DM' : (me && me.name) || 'A merc';
   const log = (text, via) => dm ? api.addLog(code, {at:Date.now(), uid:api.uid, mercId:'dm', name:'The DM', via:'', lines:[{t:text, k:'good'}]}).catch(() => {}) : flushLog(via || 'crew stash');
@@ -5451,15 +5524,38 @@ async function crewClick(a, t){
       if (!dm) withLiveMerc(m => { m.eddies = (m.eddies || 0) + (a === 'poolIn' ? -n : n); });
       log(`${a === 'poolIn' ? 'Added' : 'Removed'} ${n} €$ ${a === 'poolIn' ? 'to' : 'from'} the crew stash`); sfx('eddies'); toast(`${a === 'poolIn' ? 'Put' : 'Took'} ${n} €$ ${a === 'poolIn' ? 'in' : 'out'}.`, true); return true;
     }
+    if (a === 'stSel'){ stashSel = stashSel === t.dataset.id ? null : t.dataset.id; renderLive(); return true; }
+    if (a === 'stMove'){
+      if (!stashSel) return true;
+      const x = crewOf('stash').find(y => y.id === stashSel); if (!x){ stashSel = null; renderLive(); return true; }
+      const L = stashLayout(x.id), z = stSize(x), gx = +t.dataset.x, gy = +t.dataset.y;
+      if (!stFits(L.occ, gx, gy, z.w, z.h)){ sfx('deny'); return toast(`${x.item.name} needs ${z.w} × ${z.h} free there.`), true; }
+      await api.setCrew(code, x.id, {...stDoc(x), gx, gy, item:{...x.item, ...z}}); stashSel = null; sfx('equip'); return true;
+    }
+    if (a === 'stRot'){
+      const x = crewOf('stash').find(y => y.id === t.dataset.id); if (!x) return true;
+      const L = stashLayout(x.id), z = stSize(x), cur = stashLayout().out.find(p => p.id === x.id) || {gx:0, gy:0};
+      if (z.w === z.h) return toast('Rotating that changes nothing.'), true;
+      const spot = stFits(L.occ, cur.gx, cur.gy, z.h, z.w) ? {gx:cur.gx, gy:cur.gy} : stFind(L.occ, z.h, z.w);
+      if (!spot || (spot.w && spot.w !== z.h)){ sfx('deny'); return toast('No room to turn it.'), true; }
+      await api.setCrew(code, x.id, {...stDoc(x), gx:spot.gx, gy:spot.gy, item:{...x.item, w:z.h, h:z.w}}); sfx('select'); return true;
+    }
+    if (a === 'stSort'){
+      const occ = stOcc(), all = crewOf('stash').map(x => { const z = stSize(x); return z.h > z.w && z.h <= ST_COLS ? [x, {w:z.h, h:z.w}] : [x, z]; }).sort((p, q) => q[1].w * q[1].h - p[1].w * p[1].h);
+      for (const [x, z] of all){ const f = stFind(occ, z.w, z.h); if (!f) continue; stMark(occ, {id:x.id, ...f}); await api.setCrew(code, x.id, {...stDoc(x), gx:f.gx, gy:f.gy, item:{...x.item, w:f.w, h:f.h}}); }
+      stashSel = null; toast('Stash sorted.', true); return true;
+    }
     if (a === 'stIn'){
       const id = ($('#stashItem') || {}).value, q0 = Math.max(1, parseInt(($('#stashQty') || {}).value) || 1);
       const i = me && me.inv.find(x => x.id === id); if (!i) return true; const q = Math.min(q0, i.qty || 1);
-      await api.setCrew(code, uid(), {type:'stash', item:itemPayload(i, q), by:myName, at:Date.now()});
+      const pay = itemPayload(i, q), spot = stFind(stashLayout().occ, pay.w, pay.h);
+      if (!spot){ sfx('deny'); return toast(`No room in the stash for ${i.name}. It needs ${pay.w} × ${pay.h}.`), true; }
+      await api.setCrew(code, uid(), {type:'stash', item:{...pay, w:spot.w, h:spot.h}, gx:spot.gx, gy:spot.gy, by:myName, at:Date.now()});
       withLiveMerc(m => { const j = m.inv.find(x => x.id === id); if (!j) return; if ((j.qty || 1) > q) j.qty -= q; else { m.inv = m.inv.filter(x => x !== j); fixEq(m); } });
       log(`Put ${q > 1 ? q + '× ' : ''}${i.name} in the crew stash`); sfx('unequip'); toast(`${i.name} is in the stash.`, true); return true;
     }
     if (a === 'stOut'){
-      const x = await api.takeCrew(code, t.dataset.id); if (!x) return toast('Someone already took that.'), true;
+      const x = await api.takeCrew(code, t.dataset.id); if (stashSel === t.dataset.id) stashSel = null; if (!x) return toast('Someone already took that.'), true;
       withLiveMerc(m => giveItem(m, x.item)); log(`Took ${(x.item.qty || 1) > 1 ? x.item.qty + '× ' : ''}${x.item.name} from the crew stash`); sfx('receive'); toast(`${x.item.name} is in your bag.`, true); return true;
     }
     if (a === 'buy'){
@@ -5471,8 +5567,8 @@ async function crewClick(a, t){
     }
     if (!dm) return true;
     // ---- DM only below
-    if (a === 'stDel'){ await api.delCrew(code, t.dataset.id); return true; }
-    if (a === 'stLib'){ const it = lib.find(x => x.id === ($('#stashLib') || {}).value); if (it){ await api.setCrew(code, uid(), {type:'stash', item:itemPayload(it), by:'The DM', at:Date.now()}); toast(`${it.name} is in the crew stash.`, true); } return true; }
+    if (a === 'stDel'){ if (stashSel === t.dataset.id) stashSel = null; await api.delCrew(code, t.dataset.id); return true; }
+    if (a === 'stLib'){ const it = lib.find(x => x.id === ($('#stashLib') || {}).value); if (it){ const pay = itemPayload(it), spot = stFind(stashLayout().occ, pay.w, pay.h); if (!spot) return toast(`No room in the stash for ${it.name}.`), true; await api.setCrew(code, uid(), {type:'stash', item:{...pay, w:spot.w, h:spot.h}, gx:spot.gx, gy:spot.gy, by:'The DM', at:Date.now()}); toast(`${it.name} is in the crew stash.`, true); } return true; }
     if (a === 'cred'){ const n = Math.max(0, credOf() + (parseInt(t.dataset.n) || 0)); await api.updateSession(code, {cred:n}); sessMeta = {...sessMeta, cred:n}; renderLive(); return true; }
     if (a === 'gigAdd'){
       const title = ($('#gTitle').value || '').trim(); if (!title) return toast('Give the gig a name.'), true;
