@@ -208,3 +208,12 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Players with Blender get a Roll limb button under Equipped on the Combat tab
 - The DM's ✂ button on an enemy rolls 1d6 (skipping lost limbs) or sets a limb by hand. Tapping a lit limb undoes it. Head drops HP to 0. Tags show on the enemy row. For NPCs from the NPC list the limbs save to the NPC record and show on its card, so they carry into later encounters
 - I'm Special (BOD) halves the Overflow penalty, so each point adds +1 to the Cyberpsychosis DC instead of +2
+
+## Accessibility and live sync pass
+- Deleting a live game takes it off everyone's lists. The DM's Your sessions, players' Rejoin, and the Google cloud copy all drop it (deleted codes are remembered in `daemon-gone` so a cloud merge can't bring them back). Lists are also checked once per visit and any game that no longer exists is removed
+- While a player has a dropdown open on their sheet, DM updates wait and apply as soon as it closes, so the picker doesn't slam shut or reset. Unsaved text in sheet fields (new item name, amounts) survives redraws
+- Smallest text raised to at least 10px (item names in the backpack grid 10.5px). Locked perk glyphs, tier labels and locked achievements are brighter. Form fields all have labels for screen readers. Bigger tap areas for the top nav, back button and DM focus tabs on touch screens
+
+## Black ICE art
+- All 9 Black ICE use the DM's art from `art/ice/<id>.png` (listed in `ICE_IMG`). Lines recolored to the site's ICE red with a soft glow. If a file fails to load the old drawing shows instead
+- Combat alerts with more than 6 enemies switch to three smaller cards per row so they fit on a phone
