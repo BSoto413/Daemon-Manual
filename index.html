@@ -412,15 +412,14 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .cycol{display:grid;gap:10px}
 .cybody{position:sticky;top:70px;display:flex;justify-content:center}
 .cybody .body{width:100%;max-width:230px;height:auto}
-.body .sil > *{fill:rgba(var(--crgb),.07);stroke:rgba(var(--crgb),.5);stroke-width:1.2}
-.body.skin .sil > *{stroke:var(--cyan);stroke-width:2;filter:drop-shadow(0 0 4px rgba(var(--crgb),.7))}
-.body.skinhl .sil > *{stroke:var(--yellow);stroke-width:2.2}
-.body .bp{fill:none;stroke:rgba(var(--crgb),.35);stroke-width:1.3}
-.body .sil .bp{fill:rgba(var(--crgb),.07)}
-.body [data-bp=circ],.body [data-bp=immune],.body [data-bp=os],.body [data-bp=cortex],.body [data-bp=ocular] ellipse{fill:rgba(var(--crgb),.05)}
-.body .bp.on{stroke:var(--cyan);stroke-width:1.8;filter:drop-shadow(0 0 3px var(--cyan))}
-.body [data-bp=circ].on,.body [data-bp=immune].on,.body [data-bp=os].on,.body [data-bp=cortex].on,.body [data-bp=ocular].on ellipse,.body .sil .bp.on{fill:rgba(var(--crgb),.28)}
-.body .bp.hl,.body .bp.hl ellipse{stroke:var(--yellow)!important;stroke-width:2.2;fill:rgba(255,210,63,.22)!important;filter:drop-shadow(0 0 4px var(--yellow))}
+.body .sil > *,.body .bp,.body .seam{fill:none;stroke:rgba(var(--crgb),.45);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.body .seam{stroke:rgba(var(--crgb),.3)}
+.body.skin .sil > *{stroke:var(--cyan);filter:drop-shadow(0 0 4px rgba(var(--crgb),.7))}
+.body.skinhl .sil > *{stroke:var(--yellow);stroke-width:2}
+.body .bp.on{stroke:var(--cyan);stroke-width:2;filter:drop-shadow(0 0 3px var(--cyan))}
+.body [data-bp=ocular].on,.body [data-bp=circ].on,.body [data-bp=shard].on,.body [data-bp=os].on{fill:var(--cyan)}
+.body .bp.hl{stroke:var(--yellow)!important;stroke-width:2.2;filter:drop-shadow(0 0 4px var(--yellow))}
+.body [data-bp=ocular].hl,.body [data-bp=circ].hl,.body [data-bp=shard].hl,.body [data-bp=os].hl{fill:var(--yellow)}
 .cyslot{min-width:0;background:#08080f;border:1px solid rgba(var(--crgb),.16);padding:10px;transition:border-color .15s,background .15s}
 .cyslot.has{border-color:rgba(var(--crgb),.45)}
 .cyslot.droph{border-color:#3be37a!important;background:rgba(59,227,122,.1)}
@@ -3893,25 +3892,35 @@ const CY_ICON = {
   arms:'<path d="M5 3h5l1 8 6 3 3 6-4 1-3-4-7-3z"/><path class="ln" d="M8 7h3M13 15l3 1"/>',
   legs:'<path d="M8 2h7l-1 9 1 9h4v2H11l-1-11z"/><path class="ln" d="M9.5 6h4M10.5 15h3"/>'
 };
-const cyIcon = k => `<svg class="cyi" viewBox="0 0 24 24" aria-hidden="true"><g>${CY_ICON[k] || CY_ICON.os}</g></svg>`;
+const cyIcon = k => `<svg class="cyi slotart" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SLOT_ART[k] || SLOT_ART.os}</svg>`;
 function bodySVG(m, hl){
+  // Angular figure in the Black ICE line style. Parts abut and share edges; ribs, spine and seams run edge to edge.
   const on = k => (m.cyber || []).some(x => x.slot === k) ? ' on' : '', h = k => hl === k ? ' hl' : '';
   const p = k => `class="bp${on(k)}${h(k)}" data-bp="${k}"`;
+  const lx = y => 62 + 8 * (y - 100) / 56, rx = y => 200 - lx(y);           // torso side edges, so ribs land on them
+  const rib = y => `M${lx(y).toFixed(1)} ${y}H${rx(y).toFixed(1)}`;
+  const arm = (sx) => { const f = x => 100 + sx * (x - 100); return `M${f(138)} 100L${f(150)} 108L${f(158)} 150L${f(164)} 204L${f(150)} 206L${f(144)} 156L${f(134.3)} 126Z`; };
+  const elbow = sx => { const f = x => 100 + sx * (x - 100); return `M${f(157.6)} 148L${f(142.9)} 151`; };
+  const hand = sx => { const f = x => 100 + sx * (x - 100); return `M${f(150)} 206L${f(164)} 204L${f(168)} 222L${f(162)} 240L${f(150)} 240L${f(146)} 222Z`; };
+  const fingers = sx => { const f = x => 100 + sx * (x - 100); return `M${f(154)} 228V240M${f(158)} 228V240M${f(146.7)} 222H${f(167.7)}`; };
+  const leg = sx => { const f = x => 100 + sx * (x - 100); return `M${f(101)} 222L${f(126)} 222L${f(128)} 300L${f(124)} 378L${f(132)} 390L${f(104)} 390L${f(104)} 300Z`; };
+  const knee = sx => { const f = x => 100 + sx * (x - 100); return `M${f(104)} 300H${f(128)}M${f(124.4)} 378H${f(104)}`; };
   return `<svg class="body ${on('integ') ? 'skin' : ''} ${hl === 'integ' ? 'skinhl' : ''}" viewBox="0 0 200 400" aria-hidden="true">
     <g class="sil">
-      <ellipse cx="100" cy="46" rx="25" ry="31"/><rect x="91" y="74" width="18" height="14"/>
-      <path d="M62 92 Q100 80 138 92 L134 160 Q128 200 124 222 L76 222 Q72 200 66 160 Z"/>
-      <path ${p('arms')} d="M62 94 Q48 100 44 128 L36 200 Q40 206 48 204 L58 140 L66 118 Z"/><path ${p('arms')} d="M138 94 Q152 100 156 128 L164 200 Q160 206 152 204 L142 140 L134 118 Z"/>
-      <path ${p('hands')} d="M34 204 Q30 222 34 238 Q42 246 48 238 L52 206 Z"/><path ${p('hands')} d="M166 204 Q170 222 166 238 Q158 246 152 238 L148 206 Z"/>
-      <path ${p('legs')} d="M76 222 L98 222 L96 300 L94 382 L74 386 L72 300 Z"/><path ${p('legs')} d="M124 222 L102 222 L104 300 L106 382 L126 386 L128 300 Z"/>
+      <path d="M84 12H116L128 26V62L114 78H86L72 62V26Z"/>
+      <path d="M62 100L78 92H92V82H108V92H122L138 100L130 156L122 176L126 222H74L78 176L70 156Z"/>
+      <path ${p('arms')} d="${arm(1)}"/><path ${p('arms')} d="${arm(-1)}"/>
+      <path ${p('hands')} d="${hand(1)}"/><path ${p('hands')} d="${hand(-1)}"/>
+      <path ${p('legs')} d="${leg(1)}"/><path ${p('legs')} d="${leg(-1)}"/>
     </g>
-    <path ${p('cortex')} d="M100 24c-6-4-16 0-16 8-4 2-4 11 2 13 0 6 8 9 14 6 6 3 14 0 14-6 6-2 6-11 2-13 0-8-10-12-16-8z"/>
-    <rect ${p('os')} x="113" y="18" width="12" height="9" rx="1.5"/>
-    <g ${p('shard')}><rect x="70" y="40" width="5" height="12" rx="1"/><rect x="125" y="40" width="5" height="12" rx="1"/></g>
-    <g ${p('ocular')}><ellipse cx="90" cy="56" rx="6" ry="3.4"/><ellipse cx="110" cy="56" rx="6" ry="3.4"/></g>
-    <path ${p('skeleton')} class-extra d="M78 110 Q100 104 122 110 M76 124 Q100 118 124 124 M77 138 Q100 132 123 138 M80 152 Q100 146 120 152"/>
-    <path ${p('nervous')} d="M100 92 V218 M100 120 L84 112 M100 120 L116 112 M100 160 L82 168 M100 160 L118 168"/>
-    <path ${p('circ')} d="M112 140c-7-5-9-8-9-11a4 4 0 0 1 9-1 4 4 0 0 1 9 1c0 3-2 6-9 11z"/>
+    <path class="seam" d="${elbow(1)}${elbow(-1)}${fingers(1)}${fingers(-1)}${knee(1)}${knee(-1)}"/>
+    <path ${p('cortex')} d="M72 36H128M100 12V36M86 24L92 30M114 24L108 30"/>
+    <path ${p('ocular')} d="M84 50L90 45L96 50L90 55ZM104 50L110 45L116 50L110 55Z"/>
+    <path ${p('shard')} d="M68 40H76V52H68ZM124 40H132V52H124Z"/>
+    <path ${p('os')} d="M94 82H106V92H94ZM97 82V78M103 82V78M97 92V96M103 92V96"/>
+    <path ${p('skeleton')} d="${rib(110)}${rib(122)}${rib(134)}"/>
+    <path ${p('nervous')} d="M100 96V218M100 160L86 174M100 160L114 174M100 196L90 206M100 196L110 206"/>
+    <path ${p('circ')} d="M106 146L110 142L114 146L118 142L122 146V150L114 158L106 150Z"/>
   </svg>`;
 }
 let selCy = null, hlSlot = null, capWarn = null;
