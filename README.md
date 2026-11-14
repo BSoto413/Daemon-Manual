@@ -252,3 +252,11 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - COOL Tokens stack. Several can go on one roll, each adding the spender's COOL mod
 - The player sheet's Party tab is now called Crew
 - Only Netrunners and mercs with the INT perk Jack In get the Jack in button and the Net panel. Everyone keeps their NET HP track
+
+## Combat tab and ammo
+- Combat and Gear are separate on every screen size. Combat has vitals, equipped gear, quick slots, then Your rolls and Quickhacks folded down (tap to open, remembered per device). Gear has the backpack, inventory, fabricator and ledger
+- Quick slots. Two slots, each holds one stack of a Consumable the player picks. Slotted stacks ride on the belt, out of the backpack. Every other consumable shows as a small tile with Use, so nothing is locked out. Use takes one off and shows its stats. No action cost is enforced. Teammates see quick slots on the party card
+- Standard ammo is assumed and never runs out. Pistol ammo for Light Pistol, Heavy Pistol and SMG. Heavy for Hand Cannon, Assault Rifle and LMG. Sniper for Sniper Rifle. Shotgun for Shotgun
+- Special rounds are Ammo items read by name (Armor Piercing, Incendiary, EMP, Tracking, Tranquilizer, Toxin, plus Pistol, Heavy, Sniper or Shotgun). No ammo type in the name means they fit any gun. The effect goes in the item's stats
+- Explosive ammo for Grenade and Rocket Launchers is finite, like special rounds. Any Ammo item named Explosive, Grenade or Rocket. Reload tops the launcher up from the bag, and new launchers arrive empty. Special rounds only go in tier 2+ guns or a fortified tier 1, never explosive weapons
+- Reload asks standard or special when special rounds fit. The whole clip goes special. Reloading standard early returns the special rounds left in the clip to the bag. Launchers reload like before

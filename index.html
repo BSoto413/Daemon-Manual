@@ -321,6 +321,22 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .peqs{display:grid;gap:8px;margin-top:10px}
 .crewp .pool{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 10px}.crewp .pool b,.credn{font:600 22px Orbitron,sans-serif;color:var(--yellow)}
 .cred{font:500 12px Orbitron,sans-serif;color:#9aa6b2;letter-spacing:1px}.cred b{color:var(--yellow);font-size:16px;margin-left:4px}
+.belt .qslots{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:10px}
+@media (min-width:560px){.belt .qslots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.qslot{--tc:rgba(var(--crgb),.35);border:1px dashed var(--tc);padding:8px 10px;background:rgba(0,0,0,.25);min-width:0}
+.qslot.on{border-style:solid}.qslot.t1{--tc:#9aa6b2}.qslot.t2{--tc:var(--cyan)}.qslot.t3{--tc:var(--yellow)}.qslot.t4{--tc:var(--red)}
+.qsh{display:flex;align-items:center;gap:8px}.qsh select{flex:1;min-width:0;font-size:13px}
+.qsb{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:8px}
+.qsart{position:relative;width:48px;height:48px;color:var(--tc,#9aa6b2)}.qsart .art{position:absolute;inset:0;width:100%;height:100%}
+.qst b{color:#fff}.qst small{display:block;color:#9aa6b2;font-size:12px;line-height:1.35}.qn{font:600 12px Orbitron,sans-serif;color:#fff;margin-left:6px}
+.qrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;margin-top:4px}
+.qtile{--tc:#9aa6b2;display:grid;grid-template-columns:32px minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:8px;align-items:center;border:1px solid rgba(var(--crgb),.2);padding:6px 8px;background:rgba(0,0,0,.2)}
+.qtile.t2{--tc:var(--cyan)}.qtile.t3{--tc:var(--yellow)}.qtile.t4{--tc:var(--red)}
+.qtile .qsart{width:32px;height:32px;grid-row:1/3}.qtile .qtn{color:#fff;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.qtile .qn{grid-column:2;margin:0;font-size:11px;color:#9aa6b2}.qtile .btn{grid-column:3;grid-row:1/3}
+details.fold > summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;min-height:32px}details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary h3{margin:0}.fchev{color:var(--cyan);transition:transform .15s;font-size:14px}details.fold:not([open]) .fchev{transform:rotate(-90deg)}
+details.fold[open] > summary{margin-bottom:10px}
+.ldtag{display:inline-block;font:600 10px Orbitron,sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#ffb300;border:1px solid #ffb300;padding:1px 5px;margin-left:6px;vertical-align:middle}
 .stashg{grid-template-columns:repeat(10,minmax(0,1fr));max-width:640px;margin-top:6px}
 .stashg button.bc{padding:0;margin:0;font:inherit;color:inherit;cursor:default;border-radius:0}
 .stashg.moving button.bc{cursor:pointer}.stashg.moving button.bc:hover{background:rgba(var(--crgb),.18)}
@@ -749,14 +765,9 @@ body.dmwide .wrap{max-width:1440px}
 .dsave{display:grid;gap:8px;border:1px solid #ff4f6d;padding:10px;background:rgba(255,79,109,.06)}
 .dsubs button{font-size:11px;padding:11px 4px}
 .dbody .ctlgrid{grid-template-columns:78px 1fr}.dbody .ctlgrid .row{flex-wrap:wrap}
-/* Wide screens: Combat and Gear side by side */
+/* Wide screens: Combat and Gear stay separate tabs */
 @media (min-width:1000px){
-  #vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
-  #vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2 [data-sub="combat"],#vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2 [data-sub="gear"]{display:block!important}
-  #vCS:is([data-sub="combat"],[data-sub="gear"]) .cs2 .cs-grid[data-sub="combat"]{display:grid!important;grid-template-columns:1fr}
-  #vCS .csR > .panel:first-child{margin-top:14px}
-  #vCS .csR .invlay{grid-template-columns:minmax(0,1fr)}
-  #vCS .csR .inv-add{grid-template-columns:repeat(2,minmax(0,1fr))}#vCS .csR .inv-add > :first-child{grid-column:1/-1}
+  #vCS .qslots{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 /* Slim sheet header */
 .headrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
@@ -1342,6 +1353,16 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Rocket Launcher</b></td><td>1</td><td>12</td><td>13</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:6px">Revolvers count as Hand Cannons.</p>
+          <h3 style="margin-top:18px">Ammo types</h3>
+          <p style="margin-top:8px">Standard ammo is assumed, like a sci-fi game. You never run out, you only RELOAD. Every gun takes one of four standard types. <b>Explosive</b> ammo is the exception.</p>
+          <table class="rtable"><thead><tr><th>Ammo</th><th>Guns</th></tr></thead><tbody>
+            <tr><td><b>Pistol</b></td><td>Light Pistol, Heavy Pistol, SMG</td></tr>
+            <tr><td><b>Heavy</b></td><td>Hand Cannon, Assault Rifle, LMG</td></tr>
+            <tr><td><b>Sniper</b></td><td>Sniper Rifle</td></tr>
+            <tr><td><b>Shotgun</b></td><td>Shotgun</td></tr>
+          </tbody></table>
+          <p style="margin-top:8px"><b>Explosive ammo</b> for Grenade and Rocket Launchers is tracked like special rounds, to keep them balanced. It comes as Ammo items (Explosive rounds, grenades or rockets). Reloading tops up the launcher from your bag, and a new launcher arrives empty.</p>
+          <p style="margin-top:8px"><b>Special rounds</b> are finite. Armor Piercing, Incendiary, EMP, Tracking, Tranquilizer and Toxin rounds come as Ammo items made for one ammo type, like Incendiary Pistol rounds. They only go in <b>tier 2 and up</b> guns, or a tier 1 gun that's <b>fortified</b>, and never in explosive weapons. Loading them follows the normal RELOAD rules, and the whole clip goes special. When it runs dry, the next RELOAD is standard unless you load special again. Swap back early and the special rounds left in the clip go back in your bag. The DM sets what each round does.</p>
           <h3 style="margin-top:18px">Concealment</h3>
           <p style="margin-top:8px">Pistols, Revolvers, Hand Cannons and SMGs can be concealed, and so can <b>some</b> Assault Rifles. The DM decides which ones. A gun can only be concealed with a <b>Standard</b> clip. Swap in an Extended or Drum clip and everyone can see it.</p>
           <h3 style="margin-top:18px">Quick reload</h3>
@@ -1991,10 +2012,12 @@ function normalize0(c){
       qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
       tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0),
       ...sizeOf(i), ...weaponOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null,
+      ...(i.type === 'Weapon' && SP[i.ld] ? {ld:i.ld, ldName:String(i.ldName || SP[i.ld].n + ' rounds').slice(0, 60), ldFx:String(i.ldFx || '').slice(0, 120)} : {}),
       ...(i.type === 'Vehicle' ? {vk: vkOf(i)} : {})
     })),
     vpick: c.vpick === 'car' || c.vpick === 'bike' ? c.vpick : null,
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null, armor: (c.eq || {}).armor || null},
+    qs: [0, 1].map(k => { const id = (Array.isArray(c.qs) ? c.qs : [])[k]; return id && (c.inv || []).some(i => i && i.id === id && i.type === 'Consumable') ? id : null; }),
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
       id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), tier: Math.max(0, Math.min(3, parseInt(x.tier) || 0)), ac: x.ac != null && x.ac !== '' ? (parseInt(x.ac) || 0) : acIn(x.effect), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
     })),
@@ -2030,6 +2053,7 @@ function fixEq(c){
   ['primary','secondary'].forEach(k => { const i = c.inv.find(x => x.id === c.eq[k]); if (!i || i.type !== 'Weapon') c.eq[k] = null; });
   if (c.eq.primary && c.eq.primary === c.eq.secondary) c.eq.secondary = null;
   if (c.eq.armor){ const a = c.inv.find(x => x.id === c.eq.armor); if (!a || a.type !== 'Armor') c.eq.armor = null; }
+  c.qs = [0, 1].map(k => { const id = (c.qs || [])[k]; return id && c.inv.some(x => x.id === id && x.type === 'Consumable' && x.qty > 0) ? id : null; });
   return c;
 }
 
@@ -2153,8 +2177,25 @@ function weaponOf(i){
   const clip = CLIP_KEYS.includes(i.clip) ? i.clip : 'std', cap = gtype ? CLIPS[gtype][CLIP_KEYS.indexOf(clip)] : null;
   const a = parseInt(i.ammo);
   const wc = WT[i.wclass] && (reload === 'none') === (WT[i.wclass].kind === 'melee') ? i.wclass : i.wclass === '' ? '' : gtype && WT[gtype] ? gtype : reload === 'none' ? (MELEE_CLASSES.includes(classGuess(i.name, i.stats)) ? classGuess(i.name, i.stats) : '') : '';
-  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload, gtype, wclass: gtype && WT[gtype] ? gtype : wc, clip, conc: !!i.conc, ammo: cap == null ? null : Number.isFinite(a) ? Math.max(0, Math.min(cap, a)) : cap};
+  return {rof: r >= 1 ? Math.min(10, r) : d.rof, reload, gtype, wclass: gtype && WT[gtype] ? gtype : wc, clip, conc: !!i.conc, ammo: cap == null ? null : Number.isFinite(a) ? Math.max(0, Math.min(cap, a)) : /Launcher/.test(gtype) ? 0 : cap};
 }
+// Ammo. Standard rounds are assumed and never run out. Special rounds are finite Ammo items in the bag, read from their name.
+const AMMO_STD = ['Pistol', 'Heavy', 'Sniper', 'Shotgun', 'Explosive'];
+const AMMO_OF = {'Light Pistol':'Pistol', 'Heavy Pistol':'Pistol', 'SMG':'Pistol', 'Hand Cannon':'Heavy', 'Assault Rifle':'Heavy', 'LMG':'Heavy', 'Sniper Rifle':'Sniper', 'Shotgun':'Shotgun', 'Grenade Launcher':'Explosive', 'Rocket Launcher':'Explosive'};
+const SPECIAL = [
+  {id:'ap', n:'Armor Piercing', re:/armou?r[- ]?piercing|\bAP\b/i}, {id:'inc', n:'Incendiary', re:/incendiary/i}, {id:'emp', n:'EMP', re:/\bEMP\b/i},
+  {id:'trk', n:'Tracking', re:/tracking|tracker/i}, {id:'trq', n:'Tranquilizer', re:/tranq/i}, {id:'tox', n:'Toxin', re:/toxin|toxic/i}
+];
+const SP = Object.fromEntries(SPECIAL.map(x => [x.id, x]));
+// A special round stack, or null. Its ammo type comes from the name too (Pistol, Heavy, Sniper or Shotgun). No type in the name means it fits any gun.
+const roundOf = i => { if (!i || i.type !== 'Ammo') return null; const sp = SPECIAL.find(x => x.re.test(i.name)); if (!sp) return null; const ak = AMMO_STD.find(k => new RegExp('\\b' + k, 'i').test(i.name)) || null; return {sp:sp.id, n:sp.n, ak}; };
+const ammoKind = i => i && i.type === 'Weapon' ? AMMO_OF[GUN_ALIAS[i.gtype] || i.gtype] || null : null;
+// Special rounds need a tier 2+ gun, or a fortified tier 1. Never in explosive weapons.
+// Explosive ammo for launchers is finite too. Any Ammo item named Explosive, Grenade or Rocket.
+const isBoom = i => !!i && i.type === 'Ammo' && i.qty > 0 && /explosive|grenade|rocket/i.test(i.name);
+const takesSpecial = g => { const k = ammoKind(g); return !!k && k !== 'Explosive' && (g.tier >= 1 || !!g.fort); };
+const roundsFor = (m, gun) => { const k = ammoKind(gun); return takesSpecial(gun) ? m.inv.filter(x => { const r = roundOf(x); return r && x.qty > 0 && (!r.ak || r.ak === k); }) : []; };
+const isCons = i => !!i && i.type === 'Consumable';
 const clipCap = i => i.type === 'Weapon' && CLIPS[i.gtype] ? CLIPS[i.gtype][CLIP_KEYS.indexOf(i.clip || 'std')] : null;
 // Can this gun be concealed at all, and is it concealed right now (Standard clip only)?
 const canConceal = i => i.type === 'Weapon' && (CONCEAL_AUTO.includes(i.gtype) || (i.gtype === 'Assault Rifle' && !!i.conc));
@@ -2167,7 +2208,7 @@ function sizeOf(i){
 }
 const placed = i => Number.isInteger(i.gx) && i.gx >= 0 && Number.isInteger(i.gy);
 const isEquipped = (m, i) => m.eq.primary === i.id || m.eq.secondary === i.id || m.eq.armor === i.id;
-const inBag = (m, i) => i.type !== 'Vehicle' && !isEquipped(m, i);
+const inBag = (m, i) => i.type !== 'Vehicle' && !isEquipped(m, i) && !(m.qs || []).includes(i.id);
 const onFloor = (m, i) => inBag(m, i) && i.gx === -1;
 const encumbered = m => m.inv.some(i => onFloor(m, i));
 function bagOcc(m, except){
@@ -3020,7 +3061,7 @@ function renderVitalsBar(){
   const showNet = hm && (canJack() || netNow(C) < hm);
   const hpC = hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set'), netC = hm ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '';
   const gun = C.inv.find(i => i.id === C.eq.primary && clipCap(i)), cap = gun && clipCap(gun), am = gun ? (gun.ammo == null ? cap : gun.ammo) : 0;
-  const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>Ammo</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire full ROF, ${gun.rof} shots">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
+  const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>${gun.ld ? esc(SP[gun.ld].n) : 'Ammo'}</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire full ROF, ${gun.rof} shots">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
   el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
   syncBodyFx();
 }
@@ -3747,9 +3788,10 @@ document.addEventListener('click', e => { if (e.target.id === 'goParty' && LS &&
 document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ setSheetTab(b.dataset.v); sfx('tab'); } });
 
 // Shots left in an equipped gun. Each ATTACK fires as many shots as the gun's ROF.
+const ldTag = i => i && i.ld ? `<span class="ldtag" title="${esc(i.ldName + (i.ldFx ? '. ' + i.ldFx : ''))}" data-rule="${esc(i.ldName)}" data-rd="${esc(i.ldFx || 'The DM has the effect for these rounds.')}">${esc(SP[i.ld].n)}</span>` : '';
 function ammoHTML(i){
   const cap = clipCap(i), a = i.ammo == null ? cap : i.ammo, low = a < i.rof;
-  return `<div class="ammo"><span class="an ${low ? 'low' : ''}" aria-label="Ammo">${a} <small>/ ${cap}</small></span><span class="abar"><i class="${low ? 'low' : ''}" style="width:${cap ? a / cap * 100 : 0}%"></i></span>
+  return `<div class="ammo"><span class="an ${low ? 'low' : ''}" aria-label="Ammo">${a} <small>/ ${cap}</small>${ldTag(i)}</span><span class="abar"><i class="${low ? 'low' : ''}" style="width:${cap ? a / cap * 100 : 0}%"></i></span>
     <button class="btn small primary" data-ammo="fire" data-i="${i.id}" ${a ? '' : 'disabled'} title="One ATTACK at full ROF fires ${i.rof} shot${i.rof === 1 ? '' : 's'}">Full ROF −${Math.min(i.rof, a) || i.rof}</button>${i.rof > 1 ? `<button class="btn small" data-ammo="one" data-i="${i.id}" ${a ? '' : 'disabled'} title="Fire one shot">Single −1</button>` : ''}<button class="btn small" data-ammo="add" data-i="${i.id}" ${a < cap ? '' : 'disabled'} aria-label="One more shot">+1</button><button class="btn small" data-ammo="reload" data-i="${i.id}" ${a < cap ? '' : 'disabled'}>Reload</button></div>`;
 }
 document.addEventListener('click', e => {
@@ -3758,9 +3800,65 @@ document.addEventListener('click', e => {
   const a = i.ammo == null ? cap : i.ammo;
   if (b.dataset.ammo === 'fire' || b.dataset.ammo === 'one'){ const n = b.dataset.ammo === 'one' ? Math.min(1, a) : Math.min(i.rof, a); i.ammo = a - n; if (!i.ammo) toast(`Clip's empty. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`); }
   else if (b.dataset.ammo === 'add') i.ammo = Math.min(cap, a + 1);
-  else { i.ammo = cap; toast(`Reloaded. ${cap} shots. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`, true); }
+  else {
+    if (ammoKind(i) === 'Explosive'){
+      const st = C.inv.filter(isBoom);
+      if (a >= cap) return toast("It's already loaded.");
+      if (!st.length) return toast('No explosive rounds in your bag. Explosive ammo is tracked, so you need to buy or find more.');
+      if (st.length === 1) return loadBoom(i, st[0]);
+      return boomModal(i, st);
+    }
+    if (roundsFor(C, i).length || i.ld) return reloadModal(i);
+    doReload(i, null);
+    const k = ammoKind(i), have = k && !takesSpecial(i) && C.inv.some(x => { const r = roundOf(x); return r && x.qty > 0 && (!r.ak || r.ak === k); });
+    if (have) setTimeout(() => toast(k === 'Explosive' ? "Special rounds don't go in explosive weapons." : `${i.name} is tier 1. Special rounds need tier 2 and up, or a fortified gun.`), 1600);
+    return;
+  }
   saveC(); renderCS(); renderVitalsBar();
 });
+// Reload with standard rounds (sp = null) or a stack of special rounds. Special rounds left in the clip go back to the bag.
+function doReload(i, stack){
+  const cap = clipCap(i); if (!cap) return;
+  const back = i.ld && (i.ammo || 0) > 0 ? {name:i.ldName, type:'Ammo', qty:i.ammo, stats:i.ldFx || ''} : null;
+  if (back) giveItem(C, back);
+  if (stack){
+    const r = roundOf(stack), n = Math.min(cap, stack.qty);
+    stack.qty -= n; if (stack.qty <= 0){ C.inv = C.inv.filter(x => x !== stack); fixEq(C); }
+    Object.assign(i, {ammo:n, ld:r.sp, ldName:stack.name, ldFx:stack.stats || ''});
+    toast(`Loaded ${n} ${stack.name}.${n < cap ? ` Only ${n} left, so the clip isn't full.` : ''} ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`, true);
+  } else {
+    i.ammo = cap; delete i.ld; delete i.ldName; delete i.ldFx;
+    toast(`Reloaded. ${cap} shots.${back ? ` ${back.qty} ${back.name} went back in your bag.` : ''} ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`, true);
+  }
+  sfx('equip'); packInv(C); saveC(); renderCS(); renderVitalsBar();
+}
+// Launchers top up from an explosive stack. What's already in the tube stays.
+function loadBoom(i, stack){
+  const cap = clipCap(i), a = i.ammo || 0, n = Math.min(cap - a, stack.qty); if (n <= 0) return;
+  stack.qty -= n; if (stack.qty <= 0){ C.inv = C.inv.filter(x => x !== stack); fixEq(C); }
+  i.ammo = a + n;
+  toast(`Loaded ${n} ${stack.name}. ${stack.qty > 0 ? stack.qty + ' left in your bag.' : 'That was the last of them.'} HEAVY reload takes your whole turn.`, true);
+  sfx('equip'); packInv(C); saveC(); renderCS(); renderVitalsBar();
+}
+function boomModal(i, st){
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox" style="max-width:440px"><div class="sethead"><h3>Reload ${esc(i.name)}</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
+    ${st.map(x => `<div class="jopt"><button class="btn primary" data-m="${x.id}">${esc(x.name)} ×${x.qty}</button><p>${esc(x.stats || 'Explosive rounds.')}</p></div>`).join('')}</div>`;
+  m.onclick = e => { const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return; closeModal(); if (b.dataset.m === 'close') return; const x = C.inv.find(y => y.id === b.dataset.m); if (x) loadBoom(i, x); };
+}
+function reloadModal(i){
+  const k = ammoKind(i), st = roundsFor(C, i), cap = clipCap(i);
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox" style="max-width:460px"><div class="sethead"><h3>Reload ${esc(i.name)}</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
+    <p class="muted" style="font-size:14px;margin:0 0 10px">${i.reload === 'heavy' ? 'HEAVY reload, your whole turn.' : 'LIGHT reload, one action.'} Clip holds ${cap}.${i.ld && i.ammo ? ` The ${i.ammo} ${esc(i.ldName)} still in it go back in your bag.` : ''}</p>
+    <div class="jopt"><button class="btn primary" data-m="std">Standard ${k ? k + ' ' : ''}rounds</button><p>Always on hand. Fills the clip.</p></div>
+    ${st.map(x => `<div class="jopt"><button class="btn" data-m="${x.id}">${esc(x.name)} ×${x.qty}</button><p>${esc(x.stats ? x.stats.replace(/([^.!?])$/, '$1.') : 'The DM has the effect for these rounds.')}${x.qty < cap ? ` Loads all ${x.qty}.` : ` Loads ${cap}.`}</p></div>`).join('')}</div>`;
+  m.onclick = e => {
+    const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return;
+    closeModal(); if (b.dataset.m === 'close') return;
+    doReload(i, b.dataset.m === 'std' ? null : C.inv.find(x => x.id === b.dataset.m) || null);
+  };
+}
 function renderCS(){
   if (!C || !CS_TABS.includes(sheetTab)) return;
   const keep = keepDrafts($('#vCS')); renderCS0(); keep();
@@ -3790,14 +3888,34 @@ function modsPanel(){
   const unarmed = row('Unarmed', `d20 ${sgn(mod(score('STR')) + pb)}`, `STR · ${Math.max(1, 1 + mod(score('STR')))} bludgeoning`);
   const saves = ['STR', 'REF', 'BOD', 'INT', 'TEC', 'COO'].map(k => `<div class="msave ${k === 'STR' || k === 'BOD' ? 'p' : ''}"><span>${k}</span><b>${sgn(mod(score(k)) + (k === 'STR' || k === 'BOD' ? pb : 0))}</b></div>`).join('');
   const sk = SKILLS.map(([n, st]) => ({n, st, l: skillProf(n, st).level})).filter(x => x.l > 0);
-  return `<div class="panel gap mods" data-sub="combat"><div class="row"><h3>Your rolls</h3><span class="spacer"></span><span class="muted" style="font-size:12px">Add these to the dice at the table</span></div>
+  return foldWrap('rolls', 'Your rolls', 'Add these to the dice at the table', `<div class="mods">
     <span class="lbl">Attacks</span>${atk('primary')}${atk('secondary')}${unarmed}
     ${row('Initiative', `d20 ${sgn(mod(score('REF')))}`, 'REF')}${C.cyber.length ? row('Cyberpsychosis save', `d20 ${sgn(mod(score('TEC')))}`, `TEC vs DC ${psyDC(C)}`) : ''}
     <span class="lbl" style="margin-top:12px">Saving throws</span><div class="msaves">${saves}</div>
     <p class="muted" style="font-size:12px;margin:4px 0 0">Highlighted saves add your proficiency (+${pb}), like a 5e Fighter.</p>
     ${sk.length ? `<span class="lbl" style="margin-top:12px">Your skills</span><div class="mskills">${sk.map(x => `<span>${x.n}${x.l > 1 ? ' ◆◆' : ''}<b>${sgn(skillBonus(x.n, x.st))}</b></span>`).join('')}</div>` : ''}
-  </div>`;
+  </div>`);
 }
+// Combat folds remember open or closed per device.
+let FOLD = {}; try { FOLD = JSON.parse(localStorage.getItem('daemon-fold') || '{}') || {}; } catch(e){}
+const foldOpen = k => FOLD[k] === true;   // folded by default
+document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.fold){ FOLD[d.dataset.fold] = d.open; try { localStorage.setItem('daemon-fold', JSON.stringify(FOLD)); } catch(err){} } }, true);
+// Belt. Two quick slots for consumables plus every other consumable in the bag, all one tap from Use.
+function beltHTML(){
+  const it = id => C.inv.find(x => x.id === id), cons = C.inv.filter(i => isCons(i) && i.qty > 0);
+  const slot = k => {
+    const i = it(C.qs[k]);
+    return `<div class="qslot ${i ? 'on t' + (i.tier + 1) : ''}"><div class="qsh"><span class="lbl" style="margin:0">Slot ${k + 1}</span>
+      <select data-qs="${k}" aria-label="Quick slot ${k + 1}"><option value="">${i ? 'Empty it' : 'Pick a consumable'}</option>${cons.filter(c => c.id === C.qs[k] || !C.qs.includes(c.id)).map(c => `<option value="${c.id}" ${c.id === C.qs[k] ? 'selected' : ''}>${esc(c.name)} ×${c.qty}</option>`).join('')}</select></div>
+      ${i ? `<div class="qsb"><div class="qsart">${itemArt(i)}</div><div class="qst"><b>${esc(i.name)}</b><span class="qn">×${i.qty}</span>${i.stats ? `<small>${esc(i.stats)}</small>` : ''}</div><button class="btn small primary" data-act="useC" data-i="${i.id}">Use</button></div>`
+        : `<p class="muted" style="font-size:13px;margin:6px 0 0">${cons.length ? 'Keep a consumable here for quick access. It rides on your belt, out of the backpack.' : 'No consumables in your bag yet.'}</p>`}</div>`;
+  };
+  const rest = cons.filter(i => !C.qs.includes(i.id));
+  return `<div class="panel gap belt" data-sub="combat"><div class="row"><h3>Quick slots</h3><span class="spacer"></span><span class="muted" style="font-size:12px">Using one doesn't cost an action here. Your DM runs the table.</span></div>
+    <div class="qslots">${slot(0)}${slot(1)}</div>
+    ${rest.length ? `<span class="lbl" style="margin-top:12px">Other consumables</span><div class="qrow">${rest.map(i => `<div class="qtile t${i.tier + 1}" title="${esc(i.stats || i.name)}"><div class="qsart">${itemArt(i)}</div><span class="qtn">${esc(i.name)}</span><span class="qn">×${i.qty}</span><button class="btn small" data-act="useC" data-i="${i.id}" aria-label="Use ${esc(i.name)}">Use</button></div>`).join('')}</div>` : ''}</div>`;
+}
+const foldWrap = (k, title, sub, inner) => `<details class="panel gap fold" data-sub="combat" data-fold="${k}" ${foldOpen(k) ? 'open' : ''}><summary><h3>${title}</h3><span class="spacer"></span><span class="muted" style="font-size:12px">${sub}</span><span class="fchev" aria-hidden="true">▾</span></summary>${inner}</details>`;
 function renderCS0(){
   const hm = C.hpMax, hp = C.hp == null ? hm : Math.min(C.hp, hm), net = C.netHp == null ? hm : Math.min(C.netHp, hm);
   const rm = ramMax(), rc = ramCur(), cr = cyberRam();
@@ -3932,10 +4050,10 @@ function renderCS0(){
       <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div>${hasPerk('REF.A.l') ? '<div class="row gap" style="margin-top:12px;align-items:center"><button class="btn small danger" data-act="limbRoll">Blender · Roll limb</button><span class="muted" style="font-size:12px">After a CRIT on a foe below 50 HP</span></div>' : ''}</div>
     </div>
+    ${beltHTML()}
     ${modsPanel()}
-    <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
-      <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
-      <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
+    ${foldWrap('qh', 'Quickhacks', `RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all`, `<div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
+      <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p>`)}
     <div data-sub="combat" class="netwrap">${netPanel()}</div>
     </div><div class="csR">
     <div class="panel gap" id="invPanel" data-sub="gear"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
@@ -4360,6 +4478,13 @@ $('#vCS').addEventListener('click', e => {
     return csSave();
   }
   switch (t.dataset.act){
+    case 'useC': {
+      const i = C.inv.find(x => x.id === t.dataset.i); if (!i || !(i.qty > 0)) return;
+      i.qty--; const left = i.qty;
+      if (left <= 0){ C.inv = C.inv.filter(x => x !== i); fixEq(C); }
+      sfx('heal'); toast(`Used ${i.name}.${i.stats ? ' ' + i.stats + '.' : ''} ${left ? left + ' left.' : 'That was the last one.'}`, true);
+      return csSave();
+    }
     case 'lvHp': case 'lvHpRoll': case 'lvHpSkip': {
       if (C.hpLv >= C.level) return;
       if (t.dataset.act === 'lvHpSkip'){ C.hpLv++; return csSave(); }
@@ -4547,6 +4672,11 @@ $('#vCS').addEventListener('click', e => {
 });
 $('#vCS').addEventListener('change', async e => {
   const t = e.target;
+  if (t.dataset.qs != null){
+    const k = +t.dataset.qs, id = t.value || null;
+    C.qs[k] = id; if (id && C.qs[1 - k] === id) C.qs[1 - k] = null;
+    packInv(C); sfx(id ? 'equip' : 'unequip'); return csSave();
+  }
   if (t.id === 'portraitIn'){
     try { C.portrait = await readPortrait(t.files[0]); toast('Portrait updated.', true); }
     catch(err){ toast("That image didn't load. Try a JPG or PNG."); }
@@ -6087,7 +6217,7 @@ function partyCard(p){
         <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${cwTOf(m)}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
         ${m.xp ? `<div class="stat"><span>XP</span><b>${m.xp.toLocaleString()}</b></div>` : ''}<div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}</span>`).join('')}</div>` : ''}
-      <div class="peqs">${peqHTML(pr, 'Primary')}${peqHTML(se, 'Secondary')}</div>
+      <div class="peqs">${peqHTML(pr, 'Primary')}${peqHTML(se, 'Secondary')}</div>${(() => { const b = (m.qs || []).map(id => (m.inv || []).find(x => x.id === id)).filter(Boolean); return b.length ? `<div class="muted" style="font-size:12px;margin-top:4px">Quick slots · ${b.map(x => `${esc(x.name)} ×${x.qty}`).join(' · ')}</div>` : ''; })()}
       <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
       ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}
     </div>`;
