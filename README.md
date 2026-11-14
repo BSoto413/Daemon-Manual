@@ -43,7 +43,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 
 ## DM tools
 - The dashboard has four tabs. Party (party roster, encounter, progress, activity log), NPCs (master list, Black ICE, NPC generator), Items (library and generators) and Session (handouts, mood, notes, recap, backups)
-- Party tab. A compact roster of every merc shows HP and NET bars, AC, RAM, COOL and status tags. An alert strip above it flags anyone down, hacked, overheated, cyberpsycho or jack-out locked, and tapping an alert opens that merc
+- Crew tab. A compact roster of every merc shows HP and NET bars, AC, RAM, COOL and status tags. An alert strip above it flags anyone down, hacked, overheated, cyberpsycho or jack-out locked, and tapping an alert opens that merc
 - Tap a merc to open their controls, split into Vitals, Give, Chrome and Sheet tabs. On a tablet or laptop held sideways (900 px and wider) the roster sits on the left and the controls stay pinned on the right. On a phone the controls open right under the merc you tapped
 - Party hit. Tick the boxes beside several mercs, enter an amount, then Damage, NET dmg, Net to body or Heal hits them all at once, like a grenade. Net to body is IRL HP damage from Black ICE or a Daemon, and it's halved automatically (rounded down) for anyone with Insulated Wires. End round for everyone shows while any timed status effect is running
 - Players on a screen 1000 px or wider see Combat and Gear side by side on their sheet
@@ -83,7 +83,7 @@ Player reference and character builder for the Daemon Cyberpunk 5e campaign. Eve
 ## Cyberware deck (DM)
 - The Items tab has a Cyberware deck. Add cards with + Add card (name, slot, tier, CW load, RAM bonus, effect, copies, hot-swap) or fill the Cyberware tab of the preload sheet. Tap a card to edit or delete it
 - Hand out. +1 draw lets a player pull a random card. Give card hands over a specific one. Both are also on each merc's Give tab
-- The player sees a face-down deck on their Party tab, taps Draw a card, and the card flips. Add to inventory puts it in their backpack as cyberware (a RipperDoc still installs it). Put it back returns it to the deck
+- The player sees a face-down deck on their Crew tab, taps Draw a card, and the card flips. Add to inventory puts it in their backpack as cyberware (a RipperDoc still installs it). Put it back returns it to the deck
 - Every card shows art for its slot category (eye for Ocular, heart for Circulatory and so on). Deck cyberware in the backpack uses the same art
 - Drawn cards leave the deck for good. The Handed out list has Back in deck to send a copy out again. Players never see how many cards are left
 - The deck is saved on the DM's device. The DM's device has to be in the session for a draw to go through, otherwise the draw waits
@@ -199,7 +199,7 @@ Slots are `A.r`, `B.r`, `A.p`, `S.p`, `B.p`, `A.ph`, `S.ph`, `B.ph`, `A.l`, `B.l
 (A and B are the outer branches, S is the middle). Branch names are in `STATS`, connections in `SLOTS`.
 Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Random roller tables. The DM's Items tab has Download tables (`templates/daemon-random-tables.xlsx`, the defaults) and Upload tables. Each filled tab replaces that list (Items and Tier effects per type, Odds per roll). Saved on the DM's device under `daemon-tables`, applied over `GEN`, `EFFECTS`, `HANDLES` and `TIER_WEIGHT` from a copy of the defaults (`GEN_DEF`). Custom handles go to the session doc as `handles` so players' Random button uses them
-- Player layout. Your Mercs (`#mercs` roster, `#sheet` sheet) and Live Session (`#live`) are separate pages. The sheet has tabs Combat, Gear, Chrome, Perks and skills, Party and Profile (`sheetTab`). Combat, Gear, Chrome and Profile are views of `#vCS`, chosen by `data-sub` on each section. While a player is in a session, `placeLive()` moves `#liveBody` into the Party tab (`#vParty`), and the Live Session page shows a pointer to it. `#vitalsBar` is the sticky HP, Net HP, RAM and AC strip. `‹ All mercs` and the browser back button go between sheet and roster
+- Player layout. Your Mercs (`#mercs` roster, `#sheet` sheet) and Live Session (`#live`) are separate pages. The sheet has tabs Combat, Gear, Chrome, Perks and skills, Party and Profile (`sheetTab`). Combat, Gear, Chrome and Profile are views of `#vCS`, chosen by `data-sub` on each section. While a player is in a session, `placeLive()` moves `#liveBody` into the Crew tab (`#vParty`), and the Live Session page shows a pointer to it. `#vitalsBar` is the sticky HP, Net HP, RAM and AC strip. `‹ All mercs` and the browser back button go between sheet and roster
 - Table mode (`PREFS.table`, Settings > Comfort) hides the canvas, glitch layers and big flash text and puts solid backing behind panels. Tapping HP or Net HP in the vitals bar opens the quick HP pad (`#vpad`, `hitVital`). While connected to a live session the site holds a screen wake lock (`syncWake`, `PREFS.awake`)
 - Phone layout. Settings opens from the ⚙ link in the top menu (`#navSet`), with quick Sound, Motion and Table mode buttons; the old floating dock is hidden. Notifications show at the top. The sheet header keeps name, level, COOL Tokens and Undo, plus a yellow note when perk points or stat increases are waiting. The level-up tiles live at the top of Perks and skills (`#lvlTiles`), and Merc ID card and Print are in Profile (`#profTools`)
 
@@ -248,5 +248,7 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 ## Role perk, stash grid, COOL stacking
 - New opener at the top of the rules, in the DM's words
 - Role perk. Every merc gets one free perk at level 1 from one of their role's key stat trees (Soldier REF or STR, Technician TEC or INT, Bruiser STR or BOD, Netrunner INT, Shinobi REF). Normal stat requirements apply. Picked on the last builder step or later on the Perks tab. Existing mercs get it too. Roles stay locked
-- Crew stash is a 10 × 8 spatial grid. Items land in the first spot that fits. Tap an item to Take, Rotate or move it (tap an empty space). The DM can Remove items and Auto sort. A full stash refuses new items
+- Crew stash is a 10 × 8 spatial grid. Items land in the first spot that fits. Drag items to move them, or tap one to Take, Rotate or move it with a tap on an empty space. The DM can Remove items and Auto sort. A full stash refuses new items
 - COOL Tokens stack. Several can go on one roll, each adding the spender's COOL mod
+- The player sheet's Party tab is now called Crew
+- Only Netrunners and mercs with the INT perk Jack In get the Jack in button and the Net panel. Everyone keeps their NET HP track

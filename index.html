@@ -324,7 +324,7 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .stashg{grid-template-columns:repeat(10,minmax(0,1fr));max-width:640px;margin-top:6px}
 .stashg button.bc{padding:0;margin:0;font:inherit;color:inherit;cursor:default;border-radius:0}
 .stashg.moving button.bc{cursor:pointer}.stashg.moving button.bc:hover{background:rgba(var(--crgb),.18)}
-.stashg button.gi{padding:0;font:inherit;background:transparent;cursor:pointer;text-align:left}
+.stashg button.gi{padding:0;font:inherit;cursor:grab;text-align:left;touch-action:none}
 .stashg .gi .gn{font-size:9.5px}
 .stdet{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border:1px solid rgba(var(--crgb),.3);background:rgba(0,0,0,.3)}
 .stdet b{color:#fff}.stdet small{display:block;color:#9aa6b2;font-size:12px}
@@ -1371,7 +1371,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-net"><h2>Netrunning</h2>
         <div class="panel">
-          <p>The Net is a space of opportunity and terror, and Netrunners take it on head first. To go in you need the INT perk <b>Jack In</b>. Here's what every rookie Netrunner should know before hacking a network.</p>
+          <p>The Net is a space of opportunity and terror, and Netrunners take it on head first. To go in you need to be a <b>Netrunner</b> or have the INT perk <b>Jack In</b>. Everyone else can't jack in, though Black ICE and hacks can still hit their NET HP. Here's what every rookie Netrunner should know before hacking a network.</p>
           <h3 style="margin-top:18px">Access Points</h3>
           <p style="margin-top:8px">To get into a network you need a place to Jack In, called an <b>Access Point</b>. Use the <b>SCAN</b> skill to find one, which costs an ACTION. Once you've found it and reached it, you can Jack In. If you do that on the same turn as the SCAN, it costs nothing extra. On a later turn, Jacking In costs an ACTION.</p>
           <h3 style="margin-top:18px">Diving during combat</h3>
@@ -1404,7 +1404,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <h3 style="margin-top:18px">NET HP</h3>
           <p style="margin-top:8px">Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. NET HP matches your IRL HP unless an implant changes it. Black ICE mostly hits your NET HP, but your body can still be attacked while you're under. Some Black ICE, like a Hellhound's fire, and Daemons can also damage your IRL HP straight from The Net. The INT perk <b>Insulated Wires</b> halves that damage, rounded down.</p>
           <p style="margin-top:8px">If your NET HP hits 0 you Flatline and go into critical condition, and you start rolling death saves. Once you stabilize, your processors are <b>fried</b>. You need a Ripper to repair them, and you can't access The Net until your injuries heal.</p>
-          <p class="muted" style="font-size:13px;margin-top:8px">With Jack In installed, your character sheet gets a Net panel with your SHIELD and buttons that spend the RAM for SWORD, SHIELD react, SCAN Ping and Safe Jack-Out.</p>
+          <p class="muted" style="font-size:13px;margin-top:8px">Netrunners and anyone with Jack In installed get a Net panel on their character sheet, with their SHIELD and buttons that spend the RAM for SWORD, SHIELD react, SCAN Ping and Safe Jack-Out.</p>
         </div>
       </section>
 
@@ -1426,7 +1426,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>Chrome goes into body slots. Every piece adds to your cyberware threshold. Only chrome designed for it adds RAM.</p>
           <h3 style="margin-top:18px">Getting chrome</h3>
-          <p style="margin-top:8px">New chrome comes from the DM's cyberware deck. When the DM gives you a draw, a face-down deck shows up on your Party tab. Tap <b>Draw a card</b> to pull one at random, or the DM can hand you a specific card.</p>
+          <p style="margin-top:8px">New chrome comes from the DM's cyberware deck. When the DM gives you a draw, a face-down deck shows up on your Crew tab. Tap <b>Draw a card</b> to pull one at random, or the DM can hand you a specific card.</p>
           <div class="drv two">
             <div><b>Add to inventory</b><span>The card goes in your backpack as cyberware. A RipperDoc still has to install it.</span></div>
             <div><b>Put it back</b><span>The card goes back into the deck for someone else.</span></div>
@@ -1497,12 +1497,12 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-crew"><h2>The Crew</h2>
         <div class="panel">
-          <p>In a live session the Party tab has a crew board everyone shares.</p>
+          <p>In a live session the Crew tab has a crew board everyone shares.</p>
           <table class="rtable"><tbody>
             <tr><td><b>Street Cred</b></td><td>The crew's reputation, set by the DM. It unlocks better gear in shops. Draft numbers: Tier 2 at 10, Tier 3 at 25, Tier 4 at 50</td></tr>
             <tr><td><b>Gig board</b></td><td>Jobs the DM posts, with the fixer, the pay and what the crew knows. When the DM marks a gig done, the pay goes into the crew stash</td></tr>
             <tr><td><b>Crew stash</b></td><td>Shared eddies and items. Anyone in the crew can put things in or take them out, and the activity log shows who did what</td></tr>
-            <tr><td><b>Shop</b></td><td>When the DM opens a shop it shows up on everyone's Party tab. Buy with your own eddies. Gear above the crew's Street Cred stays locked</td></tr>
+            <tr><td><b>Shop</b></td><td>When the DM opens a shop it shows up on everyone's Crew tab. Buy with your own eddies. Gear above the crew's Street Cred stays locked</td></tr>
           </tbody></table>
         </div>
       </section>
@@ -1618,7 +1618,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <div id="vitalsBar" role="button" tabindex="0" aria-label="Vitals, tap for the Combat tab"></div>
       <div id="combatBar" hidden></div>
       <div class="panel" id="sheetHead"></div>
-      <div class="vtabs" role="tablist"><button data-v="combat" class="on" role="tab">Combat</button><button data-v="gear" role="tab">Gear</button><button data-v="chrome" role="tab">Chrome</button><button data-v="perks" role="tab">Perks and skills</button><button data-v="party" role="tab" hidden>Party</button><button data-v="profile" role="tab">Profile</button></div>
+      <div class="vtabs" role="tablist"><button data-v="combat" class="on" role="tab">Combat</button><button data-v="gear" role="tab">Gear</button><button data-v="chrome" role="tab">Chrome</button><button data-v="perks" role="tab">Perks and skills</button><button data-v="party" role="tab" hidden>Crew</button><button data-v="profile" role="tab">Profile</button></div>
       <div id="vPerks">
       <div class="panel" id="lvlTiles" style="margin-bottom:14px"></div>
       <div class="tabs" id="tabs" role="tablist"></div>
@@ -3017,7 +3017,7 @@ function renderVitalsBar(){
   const el = $('#vitalsBar'); if (!el || !C) return;
   const hm = C.hpMax, cell = (lbl, a, b, bar) => { const r = b ? a / b : 1, cls = bar ? (r <= .25 ? 'low' : r <= .5 ? 'mid' : '') : '';
     return `<div class="vb ${cls}" data-k="${lbl === 'HP' ? 'hp' : lbl === 'Net HP' ? 'net' : ''}"><small>${lbl}</small><b>${a}${b != null ? `<small> / ${b}</small>` : ''}</b>${bar ? `<span class="hb"><i style="width:${Math.max(0, Math.min(100, r * 100))}%"></i></span>` : ''}</div>`; };
-  const showNet = hm && (hasPerk('INT.A.r') || netNow(C) < hm);
+  const showNet = hm && (canJack() || netNow(C) < hm);
   const hpC = hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set'), netC = hm ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '';
   const gun = C.inv.find(i => i.id === C.eq.primary && clipCap(i)), cap = gun && clipCap(gun), am = gun ? (gun.ammo == null ? cap : gun.ammo) : 0;
   const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>Ammo</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire full ROF, ${gun.rof} shots">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
@@ -3477,7 +3477,7 @@ const netCost = (n, c = C) => Math.max(0, n - (hasPerk('INT.S.ph', c) ? 1 : 0));
 const swordCost = (k, c = C) => netCost(3 + 2 * (k - 1), c);
 let swordN = 1;
 function netPanel(){
-  if (!hasPerk('INT.A.r')) return '';
+  if (!canJack()) return '';
   const fried = C.status.some(x => x.id === 'fried'), lock = hacked('lockout'), rc = ramCur(), code = skillBonus('Code', 'INT');
   const btn = (n, label, cost, sub) => `<button class="qh ${fried || lock || rc < cost ? 'off' : ''}" data-act="net" data-n="${n}" ${fried || lock || rc < cost ? 'disabled' : ''}><b>${label}</b><span class="rc">${cost} RAM</span><small>${sub}</small></button>`;
   return `<div class="panel gap"><div class="row"><h3>The Net</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${rc} / ${ramMax()} · NET HP ${netNow(C) ?? '—'}</span></div>
@@ -3707,6 +3707,8 @@ const hacked = (k, c = C) => !!c && (c.hacks || []).includes(k);
 function blocked(k){ if (!hacked(k)) return false; toast(`Blocked. ${HACKS[k].n} is messing with your systems.`); return true; }
 const liveMe = () => LS && LS.role === 'player' && liveApi && liveState === 'on' && C && C.id === LS.mercId;
 const hasPerk = (k, c = C) => c.unlocked.includes(k);
+// Only Netrunners and mercs with the INT perk Jack In can enter The Net.
+const canJack = (c = C) => !!c && (c.role === 'Netrunner' || c.unlocked.includes('INT.A.r'));
 const ramBase = (c = C) => Math.max(0, 4 + skillBonus('RAM', 'INT', c) + cyberRam(c));   // 4 + RAM skill (INT mod + proficiency)
 const ramMax = (c = C) => ramBase(c) * (hasPerk('INT.S.p', c) ? 2 : 1);
 const reactCost = (c = C) => hasPerk('INT.S.ph', c) ? 1 : 2;
@@ -3729,7 +3731,7 @@ function updateTabs(){
   const pb = document.querySelector('.vtabs [data-v=party]'); if (pb) pb.hidden = !partyOn();
   document.querySelectorAll('.vtabs button').forEach(b => { b.classList.toggle('on', b.dataset.v === sheetTab); b.setAttribute('aria-selected', b.dataset.v === sheetTab); });
 }
-// While a player is in a session, the live session view lives in their sheet's Party tab. The Live Session page points there.
+// While a player is in a session, the live session view lives in their sheet's Crew tab. The Live Session page points there.
 function placeLive(){
   const lb = $('#liveBody'), inParty = !!(LS && LS.role === 'player' && liveState === 'on'), dest = inParty ? $('#vParty') : $('#liveHome');
   if (lb && dest && lb.parentNode !== dest) dest.appendChild(lb);
@@ -3738,7 +3740,7 @@ function placeLive(){
   stub.hidden = !inParty;
   if (inParty){ const m = DB.chars.find(x => x.id === LS.mercId);
     stub.innerHTML = `<div class="panel"><span class="lbl">Connected to</span><div class="code">${esc(LS.code)}</div><p class="muted" style="margin-top:8px">${esc(sessMeta && sessMeta.name || 'Live session')} · Playing as ${m ? esc(m.name) : 'unknown merc'}</p>
-      <p style="font-size:14px;margin-top:10px">Your party, handouts and the activity log are in the Party tab on your sheet.</p><div class="row gap"><button class="btn primary" id="goParty">Open the Party tab</button></div></div>`; }
+      <p style="font-size:14px;margin-top:10px">Your crew, handouts and the activity log are in the Crew tab on your sheet.</p><div class="row gap"><button class="btn primary" id="goParty">Open the Crew tab</button></div></div>`; }
   updateTabs();
 }
 document.addEventListener('click', e => { if (e.target.id === 'goParty' && LS && LS.mercId){ openChar(LS.mercId); setSheetTab('party'); location.hash = '#sheet'; } });
@@ -3827,7 +3829,7 @@ function renderCS0(){
          <div class="row" style="margin-top:6px"><input type="number" min="1" max="10" id="lvHpRoll" placeholder="d10" aria-label="Your d10 roll" style="width:80px"><button class="btn small primary" data-act="lvHp">Add</button><button class="btn small" data-act="lvHpRoll">Roll for me</button><button class="btn small" data-act="lvHpSkip" title="Already added it by hand">Skip</button></div></div>` : ''}
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
-     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool <button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'title="Black ICE locked a Safe Jack-Out. Only an Unsafe one works"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button></span></div>
+     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool ${canJack() || ENVS.jack ? `<button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'title="Black ICE locked a Safe Jack-Out. Only an Unsafe one works"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button>` : ''}</span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
   const acc = acChrome(C), act = C.acTemp || 0;
@@ -4056,7 +4058,7 @@ function cyberMapHTML(m, ro){
   if (!ro && cyberForm && SLOTMAP[cyberForm] && liveRip){
     const mates = players.filter(p => p.id !== liveApi.uid && p.merc);
     detail = `<div class="cydetail"><div class="row" style="gap:8px">${cyIcon(cyberForm)}<b style="color:#fff">Draft new chrome · ${SLOTMAP[cyberForm][1]}</b></div>
-      <p class="muted" style="font-size:13px;margin:6px 0 0">In a live game new chrome goes to the DM first. Once it's approved it lands in the patient's bag and you send them a quote from the Party tab.</p>
+      <p class="muted" style="font-size:13px;margin:6px 0 0">In a live game new chrome goes to the DM first. Once it's approved it lands in the patient's bag and you send them a quote from the Crew tab.</p>
       <div class="iedit" style="border:0;padding-top:4px">
         <label class="fl wide"><span>Name</span><input type="text" class="f" id="cfName" placeholder="Like Kiroshi Optics"></label>
         <label class="fl"><span>Tier</span><select id="cfTier">${MK.map((t, i) => `<option value="${i}">${t}</option>`).join('')}</select></label>
@@ -4410,6 +4412,7 @@ $('#vCS').addEventListener('click', e => {
     case 'netFull': C.netHp = hm; return csSave();
     case 'jack': {
       if (ENVS.jack) return jackOutModal();
+      if (!canJack()) return toast('Only Netrunners and mercs with the INT perk Jack In can enter The Net.');
       if (C.status.some(x => x.id === 'fried')) return toast('Your processors are fried. No Net until a Ripper fixes you.');
       setJack(true); toast('Jacked in. Stay within 15 ft of the access point or you take an Unsafe Jack-Out.', true);
       csSave(); if (liveMe()) flushLog('');
@@ -5392,12 +5395,12 @@ const GIG_ST = {open:'Open', taken:'Taken', done:'Done', failed:'Failed'};
 let crewSeen = null, shopSeen = null;
 function crewNotice(had){
   const ids = crewOf('gig').filter(g => g.status === 'open').map(g => g.id).join();
-  if (crewSeen !== null && ids && ids !== crewSeen && ids.length > crewSeen.length){ toast('New gig on the board. Check the Party tab.', true); sfx('receive'); }
+  if (crewSeen !== null && ids && ids !== crewSeen && ids.length > crewSeen.length){ toast('New gig on the board. Check the Crew tab.', true); sfx('receive'); }
   crewSeen = ids;
 }
 function shopNotice(){
   const o = shopIsOpen();
-  if (shopSeen !== null && o && !shopSeen){ toast(`${(sessMeta && sessMeta.shopName) || 'The shop'} is open. Check the Party tab.`, true); sfx('receive'); }
+  if (shopSeen !== null && o && !shopSeen){ toast(`${(sessMeta && sessMeta.shopName) || 'The shop'} is open. Check the Crew tab.`, true); sfx('receive'); }
   shopSeen = o;
 }
 const itemLine = it => `${esc(it.name)}${(it.qty || 1) > 1 ? ' ×' + it.qty : ''}${it.tier ? ` <span class="tierb t${it.tier + 1}">${MK[it.tier]}</span>` : ''}`;
@@ -5450,13 +5453,66 @@ function stashGridHTML(dm){
   const sel = crewOf('stash').find(x => x.id === stashSel);
   const detail = sel ? `<div class="stdet"><div><b>${esc(sel.item.name)}</b>${(sel.item.qty || 1) > 1 ? ` ×${sel.item.qty}` : ''}<small>${esc(sel.item.type || '')}${sel.item.tier ? ' · ' + MK[sel.item.tier] : ''}${sel.item.stats ? ' · ' + esc(sel.item.stats) : ''} · from ${esc(sel.by || 'the crew')}</small></div>
       <div class="row" style="gap:6px">${dm ? `<button class="btn small danger" data-live="stDel" data-id="${sel.id}">Remove</button>` : `<button class="btn small primary" data-live="stOut" data-id="${sel.id}">Take</button>`}<button class="btn small" data-live="stRot" data-id="${sel.id}">Rotate</button><button class="btn small" data-live="stSel" data-id="${sel.id}">Done</button></div>
-      <p class="muted" style="font-size:12px;margin:6px 0 0;flex-basis:100%">Tap an empty space to move it there.</p></div>` : '';
+      <p class="muted" style="font-size:12px;margin:6px 0 0;flex-basis:100%">Drag it, or tap an empty space to move it there.</p></div>` : '';
   return `<div class="row" style="gap:8px;margin-top:14px"><span class="lbl" style="margin:0">In the stash</span><span class="muted" style="font-size:12px">${ST_COLS} × ${ST_ROWS} · ${stUsed(L)} of ${ST_COLS * ST_ROWS} spaces</span>${dm && L.out.length ? '<span class="spacer"></span><button class="btn small" data-live="stSort">Auto sort</button>' : ''}</div>
     <div class="bag stashg ${stashSel ? 'moving' : ''}">${cells.join('')}${tiles.join('')}</div>${detail}
     ${L.over.length ? `<p class="muted" style="font-size:13px;margin:6px 0 0">No room in the grid for ${L.over.map(x => esc(x.item.name)).join(', ')}. ${dm ? 'Hit Auto sort or remove something.' : 'Ask the DM to sort the stash.'}</p>` : ''}
     ${!L.out.length && !L.over.length ? '<p class="muted" style="font-size:14px;margin:4px 0">Empty. Put something in from your bag.</p>' : ''}`;
 }
 const stDoc = x => { const {id, ...rest} = x; return rest; };
+async function stashMove(id, gx, gy){
+  const x = crewOf('stash').find(y => y.id === id); if (!x){ stashSel = null; renderLive(); return false; }
+  const L = stashLayout(x.id), z = stSize(x);
+  if (!stFits(L.occ, gx, gy, z.w, z.h)){ sfx('deny'); toast(`${x.item.name} needs ${z.w} × ${z.h} free there.`); return false; }
+  try { await liveApi.setCrew(LS.code, x.id, {...stDoc(x), gx, gy, item:{...x.item, ...z}}); } catch(e){ toast("Couldn't move that. Check your connection."); return false; }
+  stashSel = null; sfx('equip'); renderLive(); return true;
+}
+// Drag and drop in the stash grid. A short tap still selects, a drag moves the item to where you let go.
+let stDrag = null, stJustDragged = 0;
+function stCellAt(px, py){
+  const g = document.querySelector('.stashg'); if (!g) return null;
+  const c0 = g.querySelector('.bc[data-x="0"][data-y="0"]'), c1 = g.querySelector('.bc[data-x="1"][data-y="1"]'); if (!c0 || !c1) return null;
+  const a = c0.getBoundingClientRect(), b = c1.getBoundingClientRect(), px2 = b.left - a.left, py2 = b.top - a.top;
+  return {x:Math.floor((px - a.left) / px2), y:Math.floor((py - a.top) / py2), pw:px2, ph:py2};
+}
+function stMarks(gx, gy, w, h, ok){
+  document.querySelectorAll('.stashg .bc.ok, .stashg .bc.no').forEach(c => c.classList.remove('ok', 'no'));
+  if (gx == null) return;
+  for (let y = gy; y < gy + h; y++) for (let x = gx; x < gx + w; x++){ const c = document.querySelector(`.stashg .bc[data-x="${x}"][data-y="${y}"]`); if (c) c.classList.add(ok ? 'ok' : 'no'); }
+}
+document.addEventListener('pointerdown', e => {
+  const t = e.target.closest('.stashg .gi[data-id]'); if (!t || e.button > 0) return;
+  const x = crewOf('stash').find(y => y.id === t.dataset.id); if (!x) return;
+  const r = t.getBoundingClientRect(), cell = stCellAt(e.clientX, e.clientY); if (!cell) return;
+  const area = (t.style.gridArea || '').split('/').map(v => parseInt(v)), gx0 = area[1] - 1, gy0 = area[0] - 1;
+  stDrag = {id:x.id, name:x.item.name, z:stSize(x), sx:e.clientX, sy:e.clientY, ox:cell.x - gx0, oy:cell.y - gy0, el:t, r, on:false, tgt:null};
+});
+document.addEventListener('pointermove', e => {
+  const d = stDrag; if (!d) return;
+  if (!d.on){
+    if (Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 6) return;
+    d.on = true; d.ghost = d.el.cloneNode(true); d.ghost.classList.add('ghost'); d.ghost.classList.remove('sel');
+    Object.assign(d.ghost.style, {width:d.r.width + 'px', height:d.r.height + 'px', gridArea:''}); document.body.appendChild(d.ghost);
+    d.el.classList.add('drag'); d.dx = d.sx - d.r.left; d.dy = d.sy - d.r.top;
+  }
+  e.preventDefault();
+  d.ghost.style.left = (e.clientX - d.dx) + 'px'; d.ghost.style.top = (e.clientY - d.dy) + 'px';
+  const c = stCellAt(e.clientX, e.clientY);
+  if (!c || c.x < 0 || c.y < 0 || c.x >= ST_COLS || c.y >= ST_ROWS){ d.tgt = null; stMarks(null); return; }
+  const gx = c.x - d.ox, gy = c.y - d.oy, ok = stFits(stashLayout(d.id).occ, gx, gy, d.z.w, d.z.h);
+  d.tgt = {gx, gy, ok}; stMarks(Math.max(0, gx), Math.max(0, gy), Math.min(d.z.w, ST_COLS - Math.max(0, gx)), Math.min(d.z.h, ST_ROWS - Math.max(0, gy)), ok);
+}, {passive:false});
+function stDragEnd(cancel){
+  const d = stDrag; stDrag = null; if (!d || !d.on) return;
+  stJustDragged = Date.now(); if (d.ghost) d.ghost.remove(); d.el.classList.remove('drag'); stMarks(null);
+  if (cancel || !d.tgt) return;
+  if (!d.tgt.ok){ sfx('deny'); return toast(`${d.name} needs ${d.z.w} × ${d.z.h} free there.`); }
+  stashMove(d.id, d.tgt.gx, d.tgt.gy);
+}
+document.addEventListener('pointerup', () => stDragEnd(false));
+document.addEventListener('pointercancel', () => stDragEnd(true));
+// Swallow the click that follows a drag so it doesn't also select the item.
+document.addEventListener('click', e => { if (Date.now() - stJustDragged < 400 && e.target.closest('.stashg')){ e.stopPropagation(); e.preventDefault(); } }, true);
 function crewPlayerHTML(){
   const m = liveMerc(); if (!m) return '';
   const stash = crewOf('stash'), gigs = crewOf('gig').filter(g => g.status !== 'failed').sort((a, b) => (a.status === 'done') - (b.status === 'done') || (b.at || 0) - (a.at || 0));
@@ -5501,7 +5557,7 @@ function crewDMHTML(){
         <div class="acts wide"><button class="btn small primary" data-live="gigAdd">Post gig</button></div></div>
       ${gigs.map(g => gigHTML(g, true)).join('') || '<p class="muted" style="font-size:14px">No gigs posted.</p>'}</div>
     <div class="panel gap"><div class="row"><h3>Shop</h3><span class="spacer"></span><button class="btn small ${shopIsOpen() ? 'danger' : 'primary'}" data-live="shopTog">${shopIsOpen() ? 'Close shop' : 'Open shop'}</button></div>
-      <p class="muted" style="font-size:13px;margin:4px 0 10px">${shopIsOpen() ? 'Open. Players see it on their Party tab and buy with their own eddies.' : 'Closed. Stock it now and open it when the crew walks in.'}</p>
+      <p class="muted" style="font-size:13px;margin:4px 0 10px">${shopIsOpen() ? 'Open. Players see it on their Crew tab and buy with their own eddies.' : 'Closed. Stock it now and open it when the crew walks in.'}</p>
       <div class="row" style="gap:6px"><input type="text" class="f" id="shopName" placeholder="Shop name, like Wakako's" value="${esc((sessMeta && sessMeta.shopName) || '')}" maxlength="40" aria-label="Shop name" style="flex:1;min-width:0"><button class="btn small" data-live="shopName">Rename</button></div>
       ${lib.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="shopItem" aria-label="Item to stock" style="flex:1;min-width:0">${libOpts}</select><input type="number" min="0" id="shopPrice" placeholder="€$" aria-label="Price" style="width:90px"><button class="btn small primary" data-live="shopAdd">Stock</button></div>` : '<p class="muted" style="font-size:13px">Add items to your library on the Items tab to stock the shop.</p>'}
       ${shop.length ? `<div class="shopl">${shop.map(x => `<div class="shopi t${(x.item.tier || 0) + 1} ${tierOpen(x.item.tier) ? '' : 'lock'}"><div class="peqi">${itemArt({...x.item, id:x.id})}</div><div class="si"><b>${esc(x.item.name)}</b><small>${x.item.tier ? MK[x.item.tier] + ' · ' : ''}${tierOpen(x.item.tier) ? 'Unlocked' : `Needs Street Cred ${CRED_TIER[x.item.tier]}`}</small></div>
@@ -5525,13 +5581,7 @@ async function crewClick(a, t){
       log(`${a === 'poolIn' ? 'Added' : 'Removed'} ${n} €$ ${a === 'poolIn' ? 'to' : 'from'} the crew stash`); sfx('eddies'); toast(`${a === 'poolIn' ? 'Put' : 'Took'} ${n} €$ ${a === 'poolIn' ? 'in' : 'out'}.`, true); return true;
     }
     if (a === 'stSel'){ stashSel = stashSel === t.dataset.id ? null : t.dataset.id; renderLive(); return true; }
-    if (a === 'stMove'){
-      if (!stashSel) return true;
-      const x = crewOf('stash').find(y => y.id === stashSel); if (!x){ stashSel = null; renderLive(); return true; }
-      const L = stashLayout(x.id), z = stSize(x), gx = +t.dataset.x, gy = +t.dataset.y;
-      if (!stFits(L.occ, gx, gy, z.w, z.h)){ sfx('deny'); return toast(`${x.item.name} needs ${z.w} × ${z.h} free there.`), true; }
-      await api.setCrew(code, x.id, {...stDoc(x), gx, gy, item:{...x.item, ...z}}); stashSel = null; sfx('equip'); return true;
-    }
+    if (a === 'stMove'){ if (stashSel) await stashMove(stashSel, +t.dataset.x, +t.dataset.y); return true; }
     if (a === 'stRot'){
       const x = crewOf('stash').find(y => y.id === t.dataset.id); if (!x) return true;
       const L = stashLayout(x.id), z = stSize(x), cur = stashLayout().out.find(p => p.id === x.id) || {gx:0, gy:0};
@@ -5717,7 +5767,7 @@ function applyOp(op){
     msg = `The DM brought ${m.name} back. They were ${was}.`; sound = 'levelup';
   } else if (op.kind === 'draws'){
     m.deckDraws = (m.deckDraws || 0) + Math.max(1, parseInt(op.n) || 1);
-    msg = `The DM gave you ${op.n > 1 ? op.n + ' cyberware draws' : 'a cyberware draw'}. Check your Party tab.`; sound = 'receive';
+    msg = `The DM gave you ${op.n > 1 ? op.n + ' cyberware draws' : 'a cyberware draw'}. Check your Crew tab.`; sound = 'receive';
   } else if (op.kind === 'deckcard' && op.card){
     m.deckHand = [...(m.deckHand || []), {...op.card, how:op.how || 'draw'}]; if (op.req) m.deckPend = (m.deckPend || []).filter(x => x !== op.req);
     msg = op.how === 'gift' ? 'The DM handed you a cyberware card.' : 'Your cyberware card is in.'; sound = 'receive';
@@ -6334,7 +6384,7 @@ function liveHTML(){
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
       ${deckPlayerHTML()}
       ${crewPlayerHTML()}
-      <h3 style="margin:22px 0 0">Your party</h3>
+      <h3 style="margin:22px 0 0">Your crew</h3>
       <div class="players">${players.map(p => partyCard(p)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
       ${handouts.length ? `<div class="panel gap"><h3>Handouts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Everything the DM has shared this session. Tap one to open it.</p>${hoListHTML(false)}</div>` : ''}
       ${logHTML(false)}`;
@@ -6800,7 +6850,7 @@ function combatRate(extra){
 function netRate(){
   const ice = enc.filter(c => c.k === 'ice' && c.hp > 0).map(c => { const b = BLACK_ICE.find(x => x.id === c.ref) || {}; const net = String(b.dmg || '').split(/ and /i)[0]; return {hp:c.hp, ac:b.ac || 12, hit:b.hit || 0, dpt:/NET|d\d/i.test(net) ? avgDice(net) : 0}; });
   if (!ice.length) return null;
-  const rs = players.filter(p => p.merc).map(p => normalize(p.merc)).filter(m => !m.dead && m.hpMax && m.unlocked.includes('INT.A.r') && netNow(m) > 0 && !m.status.some(x => x.id === 'fried'));
+  const rs = players.filter(p => p.merc).map(p => normalize(p.merc)).filter(m => !m.dead && m.hpMax && canJack(m) && netNow(m) > 0 && !m.status.some(x => x.id === 'fried'));
   if (!rs.length) return {none:true};
   const iHP = ice.reduce((a, c) => a + c.hp, 0), iAC = ice.reduce((a, c) => a + c.ac * c.hp, 0) / iHP;
   const sh = rs.reduce((a, m) => a + shieldOf(m), 0) / rs.length, nHP = rs.reduce((a, m) => a + netNow(m), 0);
