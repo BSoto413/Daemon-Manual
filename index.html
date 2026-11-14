@@ -318,6 +318,27 @@ input[type=text].f{font-family:'Exo 2',sans-serif;font-size:14px;padding:8px 10p
 .gi{--tc:#9aa6b2;position:relative;z-index:2;min-width:0;min-height:0;margin:1px;color:var(--tc);border:1px solid var(--tc);
   background:linear-gradient(160deg,color-mix(in srgb,var(--tc) 22%,#0b0d16),#0b0d16 70%);overflow:hidden;cursor:grab;touch-action:none;-webkit-touch-callout:none;transition:box-shadow .15s}
 .gi.t2{--tc:var(--cyan)}.gi.t3{--tc:var(--yellow)}.gi.t4{--tc:var(--red)}
+.peqs{display:grid;gap:8px;margin-top:10px}
+.crewp .pool{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 10px}.crewp .pool b,.credn{font:600 22px Orbitron,sans-serif;color:var(--yellow)}
+.cred{font:500 12px Orbitron,sans-serif;color:#9aa6b2;letter-spacing:1px}.cred b{color:var(--yellow);font-size:16px;margin-left:4px}
+.stashl{display:grid;gap:6px;margin-top:6px}.sti{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid rgba(var(--crgb),.2);padding:6px 8px}.sti span{color:#fff;min-width:0}.sti small{display:block;color:#9aa6b2;font-size:12px}
+.tierb{font:600 10px Orbitron,sans-serif;padding:1px 4px;border:1px solid currentColor;margin-left:4px}.tierb.t2{color:var(--cyan)}.tierb.t3{color:var(--yellow)}.tierb.t4{color:var(--red)}
+.gig{border:1px solid rgba(var(--crgb),.25);border-left:3px solid var(--yellow);padding:10px 12px;margin-top:10px;background:rgba(0,0,0,.25)}.gig.done,.gig.failed{opacity:.6;border-left-color:#9aa6b2}.gig.taken{border-left-color:var(--cyan)}
+.gig .gh{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.gig .gh b{color:#fff;font-size:16px}.gig .gst{font:600 11px Orbitron,sans-serif;letter-spacing:1px;color:var(--yellow);text-transform:uppercase}
+.gig .gm{font-size:14px;color:#9aa6b2;margin-top:4px}.gig .gm b{color:#fff}.gig p{margin:6px 0 0;font-size:15px}
+.shopl{display:grid;gap:8px;margin-top:10px}.shopi{--tc:#9aa6b2;display:grid;grid-template-columns:88px minmax(0,1fr) auto auto;gap:10px;align-items:center;border:1px solid rgba(var(--crgb),.2);border-left:2px solid var(--tc);padding:6px 8px}
+.shopi.t2{--tc:var(--cyan)}.shopi.t3{--tc:var(--yellow)}.shopi.t4{--tc:var(--red)}.shopi .peqi{height:34px;color:var(--tc);display:flex;align-items:center}.shopi .peqi .art{width:100%;height:100%}
+.shopi .si b{display:block;color:#fff;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.shopi .si small{color:var(--tc);font-size:12px}.shopi.lock{opacity:.55}
+.draft{border:1px solid rgba(var(--crgb),.3);padding:10px;margin-top:10px}
+.quote{border:1px solid var(--yellow);background:rgba(255,210,63,.06);padding:12px;margin-bottom:12px}.quote.red{border-color:#ff4f6d;background:rgba(255,79,109,.08)}
+.recapbox{max-height:65vh;overflow:auto;font-size:15px;line-height:1.55;margin-top:6px}
+@media (max-width:480px){.shopi{grid-template-columns:64px minmax(0,1fr) auto}.shopi input{grid-column:2}}
+.peq{--tc:#9aa6b2;display:grid;grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-items:center;border:1px solid rgba(var(--crgb),.2);border-left:2px solid var(--tc);padding:6px 8px;background:rgba(0,0,0,.25)}
+.peq.t2{--tc:var(--cyan)}.peq.t3{--tc:var(--yellow)}.peq.t4{--tc:var(--red)}
+.peq .lbl{grid-column:1/-1;margin:0 0 2px;font-size:10px}
+.peq .peqi{height:34px;color:var(--tc);display:flex;align-items:center}.peq .peqi .art{width:100%;height:100%}
+.peq .peqt{min-width:0}.peq .peqt b{display:block;color:#fff;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.peq .peqt small{color:var(--tc);font-size:12px}
+.peq.none{grid-template-columns:1fr}
 .gi .art{position:absolute;inset:3px;width:calc(100% - 6px);height:calc(100% - 6px)}
 .art g > *{fill:none;stroke:currentColor;stroke-width:1.1;stroke-linejoin:round;stroke-linecap:round}
 .art:not(.sl){filter:drop-shadow(0 0 2px color-mix(in srgb,currentColor 70%,transparent))}
@@ -657,6 +678,7 @@ body.table.jacked #vSheet::after{display:none}
 .encsave{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px}.encsave input{flex:1;min-width:150px}
 .vb.ammo{position:relative;padding-right:34px}.vb .vrl{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:1px solid var(--cyan);background:rgba(var(--crgb),.12);color:var(--cyan);font-size:16px;cursor:pointer;padding:0}.vb .vrl:disabled{opacity:.35;cursor:default}
 .vb.ammo.low b{color:#ff4f6d}
+.vb.ammo .vfire{display:flex;gap:3px;margin-top:3px}.vb.ammo .vfire button{min-width:30px;height:24px;padding:0 4px;border:1px solid rgba(var(--crgb),.6);background:rgba(var(--crgb),.08);color:var(--cyan);font:600 11px Orbitron,sans-serif;cursor:pointer}.vb.ammo .vfire button:disabled{opacity:.35;cursor:default}
 .revive{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid #ff4fd8;padding:10px;background:rgba(255,79,216,.07)}.revive b{color:#fff}
 /* Vehicles */
 .rex{border-left:3px solid var(--cyan);padding:8px 12px;background:rgba(var(--crgb),.06);color:#d5f9fb;font-size:15px}
@@ -835,6 +857,15 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
 .ledadd input[type=number]{width:110px}
 .modal{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:14px}
 .modal[hidden]{display:none!important}
+.mods .mrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(var(--crgb),.12)}
+.mods .mrow span{color:#fff;font-size:15px;min-width:0}.mods .mrow small{display:block;color:var(--muted,#9aa6b2);font-size:12px;margin-top:2px}
+.mods .mrow b{font:600 17px Orbitron,sans-serif;color:var(--yellow);white-space:nowrap}
+.mods .msaves{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.mods .msave{border:1px solid rgba(var(--crgb),.25);padding:6px 2px;text-align:center}.mods .msave span{display:block;font:500 11px Orbitron,sans-serif;color:#9aa6b2}.mods .msave b{font:600 16px Orbitron,sans-serif;color:#fff}
+.mods .msave.p{border-color:var(--cyan);background:rgba(var(--crgb),.08)}.mods .msave.p b{color:var(--cyan)}
+.mods .mskills{display:flex;flex-wrap:wrap;gap:6px}.mods .mskills span{border:1px solid rgba(var(--crgb),.3);padding:5px 8px;font-size:14px;color:#fff;display:flex;gap:8px}.mods .mskills b{color:var(--yellow)}
+@media (max-width:420px){.mods .msaves{grid-template-columns:repeat(3,minmax(0,1fr))}}
+[data-rule]{cursor:help}.schip[data-rule]:focus-visible,.ltag[data-rule]:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .mbox{background:rgba(10,10,18,.98);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:0 18px 16px;width:min(980px,100%);max-height:calc(100dvh - 28px);overflow:auto;overscroll-behavior:contain}
 #printSheet{display:none}
 @media print{
@@ -955,14 +986,14 @@ body.fx h2:hover{animation:jit .28s steps(2) 1}
 .grunt{display:grid;place-items:center;color:#ffd23f;background:rgba(255,210,63,.08);border:1px solid rgba(255,210,63,.4)}
 #combatFx{position:fixed;inset:0;z-index:21;display:flex;background:radial-gradient(ellipse at center,rgba(90,0,20,.92),rgba(5,0,4,.97));cursor:pointer;padding:20px;overflow:auto;animation:cfIn .35s ease}
 #combatFx .cf-in{width:min(94vw,760px);text-align:center;margin:auto}
-#combatFx .many .cf-grid{grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px}
+#combatFx .many .cf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px}#combatFx .many .cf-grid > *{min-width:0}
 #combatFx .many .cf-c{padding:10px 6px;gap:5px}
 #combatFx .many .cf-c .av,#combatFx .many .cf-c .iceart{width:48px;height:48px}
 #combatFx .many .cf-c b{font-size:13px}
 #combatFx .many .cf-s{margin:10px 0 16px}#combatFx .many .cf-go{margin-top:16px}
 #combatFx .cf-t{font:700 clamp(34px,9vw,72px)/1 Orbitron,sans-serif;letter-spacing:4px;color:#ff3c5a;text-shadow:0 0 18px rgba(255,60,90,.8),0 0 40px rgba(255,60,90,.4);animation:cfPulse 1.1s ease-in-out infinite}
 #combatFx .cf-s{font:500 13px Orbitron,sans-serif;letter-spacing:3px;color:#ffd0d8;margin:12px 0 22px;text-transform:uppercase}
-#combatFx .cf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+#combatFx .cf-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}#combatFx .cf-grid > *{flex:0 1 160px;min-width:140px}
 #combatFx .cf-c{border:1px solid rgba(255,60,90,.55);background:rgba(20,0,6,.7);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;animation:cfCard .4s ease both}
 #combatFx .cf-c .av{width:64px;height:64px}#combatFx .cf-c b{color:#fff;font-size:15px;line-height:1.2}#combatFx .cf-c small{color:#ff8fa3;font:500 10px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
 #combatFx .cf-n{position:absolute;top:6px;right:8px;font:700 15px Orbitron,sans-serif;color:#ffd23f}
@@ -1141,7 +1172,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a><a href="#r-attacks">Attacks and Weapons</a>
-      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-ice">Black ICE</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-ice">Black ICE</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-crew">The Crew</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -1224,7 +1255,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Stats</b></td><td>5e point buy with 27 points. Every stat starts between 8 and 15.</td></tr>
             <tr><td><b>Skill picks</b></td><td>One pick on a level up when any stat reaches a new tier (Rookie 10, Pro 14, Phenom 17, Legend 20). Taking it locks the other stats until their next tier. Take a new skill, or double one you got two tiers earlier. Picks stay even if the stat drops</td></tr>
             <tr><td><b>AC</b></td><td>10 + REF mod + TEC mod. Cyberware can raise it, and meds or consumables can raise it for a while</td></tr>
-            <tr><td><b>Starting RAM</b></td><td>4 + INT mod. Some perks raise it, and some of those have prerequisites</td></tr>
+            <tr><td><b>Starting RAM</b></td><td>4 + your RAM skill (INT mod, plus your proficiency bonus if you're proficient in RAM). Some perks raise it, and some of those have prerequisites</td></tr>
             <tr><td><b>Starting HP</b></td><td>10 + 10 + BOD mod. Level 1 takes the max roll, no dice</td></tr>
             <tr><td><b>HP per level</b></td><td>10 + 1d10 + BOD mod every level after 1, unless a perk or cyberware raises it</td></tr>
             <tr><td><b>Perk points</b></td><td>1 every time you level up</td></tr>
@@ -1313,7 +1344,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 
       <section class="rsec" id="r-ram"><h2>RAM</h2>
         <div class="panel">
-          <p>RAM is the fuel for reactions, hacks and some perks. Your max RAM is 4 + your INT mod, plus whatever your installed cyberware adds.</p>
+          <p>RAM is the fuel for reactions, hacks and some perks. Your max RAM is 4 + your RAM skill, plus whatever your installed cyberware adds. Your RAM skill is your INT mod plus your proficiency bonus if you're proficient in RAM, or twice it with double proficiency.</p>
           <p>The INT perk Extra Slot doubles your max RAM. Automation cuts every RAM cost by 1, so reactions only cost 1.</p>
           <h3 style="margin-top:18px">Overheated</h3>
           <p style="margin-top:8px">If your RAM hits 0 your system overheats. You're stunned and can't do anything until your RAM comes back. The INT perk Insulated Wires keeps you from ever overheating. The DM can drain or restore your RAM at any time.</p>
@@ -1399,7 +1430,14 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <p style="margin-top:8px">Every piece of cyberware has a cost, set by the DM or by the Fabricator who built it. Installed chrome fills your tally. Your <b>threshold</b> is 10 + your Cyberware skill bonus, which is your TEC mod plus your proficiency bonus if you're proficient in Cyberware (twice it if you doubled the skill). It goes up on its own as you level and raise TEC. Anything past your threshold is <b>overflow</b>. Overflow can only go up to half your threshold, rounded up, which sets your <b>max</b>. The last overflow hex is red. Fill it and you hit the point of no return. See Cyberpsychosis.</p>
           <p class="muted" style="font-size:14px;margin-top:6px">Example. TEC 14 (+2) and proficient in Cyberware at level 1 (+2) gives a threshold of 14, so overflow caps at 7 and your max is 21. A tally of 16 is 2 points of overflow, so your Cyberpsychosis save DC is 14. A tally of 21 fills the red hex.</p>
           <p style="margin-top:10px"> Only a merc with the TEC Legend perk <b>RipperDoc</b> can install or remove cyberware, on themselves or anyone else. If nobody in the crew is a RipperDoc, you'll need to find one!</p>
-          <p>During a live session a RipperDoc sees an install panel on every party member's card. The part has to be in the patient's bag, so hand it over first. Any merc can hand items and eddies to the rest of the crew.</p>
+          <h3 style="margin-top:18px">Going under the knife</h3>
+          <p style="margin-top:8px">In a live session chrome goes in or comes out through a procedure. Roll for it at the table first.</p>
+          <div class="drv two">
+            <div><b>1. The quote</b><span>The RipperDoc (a crewmate with the perk, or the DM running an NPC doc) picks the chrome from the patient's bag, the slot and a fee, and sends a quote.</span></div>
+            <div><b>2. The patient says yes</b><span>The patient sees the chrome, their threshold before and after, the Cyberpsychosis DC it brings and the fee. <b>Go under the knife</b> installs it and pays the doc.</span></div>
+          </div>
+          <p>The part has to be in the patient's bag first, so hand it over. Any merc can hand items and eddies to the rest of the crew.</p>
+          <p><b>New chrome.</b> A crew RipperDoc can draft new chrome (name, slot, tier, RAM, AC, threshold cost and effect). It goes to the DM, who can tweak it and approve it. Approved chrome lands in the patient's bag, ready for a quote.</p>
           <h3 style="margin-top:18px">Hot-swappable parts</h3>
           <p style="margin-top:8px">For an extra fee, a RipperDoc can make a part hot-swappable. Anyone can swap a hot part in or out of themselves without a RipperDoc, but it comes with a cost.</p>
           <table class="rtable"><tbody>
@@ -1449,6 +1487,17 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         </div>
       </section>
 
+      <section class="rsec" id="r-crew"><h2>The Crew</h2>
+        <div class="panel">
+          <p>In a live session the Party tab has a crew board everyone shares.</p>
+          <table class="rtable"><tbody>
+            <tr><td><b>Street Cred</b></td><td>The crew's reputation, set by the DM. It unlocks better gear in shops. Draft numbers: Tier 2 at 10, Tier 3 at 25, Tier 4 at 50</td></tr>
+            <tr><td><b>Gig board</b></td><td>Jobs the DM posts, with the fixer, the pay and what the crew knows. When the DM marks a gig done, the pay goes into the crew stash</td></tr>
+            <tr><td><b>Crew stash</b></td><td>Shared eddies and items. Anyone in the crew can put things in or take them out, and the activity log shows who did what</td></tr>
+            <tr><td><b>Shop</b></td><td>When the DM opens a shop it shows up on everyone's Party tab. Buy with your own eddies. Gear above the crew's Street Cred stays locked</td></tr>
+          </tbody></table>
+        </div>
+      </section>
       <section class="rsec" id="r-tiers"><h2>Item Tiers</h2>
         <div class="panel">
           <p>Every weapon, armor piece, cyberware, piece of gear and consumable is Tier 1 to 4. Higher tiers hit harder and carry effects. A Fabricator can push an item up one tier at a time.</p>
@@ -1954,6 +2003,7 @@ function normalize0(c){
     psycho: !!c.psycho,
     jackLock: !!c.jackLock,
     jacked: !!c.jacked,
+    quotes: Array.isArray(c.quotes) ? c.quotes.filter(q => q && q.id).slice(-6) : [], drafts: Array.isArray(c.drafts) ? c.drafts.filter(d => d && d.id && d.name).slice(-8) : [],
     deckDraws: Math.max(0, parseInt(c.deckDraws) || 0), deckPend: Array.isArray(c.deckPend) ? c.deckPend.slice(-10) : [], deckHand: Array.isArray(c.deckHand) ? c.deckHand.slice(0, 10) : [], deckQ: Array.isArray(c.deckQ) ? c.deckQ.slice(-10) : [],
     lastOut: ['unsafe', 'safe', 'flat'].includes(c.lastOut) ? c.lastOut : null,
     sig: SIGS.includes(c.sig) ? c.sig : null,
@@ -2076,6 +2126,14 @@ function dmgText(cls, tier, m, dice, dt){
 }
 function gunTypeOf(name, stats){
   const c = classGuess(name, stats); return CLIPS[c] ? c : '';
+}
+/* Put an item payload into a merc's bag, stacking with an identical one. Returns how many arrived. */
+function giveItem(m, it){
+  const q = Math.max(1, parseInt(it.qty) || 1);
+  const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
+  const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
+  if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(it.type === 'Vehicle' ? {vk: vkOf(it)} : {})}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
+  return q;
 }
 function weaponOf(i){
   if (i.type !== 'Weapon') return {rof:null, reload:null};
@@ -2313,6 +2371,18 @@ async function showIdCardMerc(){
     if (b.dataset.m === 'copy'){ try { const blob2 = await new Promise(r => c.toBlob(r, 'image/png')); await navigator.clipboard.write([new ClipboardItem({'image/png':blob2})]); toast('ID card copied. Paste it anywhere.', true); } catch(err){ toast("Your browser won't copy images. Use Download instead."); } }
   };
 }
+/* Tap a condition or a lost limb anywhere (sheet, party, DM) to read what it does. */
+function ruleModal(title, text){
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox rulebox" style="max-width:420px"><div class="sethead"><h3>${esc(title)}</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div><p style="margin:4px 0 0;font-size:16px;line-height:1.5">${esc(text)}</p></div>`;
+  m.onclick = e => { if (e.target === m || e.target.closest('[data-m=close]')) closeModal(); };
+}
+document.addEventListener('click', e => {
+  if (e.target.closest('button,a,input,select,textarea,label')) return;
+  const t = e.target.closest('[data-rule]'); if (!t) return;
+  ruleModal(t.dataset.rule, t.dataset.rd || '');
+});
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.rule){ e.preventDefault(); ruleModal(e.target.dataset.rule, e.target.dataset.rd || ''); } });
 function closeModal(){ const m = $('#modal'); m.hidden = true; m.innerHTML = ''; if ($('#setPanel').hidden) document.documentElement.classList.remove('noscroll'); }
 
 /* ---- printable sheet ---- */
@@ -2393,7 +2463,7 @@ function artKind(i){
   if (i.type === 'Weapon'){
     const WK = {'Hand Cannon':'cannon', 'Grenade Launcher':'glauncher', 'Rocket Launcher':'rocket', 'Knife':'knife', 'Light Hammer':'hammer', 'Heavy Hammer':'sledge', 'Sword':'blade', 'Club':'blunt',
       'Light Pistol':'pistol', 'Heavy Pistol':'pistol', 'SMG':'smg', 'LMG':'lmg', 'Shotgun':'shotgun', 'Assault Rifle':'rifle', 'Sniper Rifle':'sniper'};
-    const k = WK[i.wclass] || WK[classGuess(i.name)]; if (k) return k;
+    const k = WK[i.wclass] || WK[GUN_ALIAS[i.gtype] || i.gtype] || WK[classGuess(i.name, i.stats)]; if (k) return k;
     if (/sniper/.test(n)) return 'sniper';
     if (/lmg|hmg|minigun/.test(n)) return 'lmg';
     if (/shotgun/.test(n)) return 'shotgun';
@@ -2773,7 +2843,7 @@ function renderWizard(){
         <div class="stepper"><button data-pb="${k}" data-d="-1" ${v <= 8 ? 'disabled' : ''} aria-label="Lower ${k}">−</button><span class="val">${v}</span><button data-pb="${k}" data-d="1" ${canUp ? '' : 'disabled'} aria-label="Raise ${k}">+</button></div>
         <div class="mod">${sgn(mod(v))}</div><div class="cost">${PB_COST[v]} pts</div></div>`;
       }).join('')}</div>
-      <p class="muted" style="margin-top:12px;font-size:14px">Starting RAM ${4 + mod(W.base.INT)} · Starting HP ${Math.max(1, 20 + mod(W.base.BOD))} (10 + 10 ${sgn(mod(W.base.BOD))}) · Trees online ${ORDER.filter(k => W.base[k] >= 10).join(', ') || 'none yet'}</p>
+      <p class="muted" style="margin-top:12px;font-size:14px">Starting RAM ${4 + mod(W.base.INT)}, more if you're proficient in RAM · Starting HP ${Math.max(1, 20 + mod(W.base.BOD))} (10 + 10 ${sgn(mod(W.base.BOD))}) · Trees online ${ORDER.filter(k => W.base[k] >= 10).join(', ') || 'none yet'}</p>
       <div class="err" id="wErr">${left > 0 ? `You still have ${left} point${left > 1 ? 's' : ''} to spend.` : ''}</div>`;
   } else {
     h = `<h3>Ready to jack in</h3>
@@ -2925,7 +2995,7 @@ function renderVitalsBar(){
   const showNet = hm && (hasPerk('INT.A.r') || netNow(C) < hm);
   const hpC = hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set'), netC = hm ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '';
   const gun = C.inv.find(i => i.id === C.eq.primary && clipCap(i)), cap = gun && clipCap(gun), am = gun ? (gun.ammo == null ? cap : gun.ammo) : 0;
-  const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>Ammo</small><b>${am}<small> / ${cap}</small></b><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
+  const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>Ammo</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire full ROF, ${gun.rof} shots">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
   el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
   syncBodyFx();
 }
@@ -3611,7 +3681,7 @@ const hacked = (k, c = C) => !!c && (c.hacks || []).includes(k);
 function blocked(k){ if (!hacked(k)) return false; toast(`Blocked. ${HACKS[k].n} is messing with your systems.`); return true; }
 const liveMe = () => LS && LS.role === 'player' && liveApi && liveState === 'on' && C && C.id === LS.mercId;
 const hasPerk = (k, c = C) => c.unlocked.includes(k);
-const ramBase = (c = C) => Math.max(0, 4 + mod(score('INT', c)) + cyberRam(c));
+const ramBase = (c = C) => Math.max(0, 4 + skillBonus('RAM', 'INT', c) + cyberRam(c));   // 4 + RAM skill (INT mod + proficiency)
 const ramMax = (c = C) => ramBase(c) * (hasPerk('INT.S.p', c) ? 2 : 1);
 const reactCost = (c = C) => hasPerk('INT.S.ph', c) ? 1 : 2;
 const ramCur = () => C.ram == null ? ramMax() : Math.max(0, Math.min(C.ram, ramMax()));
@@ -3652,13 +3722,13 @@ document.querySelector('.vtabs').addEventListener('click', e => { const b = e.ta
 function ammoHTML(i){
   const cap = clipCap(i), a = i.ammo == null ? cap : i.ammo, low = a < i.rof;
   return `<div class="ammo"><span class="an ${low ? 'low' : ''}" aria-label="Ammo">${a} <small>/ ${cap}</small></span><span class="abar"><i class="${low ? 'low' : ''}" style="width:${cap ? a / cap * 100 : 0}%"></i></span>
-    <button class="btn small primary" data-ammo="fire" data-i="${i.id}" ${a ? '' : 'disabled'} title="One ATTACK fires ${i.rof} shot${i.rof === 1 ? '' : 's'}">Fire −${Math.min(i.rof, a) || i.rof}</button><button class="btn small" data-ammo="add" data-i="${i.id}" ${a < cap ? '' : 'disabled'} aria-label="One more shot">+1</button><button class="btn small" data-ammo="reload" data-i="${i.id}" ${a < cap ? '' : 'disabled'}>Reload</button></div>`;
+    <button class="btn small primary" data-ammo="fire" data-i="${i.id}" ${a ? '' : 'disabled'} title="One ATTACK at full ROF fires ${i.rof} shot${i.rof === 1 ? '' : 's'}">Full ROF −${Math.min(i.rof, a) || i.rof}</button>${i.rof > 1 ? `<button class="btn small" data-ammo="one" data-i="${i.id}" ${a ? '' : 'disabled'} title="Fire one shot">Single −1</button>` : ''}<button class="btn small" data-ammo="add" data-i="${i.id}" ${a < cap ? '' : 'disabled'} aria-label="One more shot">+1</button><button class="btn small" data-ammo="reload" data-i="${i.id}" ${a < cap ? '' : 'disabled'}>Reload</button></div>`;
 }
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-ammo]'); if (!b || !C) return;
   const i = C.inv.find(x => x.id === b.dataset.i), cap = i && clipCap(i); if (!cap) return;
   const a = i.ammo == null ? cap : i.ammo;
-  if (b.dataset.ammo === 'fire'){ const n = Math.min(i.rof, a); i.ammo = a - n; if (!i.ammo) toast(`Clip's empty. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`); }
+  if (b.dataset.ammo === 'fire' || b.dataset.ammo === 'one'){ const n = b.dataset.ammo === 'one' ? Math.min(1, a) : Math.min(i.rof, a); i.ammo = a - n; if (!i.ammo) toast(`Clip's empty. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`); }
   else if (b.dataset.ammo === 'add') i.ammo = Math.min(cap, a + 1);
   else { i.ammo = cap; toast(`Reloaded. ${cap} shots. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`, true); }
   saveC(); renderCS(); renderVitalsBar();
@@ -3679,6 +3749,26 @@ function keepDrafts(root){
     vals.forEach((v, k) => { const el = find(k); if (el && root.contains(el) && !el.dataset.field) el.value = v; });
     if (aKey){ const el = find(aKey); if (el && root.contains(el) && document.activeElement !== el){ el.focus({preventScroll:true}); try { if (caret) el.setSelectionRange(caret[0], caret[1]); } catch(e){} } }
   };
+}
+/* Numbers to add to the physical dice. The site never rolls. */
+function modsPanel(){
+  const pb = prof(C.level), row = (k, v, sub) => `<div class="mrow"><span>${k}${sub ? `<small>${sub}</small>` : ''}</span><b>${v}</b></div>`;
+  const atk = slot => {
+    const i = C.inv.find(x => x.id === C.eq[slot]); if (!i || i.type !== 'Weapon') return '';
+    const w = WT[i.wclass], st = w ? w.st : i.reload === 'none' ? 'STR' : 'REF', t = i.tier || 0;
+    const dmg = w ? dmgText(i.wclass, t, C) : (i.stats || '').split('·')[0].trim();
+    return row(esc(i.name), `d20 ${sgn(mod(score(st)) + pb + t)}`, `${st}${t ? ' · tier +' + t : ''}${dmg ? ' · ' + esc(dmg) : ''}`);
+  };
+  const unarmed = row('Unarmed', `d20 ${sgn(mod(score('STR')) + pb)}`, `STR · ${Math.max(1, 1 + mod(score('STR')))} bludgeoning`);
+  const saves = ['STR', 'REF', 'BOD', 'INT', 'TEC', 'COO'].map(k => `<div class="msave ${k === 'STR' || k === 'BOD' ? 'p' : ''}"><span>${k}</span><b>${sgn(mod(score(k)) + (k === 'STR' || k === 'BOD' ? pb : 0))}</b></div>`).join('');
+  const sk = SKILLS.map(([n, st]) => ({n, st, l: skillProf(n, st).level})).filter(x => x.l > 0);
+  return `<div class="panel gap mods" data-sub="combat"><div class="row"><h3>Your rolls</h3><span class="spacer"></span><span class="muted" style="font-size:12px">Add these to the dice at the table</span></div>
+    <span class="lbl">Attacks</span>${atk('primary')}${atk('secondary')}${unarmed}
+    ${row('Initiative', `d20 ${sgn(mod(score('REF')))}`, 'REF')}${C.cyber.length ? row('Cyberpsychosis save', `d20 ${sgn(mod(score('TEC')))}`, `TEC vs DC ${psyDC(C)}`) : ''}
+    <span class="lbl" style="margin-top:12px">Saving throws</span><div class="msaves">${saves}</div>
+    <p class="muted" style="font-size:12px;margin:4px 0 0">Highlighted saves add your proficiency (+${pb}), like a 5e Fighter.</p>
+    ${sk.length ? `<span class="lbl" style="margin-top:12px">Your skills</span><div class="mskills">${sk.map(x => `<span>${x.n}${x.l > 1 ? ' ◆◆' : ''}<b>${sgn(skillBonus(x.n, x.st))}</b></span>`).join('')}</div>` : ''}
+  </div>`;
 }
 function renderCS0(){
   const hm = C.hpMax, hp = C.hp == null ? hm : Math.min(C.hp, hm), net = C.netHp == null ? hm : Math.min(C.netHp, hm);
@@ -3814,6 +3904,7 @@ function renderCS0(){
       <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>
       <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div>${hasPerk('REF.A.l') ? '<div class="row gap" style="margin-top:12px;align-items:center"><button class="btn small danger" data-act="limbRoll">Blender · Roll limb</button><span class="muted" style="font-size:12px">After a CRIT on a foe below 50 HP</span></div>' : ''}</div>
     </div>
+    ${modsPanel()}
     <div class="panel gap" data-sub="combat"><div class="row"><h3>Quickhacks</h3><span class="spacer"></span><span class="muted" style="font-size:13px">RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all</span></div>
       <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p></div>
@@ -3861,7 +3952,7 @@ function afterlife(){
   sfxFlatline();
   clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; tx.textContent = 'FLATLINED'; tx.dataset.text = 'FLATLINED'; tx.classList.remove('afl'); }, flashOK() ? 6500 : 4000);
 }
-const statusChips = (m, ctl) => (m.status || []).map(x => { const s = STATUSMAP[x.id]; return `<span class="schip ${s.cyber ? 'cy' : ''}" title="${esc(s.d)}"><b>${s.n}${s.lvl ? ' ' + x.v : ''}</b>${x.r != null ? `<i>${x.r} rd${x.r === 1 ? '' : 's'}</i>` : ''}${ctl ? ctl(x) : ''}</span>`; }).join('');
+const statusChips = (m, ctl) => (m.status || []).map(x => { const s = STATUSMAP[x.id]; return `<span class="schip ${s.cyber ? 'cy' : ''}" title="${esc(s.d)}" data-rule="${esc(s.n)}" data-rd="${esc(s.d)}" tabindex="0" role="button"><b>${s.n}${s.lvl ? ' ' + x.v : ''}</b>${x.r != null ? `<i>${x.r} rd${x.r === 1 ? '' : 's'}</i>` : ''}${ctl ? ctl(x) : ''}</span>`; }).join('');
 const statusOpts = () => `<optgroup label="5e conditions">${STATUS.filter(s => !s.cyber).map(s => `<option value="${s.id}">${s.n}</option>`).join('')}</optgroup><optgroup label="Cyber (drafts)">${STATUS.filter(s => s.cyber).map(s => `<option value="${s.id}">${s.n}</option>`).join('')}</optgroup>`;
 function addStatus(m, id, r, v){
   const s = STATUSMAP[id]; if (!s) return;
@@ -3935,7 +4026,21 @@ function cyberMapHTML(m, ro){
   };
   const x = !ro && m.cyber.find(y => y.id === selCy);
   let detail = '';
-  if (!ro && cyberForm && SLOTMAP[cyberForm]){
+  const liveRip = rip && liveMe();
+  if (!ro && cyberForm && SLOTMAP[cyberForm] && liveRip){
+    const mates = players.filter(p => p.id !== liveApi.uid && p.merc);
+    detail = `<div class="cydetail"><div class="row" style="gap:8px">${cyIcon(cyberForm)}<b style="color:#fff">Draft new chrome · ${SLOTMAP[cyberForm][1]}</b></div>
+      <p class="muted" style="font-size:13px;margin:6px 0 0">In a live game new chrome goes to the DM first. Once it's approved it lands in the patient's bag and you send them a quote from the Party tab.</p>
+      <div class="iedit" style="border:0;padding-top:4px">
+        <label class="fl wide"><span>Name</span><input type="text" class="f" id="cfName" placeholder="Like Kiroshi Optics"></label>
+        <label class="fl"><span>Tier</span><select id="cfTier">${MK.map((t, i) => `<option value="${i}">${t}</option>`).join('')}</select></label>
+        <label class="fl"><span>RAM bonus</span><input type="number" id="cfRam" value="0"></label>
+        <label class="fl"><span>AC bonus</span><input type="number" id="cfAc" value="0"></label>
+        <label class="fl"><span>Threshold cost</span><input type="number" id="cfCw" value="1" min="0"></label>
+        <label class="fl wide"><span>What it does</span><input type="text" class="f" id="cfEff" placeholder="Effect"></label>
+        <label class="fl wide"><span>For</span><select id="cfFor"><option value="">Me</option>${mates.map(p => `<option value="${p.id}">${esc(p.merc.name || p.name)}</option>`).join('')}</select></label>
+        <div class="acts wide"><button class="btn small primary" data-act="cfDraft" data-slot="${cyberForm}">Send to the DM</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div></div>`;
+  } else if (!ro && cyberForm && SLOTMAP[cyberForm]){
     detail = `<div class="cydetail"><div class="row" style="gap:8px">${cyIcon(cyberForm)}<b style="color:#fff">Install into ${SLOTMAP[cyberForm][1]}</b></div>
       <div class="iedit" style="border:0;padding-top:4px">
         <label class="fl wide"><span>Name</span><input type="text" class="f" id="cfName" placeholder="Like Kiroshi Optics"></label>
@@ -3946,7 +4051,7 @@ function cyberMapHTML(m, ro){
         <div class="acts wide"><button class="btn small primary" data-act="cfSave" data-slot="${cyberForm}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div></div>`;
   } else if (x){
     detail = `<div class="cydetail t${(x.tier || 0) + 1}"><div class="row" style="gap:8px">${cyIcon(x.slot)}<b style="color:#fff">${esc(x.name)}</b><span class="muted" style="font-size:12px">${SLOTMAP[x.slot][1]}</span>${x.hot ? '<span class="hotb">HOT</span>' : ''}</div>
-      ${rip && x.slot !== 'shard' ? `<div class="iedit" style="border:0;padding-top:4px">
+      ${rip && !liveRip && x.slot !== 'shard' ? `<div class="iedit" style="border:0;padding-top:4px">
         <label class="fl wide"><span>Name</span><input type="text" class="f" data-c="${x.id}" data-cf="name" value="${esc(x.name)}"></label>
         <label class="fl"><span>RAM bonus</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}"></label>
         <label class="fl"><span>AC bonus</span><input type="number" data-c="${x.id}" data-cf="ac" value="${x.ac || 0}"></label>
@@ -3959,7 +4064,36 @@ function cyberMapHTML(m, ro){
     const held = C.inv.find(i => i.id === selItem && (i.type === 'Cyberware' || i.type === 'Shard'));
     detail = `<div class="cydetail empty"><p class="muted" style="margin:0;font-size:13px">${held ? `Holding <b style="color:#fff">${esc(held.name)}</b>. Tap an open slot to install it.` : `Tap installed chrome to see it. ${rip ? 'Tap an open slot to install by hand, or drag cyberware from your bag onto a slot.' : 'Drag hot-swap parts from your bag onto a slot. Everything else needs a RipperDoc.'}`}</p></div>`;
   }
-  return `<div class="cymap ${ro ? 'ro' : ''}"><div class="cycol">${CY_LEFT.map(slot).join('')}</div><div class="cybody">${bodySVG(m, ro ? null : (x ? x.slot : cyberForm || hlSlot))}</div><div class="cycol">${CY_RIGHT.map(slot).join('')}</div></div>${detail}`;
+  return `${ro ? '' : quoteCards() + draftList()}<div class="cymap ${ro ? 'ro' : ''}"><div class="cycol">${CY_LEFT.map(slot).join('')}</div><div class="cybody">${bodySVG(m, ro ? null : (x ? x.slot : cyberForm || hlSlot))}</div><div class="cycol">${CY_RIGHT.map(slot).join('')}</div></div>${detail}`;
+}
+/* ---- Ripperdoc procedures: a quote lands, the patient sees what it does to them and says yes ---- */
+function quoteCards(){
+  return (C.quotes || []).map(q => {
+    const i = q.act === 'install' && C.inv.find(x => x.id === q.itemId), x = q.act === 'remove' && C.cyber.find(y => y.id === q.cyberId);
+    if (!i && !x) return '';
+    const now = cwLoad(), after = now + (i ? (i.cw || 0) : -(x.cw || 0)), thr = cwTOf(C), max = cwMaxOf(C), sl = SLOTMAP[q.slot];
+    const full = i && sl && C.cyber.filter(y => y.slot === q.slot).length >= sl[2], over = after > max, red = i && cwCap(C) > 0 && after === max, poor = (C.eddies || 0) < q.fee;
+    const why = full ? `Your ${sl[1]} slot is full.` : over ? `That's past your max of ${max}.` : poor ? `You have ${C.eddies || 0} €$.` : '';
+    return `<div class="quote ${red ? 'red' : ''}"><div class="row" style="gap:8px">${cyIcon(i ? q.slot : x.slot)}<b style="color:#fff">${esc(q.fromName)} · ${i ? `Install ${esc(i.name)}` : `Remove ${esc(x.name)}`}</b></div>
+      <div class="kvs" style="margin-top:8px"><span>Where</span><b>${i ? (sl ? sl[1] : '?') : SLOTMAP[x.slot][1]}</b><span>Threshold</span><b>${now} → ${after} <small class="muted">of ${thr}, max ${max}</small></b>
+        ${after > thr ? `<span>Cyberpsychosis DC</span><b style="color:#ff4f6d">${10 + (C.unlocked.includes('BOD.A.l') ? 1 : 2) * (after - thr)}</b>` : ''}<span>Fee</span><b>${q.fee.toLocaleString()} €$</b></div>
+      ${red ? `<p style="color:#ff4f6d;font-size:14px;margin:8px 0 0">This fills your red hex. Your merc is lost for good.</p>` : ''}
+      <div class="row" style="gap:6px;margin-top:10px"><button class="btn small ${red ? 'danger' : 'primary'}" data-act="qAcc" data-q="${q.id}" ${why ? 'disabled' : ''}>${red ? (capWarn === q.id ? 'Confirm. Lose it all' : 'Go under the knife anyway') : 'Go under the knife'}</button><button class="btn small" data-act="qNo" data-q="${q.id}">Decline</button>${why ? `<span class="muted" style="font-size:13px">${why}</span>` : ''}</div></div>`;
+  }).join('');
+}
+function draftList(){
+  const ds = C.drafts || []; if (!ds.length) return '';
+  return `<div class="cydetail"><span class="lbl" style="margin:0">Waiting on the DM</span>${ds.map(d => `<div class="sti" style="margin-top:6px"><span>${esc(d.name)}<small>${SLOTMAP[d.slot] ? SLOTMAP[d.slot][1] : ''}${d.forName ? ' · for ' + esc(d.forName) : ''}</small></span><button class="btn small" data-act="drWd" data-d="${d.id}">Withdraw</button></div>`).join('')}</div>`;
+}
+function chromeIn(m, i, slot){
+  const sl = SLOTMAP[slot]; if (!sl) return 'That slot doesn\'t exist.';
+  if (m.cyber.filter(x => x.slot === slot).length >= sl[2]) return `Your ${sl[1]} slot is full.`;
+  if (cwLoad(m) + (i.cw || 0) > cwMaxOf(m)) return `That would push you past your max of ${cwMaxOf(m)}.`;
+  const st = i.stats || '', rm = /RAM\s*([+\-−]?\d+)/i.exec(st), am = /AC\s*([+\-−]?\d+)/i.exec(st);
+  m.cyber.push({id:uid(), slot, name:i.name, hot:!!i.hot, tier:i.tier || 0, cw:i.cw || 0, ram:rm ? parseInt(rm[1].replace('−', '-')) : 0, ac:am ? parseInt(am[1].replace('−', '-')) : 0,
+    effect:st.replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').replace(/AC\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
+  if ((i.qty || 1) > 1) i.qty--; else { m.inv = m.inv.filter(x => x !== i); fixEq(m); }
+  return '';
 }
 function installItem(i, slot){
   if (stunned() || blocked('cyber')) return false;
@@ -4344,6 +4478,33 @@ $('#vCS').addEventListener('click', e => {
     }
     case 'cfOpen': if (!canRip()) return; cyberForm = t.dataset.slot; renderCS(); $('#cfName').focus(); return;
     case 'cfCancel': cyberForm = null; return renderCS();
+    case 'qAcc': case 'qNo': {
+      const q = (C.quotes || []).find(y => y.id === t.dataset.q); if (!q) return;
+      if (t.dataset.act === 'qNo'){ C.quotes = C.quotes.filter(y => y !== q); toast(`Declined ${q.fromName}'s quote.`); return csSave(); }
+      if ((C.eddies || 0) < q.fee) return toast(`That costs ${q.fee} €$. You have ${C.eddies || 0}.`);
+      if (q.act === 'install'){
+        const i = C.inv.find(x => x.id === q.itemId); if (!i){ C.quotes = C.quotes.filter(y => y !== q); csSave(); return toast("That chrome isn't in your bag anymore."); }
+        if (cwCap(C) > 0 && cwLoad() + (i.cw || 0) === cwMaxOf(C) && capWarn !== q.id){ capWarn = q.id; sfx('deny'); return renderCS(); }
+        const err = chromeIn(C, i, q.slot); if (err) return toast(err);
+        toast(`${q.fromName} installed ${i.name}.${cwOver() ? ` Overflow ${cwOver()}, Cyberpsychosis DC ${psyDC(C)}.` : ''}`, true); sfx('equip');
+      } else {
+        const x = C.cyber.find(y => y.id === q.cyberId); if (!x) return;
+        C.cyber = C.cyber.filter(y => y !== x);
+        C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, tier:x.tier || 0, cw:x.cw || 0, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac ? 'AC ' + sgn(x.ac) : '', x.effect].filter(Boolean).join(' · ')});
+        toast(`${q.fromName} took out your ${x.name}. It's in your bag.`, true); sfx('unequip');
+      }
+      capWarn = null; C.eddies = (C.eddies || 0) - q.fee; C.quotes = C.quotes.filter(y => y !== q);
+      if (q.fee && q.from && liveMe() && q.from !== liveApi.uid && players.some(p => p.id === q.from)) sendPlayerOp(q.from, {kind:'eddies', amount:q.fee});
+      csSave(); if (liveMe()) flushLog('ripperdoc ' + q.fromName); return;
+    }
+    case 'cfDraft': {
+      const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the chrome first.'); }
+      const fu = ($('#cfFor') || {}).value || '', fp = fu && players.find(p => p.id === fu);
+      C.drafts = [...(C.drafts || []), {id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), tier:parseInt(($('#cfTier') || {}).value) || 0, ram:parseInt($('#cfRam').value) || 0, ac:parseInt(($('#cfAc') || {}).value) || 0,
+        cw:Math.max(0, parseInt($('#cfCw').value) || 0), effect:$('#cfEff').value.trim().slice(0, 200), forUid:fu || liveApi.uid, forName:fp ? (fp.merc.name || fp.name) : C.name, at:Date.now()}].slice(-8);
+      cyberForm = null; toast(`${name} went to the DM for approval.`, true); sfx('receive'); return csSave();
+    }
+    case 'drWd': { C.drafts = (C.drafts || []).filter(d => d.id !== t.dataset.d); return csSave(); }
     case 'cfSave': {
       if (!canRip()) return;
       const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the cyberware first.'); }
@@ -4441,6 +4602,7 @@ const MOCK = (() => { try { return localStorage.getItem('daemon-live-mock') === 
 const LIVE_OK = MOCK || (!framed && /^https?:$/.test(location.protocol));
 const LS_KEY = 'daemon-live', HOSTED_KEY = 'daemon-hosted';
 let LS = null; try { LS = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){}
+let crew = [], dmDraftsSeen = false;
 let liveApi = null, liveState = 'idle', liveErr = '', unsubs = [], players = [], lib = [], sessMeta = null, endConfirm = false, libImport = false;
 let portraits = {}, pBlob = {}, lastPortrait = null, restoreList = null, leaveConfirm = false;
 let npcsDM = [], npcsPub = [], npcDel = null, codexLib = [];
@@ -4527,6 +4689,11 @@ async function firebaseLive(){
     setDmNpc: n => F.setDoc(d('dms', uid, 'npcs', n.id), n),
     delDmNpc: id => F.deleteDoc(d('dms', uid, 'npcs', id)),
     watchNpcs: (code, cb) => F.onSnapshot(c('sessions', code, 'npcs'), q => cb(list(q)), onErr('NPC ID cards')),
+    watchCrew: (code, cb) => F.onSnapshot(c('sessions', code, 'crew'), q => cb(list(q)), onErr('the crew board')),
+    setCrew: (code, id, data) => F.setDoc(d('sessions', code, 'crew', id), data),
+    delCrew: (code, id) => F.deleteDoc(d('sessions', code, 'crew', id)),
+    takeCrew: (code, id) => F.runTransaction(db, async t => { const r = d('sessions', code, 'crew', id), x = await t.get(r); if (!x.exists()) return null; t.delete(r); return x.data(); }),
+    poolAdd: (code, n) => F.runTransaction(db, async t => { const r = d('sessions', code, 'crew', '_pool'), x = await t.get(r), nx = (x.exists() ? x.data().eddies || 0 : 0) + n; if (nx < 0) return false; t.set(r, {type:'pool', eddies:nx}); return true; }),
     setNpc: (code, id, data) => F.setDoc(d('sessions', code, 'npcs', id), data),
     delNpc: (code, id) => F.deleteDoc(d('sessions', code, 'npcs', id)),
     updateSession: (code, data) => F.setDoc(d('sessions', code), data, {merge:true}),
@@ -4601,6 +4768,11 @@ function mockLive(){
     async setDmNpc(n){ mut(db => db[`dms/${uid}/npcs/${n.id}`] = n); },
     async delDmNpc(id){ mut(db => delete db[`dms/${uid}/npcs/${id}`]); },
     watchNpcs: (code, cb) => watch(() => coll(`sessions/${code}/npcs`), cb),
+    watchCrew: (code, cb) => watch(() => coll(`sessions/${code}/crew`), cb),
+    async setCrew(code, id, data){ mut(db => db[`sessions/${code}/crew/${id}`] = data); },
+    async delCrew(code, id){ mut(db => delete db[`sessions/${code}/crew/${id}`]); },
+    async takeCrew(code, id){ let got = null; mut(db => { const k = `sessions/${code}/crew/${id}`; got = db[k] || null; delete db[k]; }); return got; },
+    async poolAdd(code, n){ let ok = false; mut(db => { const k = `sessions/${code}/crew/_pool`, nx = ((db[k] || {}).eddies || 0) + n; if (nx >= 0){ db[k] = {type:'pool', eddies:nx}; ok = true; } }); return ok; },
     async setNpc(code, id, data){ mut(db => db[`sessions/${code}/npcs/${id}`] = data); },
     async delNpc(code, id){ mut(db => delete db[`sessions/${code}/npcs/${id}`]); },
     async updateSession(code, data){ mut(db => db['sessions/' + code] = {...(db['sessions/' + code] || {}), ...data}); },
@@ -4647,7 +4819,7 @@ function getLive(){
   if (!apiPromise) apiPromise = (MOCK ? Promise.resolve(mockLive()) : firebaseLive()).then(acctReady).catch(e => { apiPromise = null; throw e; });
   return apiPromise;
 }
-function stopAll(){ logPlay = 'cur'; recapDay = ''; handouts = []; lastReveal = 0; recapText = ''; logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
+function stopAll(){ crew = []; dmDraftsSeen = false; logPlay = 'cur'; recapDay = ''; handouts = []; lastReveal = 0; recapText = ''; logs = []; logBase = null; logClear = false; backups = []; backupsReady = false; sessNotes = ''; npcsDM = []; npcsPub = []; codexLib = []; unsubs.forEach(u => { try { u(); } catch(e){} }); unsubs = []; players = []; lib = []; sessMeta = null; portraits = {}; lastPortrait = null; leaveConfirm = false; }
 
 /* ---- account + cloud saves ---- */
 const ACCT_KEY = 'daemon-acct';
@@ -5122,11 +5294,21 @@ async function hoClick(a, t){
 
 /* ---- session recap ---- */
 let recapDay = '', recapText = '';
+/* Players: when the DM shows a recap, it pops up once on every screen. */
+function onRecap(s){
+  const rc = s && s.recap; if (!rc || !rc.text || !LS) return;
+  const k = 'daemon-recap-' + LS.code; let seen = 0; try { seen = +localStorage.getItem(k) || 0; } catch(e){}
+  if (rc.at <= seen) return; try { localStorage.setItem(k, rc.at); } catch(e){}
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox" style="max-width:560px"><div class="sethead"><h3>Previously in Night City</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div><div class="recapbox">${esc(rc.text).replace(/\n/g, '<br>')}</div></div>`;
+  m.onclick = e => { if (e.target === m || e.target.closest('[data-m=close]')) closeModal(); };
+  sfx('receive');
+}
 function recapHTML(){
   const ps = playsOf(sessMeta).filter(p => logs.some(l => logPlayOf(l) === p.n)), sel = recapDay || curPlay();
   return `<div class="panel gap"><div class="row"><h3>Session recap</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Turns the activity log into a summary you can paste in Discord.</span></div>
     <div class="row gap"><select id="rcDay" aria-label="Which session">${ps.length ? ps.map(p => `<option value="${p.n}" ${+sel === p.n ? 'selected' : ''}>Session ${p.n}${playSpan(p.n) ? ' · ' + playSpan(p.n) : ''}</option>`).join('') : '<option value="">No activity yet</option>'}</select>
-      <button class="btn small primary" data-live="rcMake" ${ps.length ? '' : 'disabled'}>Build recap</button>${recapText ? '<button class="btn small" data-live="rcCopy">Copy</button>' : ''}</div>
+      <button class="btn small primary" data-live="rcMake" ${ps.length ? '' : 'disabled'}>Build recap</button>${recapText ? '<button class="btn small" data-live="rcCopy">Copy</button><button class="btn small" data-live="rcSend">Show to the party</button>' : ''}</div>
     ${recapText ? `<textarea id="rcOut" class="notes" style="margin-top:10px;min-height:220px" aria-label="Recap">${esc(recapText)}</textarea>` : ''}</div>`;
 }
 function buildRecap(all, day){
@@ -5135,6 +5317,7 @@ function buildRecap(all, day){
   L.forEach(l => {
     const r = by[l.mercId] = by[l.mercId] || {name:l.name, dmg:0, heal:0, net:0, ed:0, xp:0, lvl:null, cool:0, coolOn:[], got:[], lost:[], perks:[], ach:[], flat:0};
     r.name = l.name;
+    if (l.mercId === 'dm'){ (l.lines || []).forEach(x => { if (x.t) (r.notes = r.notes || []).push(x.t); }); return; }
     (l.lines || []).forEach(x => {
       const t = x.t || '', num = re => { const m = re.exec(t); return m ? [+m[1], +m[2]] : null; };
       let v;
@@ -5152,7 +5335,8 @@ function buildRecap(all, day){
   });
   const ds = [...new Set(L.map(l => new Date(l.at).toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'})))];
   const head = `${sessMeta && sessMeta.name || 'Live game'} · Session ${day}${ds.length ? ' · ' + (ds.length > 1 ? ds[0] + ' to ' + ds[ds.length - 1] : ds[0]) : ''}`;
-  const rows = Object.values(by).map(r => {
+  const rows = Object.values(by).filter(r => r !== by.dm || (r.notes && r.notes.length)).map(r => {
+    if (r === by.dm) return `• ${r.name} · ${r.notes.slice(0, 6).join(' · ')}`;
     const bits = [];
     if (r.dmg || r.heal) bits.push(`took ${r.dmg} damage${r.heal ? ', healed ' + r.heal : ''}`);
     if (r.net) bits.push(`${r.net} NET damage`);
@@ -5170,12 +5354,173 @@ function buildRecap(all, day){
   const tot = Object.values(by).reduce((a, r) => ({dmg:a.dmg + r.dmg, ed:a.ed + Math.max(0, r.ed), flat:a.flat + r.flat}), {dmg:0, ed:0, flat:0});
   return `${head}\n\n${rows.join('\n')}\n\nCrew totals · ${tot.dmg} damage taken · ${tot.ed.toLocaleString()} €$ earned · ${tot.flat} flatline${tot.flat === 1 ? '' : 's'}`;
 }
+
+/* ---- Crew board: Street Cred, crew eddies, shared stash, gigs and the DM's shop ---- */
+const CRED_TIER = [0, 10, 25, 50];                      // Street Cred needed to buy tier 1-4 gear. Draft numbers until the DM sets them.
+const crewPool = () => (crew.find(x => x.id === '_pool') || {}).eddies || 0;
+const crewOf = t => crew.filter(x => x.type === t).sort((a, b) => (a.at || 0) - (b.at || 0));
+const credOf = () => Math.max(0, parseInt(sessMeta && sessMeta.cred) || 0);
+const shopIsOpen = () => !!(sessMeta && sessMeta.shopOpen);
+const tierOpen = t => credOf() >= CRED_TIER[Math.max(0, Math.min(3, t || 0))];
+const GIG_ST = {open:'Open', taken:'Taken', done:'Done', failed:'Failed'};
+let crewSeen = null, shopSeen = null;
+function crewNotice(had){
+  const ids = crewOf('gig').filter(g => g.status === 'open').map(g => g.id).join();
+  if (crewSeen !== null && ids && ids !== crewSeen && ids.length > crewSeen.length){ toast('New gig on the board. Check the Party tab.', true); sfx('receive'); }
+  crewSeen = ids;
+}
+function shopNotice(){
+  const o = shopIsOpen();
+  if (shopSeen !== null && o && !shopSeen){ toast(`${(sessMeta && sessMeta.shopName) || 'The shop'} is open. Check the Party tab.`, true); sfx('receive'); }
+  shopSeen = o;
+}
+const itemLine = it => `${esc(it.name)}${(it.qty || 1) > 1 ? ' ×' + it.qty : ''}${it.tier ? ` <span class="tierb t${it.tier + 1}">${MK[it.tier]}</span>` : ''}`;
+function gigHTML(g, dm){
+  return `<div class="gig ${g.status}"><div class="gh"><b>${esc(g.title || 'Gig')}</b><span class="gst">${GIG_ST[g.status] || 'Open'}</span></div>
+    <div class="gm">${g.fixer ? `Fixer <b>${esc(g.fixer)}</b> · ` : ''}Pays <b>${(g.pay || 0).toLocaleString()} €$</b> to the crew</div>
+    ${g.brief ? `<p>${esc(g.brief)}</p>` : ''}
+    ${dm ? `<div class="row" style="gap:6px;margin-top:8px">${['open', 'taken'].map(k => `<button class="btn small ${g.status === k ? 'on' : ''}" data-live="gigSt" data-id="${g.id}" data-st="${k}">${GIG_ST[k]}</button>`).join('')}
+      ${g.status === 'done' ? '' : `<button class="btn small primary" data-live="gigDone" data-id="${g.id}">Done, pay the crew</button><button class="btn small" data-live="gigSt" data-id="${g.id}" data-st="failed">Failed</button>`}
+      <button class="btn small danger" data-live="gigDel" data-id="${g.id}">Remove</button></div>` : ''}</div>`;
+}
+function crewPlayerHTML(){
+  const m = liveMerc(); if (!m) return '';
+  const stash = crewOf('stash'), gigs = crewOf('gig').filter(g => g.status !== 'failed').sort((a, b) => (a.status === 'done') - (b.status === 'done') || (b.at || 0) - (a.at || 0));
+  const bag = (m.inv || []).filter(i => !(m.eq && Object.values(m.eq).includes(i.id)));
+  const shop = shopIsOpen() ? crewOf('shop') : [];
+  return `${shop.length || shopIsOpen() ? `<div class="panel gap shop"><div class="row"><h3>${esc((sessMeta && sessMeta.shopName) || 'Shop')}</h3><span class="spacer"></span><span class="muted" style="font-size:13px">You have ${(m.eddies || 0).toLocaleString()} €$ · Street Cred ${credOf()}</span></div>
+      ${shop.length ? `<div class="shopl">${shop.map(x => { const lock = !tierOpen(x.item.tier), poor = (m.eddies || 0) < (x.price || 0);
+        return `<div class="shopi t${(x.item.tier || 0) + 1} ${lock ? 'lock' : ''}"><div class="peqi">${itemArt({...x.item, id:x.id})}</div><div class="si"><b>${esc(x.item.name)}</b><small>${esc(x.item.type)}${x.item.tier ? ' · ' + MK[x.item.tier] : ''}${x.item.stats ? ' · ' + esc(x.item.stats) : ''}</small></div>
+          <button class="btn small ${lock || poor ? '' : 'primary'}" data-live="buy" data-id="${x.id}" ${lock || poor ? 'disabled' : ''}>${lock ? `Street Cred ${CRED_TIER[x.item.tier]}` : `${(x.price || 0).toLocaleString()} €$`}</button></div>`; }).join('')}</div>` : '<p class="muted">Nothing on the shelves yet.</p>'}</div>` : ''}
+    ${gigs.length ? `<div class="panel gap"><div class="row"><h3>Gig board</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Pay goes into the crew stash</span></div>${gigs.map(g => gigHTML(g, false)).join('')}</div>` : ''}
+    <div class="panel gap crewp"><div class="row"><h3>Crew stash</h3><span class="spacer"></span><span class="cred">Street Cred <b>${credOf()}</b></span></div>
+      <div class="pool"><span class="lbl" style="margin:0">Crew eddies</span><b>${crewPool().toLocaleString()} €$</b></div>
+      <div class="row" style="gap:6px"><input type="number" min="1" id="poolAmt" placeholder="Amount" aria-label="Eddies amount" style="width:110px"><button class="btn small" data-live="poolIn">Put in</button><button class="btn small" data-live="poolOut">Take out</button></div>
+      <span class="lbl" style="margin-top:14px">In the stash</span>
+      ${stash.length ? `<div class="stashl">${stash.map(x => `<div class="sti"><span>${itemLine(x.item)}<small>from ${esc(x.by || 'the crew')}</small></span><button class="btn small" data-live="stOut" data-id="${x.id}">Take</button></div>`).join('')}</div>` : '<p class="muted" style="font-size:14px;margin:4px 0">Empty.</p>'}
+      ${bag.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="stashItem" aria-label="Item to put in the stash" style="flex:1;min-width:0">${bag.map(i => `<option value="${i.id}">${esc(i.name)}${i.qty > 1 ? ' ×' + i.qty : ''}</option>`).join('')}</select><input type="number" min="1" value="1" id="stashQty" aria-label="How many" style="width:64px"><button class="btn small primary" data-live="stIn">Put in</button></div>` : ''}
+      <p class="muted" style="font-size:12px;margin:8px 0 0">Anyone in the crew can put things in or take them out. It all shows in the activity log.</p></div>`;
+}
+function crewDMHTML(){
+  const gigs = crewOf('gig').sort((a, b) => (a.status === 'done' || a.status === 'failed') - (b.status === 'done' || b.status === 'failed') || (b.at || 0) - (a.at || 0)), shop = crewOf('shop'), stash = crewOf('stash');
+  const libOpts = lib.map(i => `<option value="${i.id}">${esc(i.name)}${i.tier ? ' ' + MK[i.tier] : ''} · ${esc(i.type)}</option>`).join('');
+  const drafts = players.flatMap(p => ((p.merc && p.merc.drafts) || []).map(d => ({...d, ru:p.id, rname:p.name || (p.merc && p.merc.name)})));
+  return `${drafts.length ? `<div class="panel gap"><h3>Chrome drafts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">A crew ripperdoc drafted new chrome. Fix anything you want, then approve it and it lands in the patient's bag.</p>
+      ${drafts.map(d => `<div class="draft" data-dr="${d.id}"><div class="row" style="gap:8px">${cyIcon(d.slot)}<b style="color:#fff">${esc(d.name)}</b><span class="muted" style="font-size:12px">by ${esc(d.rname)} for ${esc(d.forName || 'themselves')}</span></div>
+        <div class="iedit" style="border:0;padding-top:4px">
+          <label class="fl wide"><span>Name</span><input type="text" class="f" data-df="name" value="${esc(d.name)}"></label>
+          <label class="fl"><span>Slot</span><select data-df="slot">${Object.keys(SLOTMAP).filter(k => k !== 'shard').map(k => `<option value="${k}" ${k === d.slot ? 'selected' : ''}>${SLOTMAP[k][1]}</option>`).join('')}</select></label>
+          <label class="fl"><span>Tier</span><select data-df="tier">${[0, 1, 2, 3].map(t => `<option value="${t}" ${t === (d.tier || 0) ? 'selected' : ''}>${MK[t] || 'Mk.1'}</option>`).join('')}</select></label>
+          <label class="fl"><span>RAM bonus</span><input type="number" data-df="ram" value="${d.ram || 0}"></label>
+          <label class="fl"><span>AC bonus</span><input type="number" data-df="ac" value="${d.ac || 0}"></label>
+          <label class="fl"><span>Threshold cost</span><input type="number" min="0" data-df="cw" value="${d.cw || 0}"></label>
+          <label class="fl wide"><span>What it does</span><input type="text" class="f" data-df="effect" value="${esc(d.effect || '')}"></label></div>
+        <div class="row" style="gap:6px"><button class="btn small primary" data-live="drOk" data-id="${d.id}" data-ru="${d.ru}">Approve</button><button class="btn small danger" data-live="drNo" data-id="${d.id}" data-ru="${d.ru}">Reject</button></div></div>`).join('')}</div>` : ''}
+    <div class="panel gap"><div class="row"><h3>Street Cred</h3><span class="spacer"></span><b class="credn">${credOf()}</b></div>
+      <div class="row" style="gap:6px;margin-top:8px">${[-5, -1, 1, 5].map(n => `<button class="btn small" data-live="cred" data-n="${n}">${n > 0 ? '+' + n : n}</button>`).join('')}</div>
+      <p class="muted" style="font-size:12px;margin:8px 0 0">The crew's reputation. The shop unlocks ${CRED_TIER.slice(1).map((c, i) => `${MK[i + 1]} at ${c}`).join(', ')}. Draft numbers.</p></div>
+    <div class="panel gap"><h3>Gig board</h3>
+      <div class="iedit" style="border:0;padding-top:6px">
+        <label class="fl wide"><span>Gig</span><input type="text" class="f" id="gTitle" placeholder="Like Grab the Militech courier" maxlength="60"></label>
+        <label class="fl"><span>Fixer</span><input type="text" class="f" id="gFixer" placeholder="Like Regina Jones" maxlength="40"></label>
+        <label class="fl"><span>Pay €$</span><input type="number" min="0" id="gPay" value="1000"></label>
+        <label class="fl wide"><span>Brief</span><input type="text" class="f" id="gBrief" placeholder="What the crew knows" maxlength="240"></label>
+        <div class="acts wide"><button class="btn small primary" data-live="gigAdd">Post gig</button></div></div>
+      ${gigs.map(g => gigHTML(g, true)).join('') || '<p class="muted" style="font-size:14px">No gigs posted.</p>'}</div>
+    <div class="panel gap"><div class="row"><h3>Shop</h3><span class="spacer"></span><button class="btn small ${shopIsOpen() ? 'danger' : 'primary'}" data-live="shopTog">${shopIsOpen() ? 'Close shop' : 'Open shop'}</button></div>
+      <p class="muted" style="font-size:13px;margin:4px 0 10px">${shopIsOpen() ? 'Open. Players see it on their Party tab and buy with their own eddies.' : 'Closed. Stock it now and open it when the crew walks in.'}</p>
+      <div class="row" style="gap:6px"><input type="text" class="f" id="shopName" placeholder="Shop name, like Wakako's" value="${esc((sessMeta && sessMeta.shopName) || '')}" maxlength="40" aria-label="Shop name" style="flex:1;min-width:0"><button class="btn small" data-live="shopName">Rename</button></div>
+      ${lib.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="shopItem" aria-label="Item to stock" style="flex:1;min-width:0">${libOpts}</select><input type="number" min="0" id="shopPrice" placeholder="€$" aria-label="Price" style="width:90px"><button class="btn small primary" data-live="shopAdd">Stock</button></div>` : '<p class="muted" style="font-size:13px">Add items to your library on the Items tab to stock the shop.</p>'}
+      ${shop.length ? `<div class="shopl">${shop.map(x => `<div class="shopi t${(x.item.tier || 0) + 1} ${tierOpen(x.item.tier) ? '' : 'lock'}"><div class="peqi">${itemArt({...x.item, id:x.id})}</div><div class="si"><b>${esc(x.item.name)}</b><small>${x.item.tier ? MK[x.item.tier] + ' · ' : ''}${tierOpen(x.item.tier) ? 'Unlocked' : `Needs Street Cred ${CRED_TIER[x.item.tier]}`}</small></div>
+        <input type="number" min="0" value="${x.price || 0}" data-shopp="${x.id}" aria-label="Price of ${esc(x.item.name)}" style="width:84px"><button class="btn small danger" data-live="shopDel" data-id="${x.id}" aria-label="Remove ${esc(x.item.name)}">✕</button></div>`).join('')}</div>` : ''}</div>
+    <div class="panel gap"><div class="row"><h3>Crew stash</h3><span class="spacer"></span><b class="credn">${crewPool().toLocaleString()} €$</b></div>
+      <div class="row" style="gap:6px;margin-top:8px"><input type="number" min="1" id="poolAmt" placeholder="Amount" aria-label="Eddies amount" style="width:110px"><button class="btn small" data-live="poolIn">Add</button><button class="btn small" data-live="poolOut">Remove</button></div>
+      ${stash.length ? `<div class="stashl">${stash.map(x => `<div class="sti"><span>${itemLine(x.item)}<small>from ${esc(x.by || 'the crew')}</small></span><button class="btn small danger" data-live="stDel" data-id="${x.id}">Remove</button></div>`).join('')}</div>` : '<p class="muted" style="font-size:14px;margin:8px 0 0">Nothing in the stash.</p>'}
+      ${lib.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="stashLib" aria-label="Library item to stash" style="flex:1;min-width:0">${libOpts}</select><button class="btn small" data-live="stLib">Put in stash</button></div>` : ''}</div>`;
+}
+async function crewClick(a, t){
+  const K = ['poolIn', 'poolOut', 'stIn', 'stOut', 'stDel', 'stLib', 'buy', 'cred', 'gigAdd', 'gigSt', 'gigDone', 'gigDel', 'shopTog', 'shopName', 'shopAdd', 'shopDel', 'drOk', 'drNo'];
+  if (!K.includes(a)) return false;
+  const api = liveApi, code = LS.code, dm = LS.role === 'dm', me = liveMerc(), myName = dm ? 'The DM' : (me && me.name) || 'A merc';
+  const log = (text, via) => dm ? api.addLog(code, {at:Date.now(), uid:api.uid, mercId:'dm', name:'The DM', via:'', lines:[{t:text, k:'good'}]}).catch(() => {}) : flushLog(via || 'crew stash');
+  try {
+    if (a === 'poolIn' || a === 'poolOut'){
+      const n = Math.max(0, parseInt(($('#poolAmt') || {}).value) || 0); if (!n) return toast('Enter an amount.'), true;
+      if (a === 'poolIn' && !dm && (me.eddies || 0) < n) return toast(`You only have ${me.eddies || 0} €$.`), true;
+      if (!await api.poolAdd(code, a === 'poolIn' ? n : -n)) return toast(`The crew only has ${crewPool()} €$.`), true;
+      if (!dm) withLiveMerc(m => { m.eddies = (m.eddies || 0) + (a === 'poolIn' ? -n : n); });
+      log(`${a === 'poolIn' ? 'Added' : 'Removed'} ${n} €$ ${a === 'poolIn' ? 'to' : 'from'} the crew stash`); sfx('eddies'); toast(`${a === 'poolIn' ? 'Put' : 'Took'} ${n} €$ ${a === 'poolIn' ? 'in' : 'out'}.`, true); return true;
+    }
+    if (a === 'stIn'){
+      const id = ($('#stashItem') || {}).value, q0 = Math.max(1, parseInt(($('#stashQty') || {}).value) || 1);
+      const i = me && me.inv.find(x => x.id === id); if (!i) return true; const q = Math.min(q0, i.qty || 1);
+      await api.setCrew(code, uid(), {type:'stash', item:itemPayload(i, q), by:myName, at:Date.now()});
+      withLiveMerc(m => { const j = m.inv.find(x => x.id === id); if (!j) return; if ((j.qty || 1) > q) j.qty -= q; else { m.inv = m.inv.filter(x => x !== j); fixEq(m); } });
+      log(`Put ${q > 1 ? q + '× ' : ''}${i.name} in the crew stash`); sfx('unequip'); toast(`${i.name} is in the stash.`, true); return true;
+    }
+    if (a === 'stOut'){
+      const x = await api.takeCrew(code, t.dataset.id); if (!x) return toast('Someone already took that.'), true;
+      withLiveMerc(m => giveItem(m, x.item)); log(`Took ${(x.item.qty || 1) > 1 ? x.item.qty + '× ' : ''}${x.item.name} from the crew stash`); sfx('receive'); toast(`${x.item.name} is in your bag.`, true); return true;
+    }
+    if (a === 'buy'){
+      const x = crewOf('shop').find(y => y.id === t.dataset.id); if (!x || !shopIsOpen()) return true;
+      if (!tierOpen(x.item.tier)) return toast(`The crew needs Street Cred ${CRED_TIER[x.item.tier]} for that.`), true;
+      if ((me.eddies || 0) < (x.price || 0)) return toast(`That costs ${x.price} €$. You have ${me.eddies || 0}.`), true;
+      withLiveMerc(m => { m.eddies -= (x.price || 0); giveItem(m, {...x.item, qty:1}); });
+      log('', (sessMeta && sessMeta.shopName) || 'the shop'); sfx('receive'); toast(`Bought ${x.item.name}.`, true); return true;
+    }
+    if (!dm) return true;
+    // ---- DM only below
+    if (a === 'stDel'){ await api.delCrew(code, t.dataset.id); return true; }
+    if (a === 'stLib'){ const it = lib.find(x => x.id === ($('#stashLib') || {}).value); if (it){ await api.setCrew(code, uid(), {type:'stash', item:itemPayload(it), by:'The DM', at:Date.now()}); toast(`${it.name} is in the crew stash.`, true); } return true; }
+    if (a === 'cred'){ const n = Math.max(0, credOf() + (parseInt(t.dataset.n) || 0)); await api.updateSession(code, {cred:n}); sessMeta = {...sessMeta, cred:n}; renderLive(); return true; }
+    if (a === 'gigAdd'){
+      const title = ($('#gTitle').value || '').trim(); if (!title) return toast('Give the gig a name.'), true;
+      await api.setCrew(code, uid(), {type:'gig', title:title.slice(0, 60), fixer:($('#gFixer').value || '').trim().slice(0, 40), pay:Math.max(0, parseInt($('#gPay').value) || 0), brief:($('#gBrief').value || '').trim().slice(0, 240), status:'open', at:Date.now()});
+      ['#gTitle', '#gFixer', '#gBrief'].forEach(k => { const e = $(k); if (e) e.value = ''; }); toast('Gig posted.', true); return true;
+    }
+    const g = crewOf('gig').find(y => y.id === t.dataset.id);
+    if (a === 'gigSt' && g){ const {id, ...rest} = g; await api.setCrew(code, g.id, {...rest, status:t.dataset.st}); return true; }
+    if (a === 'gigDel' && g){ await api.delCrew(code, g.id); return true; }
+    if (a === 'gigDone' && g){
+      await api.poolAdd(code, g.pay || 0); const {id, ...rest} = g; await api.setCrew(code, g.id, {...rest, status:'done'});
+      log(`Gig done: ${g.title}. ${g.pay || 0} €$ into the crew stash`); sfx('eddies'); toast(`${g.pay || 0} €$ went into the crew stash.`, true); return true;
+    }
+    if (a === 'shopTog'){ const o = !shopIsOpen(); await api.updateSession(code, {shopOpen:o}); sessMeta = {...sessMeta, shopOpen:o}; renderLive(); toast(o ? 'Shop open.' : 'Shop closed.', true); return true; }
+    if (a === 'shopName'){ const n = ($('#shopName').value || '').trim().slice(0, 40); await api.updateSession(code, {shopName:n}); sessMeta = {...sessMeta, shopName:n}; toast('Renamed.', true); return true; }
+    if (a === 'shopAdd'){
+      const it = lib.find(x => x.id === ($('#shopItem') || {}).value); if (!it) return true;
+      await api.setCrew(code, uid(), {type:'shop', item:itemPayload(it, 1), price:Math.max(0, parseInt(($('#shopPrice') || {}).value) || 0), at:Date.now()}); return true;
+    }
+    if (a === 'shopDel'){ await api.delCrew(code, t.dataset.id); return true; }
+    if (a === 'drOk' || a === 'drNo'){
+      const p = players.find(x => x.id === t.dataset.ru), d = p && ((p.merc && p.merc.drafts) || []).find(x => x.id === t.dataset.id); if (!d) return true;
+      if (a === 'drOk'){
+        const box = t.closest('[data-dr]'), v = k => (box.querySelector(`[data-df="${k}"]`) || {}).value;
+        const ram = parseInt(v('ram')) || 0, ac = parseInt(v('ac')) || 0, eff = (v('effect') || '').trim();
+        const item = {name:(v('name') || d.name).trim().slice(0, 60), type:'Cyberware', qty:1, tier:Math.max(0, Math.min(3, parseInt(v('tier')) || 0)), cw:Math.max(0, parseInt(v('cw')) || 0), slot:v('slot') || d.slot,
+          stats:[ram ? 'RAM ' + sgn(ram) : '', ac ? 'AC ' + sgn(ac) : '', eff].filter(Boolean).join(' · ').slice(0, 120)};
+        await sendOp(d.forUid && players.some(x => x.id === d.forUid) ? d.forUid : p.id, {kind:'item', item});
+        toast(`Approved ${item.name}. It's in ${esc(d.forName || p.name)}'s bag.`, true);
+      }
+      await sendOp(p.id, {kind:'draftDone', id:d.id, ok:a === 'drOk'}); if (a === 'drNo') toast('Draft rejected.', true);
+      return true;
+    }
+  } catch(e){ console.error(e); toast("That didn't go through. Check your connection."); return true; }
+  return true;
+}
+$('#liveBody').addEventListener('change', e => {
+  const id = e.target.dataset && e.target.dataset.shopp; if (!id || !LS || LS.role !== 'dm') return;
+  const x = crewOf('shop').find(y => y.id === id); if (!x) return;
+  const {id:_, ...rest} = x; liveApi.setCrew(LS.code, id, {...rest, price:Math.max(0, parseInt(e.target.value) || 0)}).catch(() => {});
+});
 async function recapClick(a){
   if (a === 'rcMake'){
     recapDay = +(($('#rcDay') || {}).value || 0); if (!recapDay) return true;
     let all = logs; try { all = await liveApi.getLogs(LS.code); } catch(err){}
     recapText = buildRecap(all, recapDay); renderLive(); return true;
   }
+  if (a === 'rcSend'){ const text = (($('#rcOut') || {}).value || recapText).slice(0, 4000); await liveApi.updateSession(LS.code, {recap:{text, at:Date.now()}}); toast('The recap is up on every player\'s screen.', true); return true; }
   if (a === 'rcCopy'){ copyText(($('#rcOut') || {}).value || recapText, null, 'Recap'); return true; }
   return false;
 }
@@ -5238,8 +5583,11 @@ setInterval(() => { if (LS && LS.role === 'player' && liveApi && liveState === '
 /* While the player has a dropdown open on their sheet, DM updates wait and land the moment it closes. */
 let heldOps = [];
 const pickerOpen = () => { const a = document.activeElement; return !!(a && a.tagName === 'SELECT' && $('#vSheet').contains(a)); };
+let heldT = null;
 function flushHeld(){
-  if (!heldOps.length || pickerOpen()) return;
+  clearTimeout(heldT); heldT = null;
+  if (!heldOps.length) return;
+  if (pickerOpen()){ heldT = setTimeout(flushHeld, 1500); return; }   // still open: check again, in case the dropdown vanished without a focusout
   const h = heldOps; heldOps = [];
   h.forEach(([op, api, code]) => { if (!LS || LS.code !== code) return; applyOp(op); api.deleteInbox(code, api.uid, op.id).catch(() => {}); });
 }
@@ -5260,10 +5608,7 @@ function applyOp(op){
   const who = op.fromName || 'The DM';
   let msg = '', sound = 'up', good = true;
   if (op.kind === 'item' && op.item && op.item.name){
-    const it = op.item, q = Math.max(1, parseInt(it.qty) || 1);
-    const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
-    const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-    if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(it.type === 'Vehicle' ? {vk: vkOf(it)} : {})}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
+    const it = op.item, q = giveItem(m, it);
     msg = op.fromName ? `${who} handed you ${q > 1 ? q + 'x ' : ''}${it.name}.` : `The DM sent you ${q > 1 ? q + 'x ' : ''}${it.name}.`; sound = 'receive';
   } else if (op.kind === 'undo' && op.f){
     UNDO_F.forEach(k => { if (k in op.f) m[k] = op.f[k] === null && !['ram', 'hp', 'netHp', 'lostSave'].includes(k) ? (k === 'status' || k === 'hacks' ? [] : k === 'ds' ? {p:0, f:0} : 0) : op.f[k]; });
@@ -5368,6 +5713,16 @@ function applyOp(op){
       if (i.qty > 1) i.qty--; else { m.inv = m.inv.filter(x => x !== i); fixEq(m); }
       msg = `${who} installed ${i.name} in your ${slot[1]}.${cwOver(m) ? ` Overflow ${cwOver(m)}, Cyberpsychosis DC +${cwOver(m) * 2}.` : ''}`; sound = 'equip';
     }
+  } else if (op.kind === 'quote'){
+    const fee = Math.max(0, parseInt(op.fee) || 0), i = op.act === 'install' && m.inv.find(x => x.id === op.itemId), x = op.act === 'remove' && m.cyber.find(y => y.id === op.cyberId);
+    if (!i && !x){ msg = `${who} sent a ripperdoc quote for chrome you don't have anymore.`; good = false; sound = 'deny'; }
+    else {
+      m.quotes = [...(m.quotes || []).filter(q => !(q.itemId && q.itemId === op.itemId) && !(q.cyberId && q.cyberId === op.cyberId)), {id:uid(), act:op.act, itemId:op.itemId || null, slot:op.slot || null, cyberId:op.cyberId || null, fee, from:op.from || null, fromName:who, at:Date.now()}].slice(-6);
+      msg = `${who} will ${i ? `install ${i.name} in your ${(SLOTMAP[op.slot] || [, 'body'])[1]}` : `take out your ${x.name}`} for ${fee} €$. Open your Chrome tab to say yes.`; sound = 'receive';
+    }
+  } else if (op.kind === 'draftDone'){
+    const d = (m.drafts || []).find(y => y.id === op.id); m.drafts = (m.drafts || []).filter(y => y.id !== op.id);
+    if (!d) return; msg = op.ok ? `The DM approved ${d.name}. It's in ${d.forName && d.forName !== m.name ? d.forName + "'s" : 'your'} bag, ready for a procedure.` : `The DM rejected your ${d.name} draft.`; good = !!op.ok; sound = op.ok ? 'up' : 'deny';
   } else if (op.kind === 'uninstall'){
     const x = m.cyber.find(y => y.id === op.cyberId);
     if (!x) return;
@@ -5396,9 +5751,10 @@ async function startPlayer(){
   const api = liveApi;
   unsubs.push(api.watchSession(LS.code, s => {
     if (!s && LS){ toast('The DM deleted the session.'); forgetGame(LS.code); leaveLive(true); return; }
-    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true); onReveal(s); onCombat(s); saveCodex(); renderCodex();
+    sessMeta = s; renderLive(); checkSpotlight(); setMood(s.mood, true); onReveal(s); onCombat(s); saveCodex(); renderCodex(); shopNotice(); onRecap(s);
   }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
+  unsubs.push(api.watchCrew(LS.code, list => { const had = crew.length; crew = list; renderLive(); crewNotice(had); }));
   if (sessMeta && sessMeta.dmUid) unsubs.push(api.watchLibraryOf(sessMeta.dmUid, list => { codexLib = list; saveCodex(); renderCodex(); }));
   unsubs.push(api.watchPlayers(LS.code, list => {
     const sig = () => players.map(p => p.id + (p.merc && p.merc.jacked ? '*' : '')).join(), before = sig();
@@ -5410,7 +5766,7 @@ async function startPlayer(){
     ops.sort((a, b) => (a.at || 0) - (b.at || 0)).forEach(op => {
       if (seenOps.has(op.id)) return;
       seenOps.add(op.id);
-      if (pickerOpen()){ heldOps.push([op, api, LS.code]); return; }   // a redraw now would slam the player's open dropdown shut
+      if (pickerOpen()){ heldOps.push([op, api, LS.code]); if (!heldT) heldT = setTimeout(flushHeld, 1500); return; }   // a redraw now would slam the player's open dropdown shut
       applyOp(op);
       api.deleteInbox(LS.code, api.uid, op.id).catch(() => {});
     });
@@ -5432,12 +5788,15 @@ function startDM(){
   const api = liveApi;
   setTimeout(pushHandles, 800);
   unsubs.push(api.watchSession(LS.code, s => { sessMeta = s; if (!s && LS){ toast('Session deleted.'); forgetGame(LS.code); leaveLive(true); } else { renderLive(); checkSpotlight(); setMood(s.mood, false); if (s.reveal) lastReveal = s.reveal.at; } }));
+  unsubs.push(api.watchCrew(LS.code, list => { crew = list; renderLive(); }));
   unsubs.push(api.watchDmNpcs(list => { npcsDM = list.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); }));
   unsubs.push(api.watchNpcs(LS.code, list => onPubNpcs(list)));
   unsubs.push(api.watchPlayers(LS.code, list => {
     const {keep, stale} = dedupe(list);
     stale.forEach(p => { api.removePlayer(LS.code, p.id).catch(() => {}); api.removePortrait(LS.code, p.id).catch(() => {}); });
+    const dc = () => players.reduce((a, p) => a + ((p.merc && p.merc.drafts) || []).length, 0), before = dc();
     players = keep.sort((a, b) => (a.name || '').localeCompare(b.name || '')); renderLive(); scheduleBackup(); deckServe();
+    if (dc() > before && before >= 0 && dmDraftsSeen){ toast('A ripperdoc drafted new chrome. It\'s waiting on the Crew tab.', true); sfx('receive'); } dmDraftsSeen = true;
   }));
   unsubs.push(api.watchLog(LS.code, list => { logs = list; renderLive(); }));
   unsubs.push(api.watchBackups(list => {
@@ -5544,6 +5903,13 @@ function pSrc(k){
     pBlob[k] = {d, u}; return u;
   } catch(e){ return d; }
 }
+/* A teammate's equipped weapon: its picture in tier color, name, and what kind of weapon it is. */
+const wTypeOf = i => i.type !== 'Weapon' ? i.type : WT[i.wclass] ? i.wclass : classGuess(i.name, i.stats) || (i.gtype && CLIPS[i.gtype] ? i.gtype : i.reload === 'none' ? 'Melee weapon' : 'Gun');
+function peqHTML(i, label){
+  if (!i) return `<div class="peq none"><span class="lbl">${label}</span><span class="muted">None</span></div>`;
+  return `<div class="peq t${(i.tier || 0) + 1}" title="${esc(i.name)}${i.stats ? ' · ' + esc(i.stats) : ''}"><span class="lbl">${label}</span><div class="peqi">${itemArt(i)}</div>
+    <div class="peqt"><b>${esc(i.name)}</b><small>${esc(wTypeOf(i))}${i.tier ? ' · T' + (i.tier + 1) : ''}${i.type === 'Weapon' && i.rof ? ' · ROF ' + i.rof : ''}</small></div></div>`;
+}
 function partyCard(p){
   const m = p.merc ? normalize(p.merc) : null; if (!m) return '';
   const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
@@ -5557,9 +5923,10 @@ function partyCard(p){
   const surgery = surgeon ? `
       <div class="surg"><span class="lbl">RipperDoc</span>
         <div class="row"><select id="surg-${k}" aria-label="Cyberware to install" style="flex:1">${cyInv.length ? cyInv.map(i => `<option value="${i.id}">${esc(i.name)}${i.hot ? ' (hot)' : ''}</option>`).join('') : '<option value="">No cyberware in their bag</option>'}</select>
-          <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select>
-          <button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Install</button></div>
-        ${m.cyber.length ? `<div class="row" style="margin-top:6px">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Remove ${esc(x.name)}</button>`).join('')}</div>` : ''}</div>` : '';
+          <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select></div>
+        <div class="row" style="margin-top:6px"><input type="number" min="0" id="fee-${k}" placeholder="Your fee €$" aria-label="Your fee" style="width:120px"><button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Send quote</button></div>
+        ${m.cyber.length ? `<div class="row" style="margin-top:6px">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Quote removing ${esc(x.name)}</button>`).join('')}</div>` : ''}
+        <p class="muted" style="font-size:12px;margin:6px 0 0">They see the chrome, their threshold before and after, and your fee, and say yes on their phone. Roll at the table first.</p></div>` : '';
   const pay = !me && myMerc ? `
       <div class="row"><input type="number" min="1" id="pe-${k}" placeholder="€$" aria-label="Eddies to send ${esc(m.name)}"><button class="btn small" data-live="sendEd" data-u="${k}">Send €$</button></div>` : '';
   return `<div class="pcard ${me ? 'me' : ''} ${sigOf(m) ? 'sigd' : ''}"${sigStyle(m)}>
@@ -5574,7 +5941,7 @@ function partyCard(p){
         <div class="stat"><span>Cyberware</span><b>${cwLoad(m)} / ${cwTOf(m)}${cwOver(m) ? ` <span style="color:#ff4fd8">+${cwOver(m)} · DC +${cwOver(m) * 2}</span>` : ''}</b></div>${cwPips(m, true)}
         ${m.xp ? `<div class="stat"><span>XP</span><b>${m.xp.toLocaleString()}</b></div>` : ''}<div class="stat"><span>COOL Tokens</span><b style="color:var(--yellow)">${m.cool}</b></div></div>
       ${m.hacks.length ? `<div class="chips2">${m.hacks.map(h => `<span class="hk">${HACKS[h].n}</span>`).join('')}</div>` : ''}
-      <div class="sub" style="color:#d5f9fb"><b style="color:#fff">Primary</b> ${pr ? esc(pr.name) + (pr.stats ? ' · ' + esc(pr.stats) : '') : 'none'}<br><b style="color:#fff">Secondary</b> ${se ? esc(se.name) + (se.stats ? ' · ' + esc(se.stats) : '') : 'none'}</div>
+      <div class="peqs">${peqHTML(pr, 'Primary')}${peqHTML(se, 'Secondary')}</div>
       <div class="chips2">${m.inv.map(i => `<span class="${i.type === 'Weapon' ? 'w' : ''}" title="${esc(i.stats)}">${esc(i.name)}${i.tier ? ' T' + (i.tier + 1) : ''}${i.fort ? ' ⛨' : ''}${i.qty > 1 ? ' ×' + i.qty : ''}</span>`).join('') || '<span>Empty bag</span>'}</div>
       ${m.cyber.length ? `<div class="sub">Cyberware · ${m.cyber.map(x => esc(x.name) + (x.hot ? ' (hot)' : '')).join(', ')}</div>` : ''}${surgery}${pay}
     </div>`;
@@ -5642,9 +6009,9 @@ function dmFocusHTML(p){
       <span class="ctl">XP</span><div class="row"><button class="btn small" data-live="xp1" data-u="${k}">Award XP</button><span class="muted" style="font-size:12px">${m.xp ? m.xp.toLocaleString() + ' so far' : 'None yet'}</span></div></div>`;
   if (dmSub === 'chrome') body = `<div class="ctlgrid">
       <span class="ctl">Load</span><div class="row"><button class="btn small" data-live="cw-" data-u="${k}">−1</button><button class="btn small" data-live="cw+" data-u="${k}">+1</button><span class="muted" style="font-size:12px">${cwLoad(m)} of ${cwTOf(m)} · Max ${cwMaxOf(m)}</span></div>
-      <span class="ctl">Install</span><div class="row"><select id="surg-${k}" aria-label="Cyberware to install" style="flex:1;min-width:0">${cyInv.length ? cyInv.map(i => `<option value="${i.id}">${esc(i.name)}${i.hot ? ' (hot)' : ''}</option>`).join('') : '<option value="">No cyberware in their bag</option>'}</select>
-        <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select><button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Install</button></div>
-      ${m.cyber.length ? `<span class="ctl">Installed</span><div class="row">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Remove ${esc(x.name)}</button>`).join('')}</div>` : ''}
+      <span class="ctl">Ripperdoc</span><div class="row"><input type="number" min="0" id="fee-${k}" placeholder="Fee €$ (0 is free)" aria-label="Fee" style="width:140px"></div><div class="row" style="margin-top:6px"><select id="surg-${k}" aria-label="Cyberware to install" style="flex:1;min-width:0">${cyInv.length ? cyInv.map(i => `<option value="${i.id}">${esc(i.name)}${i.hot ? ' (hot)' : ''}</option>`).join('') : '<option value="">No cyberware in their bag</option>'}</select>
+        <select id="slot-${k}" aria-label="Slot">${CYBER_SLOTS.map(([sk, sn, cap]) => `<option value="${sk}" ${m.cyber.filter(x => x.slot === sk).length >= cap ? 'disabled' : ''}>${sn}</option>`).join('')}</select><button class="btn small primary" data-live="install" data-u="${k}" ${cyInv.length ? '' : 'disabled'}>Send quote</button></div>
+      ${m.cyber.length ? `<span class="ctl">Installed</span><div class="row">${m.cyber.map(x => `<button class="btn small" data-live="uninstall" data-u="${k}" data-c="${x.id}">Quote removing ${esc(x.name)}</button>`).join('')}</div>` : ''}
       <span class="ctl">Psyche</span><div class="row"><button class="btn small ${m.psycho ? '' : 'danger'}" data-live="psy" data-on="${m.psycho ? '' : '1'}" data-u="${k}">${m.psycho ? 'Pull back' : 'Cyberpsycho'}</button></div>
       <span class="ctl">Hack</span><div class="row"><select id="hk-${k}" aria-label="Hack to apply" style="flex:1;min-width:0">${Object.entries(HACKS).map(([hk, h]) => `<option value="${hk}" ${m.hacks.includes(hk) ? 'disabled' : ''}>${h.n}</option>`).join('')}</select><button class="btn small danger" data-live="hack" data-u="${k}">Hack</button>${m.hacks.length ? `<button class="btn small" data-live="unhack" data-u="${k}">Clear all</button>` : ''}</div>
       <span class="ctl">Black ICE</span><div class="row"><button class="btn small danger" data-live="jackout" data-u="${k}" title="Use when they're moved past 15 ft from the access point">Unsafe jack-out</button><button class="btn small ${m.jackLock ? '' : 'danger'}" data-live="jacklock" data-on="${m.jackLock ? '' : '1'}" data-u="${k}">${m.jackLock ? 'Unlock jack-out' : 'Lock jack-out'}</button></div></div>`;
@@ -5870,6 +6237,7 @@ function liveHTML(){
       <button class="btn" data-live="leave">Disconnect</button><button class="btn danger" data-live="leaveparty">${leaveConfirm ? 'Confirm leave' : 'Leave party'}</button></div>
       <p style="margin-top:12px;font-size:14px">Your sheet syncs to the party as you play. Anything the DM sends lands on your sheet automatically, even if you were offline when they sent it. Disconnect keeps your merc in the party, so next week you just hit Rejoin.</p></div>
       ${deckPlayerHTML()}
+      ${crewPlayerHTML()}
       <h3 style="margin:22px 0 0">Your party</h3>
       <div class="players">${players.map(p => partyCard(p)).join('') || '<div class="panel"><p>Loading the party…</p></div>'}</div>
       ${handouts.length ? `<div class="panel gap"><h3>Handouts</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Everything the DM has shared this session. Tap one to open it.</p>${hoListHTML(false)}</div>` : ''}
@@ -5906,8 +6274,9 @@ function liveHTML(){
       <button class="btn" data-live="copycode">Copy code</button><button class="btn" data-live="leave">Close dashboard</button><button class="btn danger" data-live="end">${endConfirm ? 'Confirm delete' : 'Delete live game'}</button></div>
       <p class="muted" style="font-size:13px;margin-top:10px">Close dashboard saves everything as Session ${curPlay()}. Reopen it later to keep going or start Session ${curPlay() + 1}. Delete live game kicks everyone and erases it for good.</p></div>
     ${reopenAsk ? playAskHTML() : ''}
-    <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
+    <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['crew', 'Crew', crewOf('gig').filter(g => g.status === 'open' || g.status === 'taken').length + players.reduce((a, p) => a + ((p.merc && p.merc.drafts) || []).length, 0)], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
     ${dmTab === 'party' ? dmPartyHTML() : ''}
+    ${dmTab === 'crew' ? crewDMHTML() : ''}
     ${dmTab === 'npcs' ? `${encPanel}${npcPanel}${genHTML('npc')}` : ''}
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
     ${dmTab === 'items' ? `${deckPanelHTML()}${genHTML('items')}
@@ -6074,7 +6443,7 @@ $('#liveBody').addEventListener('click', async e => {
     return;
   }
   if (a === 'viewsheet'){ sfx('tab'); return showDmSheet(t.dataset.u); }
-  if (await progClick(a) || await hoClick(a, t) || await recapClick(a)) return;
+  if (await progClick(a) || await hoClick(a, t) || await recapClick(a) || await crewClick(a, t)) return;
   if (a === 'jackout' || a === 'jacklock'){
     const on = !!t.dataset.on;
     if (await sendOp(u, a === 'jackout' ? {kind:'jackout'} : {kind:'jacklock', on})) toast(a === 'jackout' ? `Unsafe jack-out for ${pname(u)}. Roll the free hits.` : on ? `Locked ${pname(u)}'s jack-out.` : `${pname(u)} can jack out again.`, true);
@@ -6168,9 +6537,11 @@ $('#liveBody').addEventListener('click', async e => {
       const itemId = ($('#surg-' + u) || {}).value, slot = ($('#slot-' + u) || {}).value;
       if (!itemId || !slot) return;
       const it = target && target.merc && (target.merc.inv || []).find(i => i.id === itemId);
-      if (await send(u, {kind:'install', itemId, slot})) toast(`Installing ${it ? it.name : 'chrome'} for ${pname(u)}.`, true);
+      const fee = Math.max(0, parseInt(($('#fee-' + u) || {}).value) || 0);
+      if (await send(u, {kind:'quote', act:'install', itemId, slot, fee})) toast(`Sent ${pname(u)} a quote to install ${it ? it.name : 'chrome'} for ${fee} €$.`, true);
     } else {
-      if (await send(u, {kind:'uninstall', cyberId:t.dataset.c})) toast(`Pulling chrome out of ${pname(u)}.`, true);
+      const fee = Math.max(0, parseInt(($('#fee-' + u) || {}).value) || 0), x = target && target.merc && (target.merc.cyber || []).find(y => y.id === t.dataset.c);
+      if (await send(u, {kind:'quote', act:'remove', cyberId:t.dataset.c, fee})) toast(`Sent ${pname(u)} a quote to take out ${x ? x.name : 'chrome'} for ${fee} €$.`, true);
     }
     return;
   }
@@ -6373,7 +6744,7 @@ function presetEditHTML(){
     <div class="row gap"><button class="btn small" data-live="epadd">Add preset</button><button class="btn small" data-live="epreset">Reset to defaults</button><span class="muted" style="font-size:12px">Damage is per attack. × is attacks per turn.</span></div></div>`;
 }
 const statLine = c0 => { const c = encStat(c0); return c.ac ? `AC ${c.ac} · Hit ${sgn(+c.hit || 0)} · ${esc(c.dmg || '—')}${(+c.atk || 1) > 1 ? ' ×' + c.atk : ''}` : (c.k === 'npc' ? 'No stats yet. Tap ✎' : 'No stats yet'); };
-function limbTags(c){ const l = c.limbs || []; return l.length ? `<span class="ltags">${l.map(k => LIMB(k)).filter(Boolean).map(L => `<span class="ltag" title="${esc(L.e)}">NO ${L.s}${L.k === 'head' ? '' : ` · ${esc(L.e)}`}</span>`).join('')}</span>` : ''; }
+function limbTags(c){ const l = c.limbs || []; return l.length ? `<span class="ltags">${l.map(k => LIMB(k)).filter(Boolean).map(L => `<span class="ltag" title="${esc(L.e)}" data-rule="Lost ${esc(L.n)}" data-rd="${esc(L.e)}. Lost for good." tabindex="0" role="button">NO ${L.s}${L.k === 'head' ? '' : ` · ${esc(L.e)}`}</span>`).join('')}</span>` : ''; }
 function limbPickHTML(c0){
   const c = encStat(c0), gone = c.limbs || [];
   return `<div class="prow eedit limbpick"><button class="btn small danger" data-live="elroll" data-e="${c.id}" ${gone.includes('head') || gone.length >= 6 ? 'disabled' : ''}>Roll 1d6</button>${LIMBS.map((L, i) => `<button class="btn small ${gone.includes(L.k) ? 'on' : ''}" data-live="elpick" data-e="${c.id}" data-l="${L.k}" title="${esc(L.e)}">${i + 1} ${L.n}</button>`).join('')}

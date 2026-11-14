@@ -217,3 +217,29 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 ## Black ICE art
 - All 9 Black ICE use the DM's art from `art/ice/<id>.png` (listed in `ICE_IMG`). Lines recolored to the site's ICE red with a soft glow. If a file fails to load the old drawing shows instead
 - Combat alerts with more than 6 enemies switch to three smaller cards per row so they fit on a phone
+
+## DM notes, Nov 14
+- Max RAM is 4 + the RAM skill (INT mod, plus proficiency if proficient in RAM, double with double proficiency), plus cyberware, doubled by Extra Slot
+- Equipped guns have Full ROF and Single shot buttons, on the Combat tab and in the quick ammo bar at the top of the sheet
+- Combat alerts center the enemy cards, so one enemy sits in the middle
+- Party cards show each teammate's primary and secondary weapon with its picture, weapon type, tier and ROF
+
+## The Crew board
+- New Crew tab for the DM and a Crew section on every player sheet in a live game
+- Street Cred is one number for the whole crew, set by the DM. It gates the shop by tier. Tier 1 is always open, tier 2 at 10, tier 3 at 25, tier 4 at 50 (draft numbers in `CRED_TIER` until the DM settles them)
+- Gig board. The DM posts a gig with a title, a fixer, a pay and notes, then marks it Offered, Taken or Done. Done puts the pay straight into the crew stash
+- Crew stash. Shared eddies and shared gear. Anyone in the crew can put in or take out. The eddie pool can't go below zero. Every move is written to the activity log
+- Shop. The DM names it, stocks it from the item library or by hand, sets prices and opens or closes it. Players see it only while it's open, and only buy what their Street Cred allows. Stock is unlimited for now
+- Needs the new `firestore.rules` published in the Firebase console, or the board stays empty
+
+## Ripperdoc visits
+- A ripperdoc no longer installs chrome straight onto someone. They pick the item and slot on the patient's party card, set a fee and send a quote
+- The patient sees the quote on their Chrome tab with their humanity threshold before and after, the new Cyberpsychosis DC and the fee. Accept installs it and pays the ripper. Decline drops it. Removals work the same way
+- New chrome a ripper makes on the fly becomes a draft (name, tier, slot, stats, who it's for). The DM approves or rejects it on the Crew tab. Approved chrome lands in the patient's bag, ready for a quote
+- Offline, rippers keep the old free-form install on their own sheet
+
+## Table helpers
+- Your rolls card on the Combat tab lists every modifier the player needs at the table. Attack and damage for each equipped weapon, unarmed, initiative, the six saves and proficient skills. Nothing is rolled for them
+- Tap any condition chip or limb tag to see its rule
+- The DM's session recap has a Show to the party button. Players get a Previously in Night City popup once
+- Keep screen awake and text size were already in Settings
