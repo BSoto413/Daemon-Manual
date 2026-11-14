@@ -260,3 +260,10 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Special rounds are Ammo items read by name (Armor Piercing, Incendiary, EMP, Tracking, Tranquilizer, Toxin, plus Pistol, Heavy, Sniper or Shotgun). No ammo type in the name means they fit any gun. The effect goes in the item's stats
 - Explosive ammo for Grenade and Rocket Launchers is finite, like special rounds. Any Ammo item named Explosive, Grenade or Rocket. Reload tops the launcher up from the bag, and new launchers arrive empty. Special rounds only go in tier 2+ guns or a fortified tier 1, never explosive weapons
 - Reload asks standard or special when special rounds fit. The whole clip goes special. Reloading standard early returns the special rounds left in the clip to the bag. Launchers reload like before
+
+## Stacking, shop stock, weapon types
+- Only Consumables and Ammo stack. Consumables cap at a Max stack the DM sets per library item (default 5). Past the cap a new stack starts in its own backpack space. Ammo has no cap unless the DM sets one. Weapons, armor, cyberware, shards, gear and vehicles are always one per item, so buying two guns gives two guns. Old saves with stacked weapons or gear split on load
+- The shop has finite stock. The DM sets how many when stocking and can edit the Left number any time (blank means unlimited, for shop items stocked before this). Players see how many are left, and Sold out when it hits 0. Buying takes one from stock in a transaction, so two players can't buy the last one
+- Weapon type picker on the player's Add an item form, the DM's library form, the ripperdoc chrome forms (install, draft and inline edit) and the DM's draft approval. Picking a type sets the picture, damage, clip and reload. A cyberweapon like Mantis Blades shows the weapon picture in the bag and its damage when installed. A weapon just named "gun" with no type now looks like a pistol
+- The preload spreadsheet has a new Items tab (Name, Type, Stats, Tier, Max stack, Width, Height, Hidden) and a Weapon type column on the Cyberware tab
+- Needs the new `firestore.rules` published, or players can't buy from a stocked shop

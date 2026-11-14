@@ -1511,6 +1511,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
           <table class="rtable" data-inline><thead><tr><th>STR mod</th><th>Rows</th><th>Spaces</th></tr></thead><tbody><tr><td><b>−2</b></td><td>2</td><td>12</td></tr><tr><td><b>−1</b></td><td>3</td><td>18</td></tr><tr><td><b>+0</b></td><td>4</td><td>24</td></tr><tr><td><b>+1</b></td><td>5</td><td>30</td></tr><tr><td><b>+2</b></td><td>6</td><td>36</td></tr><tr><td><b>+3</b></td><td>7</td><td>42</td></tr><tr><td><b>+4</b></td><td>8</td><td>48</td></tr><tr><td><b>+5</b></td><td>9</td><td>54</td></tr></tbody></table>
           <p>Every item takes up a shape on the grid, like 4 × 1 for a rifle or 1 × 1 for a grenade. The GM tells you how big something is. A stack of the same item shares one spot.</p>
           <p>Equipped weapons and worn armor don't use backpack space. Installed cyberware and vehicles don't either.</p>
+          <p><b>Stacking.</b> Only consumables and ammo stack. Each consumable has a max stack the DM sets (5 if they don't), and past it a new stack starts in its own backpack space. Ammo only has a cap if the DM gives it one. Weapons, armor, cyberware, shards, gear and vehicles never stack, so two guns are two items.</p>
           <p>If something doesn't fit, it goes on the floor and you're <b>Encumbered</b> until you make room. The GM decides what that costs you.</p>
           <p class="muted" style="font-size:13px">On your sheet, tap an item to pick it up, then tap an empty space to put it there. You can also drag it, rotate it, drop it on the floor or drag it onto your equipped slots.</p>
         </div>
@@ -2013,13 +2014,14 @@ function normalize0(c){
       tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0),
       ...sizeOf(i), ...weaponOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null,
       ...(i.type === 'Weapon' && SP[i.ld] ? {ld:i.ld, ldName:String(i.ldName || SP[i.ld].n + ' rounds').slice(0, 60), ldFx:String(i.ldFx || '').slice(0, 120)} : {}),
+      ...(STACKS.includes(i.type) && capNum(i.cap) ? {cap:capNum(i.cap)} : {}), ...(i.type === 'Cyberware' && WT[i.wc] ? {wc:i.wc} : {}),
       ...(i.type === 'Vehicle' ? {vk: vkOf(i)} : {})
-    })),
+    })).flatMap(i => splitItem(i, k => i.id + '-' + k)),
     vpick: c.vpick === 'car' || c.vpick === 'bike' ? c.vpick : null,
     eq: {primary: (c.eq || {}).primary || null, secondary: (c.eq || {}).secondary || null, armor: (c.eq || {}).armor || null},
     qs: [0, 1].map(k => { const id = (Array.isArray(c.qs) ? c.qs : [])[k]; return id && (c.inv || []).some(i => i && i.id === id && i.type === 'Consumable') ? id : null; }),
     cyber: (Array.isArray(c.cyber) ? c.cyber : []).filter(x => x && x.name && SLOTMAP[x.slot]).map(x => ({
-      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), tier: Math.max(0, Math.min(3, parseInt(x.tier) || 0)), ac: x.ac != null && x.ac !== '' ? (parseInt(x.ac) || 0) : acIn(x.effect), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0)
+      id: x.id || uid(), slot: x.slot, name: String(x.name).slice(0, 60), ram: parseInt(x.ram) || 0, effect: String(x.effect || '').slice(0, 200), tier: Math.max(0, Math.min(3, parseInt(x.tier) || 0)), ac: x.ac != null && x.ac !== '' ? (parseInt(x.ac) || 0) : acIn(x.effect), hot: !!x.hot, cw: Math.max(0, parseInt(x.cw) || 0), ...(WT[x.wc] ? {wc:x.wc} : {})
     })),
     hpMax: numOrNull(c.hpMax) && numOrNull(c.hpMax) > 0 ? Math.round(+c.hpMax) : null,
     hp: numOrNull(c.hp), netHp: numOrNull(c.netHp), ram: numOrNull(c.ram), acTemp: parseInt(c.acTemp) || 0,
@@ -2159,14 +2161,38 @@ function dmgText(cls, tier, m, dice, dt){
 function gunTypeOf(name, stats){
   const c = classGuess(name, stats); return CLIPS[c] ? c : '';
 }
-/* Put an item payload into a merc's bag, stacking with an identical one. Returns how many arrived. */
+/* Stacking. Only Consumables and Ammo stack. Consumables stop at a cap the DM sets per item (default 5), then a new stack starts.
+   Ammo has no cap unless the DM sets one. Everything else is one per item, so two guns are two guns. */
+const STACKS = ['Consumable', 'Ammo'], CAP_DEF = 5;
+const capNum = v => { const n = parseInt(v); return n >= 1 ? Math.min(99, n) : 0; };
+const capOf = i => !i || !STACKS.includes(i.type) ? 1 : capNum(i.cap) || (i.type === 'Consumable' ? CAP_DEF : 9999);
+// One item with qty n becomes as many items as the stacking rules say. The first keeps its id.
+function splitItem(i, idFor){
+  const cap = capOf(i), q = Math.max(0, parseInt(i.qty) || 0);
+  if (q <= cap) return [i];
+  const out = []; let left = q, k = 0;
+  while (left > 0){ const n = Math.min(cap, left); out.push({...i, id: k ? (idFor ? idFor(k) : uid()) : i.id, qty:n, ...(k ? {gx:null, gy:null} : {})}); left -= n; k++; }
+  return out;
+}
+/* Put an item payload into a merc's bag, topping up matching stacks first. Returns how many arrived. */
 function giveItem(m, it){
   const q = Math.max(1, parseInt(it.qty) || 1);
-  const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0);
-  const same = m.inv.find(x => x.name === it.name && x.type === it.type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw);
-  if (same) same.qty += q; else { const ni = {id:uid(), name:String(it.name).slice(0, 60), type:ITEM_TYPES.includes(it.type) ? it.type : 'Gear', qty:q, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(it.type === 'Vehicle' ? {vk: vkOf(it)} : {})}; Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo})); m.inv.push(ni); }
+  const tier = Math.max(0, Math.min(3, parseInt(it.tier) || 0)), fort = !!it.fort, cw = Math.max(0, parseInt(it.cw) || 0), type = ITEM_TYPES.includes(it.type) ? it.type : 'Gear';
+  const cap = capOf({type, cap:it.cap}); let left = q;
+  if (STACKS.includes(type)) for (const same of m.inv.filter(x => x.name === it.name && x.type === type && x.stats === (it.stats || '') && !!x.hot === !!it.hot && x.tier === tier && x.fort === fort && x.cw === cw && x.qty < cap)){
+    const n = Math.min(cap - same.qty, left); same.qty += n; left -= n; if (!left) break;
+  }
+  while (left > 0){
+    const n = Math.min(cap, left); left -= n;
+    const ni = {id:uid(), name:String(it.name).slice(0, 60), type, qty:n, stats:String(it.stats || '').slice(0, 120), hot:!!it.hot, tier, fort, cw, gx:null, gy:null, ...(type === 'Vehicle' ? {vk: vkOf(it)} : {}), ...(capNum(it.cap) && STACKS.includes(type) ? {cap:capNum(it.cap)} : {}), ...(type === 'Cyberware' && WT[it.wc] ? {wc:it.wc} : {})};
+    Object.assign(ni, sizeOf({...ni, w:it.w, h:it.h}), weaponOf({...ni, rof:it.rof, reload:it.reload, gtype:it.gtype, wclass:it.wclass, clip:it.clip, conc:it.conc, ammo:it.ammo}));
+    m.inv.push(ni);
+  }
   return q;
 }
+// Weapon type picker. Guns, melee, or Other. Picking one sets the art, damage and clip.
+const wtOpts = (cur, auto) => `${auto ? `<option value="">${auto}</option>` : ''}<optgroup label="Guns">${Object.keys(CLIPS).map(k => `<option ${cur === k ? 'selected' : ''}>${k}</option>`).join('')}</optgroup><optgroup label="Melee">${MELEE_CLASSES.map(k => `<option ${cur === k ? 'selected' : ''}>${k}</option>`).join('')}</optgroup>${auto ? `<option ${cur === 'Other' ? 'selected' : ''}>Other</option>` : ''}`;
+const wtFields = v => !v ? {} : CLIPS[v] ? {gtype:v, wclass:v} : MELEE_CLASSES.includes(v) ? {gtype:'', wclass:v, reload:'none'} : v === 'Other' ? {gtype:'', wclass:''} : {};
 function weaponOf(i){
   if (i.type !== 'Weapon') return {rof:null, reload:null};
   // A saved gun or melee type beats guessing from the name.
@@ -2252,7 +2278,7 @@ function sortBag(m){
   return packInv(m);
 }
 const bagUsed = m => m.inv.filter(i => inBag(m, i) && placed(i)).reduce((n, i) => n + i.w * i.h, 0);
-const itemPayload = (i, q) => ({name:i.name, type:i.type, qty:q == null ? (i.qty || 1) : q, stats:i.stats || '', hot:!!i.hot, tier:i.tier || 0, fort:!!i.fort, cw:i.cw || 0, w:sizeOf(i).w, h:sizeOf(i).h, ...weaponOf(i)});
+const itemPayload = (i, q) => ({name:i.name, type:i.type, qty:q == null ? (i.qty || 1) : q, stats:i.stats || '', hot:!!i.hot, tier:i.tier || 0, fort:!!i.fort, cw:i.cw || 0, w:sizeOf(i).w, h:sizeOf(i).h, ...weaponOf(i), ...(capNum(i.cap) ? {cap:capNum(i.cap)} : {}), ...(i.wc ? {wc:i.wc} : {})});
 
 /* ================= PROGRESS: LEDGER, COUNTERS, ACHIEVEMENTS, UNDO, XP ================= */
 const XP_TABLE = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
@@ -2518,7 +2544,7 @@ function artKind(i){
     if (/shotgun/.test(n)) return 'shotgun';
     if (/smg|uzi|machine pistol/.test(n)) return 'smg';
     if (/rifle|carbine|assault/.test(n)) return 'rifle';
-    if (/pistol|revolver|taser/.test(n)) return 'pistol';
+    if (/pistol|revolver|taser|\bgun\b/.test(n)) return 'pistol';
     if (/katana|sword|machete|knife|dagger|blade|shiv/.test(n)) return 'blade';
     if (/bat|club|baton|hammer|axe|pipe/.test(n)) return 'blunt';
     return /piercing|range|round|shot/.test((i.stats || '').toLowerCase()) ? 'rifle' : 'blade';
@@ -2621,6 +2647,7 @@ const SLOT_ART = {
 const slotArt = k => `<svg class="slotart" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SLOT_ART[k] || SLOT_ART.os}</svg>`;
 const cwSlotOf = i => { const m = /(Operating System|Frontal Cortex|Ocular|Circulatory|Nervous|Integumentary|Skeleton|Hands|Arms|Legs|Shard Slots) slot/.exec(i.stats || ''); return m ? (CYBER_SLOTS.find(x => x[1] === m[1]) || [])[0] : null; };
 function itemArt(i, w, h){
+  if (i.type === 'Cyberware' && WT[i.wc]) return itemArt({...i, type:'Weapon', wclass:i.wc, gtype:CLIPS[i.wc] ? i.wc : ''}, w, h);
   if (i.type === 'Cyberware'){ const k = cwSlotOf(i); if (k) return `<svg class="art sl slotart" viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SLOT_ART[k]}</svg>`; }
   w = w || i.w; h = h || i.h;
   const U = 20, W = w * U, H = h * U, tall = h > w, L = (tall ? H : W) - 6, S = (tall ? W : H) - 6;
@@ -4059,7 +4086,7 @@ function renderCS0(){
     <div class="panel gap" id="invPanel" data-sub="gear"><div class="row"><h3>Inventory</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${C.inv.length} item${C.inv.length === 1 ? '' : 's'}</span></div>
       <div>${rows}</div>
       <span class="lbl" style="margin-top:18px">Add an item</span>
-      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><span class="nisz"><input type="number" id="niW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="niH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><button class="btn primary small" data-act="addItem">Add</button></div>
+      <div class="inv-add gap"><input type="text" class="f" id="niName" placeholder="Add an item" aria-label="New item name"><select id="niType" aria-label="New item type">${opts('Weapon')}</select><select id="niWt" aria-label="Weapon type">${wtOpts('', 'Weapon type')}</select><input type="number" id="niQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="niStats" placeholder="Stats, like 2d6 pistol" aria-label="New item stats"><select id="niTier" aria-label="Tier">${tierOpts(0)}</select><span class="nisz"><input type="number" id="niW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="niH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><button class="btn primary small" data-act="addItem">Add</button></div>
       <p class="muted" style="font-size:12px;margin:-4px 0 10px">Leave the size blank and it guesses from the type, like 4 × 1 for a rifle. Your GM tells you the real size.</p>
 </div>
     <div data-sub="gear">${fabPanel}${ledgerHTML()}</div>
@@ -4183,6 +4210,7 @@ function cyberMapHTML(m, ro){
         <label class="fl"><span>RAM bonus</span><input type="number" id="cfRam" value="0"></label>
         <label class="fl"><span>AC bonus</span><input type="number" id="cfAc" value="0"></label>
         <label class="fl"><span>Threshold cost</span><input type="number" id="cfCw" value="1" min="0"></label>
+        <label class="fl"><span>Weapon type</span><select id="cfWc" aria-label="Weapon type if it's a cyberweapon"><option value="">Not a weapon</option>${wtOpts('')}</select></label>
         <label class="fl wide"><span>What it does</span><input type="text" class="f" id="cfEff" placeholder="Effect"></label>
         <label class="fl wide"><span>For</span><select id="cfFor"><option value="">Me</option>${mates.map(p => `<option value="${p.id}">${esc(p.merc.name || p.name)}</option>`).join('')}</select></label>
         <div class="acts wide"><button class="btn small primary" data-act="cfDraft" data-slot="${cyberForm}">Send to the DM</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div></div>`;
@@ -4193,6 +4221,7 @@ function cyberMapHTML(m, ro){
         <label class="fl"><span>RAM bonus</span><input type="number" id="cfRam" value="0"></label>
         <label class="fl"><span>AC bonus</span><input type="number" id="cfAc" value="0"></label>
         <label class="fl"><span>Threshold cost</span><input type="number" id="cfCw" value="1" min="0"></label>
+        <label class="fl"><span>Weapon type</span><select id="cfWc" aria-label="Weapon type if it's a cyberweapon"><option value="">Not a weapon</option>${wtOpts('')}</select></label>
         <label class="fl wide"><span>What it does</span><input type="text" class="f" id="cfEff" placeholder="Effect"></label>
         <div class="acts wide"><button class="btn small primary" data-act="cfSave" data-slot="${cyberForm}">Install</button><button class="btn small" data-act="cfCancel">Cancel</button></div></div></div>`;
   } else if (x){
@@ -4202,9 +4231,10 @@ function cyberMapHTML(m, ro){
         <label class="fl"><span>RAM bonus</span><input type="number" data-c="${x.id}" data-cf="ram" value="${x.ram}"></label>
         <label class="fl"><span>AC bonus</span><input type="number" data-c="${x.id}" data-cf="ac" value="${x.ac || 0}"></label>
         <label class="fl"><span>Threshold cost</span><input type="number" min="0" data-c="${x.id}" data-cf="cw" value="${x.cw}"></label>
+        <label class="fl"><span>Weapon type</span><select data-c="${x.id}" data-cf="wc" aria-label="Weapon type"><option value="">Not a weapon</option>${wtOpts(x.wc || '')}</select></label>
         <label class="fl wide"><span>What it does</span><input type="text" class="f" data-c="${x.id}" data-cf="effect" value="${esc(x.effect)}"></label></div>`
       : x.slot === 'shard' ? `<p class="muted" style="font-size:13px;margin:6px 0 0">Active while slotted. Pull it to end the effect and put it back in your bag.</p>`
-      : `<div class="kvs"><span>RAM</span><b>${sgn(x.hot ? Math.ceil(x.ram / 2) : x.ram)}${x.hot ? ' (half, hot-swap)' : ''}</b><span>AC</span><b>${sgn(x.hot ? Math.ceil((x.ac || 0) / 2) : (x.ac || 0))}${x.hot && x.ac ? ' (half, hot-swap)' : ''}</b><span>Threshold cost</span><b>${x.cw}</b></div>${x.effect ? `<p style="font-size:14px;margin:8px 0 0">${esc(x.effect)}</p>` : ''}`}
+      : `<div class="kvs"><span>RAM</span><b>${sgn(x.hot ? Math.ceil(x.ram / 2) : x.ram)}${x.hot ? ' (half, hot-swap)' : ''}</b><span>AC</span><b>${sgn(x.hot ? Math.ceil((x.ac || 0) / 2) : (x.ac || 0))}${x.hot && x.ac ? ' (half, hot-swap)' : ''}</b><span>Threshold cost</span><b>${x.cw}</b>${WT[x.wc] ? `<span>Weapon</span><b>${esc(x.wc)} · ${esc(dmgText(x.wc, x.tier || 0))}</b>` : ''}</div>${x.effect ? `<p style="font-size:14px;margin:8px 0 0">${esc(x.effect)}</p>` : ''}`}
       <div class="row" style="gap:8px;margin-top:10px">${x.slot === 'shard' ? `<button class="btn small" data-uninstall="${x.id}">Pull shard</button>` : rip ? `<button class="btn small" data-uninstall="${x.id}">Remove to bag</button>` : x.hot ? `<button class="btn small" data-uninstall="${x.id}">Swap out · ${HOTSWAP_RAM} RAM</button>` : '<span class="muted" style="font-size:13px">Only a RipperDoc can take this out.</span>'}<button class="btn small" data-act="cyDesel">Done</button></div></div>`;
   } else if (!ro){
     const held = C.inv.find(i => i.id === selItem && (i.type === 'Cyberware' || i.type === 'Shard'));
@@ -4236,7 +4266,7 @@ function chromeIn(m, i, slot){
   if (m.cyber.filter(x => x.slot === slot).length >= sl[2]) return `Your ${sl[1]} slot is full.`;
   if (cwLoad(m) + (i.cw || 0) > cwMaxOf(m)) return `That would push you past your max of ${cwMaxOf(m)}.`;
   const st = i.stats || '', rm = /RAM\s*([+\-−]?\d+)/i.exec(st), am = /AC\s*([+\-−]?\d+)/i.exec(st);
-  m.cyber.push({id:uid(), slot, name:i.name, hot:!!i.hot, tier:i.tier || 0, cw:i.cw || 0, ram:rm ? parseInt(rm[1].replace('−', '-')) : 0, ac:am ? parseInt(am[1].replace('−', '-')) : 0,
+  m.cyber.push({id:uid(), slot, name:i.name, hot:!!i.hot, tier:i.tier || 0, cw:i.cw || 0, ...(WT[i.wc] ? {wc:i.wc} : {}), ram:rm ? parseInt(rm[1].replace('−', '-')) : 0, ac:am ? parseInt(am[1].replace('−', '-')) : 0,
     effect:st.replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').replace(/AC\s*[+\-−]?\d+\s*·?\s*/i, '').trim()});
   if ((i.qty || 1) > 1) i.qty--; else { m.inv = m.inv.filter(x => x !== i); fixEq(m); }
   return '';
@@ -4262,7 +4292,7 @@ function installItem(i, slot){
     C.ram = ramCur() - HOTSWAP_RAM;
   }
   const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
-  const x = {id:uid(), slot, name:i.name, hot:i.hot, cw:i.cw || 0, tier:i.tier || 0, ac:acIn(i.stats), ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()};
+  const x = {id:uid(), slot, name:i.name, hot:i.hot, cw:i.cw || 0, tier:i.tier || 0, ...(WT[i.wc] ? {wc:i.wc} : {}), ac:acIn(i.stats), ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()};
   C.cyber.push(x);
   if (i.qty > 1) i.qty--; else { C.inv = C.inv.filter(z => z !== i); fixEq(C); if (selItem === i.id) selItem = null; }
   selCy = x.id; sfx('equip');
@@ -4440,7 +4470,12 @@ $('#vCS').addEventListener('click', e => {
     return csSave();
   }
   if (t.dataset.unequip){ const i = C.inv.find(x => x.id === C.eq[t.dataset.unequip]); C.eq[t.dataset.unequip] = null; if (i){ i.gx = null; i.gy = null; } packInv(C); bagNote(); return csSave(); }
-  if (t.dataset.qty){ const i = C.inv.find(x => x.id === t.dataset.i); if (i) i.qty = Math.max(0, i.qty + (+t.dataset.qty)); return csSave(); }
+  if (t.dataset.qty){
+    const i = C.inv.find(x => x.id === t.dataset.i); if (!i) return;
+    const cap = capOf(i);
+    if (+t.dataset.qty > 0 && i.qty >= cap){ sfx('deny'); return toast(STACKS.includes(i.type) ? `${i.name} stacks to ${cap}. Add another as a new stack.` : `${i.type === 'Weapon' ? 'Weapons' : 'These'} don't stack. Add another as its own item.`); }
+    i.qty = Math.max(0, Math.min(cap, i.qty + (+t.dataset.qty))); return csSave();
+  }
   if (t.dataset.delItem){
     const id = t.dataset.delItem;
     if (delItem === id){ C.inv = C.inv.filter(x => x.id !== id); fixEq(C); delItem = null; } else delItem = id;
@@ -4462,7 +4497,7 @@ $('#vCS').addEventListener('click', e => {
         C.ram = ramCur() - HOTSWAP_RAM;
       }
       C.cyber = C.cyber.filter(y => y !== x);
-      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, tier:x.tier || 0, gx:null, gy:null, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac && !acIn(x.effect) ? sgn(x.ac) + ' AC' : '', x.effect].filter(Boolean).join(' · ')});
+      C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, tier:x.tier || 0, ...(WT[x.wc] ? {wc:x.wc} : {}), gx:null, gy:null, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac && !acIn(x.effect) ? sgn(x.ac) + ' AC' : '', x.effect].filter(Boolean).join(' · ')});
       selCy = null; packInv(C); bagNote();
       toast(onFloor(C, C.inv[C.inv.length - 1]) ? `${x.name} is out. No room in the bag, so it's on the floor.` : `${x.name} moved to your bag.`, true);
     }
@@ -4620,14 +4655,16 @@ $('#vCS').addEventListener('click', e => {
     case 'addItem': {
       const name = $('#niName').value.trim();
       if (!name){ $('#niName').focus(); return toast('Give the item a name.'); }
-      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.max(1, parseInt($('#niQty').value) || 1), stats:$('#niStats').value.trim().slice(0, 120), tier:Math.max(0, Math.min(3, parseInt($('#niTier').value) || 0)), gx:null, gy:null};
-      Object.assign(item, sizeOf({...item, w:$('#niW').value, h:$('#niH').value}), weaponOf(item));
-      C.inv.push(item); packInv(C); selItem = item.id;
+      const item = {id:uid(), name:name.slice(0, 60), type:$('#niType').value, qty:Math.min(99, Math.max(1, parseInt($('#niQty').value) || 1)), stats:$('#niStats').value.trim().slice(0, 120), tier:Math.max(0, Math.min(3, parseInt($('#niTier').value) || 0)), gx:null, gy:null};
+      const wt = item.type === 'Weapon' ? wtFields(($('#niWt') || {}).value) : {};
+      Object.assign(item, sizeOf({...item, ...(wt.wclass || wt.gtype ? {name:wt.gtype || wt.wclass} : {}), w:$('#niW').value, h:$('#niH').value}), weaponOf({...item, ...wt}));
+      const parts = splitItem(item); C.inv.push(...parts); packInv(C); selItem = item.id;
+      if (parts.length > 1) toast(item.type === 'Weapon' || !STACKS.includes(item.type) ? `Added ${parts.length} separate ${item.name}. They don't stack.` : `${item.name} stacks to ${capOf(item)}, so that made ${parts.length} stacks.`);
       if (onFloor(C, item)) toast(`No room for ${item.name}. It's on the floor.`);
       $('#niW').value = ''; $('#niH').value = '';
       const keepType = item.type;
       csSave();
-      $('#niType').value = keepType; $('#niName').focus();
+      $('#niType').value = keepType; if ($('#niWt')) $('#niWt').hidden = keepType !== 'Weapon'; $('#niName').focus();
       return;
     }
     case 'cfOpen': if (!canRip()) return; cyberForm = t.dataset.slot; renderCS(); $('#cfName').focus(); return;
@@ -4644,7 +4681,7 @@ $('#vCS').addEventListener('click', e => {
       } else {
         const x = C.cyber.find(y => y.id === q.cyberId); if (!x) return;
         C.cyber = C.cyber.filter(y => y !== x);
-        C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, tier:x.tier || 0, cw:x.cw || 0, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac ? 'AC ' + sgn(x.ac) : '', x.effect].filter(Boolean).join(' · ')});
+        C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, tier:x.tier || 0, cw:x.cw || 0, ...(WT[x.wc] ? {wc:x.wc} : {}), stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac ? 'AC ' + sgn(x.ac) : '', x.effect].filter(Boolean).join(' · ')});
         toast(`${q.fromName} took out your ${x.name}. It's in your bag.`, true); sfx('unequip');
       }
       capWarn = null; C.eddies = (C.eddies || 0) - q.fee; C.quotes = C.quotes.filter(y => y !== q);
@@ -4655,7 +4692,7 @@ $('#vCS').addEventListener('click', e => {
       const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the chrome first.'); }
       const fu = ($('#cfFor') || {}).value || '', fp = fu && players.find(p => p.id === fu);
       C.drafts = [...(C.drafts || []), {id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), tier:parseInt(($('#cfTier') || {}).value) || 0, ram:parseInt($('#cfRam').value) || 0, ac:parseInt(($('#cfAc') || {}).value) || 0,
-        cw:Math.max(0, parseInt($('#cfCw').value) || 0), effect:$('#cfEff').value.trim().slice(0, 200), forUid:fu || liveApi.uid, forName:fp ? (fp.merc.name || fp.name) : C.name, at:Date.now()}].slice(-8);
+        cw:Math.max(0, parseInt($('#cfCw').value) || 0), effect:$('#cfEff').value.trim().slice(0, 200), wc:WT[($('#cfWc') || {}).value] ? $('#cfWc').value : '', forUid:fu || liveApi.uid, forName:fp ? (fp.merc.name || fp.name) : C.name, at:Date.now()}].slice(-8);
       cyberForm = null; toast(`${name} went to the DM for approval.`, true); sfx('receive'); return csSave();
     }
     case 'drWd': { C.drafts = (C.drafts || []).filter(d => d.id !== t.dataset.d); return csSave(); }
@@ -4664,7 +4701,8 @@ $('#vCS').addEventListener('click', e => {
       const name = $('#cfName').value.trim(); if (!name){ $('#cfName').focus(); return toast('Name the cyberware first.'); }
       const cwc = Math.max(0, parseInt($('#cfCw').value) || 0);
       if (cwLoad() + cwc > cwMaxOf(C)) return toast(`That would push you past your cyberware max of ${cwMaxOf(C)}.`);
-      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), cw:cwc, ram:parseInt($('#cfRam').value) || 0, ac:parseInt(($('#cfAc') || {}).value) || 0, effect:$('#cfEff').value.trim().slice(0, 200)});
+      const wc = ($('#cfWc') || {}).value;
+      C.cyber.push({id:uid(), slot:t.dataset.slot, name:name.slice(0, 60), cw:cwc, ram:parseInt($('#cfRam').value) || 0, ac:parseInt(($('#cfAc') || {}).value) || 0, effect:$('#cfEff').value.trim().slice(0, 200), ...(WT[wc] ? {wc} : {})});
       toast(`${name} installed in ${SLOTMAP[t.dataset.slot][1]}.`, true);
       cyberForm = null; return csSave();
     }
@@ -4677,6 +4715,7 @@ $('#vCS').addEventListener('change', async e => {
     C.qs[k] = id; if (id && C.qs[1 - k] === id) C.qs[1 - k] = null;
     packInv(C); sfx(id ? 'equip' : 'unequip'); return csSave();
   }
+  if (t.id === 'niType'){ const w = $('#niWt'); if (w) w.hidden = t.value !== 'Weapon'; return; }
   if (t.id === 'portraitIn'){
     try { C.portrait = await readPortrait(t.files[0]); toast('Portrait updated.', true); }
     catch(err){ toast("That image didn't load. Try a JPG or PNG."); }
@@ -4718,6 +4757,7 @@ $('#vCS').addEventListener('change', async e => {
     if (t.dataset.cf === 'ram'){ x.ram = parseInt(t.value) || 0; return csSave(); }
     if (t.dataset.cf === 'cw'){ x.cw = Math.max(0, parseInt(t.value) || 0); return csSave(); }
     if (t.dataset.cf === 'ac'){ x.ac = parseInt(t.value) || 0; return csSave(); }
+    if (t.dataset.cf === 'wc'){ if (WT[t.value]) x.wc = t.value; else delete x.wc; return csSave(); }
     if (t.dataset.cf === 'name'){ const v = t.value.trim(); if (v) x.name = v.slice(0, 60); else t.value = x.name; return saveC(); }
     x.effect = t.value.slice(0, 200); return saveC();
   }
@@ -4851,6 +4891,8 @@ async function firebaseLive(){
     watchCrew: (code, cb) => F.onSnapshot(c('sessions', code, 'crew'), q => cb(list(q)), onErr('the crew board')),
     setCrew: (code, id, data) => F.setDoc(d('sessions', code, 'crew', id), data),
     delCrew: (code, id) => F.deleteDoc(d('sessions', code, 'crew', id)),
+    // Takes one from a shop item's stock. False if it's sold out. Old shop items with no stock never run out.
+    takeStock: (code, id) => F.runTransaction(db, async t => { const r = d('sessions', code, 'crew', id), x = await t.get(r); if (!x.exists()) return false; const st = x.data().stock; if (st == null) return true; if (!(st > 0)) return false; t.update(r, {stock: st - 1}); return true; }),
     takeCrew: (code, id) => F.runTransaction(db, async t => { const r = d('sessions', code, 'crew', id), x = await t.get(r); if (!x.exists()) return null; t.delete(r); return x.data(); }),
     poolAdd: (code, n) => F.runTransaction(db, async t => { const r = d('sessions', code, 'crew', '_pool'), x = await t.get(r), nx = (x.exists() ? x.data().eddies || 0 : 0) + n; if (nx < 0) return false; t.set(r, {type:'pool', eddies:nx}); return true; }),
     setNpc: (code, id, data) => F.setDoc(d('sessions', code, 'npcs', id), data),
@@ -4930,6 +4972,7 @@ function mockLive(){
     watchCrew: (code, cb) => watch(() => coll(`sessions/${code}/crew`), cb),
     async setCrew(code, id, data){ mut(db => db[`sessions/${code}/crew/${id}`] = data); },
     async delCrew(code, id){ mut(db => delete db[`sessions/${code}/crew/${id}`]); },
+    async takeStock(code, id){ let ok = false; mut(db => { const x = db[`sessions/${code}/crew/${id}`]; if (!x) return; if (x.stock == null){ ok = true; return; } if (x.stock > 0){ x.stock--; ok = true; } }); return ok; },
     async takeCrew(code, id){ let got = null; mut(db => { const k = `sessions/${code}/crew/${id}`; got = db[k] || null; delete db[k]; }); return got; },
     async poolAdd(code, n){ let ok = false; mut(db => { const k = `sessions/${code}/crew/_pool`, nx = ((db[k] || {}).eddies || 0) + n; if (nx >= 0){ db[k] = {type:'pool', eddies:nx}; ok = true; } }); return ok; },
     async setNpc(code, id, data){ mut(db => db[`sessions/${code}/npcs/${id}`] = data); },
@@ -5650,8 +5693,9 @@ function crewPlayerHTML(){
   const shop = shopIsOpen() ? crewOf('shop') : [];
   return `${shop.length || shopIsOpen() ? `<div class="panel gap shop"><div class="row"><h3>${esc((sessMeta && sessMeta.shopName) || 'Shop')}</h3><span class="spacer"></span><span class="muted" style="font-size:13px">You have ${(m.eddies || 0).toLocaleString()} €$ · Street Cred ${credOf()}</span></div>
       ${shop.length ? `<div class="shopl">${shop.map(x => { const lock = !tierOpen(x.item.tier), poor = (m.eddies || 0) < (x.price || 0);
-        return `<div class="shopi t${(x.item.tier || 0) + 1} ${lock ? 'lock' : ''}"><div class="peqi">${itemArt({...x.item, id:x.id})}</div><div class="si"><b>${esc(x.item.name)}</b><small>${esc(x.item.type)}${x.item.tier ? ' · ' + MK[x.item.tier] : ''}${x.item.stats ? ' · ' + esc(x.item.stats) : ''}</small></div>
-          <button class="btn small ${lock || poor ? '' : 'primary'}" data-live="buy" data-id="${x.id}" ${lock || poor ? 'disabled' : ''}>${lock ? `Street Cred ${CRED_TIER[x.item.tier]}` : `${(x.price || 0).toLocaleString()} €$`}</button></div>`; }).join('')}</div>` : '<p class="muted">Nothing on the shelves yet.</p>'}</div>` : ''}
+        const out = x.stock != null && x.stock <= 0;
+        return `<div class="shopi t${(x.item.tier || 0) + 1} ${lock || out ? 'lock' : ''}"><div class="peqi">${itemArt({...x.item, id:x.id})}</div><div class="si"><b>${esc(x.item.name)}</b><small>${esc(x.item.type)}${x.item.tier ? ' · ' + MK[x.item.tier] : ''}${x.item.stats ? ' · ' + esc(x.item.stats) : ''}${x.stock != null ? ` · ${out ? 'Sold out' : x.stock + ' left'}` : ''}</small></div>
+          <button class="btn small ${lock || poor || out ? '' : 'primary'}" data-live="buy" data-id="${x.id}" ${lock || poor || out ? 'disabled' : ''}>${out ? 'Sold out' : lock ? `Street Cred ${CRED_TIER[x.item.tier]}` : `${(x.price || 0).toLocaleString()} €$`}</button></div>`; }).join('')}</div>` : '<p class="muted">Nothing on the shelves yet.</p>'}</div>` : ''}
     ${gigs.length ? `<div class="panel gap"><div class="row"><h3>Gig board</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Pay goes into the crew stash</span></div>${gigs.map(g => gigHTML(g, false)).join('')}</div>` : ''}
     <div class="panel gap crewp"><div class="row"><h3>Crew stash</h3><span class="spacer"></span><span class="cred">Street Cred <b>${credOf()}</b></span></div>
       <div class="pool"><span class="lbl" style="margin:0">Crew eddies</span><b>${crewPool().toLocaleString()} €$</b></div>
@@ -5673,7 +5717,8 @@ function crewDMHTML(){
           <label class="fl"><span>RAM bonus</span><input type="number" data-df="ram" value="${d.ram || 0}"></label>
           <label class="fl"><span>AC bonus</span><input type="number" data-df="ac" value="${d.ac || 0}"></label>
           <label class="fl"><span>Threshold cost</span><input type="number" min="0" data-df="cw" value="${d.cw || 0}"></label>
-          <label class="fl wide"><span>What it does</span><input type="text" class="f" data-df="effect" value="${esc(d.effect || '')}"></label></div>
+          <label class="fl wide"><span>What it does</span><input type="text" class="f" data-df="effect" value="${esc(d.effect || '')}"></label>
+          <label class="fl"><span>Weapon type</span><select data-df="wc" aria-label="Weapon type"><option value="">Not a weapon</option>${wtOpts(d.wc || '')}</select></label></div>
         <div class="row" style="gap:6px"><button class="btn small primary" data-live="drOk" data-id="${d.id}" data-ru="${d.ru}">Approve</button><button class="btn small danger" data-live="drNo" data-id="${d.id}" data-ru="${d.ru}">Reject</button></div></div>`).join('')}</div>` : ''}
     <div class="panel gap"><div class="row"><h3>Street Cred</h3><span class="spacer"></span><b class="credn">${credOf()}</b></div>
       <div class="row" style="gap:6px;margin-top:8px">${[-5, -1, 1, 5].map(n => `<button class="btn small" data-live="cred" data-n="${n}">${n > 0 ? '+' + n : n}</button>`).join('')}</div>
@@ -5689,9 +5734,9 @@ function crewDMHTML(){
     <div class="panel gap"><div class="row"><h3>Shop</h3><span class="spacer"></span><button class="btn small ${shopIsOpen() ? 'danger' : 'primary'}" data-live="shopTog">${shopIsOpen() ? 'Close shop' : 'Open shop'}</button></div>
       <p class="muted" style="font-size:13px;margin:4px 0 10px">${shopIsOpen() ? 'Open. Players see it on their Crew tab and buy with their own eddies.' : 'Closed. Stock it now and open it when the crew walks in.'}</p>
       <div class="row" style="gap:6px"><input type="text" class="f" id="shopName" placeholder="Shop name, like Wakako's" value="${esc((sessMeta && sessMeta.shopName) || '')}" maxlength="40" aria-label="Shop name" style="flex:1;min-width:0"><button class="btn small" data-live="shopName">Rename</button></div>
-      ${lib.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="shopItem" aria-label="Item to stock" style="flex:1;min-width:0">${libOpts}</select><input type="number" min="0" id="shopPrice" placeholder="€$" aria-label="Price" style="width:90px"><button class="btn small primary" data-live="shopAdd">Stock</button></div>` : '<p class="muted" style="font-size:13px">Add items to your library on the Items tab to stock the shop.</p>'}
+      ${lib.length ? `<div class="row" style="gap:6px;margin-top:10px"><select id="shopItem" aria-label="Item to stock" style="flex:1;min-width:0">${libOpts}</select><input type="number" min="0" id="shopPrice" placeholder="€$" aria-label="Price" style="width:80px"><input type="number" min="1" max="99" id="shopQty" placeholder="Qty" value="1" aria-label="How many in stock" style="width:64px"><button class="btn small primary" data-live="shopAdd">Stock</button></div>` : '<p class="muted" style="font-size:13px">Add items to your library on the Items tab to stock the shop.</p>'}
       ${shop.length ? `<div class="shopl">${shop.map(x => `<div class="shopi t${(x.item.tier || 0) + 1} ${tierOpen(x.item.tier) ? '' : 'lock'}"><div class="peqi">${itemArt({...x.item, id:x.id})}</div><div class="si"><b>${esc(x.item.name)}</b><small>${x.item.tier ? MK[x.item.tier] + ' · ' : ''}${tierOpen(x.item.tier) ? 'Unlocked' : `Needs Street Cred ${CRED_TIER[x.item.tier]}`}</small></div>
-        <input type="number" min="0" value="${x.price || 0}" data-shopp="${x.id}" aria-label="Price of ${esc(x.item.name)}" style="width:84px"><button class="btn small danger" data-live="shopDel" data-id="${x.id}" aria-label="Remove ${esc(x.item.name)}">✕</button></div>`).join('')}</div>` : ''}</div>
+        <label class="muted shopst" style="font-size:12px">€$ <input type="number" min="0" value="${x.price || 0}" data-shopp="${x.id}" aria-label="Price of ${esc(x.item.name)}" style="width:76px"></label><label class="muted shopst" style="font-size:12px">Left <input type="number" min="0" max="99" value="${x.stock == null ? '' : x.stock}" placeholder="∞" data-shops="${x.id}" aria-label="How many ${esc(x.item.name)} left" style="width:56px"></label><button class="btn small danger" data-live="shopDel" data-id="${x.id}" aria-label="Remove ${esc(x.item.name)}">✕</button></div>`).join('')}</div>` : ''}</div>
     <div class="panel gap"><div class="row"><h3>Crew stash</h3><span class="spacer"></span><b class="credn">${crewPool().toLocaleString()} €$</b></div>
       <div class="row" style="gap:6px;margin-top:8px"><input type="number" min="1" id="poolAmt" placeholder="Amount" aria-label="Eddies amount" style="width:110px"><button class="btn small" data-live="poolIn">Add</button><button class="btn small" data-live="poolOut">Remove</button></div>
       ${stashGridHTML(true)}
@@ -5742,6 +5787,7 @@ async function crewClick(a, t){
       const x = crewOf('shop').find(y => y.id === t.dataset.id); if (!x || !shopIsOpen()) return true;
       if (!tierOpen(x.item.tier)) return toast(`The crew needs Street Cred ${CRED_TIER[x.item.tier]} for that.`), true;
       if ((me.eddies || 0) < (x.price || 0)) return toast(`That costs ${x.price} €$. You have ${me.eddies || 0}.`), true;
+      if (!await api.takeStock(code, x.id)) return toast(`${x.item.name} just sold out.`), true;
       withLiveMerc(m => { m.eddies -= (x.price || 0); giveItem(m, {...x.item, qty:1}); });
       log('', (sessMeta && sessMeta.shopName) || 'the shop'); sfx('receive'); toast(`Bought ${x.item.name}.`, true); return true;
     }
@@ -5766,7 +5812,7 @@ async function crewClick(a, t){
     if (a === 'shopName'){ const n = ($('#shopName').value || '').trim().slice(0, 40); await api.updateSession(code, {shopName:n}); sessMeta = {...sessMeta, shopName:n}; toast('Renamed.', true); return true; }
     if (a === 'shopAdd'){
       const it = lib.find(x => x.id === ($('#shopItem') || {}).value); if (!it) return true;
-      await api.setCrew(code, uid(), {type:'shop', item:itemPayload(it, 1), price:Math.max(0, parseInt(($('#shopPrice') || {}).value) || 0), at:Date.now()}); return true;
+      await api.setCrew(code, uid(), {type:'shop', item:itemPayload(it, 1), price:Math.max(0, parseInt(($('#shopPrice') || {}).value) || 0), stock:Math.min(99, Math.max(1, parseInt(($('#shopQty') || {}).value) || 1)), at:Date.now()}); return true;
     }
     if (a === 'shopDel'){ await api.delCrew(code, t.dataset.id); return true; }
     if (a === 'drOk' || a === 'drNo'){
@@ -5774,7 +5820,7 @@ async function crewClick(a, t){
       if (a === 'drOk'){
         const box = t.closest('[data-dr]'), v = k => (box.querySelector(`[data-df="${k}"]`) || {}).value;
         const ram = parseInt(v('ram')) || 0, ac = parseInt(v('ac')) || 0, eff = (v('effect') || '').trim();
-        const item = {name:(v('name') || d.name).trim().slice(0, 60), type:'Cyberware', qty:1, tier:Math.max(0, Math.min(3, parseInt(v('tier')) || 0)), cw:Math.max(0, parseInt(v('cw')) || 0), slot:v('slot') || d.slot,
+        const item = {name:(v('name') || d.name).trim().slice(0, 60), type:'Cyberware', qty:1, tier:Math.max(0, Math.min(3, parseInt(v('tier')) || 0)), cw:Math.max(0, parseInt(v('cw')) || 0), slot:v('slot') || d.slot, ...(WT[v('wc')] ? {wc:v('wc')} : {}),
           stats:[ram ? 'RAM ' + sgn(ram) : '', ac ? 'AC ' + sgn(ac) : '', eff].filter(Boolean).join(' · ').slice(0, 120)};
         await sendOp(d.forUid && players.some(x => x.id === d.forUid) ? d.forUid : p.id, {kind:'item', item});
         toast(`Approved ${item.name}. It's in ${esc(d.forName || p.name)}'s bag.`, true);
@@ -5786,9 +5832,12 @@ async function crewClick(a, t){
   return true;
 }
 $('#liveBody').addEventListener('change', e => {
-  const id = e.target.dataset && e.target.dataset.shopp; if (!id || !LS || LS.role !== 'dm') return;
+  const ds = e.target.dataset || {}, id = ds.shopp || ds.shops; if (!id || !LS || LS.role !== 'dm') return;
   const x = crewOf('shop').find(y => y.id === id); if (!x) return;
-  const {id:_, ...rest} = x; liveApi.setCrew(LS.code, id, {...rest, price:Math.max(0, parseInt(e.target.value) || 0)}).catch(() => {});
+  const {id:_, ...rest} = x, v = String(e.target.value).trim();
+  const patch = ds.shopp ? {price:Math.max(0, parseInt(v) || 0)} : {stock: v === '' ? null : Math.min(99, Math.max(0, parseInt(v) || 0))};
+  if (patch.stock === null) delete rest.stock;
+  liveApi.setCrew(LS.code, id, {...rest, ...(patch.stock === null ? {} : patch)}).catch(() => {});
 });
 async function recapClick(a){
   if (a === 'rcMake'){
@@ -6003,7 +6052,7 @@ function applyOp(op){
     const x = m.cyber.find(y => y.id === op.cyberId);
     if (!x) return;
     m.cyber = m.cyber.filter(y => y !== x);
-    m.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
+    m.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, ...(WT[x.wc] ? {wc:x.wc} : {}), stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.effect].filter(Boolean).join(' · ')});
     msg = `${who} removed your ${x.name}. It's in your bag.`; sound = 'unequip';
   } else return;
   if (good && sound) sfx(sound);
@@ -6459,7 +6508,7 @@ function deckReveal(){
     withLiveMerc(mm => {
       const card = mm.deckHand.shift(); if (!card) return;
       if (b.dataset.m === 'keep'){
-        mm.inv.push({id:uid(), name:card.name, type:'Cyberware', qty:1, cw:card.cw || 0, hot:!!card.hot, tier:card.tier || 0, gx:null, gy:null,
+        mm.inv.push({id:uid(), name:card.name, type:'Cyberware', qty:1, cw:card.cw || 0, ...(WT[card.wc] ? {wc:card.wc} : {}), hot:!!card.hot, tier:card.tier || 0, gx:null, gy:null,
           stats:[card.ram ? 'RAM ' + sgn(card.ram) : '', slotName(card.slot) + ' slot', card.effect].filter(Boolean).join(' · ').slice(0, 300)});
         toast(`${card.name} is in your backpack. A RipperDoc installs it.`, true);
       } else { mm.deckQ = [...(mm.deckQ || []).slice(-9), {id:uid(), k:'return', card:{cid:card.cid, name:card.name}, at:Date.now()}]; toast(`${card.name} went back in the deck.`, true); }
@@ -6557,7 +6606,7 @@ function liveHTML(){
     ${dmTab === 'session' ? `${handoutHTML()}${moodHTML()}${sessNotesHTML()}${recapHTML()}${backupHTML()}` : ''}
     ${dmTab === 'items' ? `${deckPanelHTML()}${genHTML('items')}
     <div class="panel gap" id="preloadPanel"><div class="row"><h3>Preload from a spreadsheet</h3></div>
-      <p style="font-size:14px;margin:6px 0 10px">Fill out weapons, NPCs and cyberware cards anywhere, in Excel, Google Sheets or Numbers, then upload the sheet here to load them all at once. Weapons go into your item library and NPCs go into your private NPC list.</p>
+      <p style="font-size:14px;margin:6px 0 10px">Fill out weapons, items, NPCs and cyberware cards anywhere, in Excel, Google Sheets or Numbers, then upload the sheet here to load them all at once. Weapons and items go into your item library and NPCs go into your private NPC list.</p>
       <div class="row gap"><a class="btn small" href="templates/daemon-dm-preload.xlsx" download="Daemon DM preload.xlsx">Download template</a><label class="btn small primary" style="display:inline-block">Upload filled sheet<input type="file" id="preloadFile" accept=".xlsx,.csv" hidden></label></div>
       <p class="muted" style="font-size:12px;margin:8px 0 0">Takes .xlsx, or a .csv of one tab. Uploading again updates anything with the same name instead of making a copy. Rows named "Example" are skipped.</p>
       ${preloadMsg ? `<p class="preres" style="font-size:14px;margin:10px 0 0">${preloadMsg}</p>` : ''}</div>
@@ -6570,7 +6619,8 @@ function liveHTML(){
       <div class="libadd"><input type="text" class="f" id="liName" placeholder="New item name" aria-label="New item name"><select id="liType" aria-label="Type">${opts('Weapon')}</select><input type="number" id="liQty" value="1" min="1" aria-label="Quantity"><input type="text" class="f" id="liStats" placeholder="Stats, like 2d6 pistol" aria-label="Stats"></div>
       <div class="row gap"><label class="muted" style="font-size:13px">Tier <select id="liTier" aria-label="Tier">${tierOpts(0)}</select></label><label class="muted" style="font-size:13px">Cyberware threshold cost <input type="number" id="liCw" value="0" min="0" aria-label="Cyberware threshold cost"></label><span class="muted" style="font-size:12px">Only matters for Cyberware</span></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Backpack size</span><span class="nisz"><input type="number" id="liW" min="1" max="${BAG_MAX_W}" placeholder="W" aria-label="Width in spaces"><span class="muted">×</span><input type="number" id="liH" min="1" max="${BAG_MAX_H}" placeholder="H" aria-label="Height in spaces"></span><span class="muted" style="font-size:12px">Blank guesses from the type, like 4 × 1 for a rifle</span></div>
-      <div class="row gap"><span class="muted" style="font-size:13px">Weapons only</span><label class="muted" style="font-size:13px">ROF <input type="number" id="liRof" min="1" max="10" placeholder="auto" style="width:70px" aria-label="Rate of fire"></label><select id="liRel" aria-label="Reload speed"><option value="">Reload: auto</option><option value="light">LIGHT reload</option><option value="heavy">HEAVY reload</option><option value="none">Melee</option></select><select id="liClip" aria-label="Clip"><option value="std">Standard clip</option><option value="ext">Extended clip</option><option value="drum">Drum clip</option></select></div>
+      <div class="row gap"><label class="muted" style="font-size:13px">Max stack <input type="number" id="liCap" min="1" max="99" placeholder="${CAP_DEF}" style="width:70px" aria-label="Max stack"></label><span class="muted" style="font-size:12px">Consumables and Ammo only. Blank is ${CAP_DEF} for consumables, no cap for ammo. Everything else never stacks.</span></div>
+      <div class="row gap"><span class="muted" style="font-size:13px">Weapons only</span><select id="liWt" aria-label="Weapon type">${wtOpts('', 'Weapon type: guess from name')}</select><label class="muted" style="font-size:13px">ROF <input type="number" id="liRof" min="1" max="10" placeholder="auto" style="width:70px" aria-label="Rate of fire"></label><select id="liRel" aria-label="Reload speed"><option value="">Reload: auto</option><option value="light">LIGHT reload</option><option value="heavy">HEAVY reload</option><option value="none">Melee</option></select><select id="liClip" aria-label="Clip"><option value="std">Standard clip</option><option value="ext">Extended clip</option><option value="drum">Drum clip</option></select></div>
       <div class="row gap"><span class="muted" style="font-size:13px">Also give to</span><select id="liTo" aria-label="Also give to">${giveTargets}</select><button class="btn small primary" data-live="libadd">Save item</button></div>
       <div style="margin-top:10px">${libRows}</div>
     </div>` : ''}`;
@@ -6887,7 +6937,10 @@ $('#liveBody').addEventListener('click', async e => {
   if (a === 'libadd'){
     const name = ($('#liName').value || '').trim(); if (!name){ $('#liName').focus(); return toast('Give the item a name.'); }
     const item = {id:uid(), name:name.slice(0, 60), type:$('#liType').value, qty:Math.max(1, parseInt($('#liQty').value) || 1), stats:($('#liStats').value || '').trim().slice(0, 120), cw:Math.max(0, parseInt($('#liCw').value) || 0), tier:Math.max(0, Math.min(3, parseInt($('#liTier').value) || 0))};
-    Object.assign(item, sizeOf({...item, w:$('#liW').value, h:$('#liH').value}), weaponOf({...item, rof:($('#liRof') || {}).value, reload:($('#liRel') || {}).value, clip:($('#liClip') || {}).value})); $('#liW').value = ''; $('#liH').value = ''; if ($('#liRof')) $('#liRof').value = '';
+    const wt = item.type === 'Weapon' ? wtFields(($('#liWt') || {}).value) : {}, cp = capNum(($('#liCap') || {}).value);
+    if (cp && STACKS.includes(item.type)) item.cap = cp;
+    Object.assign(item, sizeOf({...item, ...(wt.wclass || wt.gtype ? {name:wt.gtype || wt.wclass} : {}), w:$('#liW').value, h:$('#liH').value}), weaponOf({...item, ...wt, rof:($('#liRof') || {}).value, reload:($('#liRel') || {}).value || wt.reload, clip:($('#liClip') || {}).value}));
+    if ($('#liCap')) $('#liCap').value = ''; if ($('#liWt')) $('#liWt').value = ''; $('#liW').value = ''; $('#liH').value = ''; if ($('#liRof')) $('#liRof').value = '';
     const to = $('#liTo').value;
     try { await liveApi.setLibItem(item); } catch(err){ return toast("Couldn't save the item."); }
     $('#liName').value = ''; $('#liStats').value = ''; $('#liQty').value = 1;
@@ -7208,11 +7261,12 @@ async function preloadSheet(file){
     const buf = await file.arrayBuffer();
     tabs = /\.csv$/i.test(file.name) ? {[file.name]: readCsv(new TextDecoder().decode(buf))} : await readXlsx(buf);
   } catch(err){ preloadMsg = "That file couldn't be read. Save it as .xlsx, or as a .csv of one tab, and try again."; return renderLive(); }
-  const res = {w:0, wu:0, n:0, nu:0, c:0, cu:0, skip:0};
+  const res = {w:0, wu:0, n:0, nu:0, c:0, cu:0, i:0, iu:0, skip:0};
   for (const [tname, rows] of Object.entries(tabs)){
     const objs = gridObjs(rows); if (!objs.length) continue;
     const ks = Object.keys(objs[0]);
-    const kind = /cyber/i.test(tname) || ks.includes('slot') ? 'c' : /weapon/i.test(tname) || ks.includes('guntype') || ks.includes('rof') ? 'w' : /npc/i.test(tname) || ks.includes('origin') || ks.includes('maxhp') ? 'n' : null;
+    const kind = /cyber/i.test(tname) || ks.includes('slot') ? 'c' : /weapon/i.test(tname) || ks.includes('guntype') || ks.includes('rof') ? 'w' : /npc/i.test(tname) || ks.includes('origin') || ks.includes('maxhp') ? 'n'
+      : /item|consumable|ammo|gear/i.test(tname) || ks.includes('maxstack') ? 'i' : null;
     if (!kind) continue;
     for (const o of objs){
       if (isExample(o)) continue;
@@ -7222,8 +7276,18 @@ async function preloadSheet(file){
         const ex = deck.cards.find(x => x.name.toLowerCase() === name.toLowerCase()), tier = /4|iconic/i.test(o.tier) ? 3 : /3|military/i.test(o.tier) ? 2 : /2|custom/i.test(o.tier) ? 1 : 0;
         const card = {id: ex ? ex.id : uid(), name, slot, tier, cw: Math.max(0, parseInt(o.cwload || o.cw) || 0), ram: parseInt(String(o.rambonus || o.ram || '').replace('−', '-')) || 0,
           effect: String(o.effect || '').slice(0, 300), copies: Math.max(0, parseInt(o.copiesinthedeck || o.copies) || 1), hot: yesNo(o.hotswap)};
+        const wcx = Object.keys(WT).find(k => k.toLowerCase() === String(o.weapontype || '').trim().toLowerCase()); if (wcx) card.wc = wcx; else delete card.wc;
         if (ex) Object.assign(ex, card); else deck.cards.push(card);
         ex ? res.cu++ : res.c++; continue;
+      }
+      if (kind === 'i'){
+        const type = ['Consumable', 'Ammo', 'Gear', 'Armor', 'Shard', 'Vehicle'].find(t => t.toLowerCase() === String(o.type || '').trim().toLowerCase()) || 'Consumable';
+        const ex = lib.find(x => x.type !== 'Weapon' && x.name.toLowerCase() === name.toLowerCase());
+        const tier = /4|iconic/i.test(o.tier) ? 3 : /3|military/i.test(o.tier) ? 2 : /2|custom/i.test(o.tier) ? 1 : 0;
+        const item = {id: ex ? ex.id : uid(), name:name.slice(0, 60), type, qty:1, stats:String(o.stats || o.effect || '').slice(0, 120), cw:0, tier, hidden: yesNo(o.hidden), ...(STACKS.includes(type) && capNum(o.maxstack) ? {cap:capNum(o.maxstack)} : {})};
+        Object.assign(item, sizeOf({...item, w:parseInt(o.width) || null, h:parseInt(o.height) || null}));
+        try { await liveApi.setLibItem(item); ex ? res.iu++ : res.i++; } catch(err){ res.skip++; }
+        continue;
       }
       if (kind === 'w'){
         const gt0 = o.weapontype || o.guntype || '', gt = GUN_ALIAS[Object.keys(GUN_ALIAS).find(k => k.toLowerCase() === gt0.toLowerCase())] || gt0;
@@ -7246,10 +7310,10 @@ async function preloadSheet(file){
     }
   }
   saveDeck();
-  const tot = res.w + res.wu + res.n + res.nu + res.c + res.cu;
+  const tot = res.w + res.wu + res.n + res.nu + res.c + res.cu + res.i + res.iu;
   const part = (a, u, word) => a + u ? `<b>${a + u}</b> ${word}${a + u === 1 ? '' : 's'}${u ? ` (${u} updated)` : ''}` : '';
-  preloadMsg = tot ? `Loaded ${[part(res.w, res.wu, 'weapon'), part(res.n, res.nu, 'NPC'), part(res.c, res.cu, 'cyberware card')].filter(Boolean).join(' and ')}.${res.skip ? ` Skipped ${res.skip} row${res.skip === 1 ? '' : 's'} with no name or that didn't save.` : ''}`
-    : "Nothing to load. Make sure the tabs are named Weapons, NPCs and Cyberware, or keep the template's column headers.";
+  preloadMsg = tot ? `Loaded ${[part(res.w, res.wu, 'weapon'), part(res.i, res.iu, 'item'), part(res.n, res.nu, 'NPC'), part(res.c, res.cu, 'cyberware card')].filter(Boolean).join(' and ')}.${res.skip ? ` Skipped ${res.skip} row${res.skip === 1 ? '' : 's'} with no name or that didn't save.` : ''}`
+    : "Nothing to load. Make sure the tabs are named Weapons, Items, NPCs and Cyberware, or keep the template's column headers.";
   if (tot){ toast(`Preloaded ${tot} from ${file.name}.`, true); sfx('receive'); }
   renderLive();
 }

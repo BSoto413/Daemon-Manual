@@ -41,13 +41,15 @@ service cloud.firestore {
       }
 
       // Crew board. Everyone in the session sees it. The DM runs gigs, the shop and Street Cred.
-      // Anyone in the crew can put things in the stash, take them out, and move things around the stash grid and move crew eddies (never below 0).
+      // Anyone in the crew can put things in the stash, take them out, move things around the stash grid, move crew eddies (never below 0), and buy one from the shop's stock.
       match /crew/{id} {
         allow read: if signedIn();
         allow create: if isDM() || (isMember() && (request.resource.data.type == 'stash'
           || (id == '_pool' && request.resource.data.type == 'pool' && request.resource.data.eddies is int && request.resource.data.eddies >= 0)));
         allow update: if isDM() || (isMember() && id == '_pool' && request.resource.data.type == 'pool' && request.resource.data.eddies is int && request.resource.data.eddies >= 0)
-          || (isMember() && resource.data.type == 'stash' && request.resource.data.type == 'stash');
+          || (isMember() && resource.data.type == 'stash' && request.resource.data.type == 'stash')
+          || (isMember() && resource.data.type == 'shop' && resource.data.stock is int && resource.data.stock > 0
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']) && request.resource.data.stock == resource.data.stock - 1);
         allow delete: if isDM() || (isMember() && resource.data.type == 'stash');
       }
 
