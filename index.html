@@ -7342,7 +7342,8 @@ const SOUNDS = {
 const SOUND_INFO = [['select', 'Any button'], ['tab', 'Tabs and pages'], ['up', 'Plus, gain'], ['down', 'Minus, spend'], ['deny', 'Not allowed'],
   ['equip', 'Equip, get item'], ['unequip', 'Unequip, remove'], ['perk', 'Perk installed'], ['unperk', 'Perk removed'], ['damage', 'Damage, hacked'], ['heal', 'Healing'], ['receive', 'DM sent something'],
   ['levelup', 'Level up'], ['cool', 'COOL Token'], ['breach', 'Quickhack, Black ICE'], ['flatline', 'Flatline'], ['psycho', 'Cyberpsychosis']];
-function sfx(n){ if (!FXS.sfx || !SOUNDS[n] || !PREFS[SND_CAT[n] || 'game']) return; try { playSnd(n); } catch(e){} }
+function sfx(n){ if (n === 'up' || n === 'down') n = 'select';   // For now every up and down plays the select sound
+  if (!FXS.sfx || !SOUNDS[n] || !PREFS[SND_CAT[n] || 'game']) return; try { playSnd(n); } catch(e){} }
 function classify(b){
   const d = b.dataset, txt = (b.textContent || '').trim();
   if (b.id === 'doAct' || b.id === 'tSfx' || b.id === 'coolSpend' || d.sfxtest) return null;

@@ -243,3 +243,4 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Tap any condition chip or limb tag to see its rule
 - The DM's session recap has a Show to the party button. Players get a Previously in Night City popup once
 - Keep screen awake and text size were already in Settings
+- For now every up and down sound (steppers, +/− buttons, point buy) plays the select sound. Remove the first line of `sfx()` to bring them back
