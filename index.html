@@ -3325,20 +3325,20 @@ const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200}
 const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
 /* ================= ITEM TIERS + GENERATORS =================
    Placeholder tables. Swap these out when the GM posts the real ones. */
-const QUICKHACKS = [
-  {id:'short', n:'Short Circuit', ram:3, d:'Damage. Amount TBD'},
-  {id:'contagion', n:'Contagion', ram:5, d:'Gives a target disadvantage. It spreads to 2 more targets in or entering a 15 ft radius.'},
-  {id:'malfunction', n:'Malfunction', ram:4, d:'Target is stunned for 1 round'},
-  {id:'cripple', n:'Cripple', ram:3, d:'Half movement and no Dash'},
+const QUICKHACKS = [   // cheapest first
   {id:'ping', n:'Ping', ram:1, d:'Pick a piece of tech you can see and ping a signal through it. You can see enemies through walls while they pass within 20 ft of it'},
   {id:'distract', n:'Distract', ram:1, d:'Effect TBD'},
   {id:'hijack', n:'Hijack', ram:2, d:'Take over cameras, turrets and drones'},
-  {id:'wipe', n:'Memory Wipe', ram:8, d:'Effect TBD'},
+  {id:'short', n:'Short Circuit', ram:3, d:'Damage. Amount TBD'},
+  {id:'cripple', n:'Cripple', ram:3, d:'Half movement and no Dash'},
+  {id:'malfunction', n:'Malfunction', ram:4, d:'Target is stunned for 1 round'},
+  {id:'contagion', n:'Contagion', ram:5, d:'Gives a target disadvantage. It spreads to 2 more targets in or entering a 15 ft radius.'},
   {id:'overheat', n:'Overheat', ram:5, d:'Effect TBD'},
-  {id:'burnout', n:'Burnout', ram:8, d:'Effect TBD'},
   {id:'sonic', n:'Sonic', ram:5, d:'Damage and disconnects comms. Amount TBD'},
-  {id:'collapse', n:'Collapse', ram:12, d:'Target falls unconscious'},
-  {id:'detonate', n:'Detonate', ram:10, d:'Effect TBD'}
+  {id:'wipe', n:'Memory Wipe', ram:8, d:'Effect TBD'},
+  {id:'burnout', n:'Burnout', ram:8, d:'Effect TBD'},
+  {id:'detonate', n:'Detonate', ram:10, d:'Effect TBD'},
+  {id:'collapse', n:'Collapse', ram:12, d:'Target falls unconscious'}
 ];
 // Net combat. SWORD and SHIELD run on HACKING and CODE. Automation cuts every RAM cost by 1.
 const skillBonus = (n, st, c = C) => mod(score(st, c)) + prof(c.level || 1) * skillProf(n, st, c).level;
