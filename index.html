@@ -337,6 +337,14 @@ details.fold > summary{display:flex;align-items:center;gap:8px;cursor:pointer;li
 details.fold > summary h3{margin:0}.fchev{color:var(--cyan);transition:transform .15s;font-size:14px}details.fold:not([open]) .fchev{transform:rotate(-90deg)}
 details.fold[open] > summary{margin-bottom:10px}
 .ldtag{display:inline-block;font:600 10px Orbitron,sans-serif;letter-spacing:.6px;text-transform:uppercase;color:#ffb300;border:1px solid #ffb300;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.qh.lk,.qh.lk.off{opacity:1;cursor:not-allowed;border:1px dashed rgba(255,79,216,.45);background:repeating-linear-gradient(135deg,#08080f 0 10px,#0d0a14 10px 20px)}
+.qh.lk b{color:#8a93a0}.qh.lk small{color:#6b7480}
+.qlk{position:absolute;top:8px;right:8px;font:700 11px Orbitron,sans-serif;letter-spacing:.5px;color:#ff4fd8;border:1px solid #ff4fd8;padding:2px 6px;background:rgba(255,79,216,.1)}
+.qlkt{display:block;color:#ff8fe6;font-weight:600;margin-bottom:2px}
+.qh.nw{border-color:var(--green,#39ff88);box-shadow:0 0 10px rgba(57,255,136,.25)}
+.qnew{position:absolute;bottom:8px;right:8px;font:700 10px Orbitron,sans-serif;letter-spacing:.6px;color:#0a0a0a;background:var(--green,#39ff88);padding:1px 5px}
+.qhnext{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:8px 10px;border:1px solid rgba(255,79,216,.45);background:rgba(255,79,216,.08);font-size:14px}
+.qhnext b{color:#ff8fe6}.qhnext.all{border-color:rgba(var(--crgb),.3);background:transparent;color:var(--muted)}
 .stashg{grid-template-columns:repeat(10,minmax(0,1fr));max-width:640px;margin-top:6px}
 .stashg button.bc{padding:0;margin:0;font:inherit;color:inherit;cursor:default;border-radius:0}
 .stashg.moving button.bc{cursor:pointer}.stashg.moving button.bc:hover{background:rgba(var(--crgb),.18)}
@@ -1222,12 +1230,12 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
         <div class="panel">
           <p>Instead of classes, every merc fills a specialized role. Pick your role at level 1. It gives you proficiency in two skills and locks for good.</p>
           <p><b>Role perk.</b> At level 1 you also unlock ONE perk from one of your role's key stat trees. It follows the normal perk rules, so that stat has to be 10 or higher. Pick it when you make your merc or later on your Perks tab. Mercs made before this rule get it too.</p>
-          <table class="rtable"><thead><tr><th>Role</th><th>Proficiencies</th><th>Key stats</th></tr></thead><tbody>
-            <tr><td><b>Netrunner</b></td><td>Hacking and Code</td><td>INT</td></tr>
-            <tr><td><b>Soldier</b></td><td>Athletics and Sleight of Hand</td><td>REF and STR</td></tr>
-            <tr><td><b>Technician</b></td><td>Scan and Craft</td><td>TEC and INT</td></tr>
-            <tr><td><b>Shinobi</b></td><td>Stealth and Acrobatics</td><td>REF</td></tr>
-            <tr><td><b>Bruiser</b></td><td>Athletics and Intimidation</td><td>STR and BOD</td></tr>
+          <table class="rtable"><thead><tr><th>Role</th><th>Proficiencies</th><th>Key stats</th><th>Saves</th></tr></thead><tbody>
+            <tr><td><b>Netrunner</b></td><td>Hacking and Code</td><td>INT</td><td>INT and COO</td></tr>
+            <tr><td><b>Soldier</b></td><td>Athletics and Sleight of Hand</td><td>REF and STR</td><td>STR and REF</td></tr>
+            <tr><td><b>Technician</b></td><td>Scan and Craft</td><td>TEC and INT</td><td>TEC and INT</td></tr>
+            <tr><td><b>Shinobi</b></td><td>Stealth and Acrobatics</td><td>REF</td><td>REF and COO</td></tr>
+            <tr><td><b>Bruiser</b></td><td>Athletics and Intimidation</td><td>STR and BOD</td><td>BOD and STR</td></tr>
           </tbody></table>
           <p class="muted" style="font-size:13px;margin-top:10px">If your role and your background give the same skill, it counts once. When you level up and a stat reaches a new tier (Rookie, Pro, Phenom or Legend), you get one skill pick. Take a skill you don't have yet, or double one you got at least two tiers earlier. You keep picks even if the stat drops later.</p>
         </div>
@@ -1242,6 +1250,10 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td>Investigation</td><td><b>Scan</b></td><td>INT</td></tr><tr><td>Nature</td><td><b>RAM</b></td><td>INT</td></tr>
             <tr><td>Religion</td><td><b>Code</b></td><td>INT</td></tr>
           </tbody></table>
+          <h3 style="margin-top:18px" id="r-code">Code</h3>
+          <p style="margin-top:8px">Coding is an essential skill for Netrunners and Technicians. The CODE skill is also important to better understand and solve software issues you'll find in the technologically advanced place that is Night City.</p>
+          <p><b>For Netrunners.</b> Your CODE skill is tied directly to how well you can break Firewalls, increase your NET AC with the SHIELD program, and replicate or create I.C.E programs.</p>
+          <p><b>For Technicians.</b> Your CODE skill is your ability to create and update cyberware, quickhacks and other tech. Great hardware means nothing without the software to back it up.</p>
           <h3 style="margin-top:18px">Driving</h3>
           <div class="vkinds"><span>Car</span><span>Bike</span><span>Water</span><span>Air (AV)</span></div>
           <p style="margin-top:10px">Anyone can drive anything. Add your proficiency to Vehicle checks only for the kinds you drive well. For everything else, roll without it.</p>
@@ -1787,6 +1799,10 @@ const SKILLS = [
   ['Persuasion','COO'],['RAM','INT','Nature'],['Scan','INT','Investigation'],['Sleight of Hand','REF'],
   ['Stealth','REF'],['Vehicle','TEC','Animal Handling']
 ];
+// Skill write-ups from the DM. Tapping the skill on the sheet shows them.
+const SKILL_INFO = {
+  Code: "Coding is an essential skill for Netrunners and Technicians. It also helps you understand and solve the software issues you'll find all over Night City. Netrunners use CODE to break Firewalls, raise their NET AC with SHIELD, and replicate or create I.C.E programs. Technicians use CODE to create and update cyberware, quickhacks and other tech. Great hardware means nothing without the software to back it up."
+};
 const PB_COST = {8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
 const PB_TOTAL = 27;
 const ASI_LEVELS = [4,6,8,12,14,16,19];
@@ -2106,16 +2122,16 @@ const CONCEAL_AUTO = ['Light Pistol', 'Heavy Pistol', 'Hand Cannon', 'SMG'];
 const GUN_ALIAS = {'Medium Pistol':'Light Pistol', 'Very Heavy Pistol':'Hand Cannon', 'Heavy SMG':'SMG'};
 // The DM's weapon chart. Tier bonuses stack (see dmgBonus).
 const WEAPON_TABLE = [
-  {n:'Light Pistol', rof:2, dice:'2d6', dt:'piercing', st:'REF', kind:'gun', note:'range 60 ft'},
-  {n:'Heavy Pistol', rof:2, dice:'3d6', dt:'piercing', st:'REF', kind:'gun', note:'range 60 ft'},
-  {n:'Hand Cannon', rof:1, dice:'4d6', dt:'piercing', st:'STR', kind:'gun', note:'range 80 ft'},
-  {n:'SMG', rof:4, dice:'3d6', dt:'piercing', st:'REF', kind:'gun', note:'burst fire'},
-  {n:'LMG', rof:4, dice:'6d4', dt:'piercing', st:'STR', kind:'gun', note:'heavy, suppressing fire'},
-  {n:'Shotgun', rof:1, dice:'5d6', dt:'piercing', st:'STR', kind:'gun', note:'close range'},
-  {n:'Assault Rifle', rof:3, dice:'4d6', dt:'piercing', st:'REF', kind:'gun', note:'range 150 ft'},
-  {n:'Sniper Rifle', rof:1, dice:'6d6', dt:'piercing', st:'REF', kind:'gun', note:'range 300 ft'},
-  {n:'Grenade Launcher', rof:1, dice:'6d6', dt:'explosive', st:'STR', kind:'gun', note:'REF save for half'},
-  {n:'Rocket Launcher', rof:1, dice:'8d6', dt:'explosive', st:'STR', kind:'gun', note:'REF save for half'},
+  {n:'Light Pistol', rof:2, dice:'2d6', dt:'piercing', st:'REF', kind:'gun', rng:'80/100', note:''},
+  {n:'Heavy Pistol', rof:2, dice:'3d6', dt:'piercing', st:'REF', kind:'gun', rng:'80/100', note:''},
+  {n:'Hand Cannon', rof:1, dice:'4d6', dt:'piercing', st:'STR', kind:'gun', rng:'100/400', note:''},
+  {n:'SMG', rof:4, dice:'3d6', dt:'piercing', st:'REF', kind:'gun', rng:'80/100', note:'burst fire'},
+  {n:'LMG', rof:4, dice:'6d4', dt:'piercing', st:'STR', kind:'gun', rng:'100/400', note:'heavy, suppressing fire'},
+  {n:'Shotgun', rof:1, dice:'5d6', dt:'piercing', st:'STR', kind:'gun', rng:'60/80', note:'close range'},
+  {n:'Assault Rifle', rof:3, dice:'4d6', dt:'piercing', st:'REF', kind:'gun', rng:'100/400', note:''},
+  {n:'Sniper Rifle', rof:1, dice:'6d6', dt:'piercing', st:'REF', kind:'gun', rng:'200/600', note:''},
+  {n:'Grenade Launcher', rof:1, dice:'6d6', dt:'explosive', st:'STR', kind:'gun', rng:'100/400', note:'REF save for half'},
+  {n:'Rocket Launcher', rof:1, dice:'8d6', dt:'explosive', st:'STR', kind:'gun', rng:'200', note:'REF save for half'},
   {n:'Sword', rof:2, dice:'2d6', dt:'slashing', st:'REF', kind:'melee', note:'finesse'},
   {n:'Knife', rof:2, dice:'2d4', dt:'slashing', st:'REF', kind:'melee', note:'thrown, finesse'},
   {n:'Club', rof:2, dice:'2d4', dt:'bludgeoning', st:'STR', kind:'melee', note:''},
@@ -2123,6 +2139,8 @@ const WEAPON_TABLE = [
   {n:'Heavy Hammer', rof:1, dice:'4d6', dt:'bludgeoning', st:'STR', kind:'melee', note:'heavy, two-handed'}
 ];
 const WT = Object.fromEntries(WEAPON_TABLE.map(w => [w.n, w]));
+// Range. First number is normal, second is with disadvantage, past it is a miss. One number means a fixed range.
+const rngText = n => { const w = WT[n]; return !w ? '' : w.kind === 'melee' ? 'Melee' : /\//.test(w.rng) ? `${w.rng} ft` : `${w.rng} ft fixed`; };
 const MELEE_CLASSES = WEAPON_TABLE.filter(w => w.kind === 'melee').map(w => w.n);
 // Guess which chart weapon an item is from its name.
 function classGuess(name, stats){
@@ -2227,7 +2245,7 @@ const clipCap = i => i.type === 'Weapon' && CLIPS[i.gtype] ? CLIPS[i.gtype][CLIP
 const canConceal = i => i.type === 'Weapon' && (CONCEAL_AUTO.includes(i.gtype) || (i.gtype === 'Assault Rifle' && !!i.conc));
 const concealed = i => canConceal(i) && (i.clip || 'std') === 'std';
 const RELOAD_TXT = {light:'LIGHT reload', heavy:'HEAVY reload', none:'Melee'};
-const wpnTag = i => i.type === 'Weapon' ? `<span class="wpnb" title="Rate of fire and reload">ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() : ''}</span>${clipCap(i) ? `<span class="wpnb" title="${esc(i.gtype)}, ${CLIP_TXT[i.clip || 'std']} clip">${CLIP_TXT[i.clip || 'std'].toUpperCase()} ${clipCap(i)}</span>` : ''}${canConceal(i) ? (concealed(i) ? '<span class="wpnb conb" title="Can be concealed">CONCEALABLE</span>' : '<span class="wpnb nocb" title="Only concealable with a Standard clip">NOT CONCEALABLE</span>') : ''}` : '';
+const wpnTag = i => i.type === 'Weapon' ? `<span class="wpnb" title="Rate of fire and reload">ROF ${i.rof}${i.reload !== 'none' ? ' · ' + i.reload.toUpperCase() : ''}</span>${WT[i.wclass] ? `<span class="wpnb" title="Normal range / with disadvantage. Past it is a miss">${rngText(i.wclass).toUpperCase()}</span>` : ''}${clipCap(i) ? `<span class="wpnb" title="${esc(i.gtype)}, ${CLIP_TXT[i.clip || 'std']} clip">${CLIP_TXT[i.clip || 'std'].toUpperCase()} ${clipCap(i)}</span>` : ''}${canConceal(i) ? (concealed(i) ? '<span class="wpnb conb" title="Can be concealed">CONCEALABLE</span>' : '<span class="wpnb nocb" title="Only concealable with a Standard clip">NOT CONCEALABLE</span>') : ''}` : '';
 function sizeOf(i){
   const d = defSize(i.type, i.name), w = parseInt(i.w), h = parseInt(i.h);
   return {w: Math.max(1, Math.min(BAG_MAX_W, w || d[0])), h: Math.max(1, Math.min(BAG_MAX_H, h || d[1]))};
@@ -2670,6 +2688,9 @@ function bagHTML(m, ro){
 /* ================= CHARACTER MATH ================= */
 const score = (st, c = C) => c.base[st] + c.asi.filter(k => k === st).length;
 // Role perk. Every merc gets one extra perk at level 1, and it has to come from one of their role's key stat trees.
+// Save proficiencies come from your role (DM, Nov 16). No role yet falls back to the 5e Fighter's STR and BOD.
+const ROLE_SAVES = {Netrunner:['INT', 'COO'], Bruiser:['BOD', 'STR'], Soldier:['STR', 'REF'], Technician:['TEC', 'INT'], Shinobi:['REF', 'COO']};
+const saveProfs = (c = C) => ROLE_SAVES[c && c.role] || ['STR', 'BOD'];
 const roleStats = (c = C) => c && ROLES[c.role] ? ROLES[c.role].k.match(/[A-Z]{3}/g) : [];
 const normalPts = (c = C) => Math.max(0, c.level - 1);
 const perkTotal = (c = C) => normalPts(c) + (roleStats(c).length ? 1 : 0);
@@ -2914,7 +2935,7 @@ function renderWizard(){
     h = `<h3>Pick your role</h3>
       <p class="muted" style="margin:6px 0 0">Your role is what you do for the crew. It gives you proficiency in two skills. <b style="color:var(--yellow)">You can't change it later</b>, so pick carefully.</p>
       <div class="bgs roles">${Object.entries(ROLES).map(([k, v]) =>
-        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span><span class="sk">Proficient in ${v.prof.join(' and ')}</span><span class="sk">Role perk from ${v.k.match(/[A-Z]{3}/g).join(' or ')}</span></button>`).join('')}</div>
+        `<button class="bg ${W.role === k ? 'on' : ''}" data-role="${k}"><span class="t">${k}</span><span class="rk">${v.k}</span><span class="d" style="margin-top:8px">${v.d}</span><span class="sk">Proficient in ${v.prof.join(' and ')}</span><span class="sk">Role perk from ${v.k.match(/[A-Z]{3}/g).join(' or ')}</span><span class="sk">${ROLE_SAVES[k].join(' and ')} saves</span></button>`).join('')}</div>
       <p class="muted" style="margin:14px 0 0;font-size:14px">Every role also gets one free perk at level 1 from one of its key stat trees. You pick it at the end.</p>
       <div class="err" id="wErr"></div>`;
   } else if (wStep === 3){
@@ -3072,6 +3093,7 @@ function levelCard(lv){
   if (ASI_LEVELS.includes(lv)) gains.push('+2 stat increases');
   if (prof(lv) > prof(lv - 1)) gains.push(`Proficiency now ${sgn(prof(lv))}`);
   if (C.hpMax) gains.push('Roll your new HP');
+  const nq = qhAt(lv); if (nq.length && lv > 1) gains.push(`New quickhack${nq.length > 1 ? 's' : ''} · ${nq.map(q => q.n).join(' and ')}`);
   el.innerHTML = `<div class="lc"><div class="lc-top"><span>DAEMON OS</span><span>FIRMWARE UPDATE</span></div>
     <div class="lc-name">${esc(C.name)}</div><div class="lc-patch">Patch ${lv}.0</div>
     <div class="lc-bar"><i></i></div><div class="lc-st">Installed</div>
@@ -3214,7 +3236,8 @@ function setLevel(l){
     $('#sheetHead').classList.remove('lvlup'); void $('#sheetHead').offsetWidth; $('#sheetHead').classList.add('lvlup');
     const gotAsi = ASI_LEVELS.includes(C.level);
     levelCard(C.level);
-    toast(`Level ${C.level}. +1 perk point${gotAsi ? ' and +2 stat increases' : ''}.${C.hpMax ? ' Roll your HP on the Character sheet.' : ''}`, true);
+    const nq = qhAt(C.level);
+    toast(`Level ${C.level}. +1 perk point${gotAsi ? ' and +2 stat increases' : ''}.${nq.length ? ` ${nq.map(q => q.n).join(' and ')} ${nq.length > 1 ? 'are' : 'is'} unlocked.` : ''}${C.hpMax ? ' Roll your HP on the Character sheet.' : ''}`, true);
   }
 }
 
@@ -3275,7 +3298,8 @@ function renderSkills(){
     const pf = skillProf(n, st);
     const m = mod(score(st)) + p * pf.level;
     const dis = hacked('short') || (hacked('optics') && (n === 'Perception' || n === 'Scan'));
-    return `<div class="skill ${pf.level === 2 ? 'exp' : pf.level ? 'prof' : ''}"><span class="s">${n}<small>${st}${old ? ' · was ' + old : ''}${pf.role ? ' · ' + C.role : ''}${pf.doubled ? ' · doubled by a tier pick' : pf.picked ? ' · tier pick' : ''}${pf.locked ? ' · double at ' + st + ' 17' : ''}</small></span><span class="m">${dis ? '<span class="disb">DIS</span> ' : ''}${sgn(m)}</span></div>`;
+    const info = SKILL_INFO[n];
+    return `<div class="skill ${pf.level === 2 ? 'exp' : pf.level ? 'prof' : ''}" ${info ? `data-rule="${n}" data-rd="${esc(info)}" title="Tap for what ${n} does"` : ''}><span class="s">${n}${info ? ' <span class="muted" aria-hidden="true">ⓘ</span>' : ''}<small>${st}${old ? ' · was ' + old : ''}${pf.role ? ' · ' + C.role : ''}${pf.doubled ? ' · doubled by a tier pick' : pf.picked ? ' · tier pick' : ''}${pf.locked ? ' · double at ' + st + ' 17' : ''}</small></span><span class="m">${dis ? '<span class="disb">DIS</span> ' : ''}${sgn(m)}</span></div>`;
   }).join('');
 }
 
@@ -3523,21 +3547,27 @@ const FABRICATOR = 'TEC.B.ph', FAB_COST = {create:300, fortify:150, upgrade:200}
 const MK = ['Tier 1', 'Tier 2', 'Tier 3', 'Tier 4'];
 /* ================= ITEM TIERS + GENERATORS =================
    Placeholder tables. Swap these out when the GM posts the real ones. */
+// DM's table, Nov 16. RAM costs may change, edit them here. lvl is the merc level that unlocks each one.
 const QUICKHACKS = [   // cheapest first
-  {id:'ping', n:'Ping', ram:1, d:'Pick a piece of tech you can see and ping a signal through it. You can see enemies through walls while they pass within 20 ft of it'},
-  {id:'distract', n:'Distract', ram:1, d:'Effect TBD'},
-  {id:'hijack', n:'Hijack', ram:2, d:'Take over cameras, turrets and drones'},
-  {id:'short', n:'Short Circuit', ram:3, d:'Damage. Amount TBD'},
-  {id:'cripple', n:'Cripple', ram:3, d:'Half movement and no Dash'},
-  {id:'malfunction', n:'Malfunction', ram:4, d:'Target is stunned for 1 round'},
-  {id:'contagion', n:'Contagion', ram:5, d:'Gives a target disadvantage. It spreads to 2 more targets in or entering a 15 ft radius.'},
-  {id:'overheat', n:'Overheat', ram:5, d:'Effect TBD'},
-  {id:'sonic', n:'Sonic', ram:5, d:'Damage and disconnects comms. Amount TBD'},
-  {id:'wipe', n:'Memory Wipe', ram:8, d:'Effect TBD'},
-  {id:'burnout', n:'Burnout', ram:8, d:'Effect TBD'},
-  {id:'detonate', n:'Detonate', ram:10, d:'Effect TBD'},
-  {id:'collapse', n:'Collapse', ram:12, d:'Target falls unconscious'}
+  {id:'ping', n:'Ping', ram:2, lvl:1, d:'Pick a piece of tech you can see and ping a signal through it. You can see enemies through walls while they pass within 15 ft of it'},
+  {id:'distract', n:'Distract', ram:2, lvl:1, d:'Cause tech you can see to malfunction, so nearby enemies may go investigate'},
+  {id:'hijack', n:'Hijack', ram:3, lvl:1, d:"Take over cameras, turrets and drones. You still see from your own point of view, and Hijack's RAM doesn't come back until you cancel it. Hijacked turrets and drones only last so long before their processors fry"},
+  {id:'short', n:'Short Circuit', ram:3, lvl:1, d:'60 ft range. 3d8 shock damage, INT save for half'},
+  {id:'cripple', n:'Cripple', ram:4, lvl:3, d:'60 ft range. INT save. On a fail, half movement and no double move. On a save, half movement'},
+  {id:'malfunction', n:'Malfunction', ram:5, lvl:5, d:'Stunned for 1d4 rounds'},
+  {id:'contagion', n:'Contagion', ram:5, lvl:5, d:'Gives a target disadvantage. It spreads to 2 more targets in or entering a 15 ft radius.'},
+  {id:'overheat', n:'Overheat', ram:6, lvl:7, d:'Fry enemy processors. 30 ft range. 8d6 fire damage, INT save for half'},
+  {id:'sonic', n:'Sonic', ram:8, lvl:9, d:"80 ft range. 4d10 damage and disconnects the target's comms for 1d4 + 1 rounds"},
+  {id:'wipe', n:'Memory Wipe', ram:8, lvl:9, d:"Touch. INT save, no effect on a save. Erases the target's memory. Untraceable"},
+  {id:'burnout', n:'Burnout', ram:10, lvl:11, d:'Touch. 5d10 damage to IRL and NET HP'},
+  {id:'collapse', n:'Collapse', ram:10, lvl:11, d:'60 ft range, 20 ft radius. INT save. Targets fall unconscious for 1d4 + 1 rounds, or half as long on a save'},
+  {id:'detonate', n:'Detonate', ram:12, lvl:13, d:'30 ft range. 8d12 damage, INT save for half. A target that hits 0 HP from this is reduced to ash'}
 ];
+// Quickhack INT saves beat a Hack DC of 10 + your Hacking skill.
+// Quickhacks that unlock exactly at a level, and the next unlock above a level.
+const qhAt = lv => QUICKHACKS.filter(q => q.lvl === lv);
+const qhNext = lv => { const n = QUICKHACKS.filter(q => q.lvl > lv).reduce((m, q) => Math.min(m, q.lvl), 99); return n < 99 ? {lvl:n, qs:qhAt(n)} : null; };
+const hackDC = (c = C) => 10 + skillBonus('Hacking', 'INT', c);
 // Net combat. SWORD and SHIELD run on HACKING and CODE. Automation cuts every RAM cost by 1.
 const skillBonus = (n, st, c = C) => mod(score(st, c)) + prof(c.level || 1) * skillProf(n, st, c).level;
 const shieldOf = (c = C) => 10 + skillBonus('Code', 'INT', c);
@@ -3560,7 +3590,7 @@ document.addEventListener('change', e => { if (e.target.id === 'swordN' && C){ s
 const qhCost = (q, c = C) => Math.max(0, q.ram - (c && c.unlocked.includes('INT.S.ph') ? 1 : 0));
 function renderRuleQh(){
   const el = $('#rQh'); if (!el) return;
-  el.innerHTML = `<table class="rtable"><thead><tr><th>Quickhack</th><th>RAM</th><th>Effect</th></tr></thead><tbody>${QUICKHACKS.map(q => `<tr><td><b>${q.n}</b></td><td>${q.ram}</td><td>${esc(q.d)}</td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<p style="margin:0 0 8px">Quickhack INT saves have to beat your <b>Hack DC</b>, which is 10 + your Hacking skill. Each quickhack unlocks at a merc level.</p><table class="rtable"><thead><tr><th>Quickhack</th><th>RAM</th><th>Level</th><th>Effect</th></tr></thead><tbody>${QUICKHACKS.map(q => `<tr><td><b>${q.n}</b></td><td>${q.ram}</td><td>${q.lvl}</td><td>${esc(q.d)}</td></tr>`).join('')}</tbody></table>`;
 }
 const BLACK_ICE = [
   {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:''},
@@ -3744,7 +3774,7 @@ function renderRuleStatus(){
 }
 function renderRuleWeapons(){
   const el = $('#rWeapons'); if (!el) return;
-  el.innerHTML = `<table class="rtable"><thead><tr><th>Weapon</th><th>ROF</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Tier 4</th></tr></thead><tbody>${WEAPON_TABLE.map(w => `<tr><td><b>${w.n}</b></td><td>${w.rof}</td><td>${w.dice}${w.kind === 'melee' ? ` + ${w.st} mod` : ''} ${w.dt}${/save/.test(w.note) ? ' (REF save for half)' : ''}</td><td>${dmgText(w.n, 1)}</td><td>${dmgText(w.n, 2)}</td><td>${dmgText(w.n, 3)} + unique effect</td></tr>`).join('')}</tbody></table>`;
+  el.innerHTML = `<table class="rtable"><thead><tr><th>Weapon</th><th>ROF</th><th>Range</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Tier 4</th></tr></thead><tbody>${WEAPON_TABLE.map(w => `<tr><td><b>${w.n}</b></td><td>${w.rof}</td><td style="white-space:nowrap">${rngText(w.n)}</td><td>${w.dice}${w.kind === 'melee' ? ` + ${w.st} mod` : ''} ${w.dt}${/save/.test(w.note) ? ' (REF save for half)' : ''}</td><td>${dmgText(w.n, 1)}</td><td>${dmgText(w.n, 2)}</td><td>${dmgText(w.n, 3)} + unique effect</td></tr>`).join('')}</tbody></table>`;
 }
 function renderRuleTiers(){
   const el = $('#rTiers'); if (!el) return;
@@ -3910,16 +3940,16 @@ function modsPanel(){
     const i = C.inv.find(x => x.id === C.eq[slot]); if (!i || i.type !== 'Weapon') return '';
     const w = WT[i.wclass], st = w ? w.st : i.reload === 'none' ? 'STR' : 'REF', t = i.tier || 0;
     const dmg = w ? dmgText(i.wclass, t, C) : (i.stats || '').split('·')[0].trim();
-    return row(esc(i.name), `d20 ${sgn(mod(score(st)) + pb + t)}`, `${st}${t ? ' · tier +' + t : ''}${dmg ? ' · ' + esc(dmg) : ''}`);
+    return row(esc(i.name), `d20 ${sgn(mod(score(st)) + pb + t)}`, `${st}${t ? ' · tier +' + t : ''}${dmg ? ' · ' + esc(dmg) : ''}${w ? ' · ' + rngText(i.wclass) : ''}`);
   };
   const unarmed = row('Unarmed', `d20 ${sgn(mod(score('STR')) + pb)}`, `STR · ${Math.max(1, 1 + mod(score('STR')))} bludgeoning`);
-  const saves = ['STR', 'REF', 'BOD', 'INT', 'TEC', 'COO'].map(k => `<div class="msave ${k === 'STR' || k === 'BOD' ? 'p' : ''}"><span>${k}</span><b>${sgn(mod(score(k)) + (k === 'STR' || k === 'BOD' ? pb : 0))}</b></div>`).join('');
+  const sp = saveProfs(), saves = ['STR', 'REF', 'BOD', 'INT', 'TEC', 'COO'].map(k => `<div class="msave ${sp.includes(k) ? 'p' : ''}"><span>${k}</span><b>${sgn(mod(score(k)) + (sp.includes(k) ? pb : 0))}</b></div>`).join('');
   const sk = SKILLS.map(([n, st]) => ({n, st, l: skillProf(n, st).level})).filter(x => x.l > 0);
   return foldWrap('rolls', 'Your rolls', 'Add these to the dice at the table', `<div class="mods">
     <span class="lbl">Attacks</span>${atk('primary')}${atk('secondary')}${unarmed}
-    ${row('Initiative', `d20 ${sgn(mod(score('REF')))}`, 'REF')}${C.cyber.length ? row('Cyberpsychosis save', `d20 ${sgn(mod(score('TEC')))}`, `TEC vs DC ${psyDC(C)}`) : ''}
+    ${row('Initiative', `d20 ${sgn(mod(score('REF')))}`, 'REF')}${C.cyber.length ? row('Cyberpsychosis save', `d20 ${sgn(mod(score('TEC')))}`, `TEC vs DC ${psyDC(C)}`) : ''}${row('Hack DC', `${hackDC()}`, `10 ${sgn(skillBonus('Hacking', 'INT'))} Hacking · targets save with INT`)}
     <span class="lbl" style="margin-top:12px">Saving throws</span><div class="msaves">${saves}</div>
-    <p class="muted" style="font-size:12px;margin:4px 0 0">Highlighted saves add your proficiency (+${pb}), like a 5e Fighter.</p>
+    <p class="muted" style="font-size:12px;margin:4px 0 0">Highlighted saves add your proficiency (+${pb}). ${C.role ? `${C.role}s are proficient in ${sp.join(' and ')} saves.` : 'Pick a role to set yours.'}</p>
     ${sk.length ? `<span class="lbl" style="margin-top:12px">Your skills</span><div class="mskills">${sk.map(x => `<span>${x.n}${x.l > 1 ? ' ◆◆' : ''}<b>${sgn(skillBonus(x.n, x.st))}</b></span>`).join('')}</div>` : ''}
   </div>`);
 }
@@ -4079,7 +4109,8 @@ function renderCS0(){
     </div>
     ${beltHTML()}
     ${modsPanel()}
-    ${foldWrap('qh', 'Quickhacks', `RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all`, `<div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), off = hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${esc(q.d)}"><b>${q.n}</b><span class="rc">${c} RAM</span><small>${esc(q.d)}</small></button>`; }).join('')}</div>
+    ${foldWrap('qh', 'Quickhacks', `RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all`, `<p style="margin:0 0 10px;font-size:14px">Your <b>Hack DC</b> is <b class="num" style="font-size:18px">${hackDC()}</b> <span class="muted" style="font-size:12px">10 ${sgn(skillBonus('Hacking', 'INT'))} Hacking. Targets make INT saves against it</span></p>${(() => { const nx = qhNext(C.level); return nx ? `<div class="qhnext"><span class="lkic" aria-hidden="true">🔒</span><span>Next unlock at <b>level ${nx.lvl}</b> · ${nx.qs.map(q => q.n).join(' and ')}</span></div>` : '<div class="qhnext all"><span>Every quickhack is unlocked.</span></div>'; })()}
+<div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), lk = C.level < q.lvl, nw = !lk && q.lvl > 1 && q.lvl === C.level, off = lk || hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''} ${lk ? 'lk' : ''} ${nw ? 'nw' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${lk ? `Locked. Unlocks at level ${q.lvl}. ` : ''}${esc(q.d)}"><b>${q.n}</b>${lk ? `<span class="qlk">🔒 LV ${q.lvl}</span>` : `<span class="rc">${c} RAM</span>`}${nw ? '<span class="qnew">NEW</span>' : ''}<small>${lk ? `<span class="qlkt">Unlocks at level ${q.lvl}.</span> ` : ''}${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p>`)}
     <div data-sub="combat" class="netwrap">${netPanel()}</div>
     </div><div class="csR">
@@ -4604,6 +4635,7 @@ $('#vCS').addEventListener('click', e => {
     case 'qh': {
       if (stunned() || blocked('lockout')) return;
       const q = QUICKHACKS.find(x => x.id === t.dataset.q); if (!q) return;
+      if (C.level < q.lvl) return toast(`${q.n} unlocks at level ${q.lvl}.`);
       const c = qhCost(q); if (ramCur() < c) return toast(`${q.n} needs ${c} RAM. You have ${ramCur()}.`);
       const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
       if (live) flushLog('');
@@ -6233,7 +6265,7 @@ const wTypeOf = i => i.type !== 'Weapon' ? i.type : WT[i.wclass] ? i.wclass : cl
 function peqHTML(i, label){
   if (!i) return `<div class="peq none"><span class="lbl">${label}</span><span class="muted">None</span></div>`;
   return `<div class="peq t${(i.tier || 0) + 1}" title="${esc(i.name)}${i.stats ? ' · ' + esc(i.stats) : ''}"><span class="lbl">${label}</span><div class="peqi">${itemArt(i)}</div>
-    <div class="peqt"><b>${esc(i.name)}</b><small>${esc(wTypeOf(i))}${i.tier ? ' · T' + (i.tier + 1) : ''}${i.type === 'Weapon' && i.rof ? ' · ROF ' + i.rof : ''}</small></div></div>`;
+    <div class="peqt"><b>${esc(i.name)}</b><small>${esc(wTypeOf(i))}${i.tier ? ' · T' + (i.tier + 1) : ''}${i.type === 'Weapon' && i.rof ? ' · ROF ' + i.rof : ''}${i.type === 'Weapon' && WT[i.wclass] ? ' · ' + rngText(i.wclass) : ''}</small></div></div>`;
 }
 function partyCard(p){
   const m = p.merc ? normalize(p.merc) : null; if (!m) return '';

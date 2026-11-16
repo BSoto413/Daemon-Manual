@@ -267,3 +267,11 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Weapon type picker on the player's Add an item form, the DM's library form, the ripperdoc chrome forms (install, draft and inline edit) and the DM's draft approval. Picking a type sets the picture, damage, clip and reload. A cyberweapon like Mantis Blades shows the weapon picture in the bag and its damage when installed. A weapon just named "gun" with no type now looks like a pistol
 - The preload spreadsheet has a new Items tab (Name, Type, Stats, Tier, Max stack, Width, Height, Hidden) and a Weapon type column on the Cyberware tab
 - Needs the new `firestore.rules` published, or players can't buy from a stocked shop
+
+## DM notes, Nov 16
+- Saves come from your role. Netrunner INT and COO, Bruiser BOD and STR, Soldier STR and REF, Technician TEC and INT, Shinobi REF and COO. No role yet falls back to STR and BOD. Shown on the role cards, the roles table and Your rolls
+- Weapon ranges (normal/disadvantage, past it is a miss). Light Pistol, Heavy Pistol and SMG 80/100. Hand Cannon, LMG, Assault Rifle and Grenade Launcher 100/400. Shotgun 60/80. Sniper Rifle 200/600. Rocket Launcher fixed 200 ft. Melee weapons say Melee. Shown on weapon cards, Your rolls, party cards and the rules table
+- Quickhacks use the DM's RAM costs and effects and unlock by level (Ping, Distract, Hijack and Short Circuit at 1, Cripple 3, Malfunction and Contagion 5, Overheat 7, Sonic and Memory Wipe 9, Burnout and Collapse 11, Detonate 13). Edit `QUICKHACKS` to change RAM or levels
+- Hack DC is 10 + Hacking. Shown on the Quickhacks panel and Your rolls
+- CODE skill write-up in the Skills rules, and tapping Code on the sheet shows it (`SKILL_INFO`)
+- Locked quickhacks have a pink LV badge, a dashed striped card and "Unlocks at level X". A banner above the list names the next unlock. Leveling up lists new quickhacks on the level-up card and toast, and they get a green NEW tag at that level
