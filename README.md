@@ -314,3 +314,4 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Perk nodes no longer jump off their line when installed. Nodes are positioned with a CSS transform, so the bounce now goes on the hexagon inside, and the ring is centered from the hexagon itself. Effects skip any element that has its own transform (`txFree`)
 - Battery saver no longer turns the animations off (they're short and cheap). Reduce flashing and Table mode keep the gentle ones and turn off only the screen shake, red flashes, ICE flicker, button glitch and scan line
 - Tapping FX on is now remembered over the phone's reduced-motion setting. Settings, Comfort shows whether animations are on, and why not if they're off, with a Turn animations on button
+- Perk tree on phones. Tier names run sideways in a thin column so the tree gets the width. Node width and hexagon size follow the space between columns (`--colw`, `--hexw` set in `layout()`), so names wrap instead of overlapping, even at 140% text size

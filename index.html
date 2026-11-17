@@ -209,16 +209,16 @@ g.e.live .edge-base{opacity:.95}
 g.e.live .edge-live{opacity:.9}
 @keyframes flow{to{stroke-dashoffset:-16}}
 
-.node{position:absolute;transform:translate(-50%,-36px);background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;width:136px;color:inherit;font:inherit;
+.node{position:absolute;transform:translate(-50%,calc(var(--hexw,62px) * -.565));background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;width:min(136px,calc(var(--colw,140px) - 6px));color:inherit;font:inherit;
   transition:opacity .4s ease var(--d,0s),transform .4s cubic-bezier(.2,1.4,.4,1) var(--d,0s)}
-.node.hidden{opacity:0;transform:translate(-50%,-36px) scale(.4);pointer-events:none}
+.node.hidden{opacity:0;transform:translate(-50%,calc(var(--hexw,62px) * -.565)) scale(.4);pointer-events:none}
 .node:focus{outline:none}
 .hexwrap{position:relative;transition:filter .3s}
-.hex{display:grid;place-items:center;width:62px;height:70px;clip-path:var(--hexp);background:#4a1c27;position:relative}
+.hex{display:grid;place-items:center;width:var(--hexw,62px);height:calc(var(--hexw,62px) * 1.13);clip-path:var(--hexp);background:#4a1c27;position:relative}
 .hex::before{content:'';position:absolute;inset:2px;clip-path:var(--hexp);background:#120910;transition:background .3s}
 .glyph{position:relative;font-family:Orbitron,sans-serif;font-size:15px;font-weight:500;color:#b4607a;transition:color .3s}
-.label{font-size:12.5px;line-height:1.25;color:var(--muted);text-align:center;max-width:136px;transition:color .3s}
-.req{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1px;color:var(--red);display:none}
+.label{font-size:12.5px;line-height:1.25;color:var(--muted);text-align:center;max-width:100%;overflow-wrap:break-word;hyphens:auto;transition:color .3s}
+.req{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1px;color:var(--red);display:none;text-align:center;white-space:nowrap}
 .tierlocked .req{display:block}
 .available .hex{background:var(--cyan)}
 .available .hex::before{background:#06181c}
@@ -1187,12 +1187,11 @@ button.cxcard:hover{border-color:var(--cyan)}
 footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 @media (max-width:560px){
   .wrap{padding:22px 16px 60px}
-  .branch-row,.tree-row{grid-template-columns:54px minmax(0,1fr)}
+  .branch-row,.tree-row{grid-template-columns:24px minmax(0,1fr)}
   .tierlbl span{display:none}
-  .node{width:96px;transform:translate(-50%,-28px)}
-  .node.hidden{transform:translate(-50%,-28px) scale(.4)}
-  .label{font-size:11px;max-width:96px}
-  .hex{width:48px;height:54px}
+  .tierlbl b{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:2px}
+  .label{font-size:11px;line-height:1.2}
+  .req{font-size:9px;letter-spacing:.5px}
   .bl{font-size:10px;letter-spacing:1px}
   .steps .stepdot span{display:none}
 }
@@ -3392,6 +3391,10 @@ function layout(){
   const w = treeEl.clientWidth, h = treeEl.clientHeight;
   if (!w) return;
   svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  // Node width and hex size follow the gap between columns, so neighbours never overlap on a narrow phone.
+  const colw = (COLS.S - COLS.A) * w;
+  treeEl.style.setProperty('--colw', colw + 'px');
+  treeEl.style.setProperty('--hexw', Math.round(Math.max(36, Math.min(innerWidth <= 560 ? 50 : 62, colw * .58))) + 'px');
   tl.innerHTML = TIER_ORDER.map(t => `<line class="tierline" data-t="${t}" x1="0" x2="${w}" y1="${TIERS[t].y*h}" y2="${TIERS[t].y*h}"/>`).join('');
   edges.forEach(e => {
     const a = SLOT[e.from], b = SLOT[e.to];
