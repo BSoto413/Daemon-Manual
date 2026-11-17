@@ -280,3 +280,14 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Safely jacking out undetected saves your progress in that network. Every Unsafe Jack-Out undoes any progress. In the rules and on the Jack out buttons
 - Skunk Black ICE is −2 to the Netrunner's SLIDE checks, stacking with each hit
 - Petrified is gone from the effects list. Anyone who had it loses it on load
+
+## Mobile pass, Nov 17
+- Swept every screen at 360, 390 and 430 wide (roster, builder, every sheet tab, modals, rules, codex, live join and host, every DM tab, player Crew tab). No JS errors and no sideways scrolling
+- Fixed the point-buy rows overflowing on phones, chrome chip names getting cut off, the Perks tab RAM tile using an old formula (now Max RAM), a broken font rule on the vitals bar labels, and the DM shop rows crowding
+- Bigger tap targets for the vitals fire buttons, status chip ✕, "What these do" toggles, rules contents links and NPC lock buttons. Small buttons are 11px text now
+
+## DM notes, Nov 17 (afternoon)
+- Domain perk costs 10 RAM and an ACTION, pulls in everyone within a 30 ft radius, and covers how the Domain looks, how people are arranged, its locked 60 ft box, and your personal ICE acting at the top of your turn
+- NPC presets carry weapons. Gonk Light Pistol and Knife or Club. Gangster (was Ganger) SMG or Shotgun and Sword or Light Hammer. Corpo Security Assault Rifle or Shotgun and Club. Elite LMG or Sniper Rifle and Sword or Heavy Hammer. Boss Hand Cannon and Sword. Damage is the main gun's tier 1 dice. A DM's saved presets keep any numbers they changed and pick up the weapons
+- Death saves. Three passes bring you back at 1 no matter what dropped you, unless the DM says otherwise
+- Concussed now makes you Incapacitated
