@@ -671,6 +671,25 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 #sheetHead.sigd .sheet-head .nm{text-shadow:0 0 14px var(--sig)}#sheetHead.sigd{box-shadow:inset 0 3px 0 var(--sig)}
 /* Flair: low HP vision */
 #hurtfx{position:fixed;inset:0;pointer-events:none;z-index:8;opacity:0;transition:opacity .6s}
+/* Anime.js effects layers */
+#hitfx{position:fixed;inset:0;pointer-events:none;z-index:9;opacity:0}
+#hitfx.dmg{box-shadow:inset 0 0 90px 24px rgba(255,30,60,.7);background:rgba(255,20,50,.08)}
+#hitfx.heal{box-shadow:inset 0 0 80px 18px rgba(57,255,136,.45)}
+#hitfx.war{background:rgba(255,20,50,.22);box-shadow:inset 0 0 160px 40px rgba(255,20,50,.6)}
+.floatn{position:fixed;z-index:60;pointer-events:none;font:700 26px Orbitron,sans-serif;letter-spacing:1px;transform:translate(-50%,-50%)}
+.floatn.dmg{color:#ff3b5c;text-shadow:0 0 12px rgba(255,40,70,.9),2px 0 0 rgba(0,234,255,.6)}
+.floatn.heal{color:#39ff88;text-shadow:0 0 12px rgba(57,255,136,.8)}
+.scanl{position:fixed;left:0;right:0;top:0;height:3px;z-index:58;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(0,234,255,.9),transparent);box-shadow:0 0 18px 4px rgba(0,234,255,.45)}
+.pring{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border:2px solid var(--cyan);border-radius:50%;pointer-events:none;box-shadow:0 0 16px var(--cyan)}
+.pspark{fill:#fff;filter:drop-shadow(0 0 6px var(--cyan)) drop-shadow(0 0 2px #fff)}
+#boot{position:fixed;inset:0;z-index:200;background:#050509;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#boot .bt{width:min(92vw,420px);font:13px/1.7 ui-monospace,Menlo,Consolas,monospace;color:#7fffb0}
+#boot svg{display:block;width:96px;height:96px;margin:0 auto 18px;color:var(--cyan);filter:drop-shadow(0 0 8px rgba(0,234,255,.55))}
+#boot svg *{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#boot .bh{font:700 20px Orbitron,sans-serif;letter-spacing:4px;color:#fff;text-align:center;margin-bottom:14px;text-shadow:0 0 12px rgba(0,234,255,.7)}
+#boot .bline{min-height:1.7em;white-space:pre}#boot .bline.ok::after{content:' OK';color:var(--cyan)}
+#boot .bs{margin-top:16px;text-align:center;color:#59606c;font-size:11px;letter-spacing:2px}
+#combatFx.anim .cf-c{animation:none}
 body.hurt #hurtfx{opacity:1;box-shadow:inset 0 0 110px 20px rgba(255,30,60,.45);animation:hurtPulse 1.8s ease-in-out infinite}
 body.hurt #vitalsBar{animation:vbFlick 3.2s steps(1) infinite}
 body.dying #hurtfx{opacity:1;animation:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.72) 100%);box-shadow:inset 0 0 140px 30px rgba(255,20,50,.35);backdrop-filter:grayscale(.85);-webkit-backdrop-filter:grayscale(.85)}
@@ -1759,7 +1778,8 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div class="modal" id="modal" hidden></div>
 <div id="printSheet" aria-hidden="true"></div>
 <div class="setp" id="setPanel" role="dialog" aria-label="Settings" hidden></div>
-<script src="vendor/anime.umd.min.js" defer></script>
+<div id="hitfx" aria-hidden="true"></div>
+<script src="vendor/anime.umd.min.js"></script>
 <div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
@@ -3125,7 +3145,7 @@ function renderVitalsBar(){
   const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>${gun.ld ? esc(SP[gun.ld].n) : 'Ammo'}</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire full ROF, ${gun.rof} shots">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
   const prev = {}; el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'); if (k && b && b.firstChild) prev[k] = parseInt(b.firstChild.nodeValue); });
   el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
-  if (prevMerc === C.id) el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'), now = b && b.firstChild ? parseInt(b.firstChild.nodeValue) : NaN; if (k in prev && Number.isFinite(prev[k]) && Number.isFinite(now) && prev[k] !== now){ fxCount(b.firstChild, prev[k], now); fxBump(b); } });
+  if (prevMerc === C.id) el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'), now = b && b.firstChild ? parseInt(b.firstChild.nodeValue) : NaN; if (k in prev && Number.isFinite(prev[k]) && Number.isFinite(now) && prev[k] !== now){ fxCount(b.firstChild, prev[k], now); fxBump(b); if (k === 'HP' || k === 'Net HP') fxHit(v, now - prev[k], C.hpMax); } });
   prevMerc = C.id;
   syncBodyFx();
 }
@@ -3453,6 +3473,7 @@ function act(sl){
   el.classList.remove('burst'); void el.offsetWidth; el.classList.add('burst');
   setTimeout(() => el.classList.remove('burst'), 800);
   update(true);
+  fxPerk(sl, edges.find(x => x.to === sl));
 }
 function refund(sl){
   const st = C.active, b = blockers(st, sl);
@@ -3857,7 +3878,7 @@ function placeLive(){
   updateTabs();
 }
 document.addEventListener('click', e => { if (e.target.id === 'goParty' && LS && LS.mercId){ openChar(LS.mercId); setSheetTab('party'); location.hash = '#sheet'; } });
-document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ setSheetTab(b.dataset.v); sfx('tab'); requestAnimationFrame(() => { const t = sheetTab; fxEnter(t === 'perks' ? $('#vPerks') : t === 'party' ? $('#vParty') : t === 'profile' ? $('#vAch') : $('#vCS')); if (t === 'gear') fxPop(document.querySelectorAll('#vCS .bag .gi')); }); } });
+document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ setSheetTab(b.dataset.v); sfx('tab'); fxScan(); requestAnimationFrame(() => { const t = sheetTab; fxEnter(t === 'perks' ? $('#vPerks') : t === 'party' ? $('#vParty') : t === 'profile' ? $('#vAch') : $('#vCS')); if (t === 'gear') fxPop(document.querySelectorAll('#vCS .bag .gi')); }); } });
 
 // Shots left in an equipped gun. Each ATTACK fires as many shots as the gun's ROF.
 const ldTag = i => i && i.ld ? `<span class="ldtag" title="${esc(i.ldName + (i.ldFx ? '. ' + i.ldFx : ''))}" data-rule="${esc(i.ldName)}" data-rd="${esc(i.ldFx || 'The DM has the effect for these rounds.')}">${esc(SP[i.ld].n)}</span>` : '';
@@ -7237,7 +7258,7 @@ function showCombat(cb){
   el.innerHTML = `<div class="cf-in${cb.list.length > 6 ? ' many' : ''}"><div class="cf-t gl" data-text="COMBAT INCOMING">COMBAT INCOMING</div><div class="cf-s">Hostiles in the area · ${cb.list.reduce((a, c) => a + (c.cnt || 1), 0)} contact${cb.list.reduce((a, c) => a + (c.cnt || 1), 0) === 1 ? '' : 's'}</div>
     <div class="cf-grid">${cb.list.map((c, i) => `<div class="cf-c" style="animation-delay:${0.15 + i * 0.08}s">${c.cnt > 1 ? `<span class="cf-n">×${c.cnt}</span>` : ''}${cfPic(c)}<b>${esc(c.name)}</b><small>${cfSub(c)}</small></div>`).join('')}</div>
     <div class="cf-go">Tap to continue</div></div>`;
-  el.hidden = false;
+  el.hidden = false; el.classList.remove('anim'); fxCombat(el);
   setTimeout(() => el.querySelectorAll('.cf-c b').forEach((b, i) => setTimeout(() => fxScramble(b, {duration: 700}), i * 80)), 250);
 }
 $('#combatFx').addEventListener('click', () => { $('#combatFx').hidden = true; });
@@ -7674,6 +7695,108 @@ function fxCount(node, from, to){
   const a = AN(); if (!a || !node || from === to || !Number.isFinite(from) || !Number.isFinite(to)) return;
   const o = {v: from}; node.nodeValue = String(from);
   try { a.animate(o, {v: to, duration: 520, ease: 'outExpo', modifier: a.utils.round(0), onUpdate: () => { node.nodeValue = String(o.v); }, onComplete: () => { node.nodeValue = String(to); }}); } catch(e){ node.nodeValue = String(to); }
+}
+// ---- Hit feedback. Floating number over the bar, red edge and shake on big hits, green pulse on heals.
+function fxFlash(kind, peak){
+  const a = AN(), el = $('#hitfx'); if (!a || !el) return;
+  el.className = kind;
+  try { a.animate(el, {opacity: [peak || .9, 0], duration: kind === 'war' ? 900 : 650, ease: 'outQuad'}); } catch(e){}
+}
+function fxShake(el, amt){
+  const a = AN(); el = el || $('#pgApp'); if (!a || !el) return;
+  const k = amt || 8;
+  try { a.animate(el, {translateX: [0, -k, k * .8, -k * .5, k * .3, 0], duration: 380, ease: 'linear', onComplete: () => { el.style.transform = ''; }}); } catch(e){}
+}
+function fxFloat(anchor, text, kind){
+  const a = AN(); if (!a || !anchor) return;
+  const r = anchor.getBoundingClientRect(), f = document.createElement('div');
+  f.className = 'floatn ' + kind; f.textContent = text; f.style.left = (r.left + r.width / 2) + 'px'; f.style.top = (r.top + r.height / 2) + 'px';
+  document.body.appendChild(f);
+  try { a.animate(f, {translateY: ['-50%', '90%'], translateX: ['-50%', '-50%'], scale: [1.6, 1], opacity: [{to: 1, duration: 120}, {to: 0, delay: 520, duration: 380}], duration: 1000, ease: 'outCubic', onComplete: () => f.remove()}); } catch(e){ f.remove(); }
+}
+function fxHit(cell, delta, max){
+  if (!AN() || !delta) return;
+  if (delta < 0){
+    fxFloat(cell, '−' + Math.abs(delta), 'dmg');
+    const big = Math.abs(delta) >= Math.max(5, (max || 0) * .25);
+    fxFlash('dmg', big ? 1 : .55); if (big) fxShake(null, 9);
+  } else { fxFloat(cell, '+' + delta, 'heal'); fxFlash('heal', .8); }
+}
+// ---- Perk unlock. A spark runs down the line from the parent perk, then the node rings out.
+function fxPerk(sl, edge){
+  const a = AN(), el = nodeEls[sl]; if (!a || !el) return;
+  let wait = 0;
+  if (edge && edge.live && edge.live.getAttribute('d')){
+    try {
+      const sp = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); sp.setAttribute('r', '4'); sp.setAttribute('class', 'pspark'); eg.appendChild(sp);
+      const mp = a.svg.createMotionPath(edge.live);
+      a.animate(sp, {translateX: mp.translateX, translateY: mp.translateY, duration: 480, ease: 'inOutSine', onComplete: () => sp.remove()});
+      a.animate(a.svg.createDrawable(edge.live), {draw: ['0 0', '0 1'], duration: 480, ease: 'inOutSine'});
+      wait = 420;
+    } catch(e){}
+  }
+  setTimeout(() => {
+    const rg = document.createElement('div'); rg.className = 'pring';
+    rg.style.left = (el.offsetLeft + el.offsetWidth / 2) + 'px'; rg.style.top = (el.offsetTop + el.offsetHeight / 2) + 'px';
+    treeEl.appendChild(rg);
+    try { a.animate(rg, {scale: [.5, 2.4], opacity: [1, 0], duration: 650, ease: 'outCubic', onComplete: () => rg.remove()}); } catch(e){ rg.remove(); }
+    fxBump(el);
+  }, wait);
+}
+// ---- Combat entrance. Red flash, a jolt, then the contacts slam in one by one.
+function fxCombat(el){
+  const a = AN(); if (!a || !el) return;
+  el.classList.add('anim');
+  fxFlash('war', 1); fxShake(el, 12);
+  const t = el.querySelector('.cf-t');
+  try {
+    if (t) a.animate(t, {scale: [1.6, 1], opacity: [0, 1], duration: 500, ease: 'outExpo'});
+    a.animate(el.querySelectorAll('.cf-c'), {scale: [1.7, 1], opacity: [0, 1], rotate: () => [a.utils.random(-9, 9), 0], translateY: [-30, 0], delay: a.stagger(90, {start: 260}), ease: a.createSpring({stiffness: 220, damping: 13}),
+      onComplete: () => el.querySelectorAll('.cf-c').forEach(c => { c.style.transform = ''; })});
+  } catch(e){ el.classList.remove('anim'); }
+}
+// ---- Ambient. Buttons glitch on press, a scan line sweeps on tab switches, Black ICE art flickers now and then.
+document.addEventListener('pointerdown', e => {
+  const b = e.target.closest('.btn, .vtabs button, .qh, [data-act=useC]'); const a = AN(); if (!a || !b || b.disabled) return;
+  try { a.animate(b, {translateX: [0, -2, 2, -1, 0], skewX: [0, -8, 5, 0], duration: 170, ease: 'linear', onComplete: () => { b.style.transform = ''; }}); } catch(err){}
+}, {passive: true});
+function fxScan(){
+  const a = AN(); if (!a) return;
+  const l = document.createElement('div'); l.className = 'scanl'; document.body.appendChild(l);
+  try { a.animate(l, {translateY: [0, innerHeight], opacity: [{to: 1, duration: 60}, {to: 0, delay: 300, duration: 140}], duration: 480, ease: 'inOutQuad', onComplete: () => l.remove()}); } catch(e){ l.remove(); }
+}
+(function iceFlicker(){
+  const next = () => setTimeout(iceFlicker, 2500 + Math.random() * 4500);
+  const a = AN(); if (!a || document.hidden) return next();
+  const imgs = [...document.querySelectorAll('.iceart')].filter(visible);
+  if (imgs.length){
+    const im = imgs[Math.floor(Math.random() * imgs.length)];
+    try { a.animate(im, {opacity: [1, .25, 1, .55, 1], translateX: [0, 3, -2, 0], duration: 320, ease: 'steps(5)', onComplete: () => { im.style.transform = ''; im.style.opacity = ''; }}); } catch(e){}
+  }
+  next();
+})();
+// ---- Boot screen. Once per visit, tap to skip. Never when motion is off.
+function fxBoot(){
+  const a = AN(); let seen = false; try { seen = sessionStorage.getItem('daemon-booted') === '1'; sessionStorage.setItem('daemon-booted', '1'); } catch(e){}
+  if (!a || seen) return;
+  const n = DB && DB.chars ? DB.chars.length : 0;
+  const lines = ['> mounting neural link', '> loading merc roster · ' + n + ' found', '> syncing Night City net', '> arming ICE countermeasures', '> welcome back, choom'];
+  const b = document.createElement('div'); b.id = 'boot'; b.setAttribute('role', 'presentation');
+  b.innerHTML = `<div class="bt"><svg viewBox="0 0 96 96" aria-hidden="true"><path d="M30 10H66L86 30V66L66 86H30L10 66V30Z"/><path d="M36 30H54L64 40V56L54 66H36Z"/><path d="M36 30V66"/><path d="M10 48H24M72 48H86M48 10V20M48 76V86"/></svg>
+    <div class="bh">DAEMON OS</div>${lines.map(() => '<div class="bline"></div>').join('')}<div class="bs">TAP TO SKIP</div></div>`;
+  document.body.appendChild(b);
+  let done = false;
+  const end = () => { if (done) return; done = true; try { a.animate(b, {opacity: [1, 0], duration: 320, ease: 'outQuad', onComplete: () => b.remove()}); } catch(e){ b.remove(); } };
+  b.addEventListener('click', end); addEventListener('keydown', end, {once: true});
+  try {
+    a.animate(a.svg.createDrawable(b.querySelectorAll('svg path')), {draw: ['0 0', '0 1'], duration: 800, ease: 'inOutQuad', delay: a.stagger(120)});
+    const h = b.querySelector('.bh'); a.animate(h, {innerHTML: a.scrambleText({chars: SCRAMBLE_CHARS}), duration: 700, delay: 300});
+    b.querySelectorAll('.bline').forEach((el, i) => setTimeout(() => {
+      if (done) return; el.textContent = lines[i];
+      a.animate(el, {innerHTML: a.scrambleText({chars: SCRAMBLE_CHARS, cursor: '_'}), duration: 260, onComplete: () => { el.textContent = lines[i]; if (i < lines.length - 1) el.classList.add('ok'); }});
+    }, 800 + i * 260));
+  } catch(e){}
+  setTimeout(end, 800 + lines.length * 260 + 700);
 }
 // Rules headings decode once as they scroll into view.
 let rulesObs = null;
@@ -8774,6 +8897,7 @@ if (DB.current && DB.chars.some(c => c.id === DB.current)){ C = normalize(DB.cha
 else { show('roster'); renderRoster(); }
 renderLive();
 route();
+fxBoot();
 if (LS && LIVE_OK) connect();
 else if (LIVE_OK && acctFlag()) getLive().catch(e => console.error(e));
 })();

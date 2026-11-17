@@ -298,3 +298,9 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Headings decode with `scrambleText` (page title, rules section headings as they scroll in, the level-up patch number, contact names on the combat alert)
 - HP, RAM, AC and ammo numbers roll to their new value and get a spring nudge (`createSpring`)
 - All of it is off when Motion effects is off in Settings, in Calm or Battery saver, or when the device asks for reduced motion. If the file fails to load the site works the same, just without the motion
+- Boot screen. A short DAEMON OS boot once per visit (per browser tab session). The logo draws on and the status lines decode. Tap or press any key to skip
+- Hits you can feel. HP and Net HP changes float a red −N or green +N under the bar. Damage flashes the screen edge red, and a big hit (a quarter of max HP or 5+) also shakes the page. Heals pulse green
+- Perk unlock. A spark runs down the line from the parent perk (`createMotionPath`), the line redraws, and the new node rings out
+- Combat entrance. When the DM sends combat, players get a red flash and a jolt, the title punches in, and the contact cards slam in on a spring
+- Ambient. Buttons glitch when pressed, a scan line sweeps the screen on sheet tab switches, and Black ICE art flickers every few seconds
+- Tests set `sessionStorage['daemon-booted']` so the boot screen doesn't block them
