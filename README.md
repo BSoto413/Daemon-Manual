@@ -330,4 +330,15 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - It uses three.js (vendor/three.module.min.js, MIT license in vendor/three.LICENSE). The file only downloads the first time someone jacks in, then the app keeps it for offline use.
 - Phones get a lighter version with fewer lights, a smaller glow and half-resolution rendering. It stops completely when you leave the sheet or jack out, so nothing keeps running.
 - Calm mode, Table mode and FX off all skip it.
+- Settings, Look has a Net lights section. Pick a preset (Netrunner, Black ICE, Arasaka, Toxic, Ghost, Militech) or set the oncoming and outgoing colors yourself. Changes show live, and Preview plays it for a few seconds even when you aren't jacked in. The choice is saved with your other settings and syncs with Google sign-in.
 - Ported from the React Bits Hyperspeed component.
+
+## Phone layout pass
+- Phones and small tablets (760px and under) get a bottom bar with Merc, Live, Rules, Codex and More. More holds All mercs, Search, Settings, and the Sound and Motion switches. The top menu hides at that size. Desktop is unchanged.
+- Tapping Merc opens the sheet you were on, or jumps back to the top if you're already there. Tapping Live in a session opens the Crew tab.
+- The top of the sheet is about a third of what it was. Smaller title, one slim row for name and level, and the "perk points to spend" banner became a yellow dot on the Perks tab.
+- Sheet tabs fit on one row with short names and stay pinned under the vitals bar.
+- Combat on phones puts Equipped, Quick slots and Your rolls first, then Vitals. HP and NET HP are slimmer, weapons are compact rows, and death saves only show when you're down.
+- Tapping a perk opens its details in a panel that slides up from the bottom. Close it with ✕, by tapping outside it, or by swiping down.
+- Achievements fold into one row with your count. A back-to-top button shows up after a couple of screens of scrolling (not on the Rules page).
+- Rules were left as they are for now.

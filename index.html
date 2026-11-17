@@ -1229,6 +1229,94 @@ body.fx .cwmini:hover .cwc::after,body.fx .cwmini:focus-visible .cwc::after{anim
 #hyper canvas{display:block;width:100%;height:100%}
 #hyper.ice{filter:saturate(1.4) brightness(1.15)}
 body.hyper #circuit{opacity:.2!important;transition:opacity .9s}
+
+/* ===== Phone layout ===== */
+#botnav,#bnMore,#toTop{display:none}
+.vtabs .ts{display:none}
+/* pdot, not dot, because .dot is already a small circle elsewhere */
+.vtabs button.pdot{position:relative}.vtabs button.pdot::after{content:'';position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)}
+#toTop:not([hidden]){display:flex;position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6;width:44px;height:44px;align-items:center;justify-content:center;background:rgba(8,10,16,.94);border:1px solid var(--cyan);color:var(--cyan);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+#toTop svg{width:22px;height:22px}
+.achfold>summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none}.achfold>summary::-webkit-details-marker{display:none}
+.achfold[open] .fchev{transform:rotate(180deg)}
+@media (max-width:760px){
+  #topnav{display:none}
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  html{scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  #botnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(6,8,13,.97);border-top:1px solid rgba(var(--crgb),.35);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px rgba(0,0,0,.5)}
+  #botnav>*{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;background:none;border:0;color:#9aa6b2;text-decoration:none;font:600 10px Orbitron,sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative}
+  #botnav svg{width:23px;height:23px}
+  #botnav .on,#botnav .open{color:var(--cyan)}
+  #botnav .on::before{content:'';position:absolute;top:-4px;left:22%;right:22%;height:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  #bnMore:not([hidden]){display:grid;position:fixed;right:8px;bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:9;min-width:200px;background:rgba(8,10,16,.98);border:1px solid rgba(var(--crgb),.5);box-shadow:0 8px 24px rgba(0,0,0,.6);padding:6px}
+  #bnMore button{background:none;border:0;border-bottom:1px solid rgba(var(--crgb),.12);color:#e8eef4;text-align:left;font:500 15px inherit;font-family:inherit;padding:13px 12px;cursor:pointer}
+  #bnMore button:last-child{border-bottom:0}#bnMore button.off{color:var(--muted)}
+  #toTop:not([hidden]){bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+  .setp{max-height:calc(100dvh - 150px)}
+}
+@media (max-width:560px){
+  header h1{font-size:19px;letter-spacing:.5px}
+  header .rule{margin-top:6px}
+  .wrap{padding-top:12px}
+  #mercs:has(#vSheet:not([hidden])) > #mercsTitle{display:none}
+  .sheettop{margin:0 0 4px}.backlink{font-size:11px;padding:4px 0}
+  #vitalsBar{padding:6px 8px;gap:4px 6px;margin-bottom:8px}
+  #vitalsBar .vb{min-width:56px}#vitalsBar .vb b{font-size:15px}
+  #vitalsBar .vb.ammo{flex:1 1 100%;flex-direction:row;align-items:center;gap:10px;padding-right:40px}
+  #vitalsBar .vb.ammo .vfire{margin:0}#vitalsBar .vb.ammo .vfire button{height:32px}
+  #sheetHead{padding:10px 12px}
+  #sheetHead .sheet-head{flex-wrap:nowrap;gap:10px}
+  #sheetHead .who{min-width:0;gap:10px!important}
+  #sheetHead .av.md{width:42px;height:42px;flex:none}#sheetHead .av.md span{font-size:15px}
+  #sheetHead .who .nm{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #sheetHead .who .sub{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #sheetHead .sheet-head > div:last-child{flex:none;display:flex;flex-direction:column;align-items:center}
+  #sheetHead .sheet-head > div:last-child .lbl{font-size:10px;margin:0}
+  #sheetHead .lvlbox{gap:4px}#sheetHead .lvlbox .val{font-size:20px;min-width:26px;text-align:center}
+  #sheetHead .lvlbox button{min-width:36px;min-height:36px}
+  #sheetHead .lvlnote{display:none}
+  #sheetHead .headrow{margin-top:8px;gap:8px}
+  #sheetHead .coolchip{padding:4px 8px}#sheetHead .coolchip b{font-size:16px}
+  #sheetHead .xprow{margin-top:8px}
+  #vSheet > .vtabs{display:flex!important;gap:3px!important;padding:3px!important}
+  #vSheet > .vtabs{position:sticky;top:var(--vbh,0px);z-index:3;margin-top:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;background:rgba(6,8,14,.97)!important}
+  #vSheet > .vtabs::-webkit-scrollbar{display:none}
+  #vSheet > .vtabs button{flex:1 1 auto!important;min-width:0!important;white-space:nowrap!important;padding:11px 4px!important;font-size:10px!important;letter-spacing:.5px!important}
+  #vSheet > .vtabs .tl{display:none}#vSheet > .vtabs .ts{display:inline}
+  #vCS .cs-grid{scroll-margin-top:calc(var(--vbh,0px) + 56px)}
+  /* Combat */
+  .hpt{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;column-gap:10px;margin-bottom:14px}
+  .hpt>.head{display:contents}
+  .hpt>.head>.lbl{grid-column:1;grid-row:1}
+  .hpt>.head>.muted{grid-column:3;grid-row:1;justify-self:end;text-align:right}
+  .hpt>.num{grid-column:2;grid-row:1;font-size:20px!important;margin:0}
+  .hpt>:not(.head):not(.num){grid-column:1/-1}
+  .hpt .bar{margin:6px 0 8px}
+  .hpt>.row{flex-wrap:nowrap;gap:6px}.hpt>.row input{width:62px;flex:none}.hpt>.row .btn{flex:1 1 0;padding-left:4px;padding-right:4px}
+  .dsbox.idle{display:none}
+  .belt > .row > .muted,.belt .qslot > p.muted{display:none}
+  .belt .qslot:not(.on){padding-bottom:8px}
+  .cs-vit .acbox .acrow{gap:12px}
+  .cs-eqp .panel{margin-top:14px}
+  .eqslots{grid-template-columns:1fr!important}
+  .eqslot[data-eqslot=armor]{grid-column:auto!important}
+  .eqslot:not(.on){min-height:0!important;padding:8px 10px!important}
+  .eqslot.on{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:12px;row-gap:4px;align-items:start}
+  .eqslot.on>*{grid-column:1/-1}
+  .eqslot.on>.lbl{grid-column:2;grid-row:1;margin:0}
+  .eqslot.on>.eqart{grid-column:1;grid-row:1/span 3;height:58px;margin:0}
+  .eqslot.on>.eqn{grid-column:2;grid-row:2;font-size:14px}
+  .eqslot.on>.eqn+.muted{grid-column:2;grid-row:3;font-size:12px!important}
+  .eqslot.on>div:last-child .btn{min-height:34px}
+  /* Perk details slide up from the bottom */
+  #detail.psheet{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom,0px));top:auto;z-index:8;max-height:min(64vh,560px);overflow:auto;overscroll-behavior:contain;margin:0;padding:26px 18px 18px;clip-path:none;border-left:0;border-top:2px solid var(--cyan);background:rgba(8,10,16,.985);box-shadow:0 -12px 30px rgba(0,0,0,.6);transform:translateY(110%);transition:transform .26s cubic-bezier(.2,.8,.2,1);min-height:0}
+  #detail.psheet.up{transform:none}
+  #psBack:not([hidden]){position:fixed;inset:0;z-index:7;background:rgba(0,0,0,.45)}
+}
+#detail .psx,#detail .psgrab{display:none}
+#detail.psheet .psx{display:flex;position:absolute;top:6px;right:8px;width:40px;height:40px;align-items:center;justify-content:center;background:none;border:1px solid rgba(var(--crgb),.35);color:var(--cyan);font-size:16px;cursor:pointer}
+#detail.psheet .psgrab{display:block;position:absolute;top:8px;left:50%;width:44px;height:4px;margin-left:-22px;background:rgba(var(--crgb),.45);border-radius:2px}
+body.calm #detail.psheet{transition:none}
 </style>
 </head>
 <body>
@@ -1701,7 +1789,7 @@ body.hyper #circuit{opacity:.2!important;transition:opacity .9s}
       <div id="vitalsBar" role="button" tabindex="0" aria-label="Vitals, tap for the Combat tab"></div>
       <div id="combatBar" hidden></div>
       <div class="panel" id="sheetHead"></div>
-      <div class="vtabs" role="tablist"><button data-v="combat" class="on" role="tab">Combat</button><button data-v="gear" role="tab">Gear</button><button data-v="chrome" role="tab">Chrome</button><button data-v="perks" role="tab">Perks and skills</button><button data-v="party" role="tab" hidden>Crew</button><button data-v="profile" role="tab">Profile</button></div>
+      <div class="vtabs" role="tablist"><button data-v="combat" class="on" role="tab">Combat</button><button data-v="gear" role="tab">Gear</button><button data-v="chrome" role="tab">Chrome</button><button data-v="perks" role="tab"><span class="tl">Perks and skills</span><span class="ts">Perks</span></button><button data-v="party" role="tab" hidden>Crew</button><button data-v="profile" role="tab">Profile</button></div>
       <div id="vPerks">
       <div class="panel" id="lvlTiles" style="margin-bottom:14px"></div>
       <div class="tabs" id="tabs" role="tablist"></div>
@@ -1737,7 +1825,7 @@ body.hyper #circuit{opacity:.2!important;transition:opacity .9s}
             <span><i style="background:#6b2a36"></i>Stat too low for this tier</span>
           </div>
         </div>
-        <aside class="panel detail" id="detail" aria-live="polite"></aside>
+        <aside class="panel detail" id="detail" aria-live="polite"></aside><div id="psBack" hidden></div>
       </div>
 
       <h2 style="margin-top:36px">Skills</h2>
@@ -1802,6 +1890,15 @@ body.hyper #circuit{opacity:.2!important;transition:opacity .9s}
 <div class="setp" id="setPanel" role="dialog" aria-label="Settings" hidden></div>
 <div id="hitfx" aria-hidden="true"></div>
 <script src="vendor/anime.umd.min.js"></script>
+<nav id="botnav" aria-label="Main">
+  <a href="#sheet" data-bn="merc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg><span>Merc</span></a>
+  <a href="#live" data-bn="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5 5a9.9 9.9 0 0 0 0 14M19 5a9.9 9.9 0 0 1 0 14"/></svg><span>Live</span></a>
+  <a href="#rules" data-bn="rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg><span>Rules</span></a>
+  <a href="#codex" data-bn="codex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7.3v9.4L12 21.5l-8.5-4.8V7.3z"/><path d="M12 7.5v9M8 9.8l8 4.4M16 9.8l-8 4.4"/></svg><span>Codex</span></a>
+  <button type="button" data-bn="more" aria-expanded="false" aria-controls="bnMore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>More</span></button>
+</nav>
+<div id="bnMore" hidden><button type="button" data-bm="mercs">All mercs</button><button type="button" data-bm="search">Search</button><button type="button" data-bm="settings">Settings</button><button type="button" data-bm="sfx">Sound</button><button type="button" data-bm="fx">Motion</button></div>
+<button type="button" id="toTop" hidden aria-label="Back to the top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
@@ -2441,14 +2538,14 @@ function undo(){
 const xpNext = lvl => XP_TABLE[Math.min(19, lvl)] || null;
 function achHTML(){
   const m = C, have = ACH.filter(a => m.ach[a.id]).length;
-  return `<div class="panel"><div class="row"><h3>Achievements</h3><span class="spacer"></span><span class="muted">${have} of ${ACH.length} unlocked</span></div>
+  return `<details class="panel fold achfold" data-fold="ach" ${foldOpen('ach') ? 'open' : ''}><summary><h3>Achievements</h3><span class="spacer"></span><span class="muted" style="font-size:13px">${have} of ${ACH.length} unlocked</span><span class="fchev" aria-hidden="true">▾</span></summary>
     <div class="bar" style="margin:10px 0 16px"><i style="width:${have / ACH.length * 100}%;background:var(--yellow)"></i></div>
     <div class="achs">${ACH.map(a => {
       const at = m.ach[a.id], pr = !at && a.prog ? a.prog(m, m.ctr) : null;
       return `<div class="ach ${at ? 'on' : ''}"><div class="ic">${at ? '★' : '☆'}</div><div style="min-width:0"><b>${a.n}</b><span>${a.d}</span>
         ${at ? `<small>Unlocked ${new Date(at).toLocaleDateString([], {month:'short', day:'numeric', year:'numeric'})}</small>` : pr ? `<div class="bar thin"><i style="width:${Math.min(100, pr[0] / pr[1] * 100)}%"></i></div><small>${Math.min(pr[0], pr[1]).toLocaleString()} / ${pr[1].toLocaleString()}</small>` : '<small>Locked</small>'}</div></div>`;
     }).join('')}</div>
-    <p class="muted" style="font-size:13px;margin-top:14px">Lifetime stats · ${m.ctr.flat} flatlines · ${m.ctr.surv} comebacks · ${m.ctr.coolUsed} COOL Tokens spent · ${m.ctr.jack} dives · ${m.ctr.earned.toLocaleString()} €$ earned · ${m.ctr.spent.toLocaleString()} €$ spent</p></div>`;
+    <p class="muted" style="font-size:13px;margin-top:14px">Lifetime stats · ${m.ctr.flat} flatlines · ${m.ctr.surv} comebacks · ${m.ctr.coolUsed} COOL Tokens spent · ${m.ctr.jack} dives · ${m.ctr.earned.toLocaleString()} €$ earned · ${m.ctr.spent.toLocaleString()} €$ spent</p></details>`;
 }
 function renderAch(){ const el = $('#vAch'); if (el && C) el.innerHTML = achHTML(); }
 let ledgerAll = false;
@@ -3245,6 +3342,7 @@ function renderSheetHead(){
   if (cs) cs.onclick = () => { if (!coolPick && stunned()) return; coolPick = !coolPick; renderSheetHead(); };
   $('#sheetHead').querySelectorAll('[data-cooluse]').forEach(b => b.onclick = () => useCool(b.dataset.cooluse, b.dataset.who));
   $('#stUndo').onclick = undo;
+  const ptab = document.querySelector('.vtabs [data-v=perks]'); if (ptab) ptab.classList.toggle('pdot', perkLeft() > 0 || asiLeft() > 0);
   const gp = $('#goPerks'); if (gp) gp.onclick = () => { setSheetTab('perks'); const t = document.querySelector('.vtabs'); if (t) t.scrollIntoView({behavior:'smooth', block:'start'}); };
   // The level-up numbers live at the top of Perks and skills; the ID card and print tools live in Profile.
   const lt = $('#lvlTiles'), tpl = $('#lvlTilesT'); if (lt && tpl) lt.innerHTML = tpl.innerHTML + `<div class="xpslot"></div>`;
@@ -3387,7 +3485,7 @@ function build(){
     b.style.left = COLS[s.col]*100 + '%';
     b.style.top = TIERS[s.tier].y*100 + '%';
     b.innerHTML = `<span class="hexwrap"><span class="hex"><span class="glyph">${glyph(p)}</span></span></span><span class="label">${p.n}</span><span class="req">${st} ${TIERS[s.tier].req}+</span>`;
-    b.addEventListener('click', () => { sel = s.slot; update(false); });
+    b.addEventListener('click', () => { sel = s.slot; update(false); psOpen(); });
     b.addEventListener('dblclick', () => act(s.slot));
     treeEl.appendChild(b);
     nodeEls[s.slot] = b;
@@ -3514,7 +3612,13 @@ function changed(){
   update(true);
 }
 
+function psOpen(){ if (!PH.matches) return; const d = $('#detail'); d.classList.add('psheet'); $('#psBack').hidden = false; d.scrollTop = 0; requestAnimationFrame(() => d.classList.add('up')); }
+function psClose(){ const d = $('#detail'); if (!d.classList.contains('psheet')) return; d.classList.remove('up', 'psheet'); $('#psBack').hidden = true; }
 function renderDetail(){
+  renderDetail0();
+  const d = $('#detail'); if (d && !d.querySelector('.psx')) d.insertAdjacentHTML('afterbegin', '<button type="button" class="psx" aria-label="Close perk details">✕</button><span class="psgrab" aria-hidden="true"></span>');
+}
+function renderDetail0(){
   const d = $('#detail'), st = C.active;
   if (!sel){
     const pts = perkLeft(), here = ptsFor(st), rs = roleStats();
@@ -3894,6 +3998,7 @@ function setSheetTab(t){
   if (CS_TABS.includes(t)) renderCS(); else if (t === 'perks') requestAnimationFrame(layout); else if (t === 'party') placeLive();
 }
 function updateTabs(){
+  if (typeof bnSync === 'function') try { bnSync(); } catch(e){}
   const pb = document.querySelector('.vtabs [data-v=party]'); if (pb) pb.hidden = !partyOn();
   document.querySelectorAll('.vtabs button').forEach(b => { b.classList.toggle('on', b.dataset.v === sheetTab); b.setAttribute('aria-selected', b.dataset.v === sheetTab); });
 }
@@ -4068,12 +4173,12 @@ function renderCS0(){
   const hpBlock = hm == null
     ? `<div class="track"><span class="lbl">HP</span><p class="muted" style="font-size:14px;margin:4px 0 10px">Level 1 HP is 10 + 10 + BOD mod, so ${Math.max(1, 20 + mod(score('BOD')))}. Every level after adds 10 + 1d10 + BOD mod. Enter your current max.</p>
        <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" value="${C.level === 1 ? Math.max(1, 20 + mod(score('BOD'))) : ''}" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
-    : `<div class="track"><div class="head"><span class="lbl" style="margin:0">HP</span><span class="muted" style="font-size:12px">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
+    : `<div class="track hpt"><div class="head"><span class="lbl" style="margin:0">HP</span><span class="muted" style="font-size:12px">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
        ${C.hpLv < C.level ? `<div class="lvhp"><b>Level ${C.hpLv + 1} HP</b> <span class="muted">Roll 1d10 and add 10 ${sgn(mod(score('BOD')))}. ${C.level - C.hpLv > 1 ? (C.level - C.hpLv) + ' level ups waiting.' : ''}</span>
          <div class="row" style="margin-top:6px"><input type="number" min="1" max="10" id="lvHpRoll" placeholder="d10" aria-label="Your d10 roll" style="width:80px"><button class="btn small primary" data-act="lvHp">Add</button><button class="btn small" data-act="lvHpRoll">Roll for me</button><button class="btn small" data-act="lvHpSkip" title="Already added it by hand">Skip</button></div></div>` : ''}
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
-     <div class="track"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool ${canJack() || ENVS.jack ? `<button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'title="Black ICE locked a Safe Jack-Out. Only an Unsafe one works"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button>` : ''}</span></div>
+     <div class="track hpt"><div class="head"><span class="lbl" style="margin:0">NET HP</span><span class="muted" style="font-size:12px">Netrunning pool ${canJack() || ENVS.jack ? `<button class="btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" style="margin-left:8px" ${ENVS.jack && C.jackLock ? 'title="Black ICE locked a Safe Jack-Out. Only an Unsafe one works"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button>` : ''}</span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
   const acc = acChrome(C), act = C.acTemp || 0;
@@ -4082,7 +4187,7 @@ function renderCS0(){
       <div class="actemp"><span class="lbl" style="margin:0">Temporary AC</span><div class="q"><button data-act="acT-" aria-label="Lower temporary AC">−</button><span>${sgn(act)}</span><button data-act="acT+" aria-label="Raise temporary AC">+</button>${act ? '<button class="btn small" data-act="acT0" style="width:auto;height:auto">Clear</button>' : ''}</div>
       <span class="muted" style="font-size:12px">From meds or consumables. Clear it when it wears off.</span></div></div></div>`;
   const down = isDown(C), slotted = C.cyber.filter(x => x.slot === 'shard');
-  const dsBlock = hm == null ? '' : `<div class="track dsbox ${down ? 'down' : ''} ${C.dead ? 'dead' : ''}"><div class="head"><span class="lbl" style="margin:0">Death saves</span><span class="muted" style="font-size:12px">${C.dead ? '' : down ? `${downWhat(C)} at 0 · ${C.ds.p} pass · ${C.ds.f} fail` : 'At 0 HP or 0 Net HP'}</span></div>
+  const dsBlock = hm == null ? '' : `<div class="track dsbox ${down ? 'down' : ''} ${C.dead ? 'dead' : !down ? 'idle' : ''}"><div class="head"><span class="lbl" style="margin:0">Death saves</span><span class="muted" style="font-size:12px">${C.dead ? '' : down ? `${downWhat(C)} at 0 · ${C.ds.p} pass · ${C.ds.f} fail` : 'At 0 HP or 0 Net HP'}</span></div>
       ${seesawSVG(C)}
       ${C.dead ? `<div class="deadtag gl" data-text="DEAD">DEAD</div><p class="muted" style="font-size:12px;margin:4px 0 0">Healing back above 0 brings them back, if the GM allows it.</p>`
         : down ? `<div class="row" style="gap:8px;justify-content:center"><button class="btn small primary" data-act="dsRoll">Roll d20</button><button class="btn small" data-act="dsPass">Pass</button><button class="btn small danger" data-act="dsFail">Fail</button></div><p class="muted" style="font-size:12px;margin:6px 0 0;text-align:center">10 or higher passes. Three passes and your ${downWhat(C)} comes back at 1, no matter what dropped you, unless the DM says otherwise. Three fails and you're dead.</p>`
@@ -4167,17 +4272,22 @@ function renderCS0(){
     : `<p style="font-size:14px;margin-top:6px">Creating, upgrading and fortifying gear takes the TEC Phenom perk <b>Fabricator</b>. Find a crewmate who has it and hand them your gear.</p>`}
   </div>`;
   $('#vCS').dataset.sub = CS_TABS.includes(sheetTab) ? sheetTab : 'combat';
+  const vitP = `<div class="panel cs-vit"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>`;
+  const eqP = `<div class="panel cs-eq"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div>${hasPerk('REF.A.l') ? '<div class="row gap" style="margin-top:12px;align-items:center"><button class="btn small danger" data-act="limbRoll">Blender · Roll limb</button><span class="muted" style="font-size:12px">After a CRIT on a foe below 50 HP</span></div>' : ''}</div>`;
   $('#vCS').innerHTML = `
     <div class="panel gap" data-sub="profile"><div class="idwrap"><div style="display:grid;gap:8px;justify-items:start">${avatar(C, 'av lg')}
       <div class="row"><label class="btn small" style="display:inline-block">${C.portrait ? 'Change' : 'Add portrait'}<input type="file" accept="image/*" id="portraitIn" hidden></label>${C.portrait ? '<button class="btn small" data-act="rmPortrait">Remove</button>' : ''}</div></div>
       <div>${ident}</div></div></div>
     <div class="cs2"><div class="csL">
-    <div class="cs-grid" data-sub="combat">
-      <div class="panel"><h3 style="margin-bottom:14px">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>
-      <div class="panel"><h3 style="margin-bottom:14px">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div>${hasPerk('REF.A.l') ? '<div class="row gap" style="margin-top:12px;align-items:center"><button class="btn small danger" data-act="limbRoll">Blender · Roll limb</button><span class="muted" style="font-size:12px">After a CRIT on a foe below 50 HP</span></div>' : ''}</div>
-    </div>
+    ${PH.matches ? `<div class="cs-eqp" data-sub="combat">${eqP}</div>
     ${beltHTML()}
     ${modsPanel()}
+    <div class="cs-grid" data-sub="combat">${vitP}</div>` : `<div class="cs-grid" data-sub="combat">
+      ${vitP}
+      ${eqP}
+    </div>
+    ${beltHTML()}
+    ${modsPanel()}`}
     ${foldWrap('qh', 'Quickhacks', `RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all`, `<p style="margin:0 0 10px;font-size:14px">Your <b>Hack DC</b> is <b class="num" style="font-size:18px">${hackDC()}</b> <span class="muted" style="font-size:12px">10 ${sgn(skillBonus('Hacking', 'INT'))} Hacking. Targets make INT saves against it</span></p>${(() => { const nx = qhNext(C.level); return nx ? `<div class="qhnext"><span class="lkic" aria-hidden="true">🔒</span><span>Next unlock at <b>level ${nx.lvl}</b> · ${nx.qs.map(q => q.n).join(' and ')}</span></div>` : '<div class="qhnext all"><span>Every quickhack is unlocked.</span></div>'; })()}
 <div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), lk = C.level < q.lvl, nw = !lk && q.lvl > 1 && q.lvl === C.level, fr = !lk && friedCap() && c > 3, off = lk || fr || hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''} ${lk ? 'lk' : ''} ${nw ? 'nw' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${lk ? `Locked. Unlocks at level ${q.lvl}. ` : ''}${esc(q.d)}"><b>${q.n}</b>${lk ? `<span class="qlk">🔒 LV ${q.lvl}</span>` : fr ? `<span class="qlk">FRIED · 3 MAX</span>` : `<span class="rc">${c} RAM</span>`}${nw ? '<span class="qnew">NEW</span>' : ''}<small>${lk ? `<span class="qlkt">Unlocks at level ${q.lvl}.</span> ` : ''}${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted" style="font-size:13px;margin-top:10px">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p>`)}
@@ -7638,7 +7748,7 @@ function searchIndex(){
 function openPerk(st, sl){
   if (!C){ location.hash = '#r-perks'; return; }
   location.hash = '#sheet'; show('sheet'); C.active = st; saveC(); setSheetTab('perks');
-  requestAnimationFrame(() => { build(); sel = sl; update(false); renderDetail(); const n = nodeEls[sl]; if (n) n.scrollIntoView({block:'center', behavior:'smooth'}); });
+  requestAnimationFrame(() => { build(); sel = sl; update(false); renderDetail(); const n = nodeEls[sl]; if (n) n.scrollIntoView({block:'center', behavior:'smooth'}); psOpen(); });
 }
 function flashEl(el){ el.classList.remove('flashhit'); void el.offsetWidth; el.classList.add('flashhit'); }
 function runSearch(q){
@@ -7690,7 +7800,7 @@ const motionPick = (() => { try { return localStorage.getItem('daemon-motion'); 
 // The FX button is an explicit choice, so it wins over the phone's reduced-motion hint. With no choice made we follow the phone.
 const FXS = {sfx: PREF('daemon-sfx'), motion: motionPick === '1' ? true : motionPick === '0' ? false : !reducedMotion};
 const PREFS_KEY = 'daemon-prefs';
-const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', unl:[]};
+const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', netA:'#3fd0ff', netB:'#ff3fd8', unl:[]};
 let PREFS = {...PREFS_DEF};
 /* ---- Motion, built on Anime.js (vendor/anime.umd.min.js, animejs.com). Pure polish. Every call is a no-op when the
    library didn't load, motion effects are off, Calm or Battery saver is on, or the device asks for reduced motion. ---- */
@@ -8576,7 +8686,7 @@ const lookShapes = (t, curvature) => {
     const bloomMaterial = blur(BLOOM_FRAGMENT, {blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor, blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.OneFactor});
     const pass = (m, source, target) => { quad.material = m; m.uniforms.uTexture.value = source.texture; m.uniforms.uTexel.value.set(1 / source.width, 1 / source.height); renderer.setRenderTarget(target); renderer.render(quadScene, quadCamera); };
 
-    const S = o.look;
+    let S = o.look;
     let colors = {tail: S.tail, head: S.head, poles: S.poles};
     const keys = {tail: '', head: '', poles: ''};
     roadUniforms.uRoadColor.value.fromArray(toRgb('#06060c')); roadUniforms.uLineColor.value.fromArray(toRgb('#1b3a44'));
@@ -8650,16 +8760,17 @@ const lookShapes = (t, curvature) => {
       try { renderer.forceContextLoss(); } catch(e){}
       renderer.dispose(); container.remove();
     };
-    let redT = 0;
+    let redT = 0, redOn = false;
     st.raf = requestAnimationFrame(frame);
     requestAnimationFrame(() => container.classList.add('on'));
     return {
       kick(ms){ st.kickUntil = Math.max(st.kickUntil, performance.now() + ms); },
       red(){
         colors = {tail: ['#ff2a3a', '#d4001e', '#ff5a2a'], head: ['#ff2a3a', '#ff0033', '#a0001c'], poles: ['#ff2a3a']};
-        container.classList.add('ice'); clearTimeout(redT);
-        redT = setTimeout(() => { colors = {tail: S.tail, head: S.head, poles: S.poles}; container.classList.remove('ice'); }, 750);
+        container.classList.add('ice'); clearTimeout(redT); redOn = true;
+        redT = setTimeout(() => { redOn = false; colors = {tail: S.tail, head: S.head, poles: S.poles}; container.classList.remove('ice'); }, 750);
       },
+      setLook(l){ S = l; if (!redOn) colors = {tail: S.tail, head: S.head, poles: S.poles}; },
       // safe: the road slows to a stop and fades. hard: cut off at once.
       stop(how){
         if (st.stopping) return;
@@ -8672,17 +8783,22 @@ const lookShapes = (t, curvature) => {
   }
 
   let scene = null, loading = null, prevJack = null;
+  // Three shades of each picked color so the lights keep some depth
+  const shades = hex => { const n = parseInt((/^#[0-9a-f]{6}$/i.test(hex) ? hex : '#3fd0ff').slice(1), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
+    return [1, .7, .42].map(k => '#' + [r, g, b].map(v => Math.round(v * k).toString(16).padStart(2, '0')).join('')); };
+  const lookNow = () => ({head: shades(PREFS.netA), tail: shades(PREFS.netB), poles: [shades(PREFS.netA)[0]]});
+  let previewT = 0;
   const phone = () => innerWidth <= 760 || (matchMedia && matchMedia('(pointer: coarse)').matches);
   const opts = () => {
     const p = phone(), dpr = window.devicePixelRatio || 1;
     return p
       ? {phone: true, ratio: Math.min(dpr, 2) * 0.5, density: 16, poles: 10, dust: 40, glow: 0.4, speed: 0.85, boost: 3, fov: 95, boostFov: 125,
-         look: {tail: ['#ff3fd8', '#c21bff', '#6750a2'], head: ['#3fd0ff', '#03b3c3', '#0e5ea5'], poles: ['#3fd0ff']}}
+         look: lookNow()}
       : {phone: false, ratio: Math.min(dpr, 1.5), density: 40, poles: 20, dust: 100, glow: 0.6, speed: 1, boost: 3, fov: 90, boostFov: 130,
-         look: {tail: ['#ff3fd8', '#c21bff', '#6750a2'], head: ['#3fd0ff', '#03b3c3', '#0e5ea5'], poles: ['#3fd0ff']}};
+         look: lookNow()};
   };
   const glOK = () => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch(e){ return false; } };
-  const start = warp => {
+  const start = (warp, force) => {
     if (scene && scene.stopping) scene = null;
     if (scene && !scene.stopping) return;
     if (loading) return;
@@ -8690,7 +8806,7 @@ const lookShapes = (t, curvature) => {
     loading = (THREE ? Promise.resolve(THREE) : import('./vendor/three.module.min.js').then(m => (THREE = m)))
       .then(() => {
         loading = null;
-        if (!(document.body.classList.contains('jacked') && ANX())) return;   // they jacked out while it loaded
+        if (!((force || document.body.classList.contains('jacked')) && ANX())) return;   // they jacked out while it loaded
         scene = build({...opts(), off: () => stop('safe')});
         if (warp) scene.kick(1300);
         document.body.classList.add('hyper');
@@ -8704,12 +8820,80 @@ const lookShapes = (t, curvature) => {
       const changed = prevJack !== null && prevJack !== jacked;
       prevJack = jacked;
       if (show && ANX()) start(changed && jacked);
+      else if (previewT && !changed && ANX()) return;   // a Settings preview is playing
       else stop(changed && !jacked && (how === 'unsafe' || how === 'flat') ? 'hard' : 'safe');
     },
     burst(){ if (scene) scene.kick(650); },
-    hit(){ if (scene) scene.red(); }
+    hit(){ if (scene) scene.red(); },
+    recolor(){ if (scene) scene.setLook(lookNow()); },
+    // Settings preview. Runs for a few seconds even when nobody is jacked in.
+    preview(){
+      if (!ANX()) return false;
+      clearTimeout(previewT);
+      if (scene) scene.kick(900); else start(true, true);
+      previewT = setTimeout(() => { previewT = 0; if (!document.body.classList.contains('jacked')) stop('safe'); }, 6000);
+      return true;
+    }
   };
 })();
+
+/* ---- Phone layout. Bottom nav, pinned tabs, back to top, perk sheet ---- */
+const PH = matchMedia('(max-width:560px)');
+PH.addEventListener('change', () => { if (C && CS_TABS.includes(sheetTab)) renderCS(); if (!PH.matches) psClose(); });
+function bnSync(){
+  const h = location.hash.replace('#', ''), rules = h === 'rules' || h.startsWith('r-');
+  const crew = h === 'sheet' && sheetTab === 'party';
+  const on = rules ? 'rules' : h === 'codex' ? 'codex' : h === 'live' || crew ? 'live' : 'merc';
+  document.querySelectorAll('#botnav [data-bn]').forEach(a => { const y = a.dataset.bn === on; a.classList.toggle('on', y); if (a.tagName === 'A') a.setAttribute('aria-current', y ? 'page' : 'false'); });
+  const m = $('#bnMore'); if (m){ const sf = m.querySelector('[data-bm=sfx]'), fx = m.querySelector('[data-bm=fx]'); sf.textContent = `Sound ${FXS.sfx ? 'on' : 'off'}`; fx.textContent = `Motion ${FXS.motion ? 'on' : 'off'}`; sf.classList.toggle('off', !FXS.sfx); fx.classList.toggle('off', !FXS.motion); }
+}
+function bnMore(open){
+  const m = $('#bnMore'), b = document.querySelector('#botnav [data-bn=more]'); open = open ?? m.hidden;
+  m.hidden = !open; b.setAttribute('aria-expanded', open); b.classList.toggle('open', open); if (open) bnSync();
+}
+$('#botnav').addEventListener('click', e => {
+  const a = e.target.closest('[data-bn]'); if (!a) return;
+  const k = a.dataset.bn; sfx('select');
+  if (k === 'more'){ e.preventDefault(); return bnMore(); }
+  bnMore(false);
+  if (k === 'merc'){
+    e.preventDefault();
+    if (!C){ location.hash = '#mercs'; return; }
+    if (location.hash === '#sheet' && sheetTab !== 'party'){ window.scrollTo({top:0, behavior:'smooth'}); return; }
+    if (sheetTab === 'party') setSheetTab('combat');
+    location.hash === '#sheet' ? (window.scrollTo(0, 0), bnSync()) : (location.hash = '#sheet');
+    return;
+  }
+  if (k === 'live' && partyOn() && C){ e.preventDefault(); if (location.hash !== '#sheet') location.hash = '#sheet'; setTimeout(() => { setSheetTab('party'); window.scrollTo(0, 0); bnSync(); }, 0); return; }
+  if (location.hash === a.getAttribute('href')){ e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }
+});
+$('#bnMore').addEventListener('click', e => {
+  const b = e.target.closest('[data-bm]'); if (!b) return;
+  const k = b.dataset.bm;
+  if (k === 'sfx'){ $('#tSfx').click(); return bnSync(); }
+  if (k === 'fx'){ $('#tFx').click(); return bnSync(); }
+  bnMore(false); sfx('select');
+  if (k === 'mercs') location.hash = '#mercs';
+  else if (k === 'search') $('#navSearch').click();
+  else if (k === 'settings') toggleSettings(true);
+});
+document.addEventListener('pointerdown', e => { if (!$('#bnMore').hidden && !e.target.closest('#bnMore') && !e.target.closest('#botnav [data-bn=more]')) bnMore(false); }, true);
+addEventListener('hashchange', () => { bnMore(false); setTimeout(bnSync, 0); });
+// Pinned tabs sit right under the pinned vitals bar
+const vbRO = new ResizeObserver(() => { const v = $('#vitalsBar'); document.documentElement.style.setProperty('--vbh', (v && v.offsetParent ? v.offsetHeight + 10 : 0) + 'px'); });
+vbRO.observe($('#vitalsBar'));
+// Back to the top, on long pages outside the rules
+let ttT = 0;
+addEventListener('scroll', () => { if (ttT) return; ttT = requestAnimationFrame(() => { ttT = 0; $('#toTop').hidden = document.body.classList.contains('on-rules') || scrollY < innerHeight * 2; }); }, {passive:true});
+$('#toTop').addEventListener('click', () => { sfx('select'); window.scrollTo({top:0, behavior: FXS.motion ? 'smooth' : 'auto'}); });
+// Perk sheet closes from its ✕, the backdrop, or a downward swipe on its grab bar
+$('#psBack').addEventListener('click', psClose);
+$('#detail').addEventListener('click', e => { if (e.target.closest('.psx')) psClose(); });
+(() => { let y0 = null; const d = $('#detail');
+  d.addEventListener('touchstart', e => { y0 = d.classList.contains('psheet') && d.scrollTop <= 0 ? e.touches[0].clientY : null; }, {passive:true});
+  d.addEventListener('touchend', e => { if (y0 != null && e.changedTouches[0].clientY - y0 > 70) psClose(); y0 = null; }, {passive:true}); })();
+addEventListener('hashchange', psClose);
+setTimeout(bnSync, 0);
 
 function fxBoot(){
   const a = AN(); let seen = false; try { seen = sessionStorage.getItem('daemon-booted') === '1'; sessionStorage.setItem('daemon-booted', '1'); } catch(e){}
@@ -9663,6 +9847,7 @@ addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = 
 addEventListener('appinstalled', () => { installEvt = null; });
 if ('serviceWorker' in navigator && !framed && /^https?:$/.test(location.protocol) && !MOCK) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW', e)));
 const SHORTCUTS = [['/ or Ctrl K', 'Search everything'], ['Ctrl Z', 'Undo the last change to your merc'], ['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM. While dragging an item, rotates it instead'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
+const NET_LOOKS = [['Netrunner', '#3fd0ff', '#ff3fd8'], ['Black ICE', '#ff2a3a', '#ff8a1f'], ['Arasaka', '#ffd23f', '#ff2a3a'], ['Toxic', '#3ee08a', '#c6ff3f'], ['Ghost', '#e8f6ff', '#5a7dff'], ['Militech', '#ff8a1f', '#3fd0ff']];
 function renderSettings(){
   const tabs = [['look', 'Look'], ['comfort', 'Comfort'], ['sound', 'Sound'], ['controls', 'Controls']];
   const tog = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="checkbox" class="sw2" data-pref="${k}" ${PREFS[k] ? 'checked' : ''} aria-label="${label}"></label>`;
@@ -9688,6 +9873,12 @@ function renderSettings(){
     ${keys.map((k, i) => row(k, S.lab[i][0], S.lab[i][1])).join('')}
     <label class="crow"><span>Site accent<small>Text, panel edges and buttons. Default is cyan</small></span><input type="color" data-accent="1" value="${PREFS.accent || '#2fe6f0'}" aria-label="Site accent"></label>
     <div class="row" style="gap:6px"><button class="btn small" data-set="accLights">Use my lights color</button><button class="btn small" data-set="accReset">Cyan</button></div>
+    <span class="lbl" style="margin-top:14px;display:block">Net lights</span>
+    <p class="muted" style="font-size:12px;margin:4px 0 0">The highway of light behind your sheet while you're jacked in.</p>
+    <div class="presets">${NET_LOOKS.map(([n, a, b]) => `<button data-netlook="${a},${b}" class="${PREFS.netA.toLowerCase() === a && PREFS.netB.toLowerCase() === b ? 'on' : ''}"><span class="sw"><i style="background:${a}"></i><i style="background:${b}"></i></span>${n}</button>`).join('')}</div>
+    <label class="crow"><span>Oncoming lights<small>Rushing toward you on the right</small></span><input type="color" data-netc="netA" value="${PREFS.netA}" aria-label="Oncoming lights"></label>
+    <label class="crow"><span>Outgoing lights<small>Heading away on the left</small></span><input type="color" data-netc="netB" value="${PREFS.netB}" aria-label="Outgoing lights"></label>
+    <div class="row" style="gap:6px"><button class="btn small" data-set="netPrev">Preview</button></div>
     ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
     <div class="row gap"><button class="btn small" data-set="reset">Reset colors</button></div>`;
   } else if (setTab === 'comfort'){
@@ -9743,6 +9934,8 @@ $('#setPanel').addEventListener('click', e => {
   if (t.dataset.stab){ setTab = t.dataset.stab; return renderSettings(); }
   if (t.dataset.set === 'install'){ if (installEvt){ installEvt.prompt(); installEvt.userChoice.then(c => { if (c.outcome === 'accepted') toast('Installed. Look for Daemon on your home screen.', true); installEvt = null; renderSettings(); }); } return; }
   if (t.dataset.set === 'test'){ playSnd('perk'); return; }
+  if (t.dataset.netlook){ const [a, b] = t.dataset.netlook.split(','); PREFS.netA = a; PREFS.netB = b; savePrefs(); HYPER.recolor(); renderSettings(); sfx('select'); return; }
+  if (t.dataset.set === 'netPrev'){ if (!HYPER.preview()) toast('Turn animations on to see the Net lights. Calm mode and Table mode keep them off too.'); else toggleSettings(false); return; }
   if (t.dataset.sfxtest){ try { ac(); playSnd(t.dataset.sfxtest); } catch(err){} return; }
   if (t.dataset.set === 'motionOn'){ FXS.motion = true; try { localStorage.setItem('daemon-motion', '1'); } catch(e){} syncDock(); startBg(); updateVignette(); document.body.classList.toggle('fx', flashOK()); renderSettings(); sfx('select'); return; }
   if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
@@ -9753,6 +9946,8 @@ $('#setPanel').addEventListener('click', e => {
 });
 let themeT, prefT;
 $('#setPanel').addEventListener('input', e => {
+  const nk = e.target.dataset.netc;
+  if (nk){ PREFS[nk] = e.target.value; HYPER.recolor(); clearTimeout(prefT); prefT = setTimeout(() => { savePrefs(); $('#setPanel').querySelectorAll('[data-netlook]').forEach(b => b.classList.toggle('on', b.dataset.netlook === PREFS.netA.toLowerCase() + ',' + PREFS.netB.toLowerCase())); }, 150); return; }
   const k = e.target.dataset.theme;
   if (k){
     THEME[k] = e.target.value;
