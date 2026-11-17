@@ -291,3 +291,10 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - NPC presets carry weapons. Gonk Light Pistol and Knife or Club. Gangster (was Ganger) SMG or Shotgun and Sword or Light Hammer. Corpo Security Assault Rifle or Shotgun and Club. Elite LMG or Sniper Rifle and Sword or Heavy Hammer. Boss Hand Cannon and Sword. Damage is the main gun's tier 1 dice. A DM's saved presets keep any numbers they changed and pick up the weapons
 - Death saves. Three passes bring you back at 1 no matter what dropped you, unless the DM says otherwise
 - Concussed now makes you Incapacitated
+
+## Motion (Anime.js)
+- `vendor/anime.umd.min.js` is Anime.js 4.5 (MIT, animejs.com), kept in the repo so it works offline. The service worker precaches it (cache bumped to daemon-v3)
+- Sheet tabs slide their panels in on a stagger and the line art draws itself on (`createDrawable`). Bag tiles, roster cards, codex cards and opened folds pop in (`stagger`)
+- Headings decode with `scrambleText` (page title, rules section headings as they scroll in, the level-up patch number, contact names on the combat alert)
+- HP, RAM, AC and ammo numbers roll to their new value and get a spring nudge (`createSpring`)
+- All of it is off when Motion effects is off in Settings, in Calm or Battery saver, or when the device asks for reduced motion. If the file fails to load the site works the same, just without the motion

@@ -1759,6 +1759,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
 <div class="modal" id="modal" hidden></div>
 <div id="printSheet" aria-hidden="true"></div>
 <div class="setp" id="setPanel" role="dialog" aria-label="Settings" hidden></div>
+<script src="vendor/anime.umd.min.js" defer></script>
 <div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
 <script>
@@ -2760,7 +2761,9 @@ function show(v){
   $('#vRoster').hidden = v !== 'roster';
   $('#vWizard').hidden = v !== 'wizard';
   $('#vSheet').hidden = v !== 'sheet';
-  $('#mercsTitle').textContent = v === 'wizard' ? 'New Merc' : v === 'sheet' ? 'Merc Sheet' : 'Your Mercs';
+  const tt = v === 'wizard' ? 'New Merc' : v === 'sheet' ? 'Merc Sheet' : 'Your Mercs', te = $('#mercsTitle'), was = te.textContent;
+  te.textContent = tt; if (was !== tt) fxScramble(te);
+  if (v === 'roster') requestAnimationFrame(() => fxPop(document.querySelectorAll('#roster > *')));
   refreshEnv();
 }
 function goTop(){ $('#mercs').scrollIntoView({behavior:'smooth', block:'start'}); }
@@ -3095,6 +3098,7 @@ function syncBodyFx(){
 addEventListener('hashchange', () => setTimeout(syncBodyFx, 30));
 let lvlT = null;
 function levelCard(lv){
+  requestAnimationFrame(() => { const t = document.querySelector('#lvlCard .lc-patch'); fxScramble(t, {duration: 900}); });
   const el = $('#lvlCard'); if (!el || !flashOK()) return;
   const gains = ['+1 perk point'];
   if (ASI_LEVELS.includes(lv)) gains.push('+2 stat increases');
@@ -3110,6 +3114,7 @@ function levelCard(lv){
   clearTimeout(lvlT); lvlT = setTimeout(() => { el.hidden = true; }, 5200);
   el.onclick = () => { clearTimeout(lvlT); el.hidden = true; };
 }
+let prevMerc = null;
 function renderVitalsBar(){
   const el = $('#vitalsBar'); if (!el || !C) return;
   const hm = C.hpMax, cell = (lbl, a, b, bar) => { const r = b ? a / b : 1, cls = bar ? (r <= .25 ? 'low' : r <= .5 ? 'mid' : '') : '';
@@ -3118,7 +3123,10 @@ function renderVitalsBar(){
   const hpC = hm ? cell('HP', Math.max(0, hpNow(C)), hm, true) : cell('HP', 'Not set'), netC = hm ? cell('Net HP', Math.max(0, netNow(C)), hm, true) : '';
   const gun = C.inv.find(i => i.id === C.eq.primary && clipCap(i)), cap = gun && clipCap(gun), am = gun ? (gun.ammo == null ? cap : gun.ammo) : 0;
   const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>${gun.ld ? esc(SP[gun.ld].n) : 'Ammo'}</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire full ROF, ${gun.rof} shots">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="Fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
+  const prev = {}; el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'); if (k && b && b.firstChild) prev[k] = parseInt(b.firstChild.nodeValue); });
   el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
+  if (prevMerc === C.id) el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'), now = b && b.firstChild ? parseInt(b.firstChild.nodeValue) : NaN; if (k in prev && Number.isFinite(prev[k]) && Number.isFinite(now) && prev[k] !== now){ fxCount(b.firstChild, prev[k], now); fxBump(b); } });
+  prevMerc = C.id;
   syncBodyFx();
 }
 $('#vitalsBar').addEventListener('click', e => { if (e.target.closest('[data-ammo]')) return; const k = (e.target.closest('.vb') || {}).dataset; if (k && (k.k === 'hp' || k.k === 'net') && C && C.hpMax) return openPad(k.k); if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
@@ -3849,7 +3857,7 @@ function placeLive(){
   updateTabs();
 }
 document.addEventListener('click', e => { if (e.target.id === 'goParty' && LS && LS.mercId){ openChar(LS.mercId); setSheetTab('party'); location.hash = '#sheet'; } });
-document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ setSheetTab(b.dataset.v); sfx('tab'); } });
+document.querySelector('.vtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ setSheetTab(b.dataset.v); sfx('tab'); requestAnimationFrame(() => { const t = sheetTab; fxEnter(t === 'perks' ? $('#vPerks') : t === 'party' ? $('#vParty') : t === 'profile' ? $('#vAch') : $('#vCS')); if (t === 'gear') fxPop(document.querySelectorAll('#vCS .bag .gi')); }); } });
 
 // Shots left in an equipped gun. Each ATTACK fires as many shots as the gun's ROF.
 const ldTag = i => i && i.ld ? `<span class="ldtag" title="${esc(i.ldName + (i.ldFx ? '. ' + i.ldFx : ''))}" data-rule="${esc(i.ldName)}" data-rd="${esc(i.ldFx || 'The DM has the effect for these rounds.')}">${esc(SP[i.ld].n)}</span>` : '';
@@ -3963,7 +3971,8 @@ function modsPanel(){
 // Combat folds remember open or closed per device.
 let FOLD = {}; try { FOLD = JSON.parse(localStorage.getItem('daemon-fold') || '{}') || {}; } catch(e){}
 const foldOpen = k => FOLD[k] === true;   // folded by default
-document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.fold){ FOLD[d.dataset.fold] = d.open; try { localStorage.setItem('daemon-fold', JSON.stringify(FOLD)); } catch(err){} } }, true);
+document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.fold && d.open) fxPop(d.querySelectorAll('.qh, .mrow, .msave, .mskills > span'));
+  if (d && d.dataset && d.dataset.fold){ FOLD[d.dataset.fold] = d.open; try { localStorage.setItem('daemon-fold', JSON.stringify(FOLD)); } catch(err){} } }, true);
 // Belt. Two quick slots for consumables plus every other consumable in the bag, all one tap from Use.
 function beltHTML(){
   const it = id => C.inv.find(x => x.id === id), cons = C.inv.filter(i => isCons(i) && i.qty > 0);
@@ -7229,6 +7238,7 @@ function showCombat(cb){
     <div class="cf-grid">${cb.list.map((c, i) => `<div class="cf-c" style="animation-delay:${0.15 + i * 0.08}s">${c.cnt > 1 ? `<span class="cf-n">×${c.cnt}</span>` : ''}${cfPic(c)}<b>${esc(c.name)}</b><small>${cfSub(c)}</small></div>`).join('')}</div>
     <div class="cf-go">Tap to continue</div></div>`;
   el.hidden = false;
+  setTimeout(() => el.querySelectorAll('.cf-c b').forEach((b, i) => setTimeout(() => fxScramble(b, {duration: 700}), i * 80)), 250);
 }
 $('#combatFx').addEventListener('click', () => { $('#combatFx').hidden = true; });
 function onCombat(s){
@@ -7467,7 +7477,7 @@ function renderCodex(){
   const si = $('#cxSearch'); if (si && document.activeElement === document.body && codexQ) { si.focus(); si.setSelectionRange(codexQ.length, codexQ.length); }
 }
 $('#codexBody').addEventListener('click', e => {
-  const t = e.target.closest('[data-cxt]'); if (t){ codexTab = t.dataset.cxt; return renderCodex(); }
+  const t = e.target.closest('[data-cxt]'); if (t){ codexTab = t.dataset.cxt; renderCodex(); requestAnimationFrame(() => { fxPop(document.querySelectorAll('#pgCodex .cxcard')); fxDraw($('#pgCodex'), 80); }); return; }
   const c = e.target.closest('[data-cx]'); if (c){ const d = codexData(); const n = d && d.npcs.find(x => x.id === c.dataset.cx); if (n) showIdCard(n); }
 });
 $('#codexBody').addEventListener('input', e => {
@@ -7522,8 +7532,9 @@ function route(){
   setTimeout(() => { updateVignette(); updatePsy(); updateHack(); updateHeat(); }, 0);
   $('#pgRules').hidden = !rules; $('#pgCodex').hidden = !codex; $('#pgApp').hidden = rules || codex;
   document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : codex ? a.dataset.pg === 'codex' : a.getAttribute('href') === '#' + (h === 'sheet' || !h ? 'mercs' : h)));
-  if (codex){ renderCodex(); window.scrollTo(0, 0); return; }
+  if (codex){ renderCodex(); window.scrollTo(0, 0); requestAnimationFrame(() => { fxPop(document.querySelectorAll('#pgCodex .cxcard')); fxDraw($('#pgCodex'), 80); }); return; }
   if (rules){
+    fxRulesWatch();
     const el = h.startsWith('r-') && document.getElementById(h);
     requestAnimationFrame(() => el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0));
   } else {
@@ -7622,6 +7633,55 @@ const FXS = {sfx: PREF('daemon-sfx'), motion: reducedMotion ? false : PREF('daem
 const PREFS_KEY = 'daemon-prefs';
 const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', unl:[]};
 let PREFS = {...PREFS_DEF};
+/* ---- Motion, built on Anime.js (vendor/anime.umd.min.js, animejs.com). Pure polish. Every call is a no-op when the
+   library didn't load, motion effects are off, Calm or Battery saver is on, or the device asks for reduced motion. ---- */
+const AN = () => (FXS.motion && !PREFS.calm && !PREFS.battery && window.anime) || null;
+const SCRAMBLE_CHARS = 'A-Z0-9#%_/<>';
+const visible = e => !!e && !e.closest('[hidden]') && e.getClientRects().length > 0;
+// Glitchy decode on a heading. Only plain-text elements, so markup inside never gets mangled.
+function fxScramble(el, opts){
+  const a = AN(); if (!a || !el || el.children.length || !el.textContent.trim()) return;
+  const txt = el.textContent; el.setAttribute('aria-label', txt);
+  try { a.animate(el, {innerHTML: a.scrambleText({chars: SCRAMBLE_CHARS, cursor: '_', ...(opts || {})}), duration: 650, ease: 'outQuad', onComplete: () => { el.textContent = txt; el.removeAttribute('aria-label'); }}); } catch(e){ el.textContent = txt; }
+}
+// Line art draws itself on, like the Black ICE sketches. Caps how many shapes so big pages stay quick.
+function fxDraw(root, max){
+  const a = AN(); if (!a || !root) return;
+  const els = [...root.querySelectorAll('svg.art path, svg.art line, svg.art polyline, svg.art polygon, svg.art rect, svg.art circle, svg.cyi path, svg.cyi line, svg.cyi polyline, svg.cyi polygon, svg.cyi circle')]
+    .filter(e => getComputedStyle(e).stroke !== 'none' && visible(e)).slice(0, max || 60);
+  if (!els.length) return;
+  try { a.animate(a.svg.createDrawable(els), {draw: ['0 0', '0 1'], duration: 650, ease: 'inOutQuad', delay: a.stagger(8, {start: 60})}); } catch(e){}
+}
+// Panels in a freshly opened tab slide up one after another, then their art draws on.
+function fxEnter(root){
+  const a = AN(); if (!a || !root) return;
+  const items = [...root.querySelectorAll(':scope > .panel, :scope > details.panel, :scope > .netwrap, :scope .cs2 > * > .panel, :scope .cs2 > .panel, :scope > .card, :scope > .pcard')].filter(visible).slice(0, 12);
+  if (items.length) try { a.animate(items, {opacity: [0, 1], translateY: [14, 0], duration: 420, ease: 'outCubic', delay: a.stagger(55), onComplete: () => items.forEach(e => { e.style.transform = ''; e.style.opacity = ''; })}); } catch(e){}
+  fxDraw(root);
+}
+// Grid items (bag tiles, quickhacks, roster cards) pop in on a stagger.
+function fxPop(els){
+  const a = AN(); els = [...(els || [])].filter(visible).slice(0, 40); if (!a || !els.length) return;
+  try { a.animate(els, {opacity: [0, 1], scale: [.92, 1], duration: 360, ease: 'outBack(1.4)', delay: a.stagger(22), onComplete: () => els.forEach(e => { e.style.transform = ''; e.style.opacity = ''; })}); } catch(e){}
+}
+// A springy nudge on something that just changed.
+function fxBump(el){
+  const a = AN(); if (!a || !el) return;
+  try { a.animate(el, {scale: [1.12, 1], ease: a.createSpring({stiffness: 280, damping: 11}), onComplete: () => { el.style.transform = ''; }}); } catch(e){}
+}
+// Numbers roll from the old value to the new one.
+function fxCount(node, from, to){
+  const a = AN(); if (!a || !node || from === to || !Number.isFinite(from) || !Number.isFinite(to)) return;
+  const o = {v: from}; node.nodeValue = String(from);
+  try { a.animate(o, {v: to, duration: 520, ease: 'outExpo', modifier: a.utils.round(0), onUpdate: () => { node.nodeValue = String(o.v); }, onComplete: () => { node.nodeValue = String(to); }}); } catch(e){ node.nodeValue = String(to); }
+}
+// Rules headings decode once as they scroll into view.
+let rulesObs = null;
+function fxRulesWatch(){
+  if (!AN() || rulesObs || !('IntersectionObserver' in window)) return;
+  rulesObs = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting){ fxScramble(en.target, {duration: 500}); rulesObs.unobserve(en.target); } }), {rootMargin: '0px 0px -15% 0px'});
+  document.querySelectorAll('#pgRules .rsec > h2').forEach(h => rulesObs.observe(h));
+}
 try { const p = JSON.parse(localStorage.getItem(PREFS_KEY)); if (p) PREFS = {...PREFS_DEF, ...p}; } catch(e){}
 const flashOK = () => FXS.motion && !PREFS.calm && !PREFS.table;
 const SND_CAT = {select:'ui', tab:'ui', up:'ui', down:'ui', deny:'ui', breach:'big', levelup:'big', cool:'big', flatline:'big', psycho:'big'};

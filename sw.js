@@ -1,7 +1,7 @@
 // Daemon Manual service worker. Lets the site install as an app and open offline.
 // Bump V when you want every device to drop its old cache.
-const V = 'daemon-v2';
-const CORE = ['./', './index.html', './manifest.json'];
+const V = 'daemon-v3';
+const CORE = ['./', './index.html', './manifest.json', './vendor/anime.umd.min.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c => c.addAll(CORE)).catch(() => {}));
