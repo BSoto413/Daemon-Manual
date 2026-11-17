@@ -304,3 +304,13 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Combat entrance. When the DM sends combat, players get a red flash and a jolt, the title punches in, and the contact cards slam in on a spring
 - Ambient. Buttons glitch when pressed, a scan line sweeps the screen on sheet tab switches, and Black ICE art flickers every few seconds
 - Tests set `sessionStorage['daemon-booted']` so the boot screen doesn't block them
+
+## DM notes, Nov 17 (quickhacks)
+- New quickhacks. Screech (4 RAM, level 3), Cupid's Bow (5 RAM, level 5) and EMP (6 RAM, level 7)
+- Hijack has an 80 ft range
+- Fried processors also cap any single RAM spend at 3. Quickhacks over 3 RAM show "FRIED · 3 MAX" and can't be used (`friedCap`)
+
+## Motion fixes, Nov 17
+- Perk nodes no longer jump off their line when installed. Nodes are positioned with a CSS transform, so the bounce now goes on the hexagon inside, and the ring is centered from the hexagon itself. Effects skip any element that has its own transform (`txFree`)
+- Battery saver no longer turns the animations off (they're short and cheap). Reduce flashing and Table mode keep the gentle ones and turn off only the screen shake, red flashes, ICE flicker, button glitch and scan line
+- Tapping FX on is now remembered over the phone's reduced-motion setting. Settings, Comfort shows whether animations are on, and why not if they're off, with a Turn animations on button
