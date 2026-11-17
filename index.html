@@ -1207,6 +1207,23 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
   .dsubs button{min-height:40px}
   .btn.small{min-height:34px}
 }
+.holo{position:relative;width:min(300px,100%);margin:10px auto 0;cursor:pointer;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;outline:none}
+.holo:focus-visible{outline:2px solid var(--cyan);outline-offset:6px}
+.holo-rot{position:relative;transform-style:preserve-3d;will-change:transform}
+.holo-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.holo-face.front{position:relative;isolation:isolate}
+.holo-face.back{position:absolute;inset:0;transform:rotateY(180deg)}
+.holo .cwc.big{margin:0;width:100%;position:relative}
+.holo canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
+.holo-face.back .cwc.back{width:100%;height:100%;box-shadow:0 0 30px rgba(var(--crgb),.35)}.holo-face.back .cwc.back svg{width:96px;height:108px}.holo-face.back .cwc.back span{font-size:14px;letter-spacing:4px}
+.cwmini .cwc,.holo.nogl .cwc{position:relative;overflow:hidden}
+body.fx .cwmini:not(.gone) .cwc::after,body.fx .holo.nogl .cwc.big::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-70%;width:50%;pointer-events:none;mix-blend-mode:screen;opacity:.8;
+  background:linear-gradient(100deg,transparent 10%,rgba(63,208,255,.28) 30%,rgba(255,63,216,.28) 42%,rgba(255,255,255,.45) 50%,rgba(255,210,63,.28) 58%,rgba(62,224,138,.25) 70%,transparent 90%);
+  transform:skewX(-14deg);animation:cwshine 7s ease-in-out infinite}
+body.fx .cwmini:nth-child(3n+2) .cwc::after{animation-delay:-2.3s}body.fx .cwmini:nth-child(3n) .cwc::after{animation-delay:-4.6s}
+body.fx .cwmini:hover .cwc::after,body.fx .cwmini:focus-visible .cwc::after{animation:cwsweep 1.1s ease-out 1}
+@keyframes cwsweep{from{transform:translateX(0) skewX(-14deg)}to{transform:translateX(480%) skewX(-14deg)}}
+@keyframes cwshine{0%,72%{transform:translateX(0) skewX(-14deg)}100%{transform:translateX(480%) skewX(-14deg)}}
 </style>
 </head>
 <body>
@@ -6580,6 +6597,7 @@ function deckReveal(){
   md.innerHTML = `<div class="mbox dkreveal" style="max-width:380px"><p class="lbl" style="text-align:center;color:var(--yellow)">${c.how === 'gift' ? 'THE DM GAVE YOU' : 'YOU PULLED'}</p>${cardHTML(c, true)}
     <div class="row" style="margin-top:14px;justify-content:center;gap:8px"><button class="btn primary" data-m="keep">Add to inventory</button><button class="btn" data-m="back">Put it back</button></div>
     <p class="muted" style="font-size:12px;text-align:center;margin-top:10px">It goes in your backpack. A RipperDoc installs it.</p></div>`;
+  holoMount(md.querySelector('.cwc.big'), c.tier, true);
   if (flashOK()) sfx('receive');
   md.onclick = e => {
     const b = e.target.closest('[data-m]'); if (!b) return;
@@ -7796,6 +7814,233 @@ function fxScan(){
   next();
 })();
 // ---- Boot screen. Once per visit, tap to skip. Never when motion is off.
+/* ---- Holo foil on the big cyberware card. Shader adapted from React Bits HoloCard (vanilla port, foil only, laid over the live card). ---- */
+const HOLO_PRESET = [6, 2, 3, 7];   // T1 glitter, T2 shards (cracked ice), T3 cosmos, T4 gold
+const HOLO_PERSP = 1100;
+const HOLO_VS = `#version 300 es
+in vec2 position;
+void main(){ gl_Position = vec4(position, 0.0, 1.0); }`;
+const HOLO_FS = `#version 300 es
+precision highp float;
+uniform vec2 uSize; uniform float uAspect; uniform vec2 uTilt; uniform vec2 uLight; uniform float uDistance;
+uniform int uPreset; uniform float uIntensity; uniform float uScale; uniform float uEdge; uniform float uFrame;
+uniform float uRadius; uniform float uGlare; uniform vec3 uFoil; uniform vec4 uArtBox;
+out vec4 outColor;
+const float TAU = 6.28318530718;
+struct Foil { float mask; float angle; float jitter; vec2 facet; };
+float hash(vec2 p){ p = fract(p * vec2(234.34, 435.345)); p += dot(p, p + 34.23); return fract(p.x * p.y); }
+vec2 hash2(vec2 p){ return vec2(hash(p), hash(p + 17.31)); }
+vec3 hue(float t){
+  t = abs(fract(t * 0.5) * 2.0 - 1.0);
+  vec3 c = mix(vec3(0.1, 0.25, 1.0), vec3(0.0, 0.85, 1.0), smoothstep(0.0, 0.25, t));
+  c = mix(c, vec3(0.25, 1.0, 0.2), smoothstep(0.25, 0.45, t));
+  c = mix(c, vec3(1.0, 0.92, 0.05), smoothstep(0.45, 0.65, t));
+  c = mix(c, vec3(1.0, 0.45, 0.05), smoothstep(0.65, 0.85, t));
+  return mix(c, vec3(0.95, 0.12, 0.3), smoothstep(0.85, 1.0, t));
+}
+Foil shards(vec2 p){
+  vec2 g = p * 19.0 * uScale; vec2 base = floor(g);
+  float best = 9.0; float second = 9.0; vec2 id = base;
+  for (int j = -1; j <= 1; j++) for (int i = -1; i <= 1; i++){
+    vec2 cell = base + vec2(float(i), float(j));
+    float d = length(cell + 0.08 + hash2(cell) * 0.84 - g);
+    if (d < best){ second = best; best = d; id = cell; } else if (d < second){ second = d; }
+  }
+  float crack = smoothstep(0.015, 0.07, second - best);
+  float shine = 0.25 + 0.75 * pow(hash(id + 7.7), 2.0);
+  return Foil((0.2 + 0.8 * crack) * shine, hash(id + 3.17) * TAU, hash(id + 11.73), (hash2(id + 5.0) - 0.5) * 0.5);
+}
+Foil cosmos(vec2 p){
+  Foil best = Foil(0.0, 0.0, 0.0, vec2(0.0));
+  vec2 g = p / (0.16 / uScale); vec2 base = floor(g);
+  for (int j = -1; j <= 1; j++) for (int i = -1; i <= 1; i++){
+    vec2 id = base + vec2(float(i), float(j));
+    vec2 d = g - (id + 0.5 + (hash2(id) - 0.5) * 0.7);
+    float size = mix(0.16, 0.52, hash(id + 2.0)); float r = length(d);
+    float m = max(1.0 - smoothstep(0.0, 0.05, abs(r - size)), (1.0 - smoothstep(size - 0.04, size, r)) * 0.22);
+    if (m > best.mask) best = Foil(m, hash(id + 6.0) * TAU + atan(d.y, d.x) * 0.5, hash(id + 1.0), (hash2(id + 4.0) - 0.5) * 0.5);
+  }
+  vec2 fine = p / (0.035 / uScale); vec2 cell = floor(fine);
+  float dots = (1.0 - smoothstep(0.1, 0.2, length(fine - cell - 0.5 - (hash2(cell + 9.0) - 0.5) * 0.6))) * step(0.55, hash(cell + 2.0));
+  if (dots > best.mask) best = Foil(dots, hash(cell) * TAU, hash(cell + 3.0), (hash2(cell + 7.0) - 0.5) * 0.6);
+  return best;
+}
+Foil glitter(vec2 p){
+  vec2 g = p * 72.0 * uScale; vec2 cell = floor(g);
+  float size = mix(0.18, 0.4, hash(cell + 3.0));
+  float m = (1.0 - smoothstep(size * 0.55, size, length(fract(g) - 0.5 - (hash2(cell) - 0.5) * 0.5))) * step(0.25, hash(cell + 5.0));
+  return Foil(m, hash(cell + 7.0) * TAU, hash(cell + 9.0), (hash2(cell + 11.0) - 0.5) * 0.9);
+}
+Foil gold(vec2 p){
+  Foil flake = glitter(p * 0.8);
+  if (flake.mask > 0.5) return flake;
+  float etch = 0.55 + 0.45 * smoothstep(0.2, 0.8, abs(fract((p.x * 0.6 + p.y) * 140.0 * uScale) - 0.5) * 2.0);
+  return Foil(etch, 0.9, 0.4, vec2(0.0));
+}
+vec3 sparkles(vec2 p, vec3 halfway, vec2 sweep, float awake){
+  vec2 g = p * 62.0; vec2 cell = floor(g);
+  vec2 d = fract(g) - 0.5 - (hash2(cell) - 0.5) * 0.36;
+  float spin = hash(cell + 3.0) * TAU;
+  d = mat2(cos(spin), -sin(spin), sin(spin), cos(spin)) * d;
+  vec2 a = abs(d);
+  float hexagon = max(a.x * 0.866 + a.y * 0.5, a.y);
+  float size = mix(0.22, 0.38, hash(cell + 2.0));
+  float piece = (1.0 - smoothstep(size - 0.07, size, hexagon)) * step(0.42, hash(cell + 4.0));
+  vec3 facet = normalize(vec3((hash2(cell + 6.0) - 0.5) * 0.9, 1.0));
+  float flash = pow(max(dot(facet, halfway), 0.0), 6.0);
+  vec3 tint = hue(dot(sweep, vec2(cos(spin), sin(spin))) * 1.2 + dot(sweep, vec2(0.8, 0.6)) * 0.8 + hash(cell + 8.0) * 0.5);
+  return piece * tint * (0.3 + 1.6 * flash) * awake;
+}
+void main(){
+  vec2 uv = vec2(gl_FragCoord.x / uSize.x, 1.0 - gl_FragCoord.y / uSize.y);
+  vec2 p = vec2(uv.x, uv.y * uAspect);
+  vec2 center = vec2(0.5, 0.5 * uAspect);
+  vec2 q = abs(p - center) - center + uRadius;
+  float outside = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;
+  float pixel = 1.0 / uSize.x;
+  float alpha = clamp(0.5 - outside / pixel, 0.0, 1.0);
+  if (alpha <= 0.0){ outColor = vec4(0.0); return; }
+  mat3 rx = mat3(1.0, 0.0, 0.0, 0.0, cos(uTilt.x), sin(uTilt.x), 0.0, -sin(uTilt.x), cos(uTilt.x));
+  mat3 ry = mat3(cos(uTilt.y), 0.0, -sin(uTilt.y), 0.0, 1.0, 0.0, sin(uTilt.y), 0.0, cos(uTilt.y));
+  mat3 turn = rx * ry;
+  vec3 world = turn * vec3(p - center, 0.0);
+  vec3 view = normalize(transpose(turn) * (vec3(0.0, 0.0, uDistance) - world));
+  vec3 lamp = vec3((uLight - 0.5) * vec2(1.1, 1.1 * uAspect), 0.9);
+  vec3 light = normalize(transpose(turn) * (lamp - world));
+  vec3 halfway = normalize(light + view);
+  vec2 sweep = light.xy + view.xy;
+  float sheen = pow(max(halfway.z, 0.0), 10.0);
+  float shine = pow(max(halfway.z, 0.0), 80.0);
+  float frame = 1.0 - smoothstep(uFrame - pixel, uFrame + pixel, -outside);
+  Foil f;
+  if (uPreset == 2) f = shards(p);
+  else if (uPreset == 3) f = cosmos(p);
+  else if (uPreset == 6) f = glitter(p);
+  else f = gold(p);
+  vec3 metal = uPreset == 7 ? vec3(1.0, 0.74, 0.38) * 0.95 : uFoil;
+  vec4 look = uPreset == 2 ? vec4(0.9, 0.9, 0.6, 0.5) : uPreset == 3 ? vec4(0.7, 1.2, 0.35, 0.85) : uPreset == 6 ? vec4(0.9, 1.0, 0.6, 1.0) : vec4(0.3, 1.0, 0.2, 0.95);
+  vec2 dir = vec2(cos(f.angle), sin(f.angle));
+  float phase = dot(sweep, dir) * look.x + dot(sweep, vec2(0.8, 0.6)) * look.y + f.jitter * look.z;
+  vec3 tint = hue(phase);
+  tint = mix(tint, metal, uPreset == 7 ? 0.65 : 0.25);
+  float glint = pow(max(dot(normalize(vec3(f.facet, 1.0)), halfway), 0.0), 24.0) * step(0.001, length(f.facet));
+  bool layered = uPreset == 2 || uPreset == 7;
+  vec3 foil = (layered ? tint : mix(tint, vec3(1.0), 0.12)) * (1.15 + 0.3 * sheen) + metal * glint * 1.2;
+  float tilted = smoothstep(0.02, 0.21, length(sin(uTilt)));
+  float awake = mix(0.2, 1.0, tilted);
+  float inArt = step(uArtBox.x, uv.x) * step(uv.x, uArtBox.z) * step(uArtBox.y, uv.y) * step(uv.y, uArtBox.w);
+  float strength = uIntensity * f.mask * (1.0 - frame) * awake * mix(0.12, 1.0, inArt);
+  float band = layered ? 0.25 + 0.75 * smoothstep(0.3, 0.95, 0.5 + 0.5 * cos(phase * TAU * 0.5 + 1.3)) : 1.0;
+  vec3 color = clamp(foil * look.w * band * strength, 0.0, 1.0);
+  color += sparkles(p, halfway, sweep, mix(0.55, 1.0, tilted)) * uEdge * frame;
+  color += uFoil * sheen * 0.12 * frame;
+  color += vec3(sheen * 0.05 + shine * 0.3) * uGlare;
+  color = pow(clamp(color, 0.0, 1.0), vec3(0.8));   // mostly linear so the soft haze stays off the text and only real foil glints
+  outColor = vec4(color * alpha, alpha);
+}`;
+const holoRGB = hex => [1, 3, 5].map(i => Math.pow(parseInt(hex.slice(i, i + 2), 16) / 255, 2.2));
+function holoGL(canvas){
+  let gl = null;
+  try { gl = canvas.getContext('webgl2', {alpha:true, premultipliedAlpha:true, antialias:false}); } catch(e){}
+  if (!gl) return null;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; };
+  const v = sh(gl.VERTEX_SHADER, HOLO_VS), f = sh(gl.FRAGMENT_SHADER, HOLO_FS);
+  if (!v || !f) return null;
+  const prog = gl.createProgram();
+  gl.attachShader(prog, v); gl.attachShader(prog, f); gl.bindAttribLocation(prog, 0, 'position'); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  const u = {};
+  'uSize uAspect uTilt uLight uDistance uPreset uIntensity uScale uEdge uFrame uRadius uGlare uFoil uArtBox'.split(' ').forEach(n => u[n] = gl.getUniformLocation(prog, n));
+  return {gl, prog, u};
+}
+// Wraps a .cwc.big card in a tilting, flipping holo. Face down first when flip is set. Does nothing under Calm, Table mode or FX off.
+function holoMount(card, tier, flip){
+  if (!card || !ANX()) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'holo'; wrap.setAttribute('role', 'button'); wrap.tabIndex = 0;
+  wrap.setAttribute('aria-label', 'Cyberware card. Tap to flip it over.');
+  wrap.innerHTML = `<div class="holo-rot"><div class="holo-face front"></div><div class="holo-face back">${cardBack()}</div></div>`;
+  card.replaceWith(wrap);
+  const rot = wrap.firstElementChild, front = rot.firstElementChild;
+  front.appendChild(card);
+  const canvas = document.createElement('canvas'); canvas.setAttribute('aria-hidden', 'true');
+  front.appendChild(canvas);
+  const G = holoGL(canvas);
+  if (!G){ canvas.remove(); wrap.classList.add('nogl'); }
+  const S = {preset: HOLO_PRESET[Math.min(3, tier || 0)], foil: holoRGB(TIER_COL[Math.min(3, tier || 0)]), art: [0, 0, 1, 1]};
+  const st = {tx:0, ty:0, vx:0, vy:0, lx:.36, ly:.26, lvx:0, lvy:0, lift:1, lv:0, turn: flip ? 180 : 0, tv:0, clock: Math.random() * 40};
+  let face = flip ? 180 : 0, ptr = {x:.5, y:.5, inside:false}, last = performance.now(), raf = 0;
+  if (flip) setTimeout(() => { if (wrap.isConnected){ face = 0; sfx('select'); } }, 520);
+  const measure = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+    const a = card.querySelector('.cwc-art'), cw = card.offsetWidth || 1, ch = card.offsetHeight || 1;
+    if (a) S.art = [a.offsetLeft / cw, a.offsetTop / ch, (a.offsetLeft + a.offsetWidth) / cw, (a.offsetTop + a.offsetHeight) / ch];
+  };
+  const draw = () => {
+    if (!G) return;
+    const {gl, prog, u} = G, w = canvas.width, h = canvas.height;
+    gl.viewport(0, 0, w, h); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.useProgram(prog);
+    gl.uniform2f(u.uSize, w, h); gl.uniform1f(u.uAspect, h / w);
+    gl.uniform2f(u.uTilt, st.tx * Math.PI / 180, (st.ty + st.turn) * Math.PI / 180);
+    gl.uniform2f(u.uLight, st.lx, st.ly); gl.uniform1f(u.uDistance, HOLO_PERSP / Math.max(1, canvas.clientWidth));
+    gl.uniform1i(u.uPreset, S.preset); gl.uniform1f(u.uIntensity, 1); gl.uniform1f(u.uScale, 1);
+    gl.uniform1f(u.uEdge, .8); gl.uniform1f(u.uFrame, .03); gl.uniform1f(u.uRadius, 0); gl.uniform1f(u.uGlare, .5);
+    gl.uniform3f(u.uFoil, S.foil[0], S.foil[1], S.foil[2]);
+    gl.uniform4f(u.uArtBox, S.art[0], S.art[1], S.art[2], S.art[3]);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+  const spring = (x, v, t, k, d, dt) => { const n = v + ((t - x) * k - v * d) * dt; return [x + n * dt, n]; };
+  const stop = () => {
+    cancelAnimationFrame(raf); ro.disconnect();
+    if (G){ const ext = G.gl.getExtension('WEBGL_lose_context'); if (ext) ext.loseContext(); }
+  };
+  const tick = now => {
+    raf = 0;
+    if (!wrap.isConnected) return stop();
+    if (!ANX()){ st.tx = st.ty = 0; st.turn = 0; rot.style.transform = ''; return; }
+    const dt = Math.min(1 / 30, Math.max(1 / 240, (now - last) / 1000)); last = now;
+    const tmax = 14;
+    let tx = 0, ty = 0, lx = .36, ly = .26, lift = 1;
+    if (ptr.inside){ tx = (.5 - ptr.y) * 2 * tmax; ty = (ptr.x - .5) * 2 * tmax; lx = ptr.x; ly = ptr.y; lift = 1.04; }
+    else { st.clock += dt; const t = st.clock;
+      tx = Math.sin(t * .7) * tmax * .28; ty = Math.sin(t * .53 + 1.2) * tmax * .4;
+      lx = .5 + Math.sin(t * .41) * .42; ly = .38 + Math.sin(t * .33 + .6) * .3; }
+    const n = Math.ceil(dt / (1 / 240)), h = dt / n;
+    for (let i = 0; i < n; i++){
+      [st.tx, st.vx] = spring(st.tx, st.vx, tx, 150, 16, h);
+      [st.ty, st.vy] = spring(st.ty, st.vy, ty, 150, 16, h);
+      [st.lx, st.lvx] = spring(st.lx, st.lvx, lx, 220, 30, h);
+      [st.ly, st.lvy] = spring(st.ly, st.lvy, ly, 220, 30, h);
+      [st.lift, st.lv] = spring(st.lift, st.lv, lift, 320, 30, h);
+      [st.turn, st.tv] = spring(st.turn, st.tv, face, 170, 20, h);
+    }
+    rot.style.transform = `perspective(${HOLO_PERSP}px) scale(${st.lift}) rotateX(${st.tx}deg) rotateY(${st.ty + st.turn}deg)`;
+    if (Math.cos((st.ty + st.turn) * Math.PI / 180) > -0.05) draw();
+    raf = requestAnimationFrame(tick);
+  };
+  const ro = new ResizeObserver(() => { measure(); draw(); });
+  ro.observe(canvas);
+  const track = e => {
+    if (e.pointerType === 'touch' && e.type === 'pointermove' && !e.buttons) return;
+    const r = wrap.getBoundingClientRect();
+    ptr = {x: Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y: Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)), inside: true};
+  };
+  const leave = () => { ptr = {...ptr, inside:false}; };
+  ['pointerenter', 'pointermove', 'pointerdown'].forEach(k => wrap.addEventListener(k, track));
+  ['pointerleave', 'pointercancel'].forEach(k => wrap.addEventListener(k, leave));
+  wrap.addEventListener('pointerup', e => { if (e.pointerType === 'touch') leave(); });
+  const turnOver = () => { face = face ? 0 : 180; sfx('select'); };
+  wrap.addEventListener('click', turnOver);
+  wrap.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && !e.repeat){ e.preventDefault(); turnOver(); } });
+  measure();
+  raf = requestAnimationFrame(tick);
+}
+
 function fxBoot(){
   const a = AN(); let seen = false; try { seen = sessionStorage.getItem('daemon-booted') === '1'; sessionStorage.setItem('daemon-booted', '1'); } catch(e){}
   if (!a || seen) return;

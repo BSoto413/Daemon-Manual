@@ -315,3 +315,11 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Battery saver no longer turns the animations off (they're short and cheap). Reduce flashing and Table mode keep the gentle ones and turn off only the screen shake, red flashes, ICE flicker, button glitch and scan line
 - Tapping FX on is now remembered over the phone's reduced-motion setting. Settings, Comfort shows whether animations are on, and why not if they're off, with a Turn animations on button
 - Perk tree on phones. Tier names run sideways in a thin column so the tree gets the width. Node width and hexagon size follow the space between columns (`--colw`, `--hexw` set in `layout()`), so names wrap instead of overlapping, even at 140% text size
+
+## Holo cyberware cards
+- When a player pulls or is given a cyberware card, it shows up face down and flips over to reveal a live holographic foil. Tilt it with the mouse or a finger, and tap it to flip it again.
+- Each tier has its own foil. T1 glitter, T2 cracked ice shards, T3 cosmic rings, T4 gold.
+- The foil sits on top of the real card so text stays sharp. It is strongest over the art window and very light over the text.
+- Small cards in the DM's deck grid get a light rainbow sweep instead (browsers can only run a few of the 3D effects at once).
+- Calm mode, Table mode and FX off all turn it off. Devices without WebGL2 still get the tilt and flip with the light sweep.
+- Foil shader adapted from the React Bits HoloCard component, ported to plain JavaScript.
