@@ -323,3 +323,11 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Small cards in the DM's deck grid get a light rainbow sweep instead (browsers can only run a few of the 3D effects at once).
 - Calm mode, Table mode and FX off all turn it off. Devices without WebGL2 still get the tilt and flip with the light sweep.
 - Foil shader adapted from the React Bits HoloCard component, ported to plain JavaScript.
+
+## Hyperspeed Net background
+- While a merc is jacked in and on their sheet, a 3D highway of light runs behind the page. Cyan lights come at you, magenta ones head away, on a road that dives down into the Net.
+- Jacking in plays a warp-in. Quickhacks and SWORD, SHIELD and SCAN give it a speed burst. Losing Net HP flashes the lights red. A safe jack-out slows it to a stop. An unsafe jack-out or flatlining in the Net cuts it off.
+- It uses three.js (vendor/three.module.min.js, MIT license in vendor/three.LICENSE). The file only downloads the first time someone jacks in, then the app keeps it for offline use.
+- Phones get a lighter version with fewer lights, a smaller glow and half-resolution rendering. It stops completely when you leave the sheet or jack out, so nothing keeps running.
+- Calm mode, Table mode and FX off all skip it.
+- Ported from the React Bits Hyperspeed component.
