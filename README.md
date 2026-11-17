@@ -275,3 +275,8 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Hack DC is 10 + Hacking. Shown on the Quickhacks panel and Your rolls
 - CODE skill write-up in the Skills rules, and tapping Code on the sheet shows it (`SKILL_INFO`)
 - Locked quickhacks have a pink LV badge, a dashed striped card and "Unlocks at level X". A banner above the list names the next unlock. Leveling up lists new quickhacks on the level-up card and toast, and they get a green NEW tag at that level
+
+## DM notes, Nov 17
+- Safely jacking out undetected saves your progress in that network. Every Unsafe Jack-Out undoes any progress. In the rules and on the Jack out buttons
+- Skunk Black ICE is −2 to the Netrunner's SLIDE checks, stacking with each hit
+- Petrified is gone from the effects list. Anyone who had it loses it on load

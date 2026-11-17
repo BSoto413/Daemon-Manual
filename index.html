@@ -1434,6 +1434,7 @@ footer{margin-top:60px;font-size:12px;color:var(--muted);letter-spacing:1px}
             <tr><td><b>Safe</b></td><td>Costs an ACTION and 3 RAM</td></tr>
             <tr><td><b>Unsafe</b></td><td>A FREE ACTION with no RAM cost. Every Black ICE program, Daemon and security measure you didn't de-rez gets a free hit on you, and other Netrunners get a bead on your location</td></tr>
           </tbody></table>
+          <p style="margin-top:8px"><b>Progress.</b> Safely jacking out undetected saves your progress within that network. Every Unsafe Jack-Out undoes any progress you made.</p>
           <h3 style="margin-top:18px">NET HP</h3>
           <p style="margin-top:8px">Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. NET HP matches your IRL HP unless an implant changes it. Black ICE mostly hits your NET HP, but your body can still be attacked while you're under. Some Black ICE, like a Hellhound's fire, and Daemons can also damage your IRL HP straight from The Net. The INT perk <b>Insulated Wires</b> halves that damage, rounded down.</p>
           <p style="margin-top:8px">If your NET HP hits 0 you Flatline and go into critical condition, and you start rolling death saves. Once you stabilize, your processors are <b>fried</b>. You need a Ripper to repair them, and you can't access The Net until your injuries heal.</p>
@@ -1934,7 +1935,6 @@ const STATUS = [
   {id:'incapacitated', n:'Incapacitated', d:"Can't take actions or reactions."},
   {id:'invisible', n:'Invisible', d:"Can't be seen without special senses. Your attacks have advantage, and attacks against you have disadvantage."},
   {id:'paralyzed', n:'Paralyzed', d:'Incapacitated and can\'t move or speak. Fails STR and REF saves. Attacks against you have advantage, and hits from within 5 ft are crits.'},
-  {id:'petrified', n:'Petrified', d:'Turned to a solid, inanimate substance. Incapacitated, resistant to all damage and immune to poison and disease.'},
   {id:'poisoned', n:'Poisoned', d:'Disadvantage on attack rolls and ability checks.'},
   {id:'prone', n:'Prone', d:'You can only crawl until you stand, which costs half your movement. Your attacks have disadvantage. Attacks within 5 ft have advantage against you, and attacks from farther away have disadvantage.'},
   {id:'restrained', n:'Restrained', d:'Your speed is 0. Attacks against you have advantage, yours have disadvantage, and you have disadvantage on REF saves.'},
@@ -3067,8 +3067,8 @@ function jackOutModal(){
   const cost = netCost(3), locked = !!C.jackLock, ok = ramCur() >= cost && !locked;
   const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
   m.innerHTML = `<div class="mbox" style="max-width:440px"><div class="sethead"><h3>Jack out</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close">✕</button></div>
-    <div class="jopt"><button class="btn primary" data-m="safe" ${ok ? '' : 'disabled'}>Safe jack-out</button><p>Costs an ACTION and ${cost} RAM.${locked ? ' Locked by Black ICE. Only an Unsafe Jack-Out gets you out.' : ok ? '' : ` You only have ${ramCur()} RAM.`}</p></div>
-    <div class="jopt"><button class="btn danger" data-m="unsafe">Unsafe jack-out</button><p>A FREE ACTION with no RAM cost. Every Black ICE, Daemon and security measure you didn't de-rez gets a free hit on you, and enemy Netrunners get a bead on your location.</p></div></div>`;
+    <div class="jopt"><button class="btn primary" data-m="safe" ${ok ? '' : 'disabled'}>Safe jack-out</button><p>Costs an ACTION and ${cost} RAM. Saves your progress in this network if you weren't detected.${locked ? ' Locked by Black ICE. Only an Unsafe Jack-Out gets you out.' : ok ? '' : ` You only have ${ramCur()} RAM.`}</p></div>
+    <div class="jopt"><button class="btn danger" data-m="unsafe">Unsafe jack-out</button><p>A FREE ACTION with no RAM cost. Every Black ICE, Daemon and security measure you didn't de-rez gets a free hit on you, and enemy Netrunners get a bead on your location. Undoes any progress you made in this network.</p></div></div>`;
   m.onclick = e => {
     const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return;
     if (b.dataset.m === 'close') return closeModal();
@@ -3596,7 +3596,7 @@ const BLACK_ICE = [
   {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:''},
   {id:'cobra', n:'Cobra', ac:12, hp:12, hit:6, per:4, dmg:'Drains 1d4+1 RAM', fx:''},
   {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, which reveals their physical location to other netrunners and warns the next Black ICE program that they\'re coming.', fx:''},
-  {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:'−2 that stacks with each hit', fx:''},
+  {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:"−2 to the Netrunner's SLIDE checks, stacks with each hit", fx:''},
   {id:'scorpion', n:'Scorpion', ac:12, hp:15, hit:2, per:2, dmg:'Half movement and no Dash', fx:''},
   {id:'wisp', n:'Wisp', ac:10, hp:15, hit:4, per:4, dmg:'1d6 NET damage and −1 RAM', fx:''},
   {id:'liche', n:'Liche', ac:12, hp:25, hit:6, per:8, dmg:'Lowers the netrunner\'s INT, REF or TEC by 1d4. Roll 1d6 to pick the stat', fx:''},
