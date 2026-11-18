@@ -377,3 +377,9 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Every tag and badge (tiers, weapon stats, status, LIVE, HOT, locks, NEW) shares one chip shape.
 - Wording: NET HP everywhere (it was half Net HP), and RipperDoc everywhere.
 - The footer shows the site version next to the V0.77 name. Settings, Controls shows it too. Bump SITE_VER and the footer together when you release.
+
+## Jack-in fade, color fixes, death saves (DM notes)
+- Jacking in no longer warps. The Net background fades in over about two seconds while the road eases up to speed, and the old background fades down with it.
+- Color pickers in Settings apply right away on phones. Phone pickers often report only when they close, and the site was only listening for live changes.
+- The "Cyan accent" button is now "Default accent".
+- Death saves follow the DM's wording. Three successes bring whatever zeroed you back to 1 and you're PRONE. Coming back from 0 NET HP also fries your processors, so no diving The Net until a Ripper repairs you. Both come back if both were at 0. Three failures and you're dead.
