@@ -1243,7 +1243,7 @@ body.hyper #circuit{opacity:.2!important;transition:opacity .9s}
   #topnav{display:none}
   body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
   html{scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
-  #botnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(6,8,13,.97);border-top:1px solid rgba(var(--crgb),.35);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px rgba(0,0,0,.5)}
+  #botnav{display:flex;gap:0!important;margin:0!important;position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(6,8,13,.97);border-top:1px solid rgba(var(--crgb),.35);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px rgba(0,0,0,.5)}
   #botnav>*{flex:1 1 0;min-width:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;background:none;border:0;color:#9aa6b2;text-decoration:none;font:600 10px Orbitron,sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative}
   #botnav span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:clip}
   #botnav svg{width:23px;height:23px}
@@ -1324,6 +1324,23 @@ body.hyper #circuit{opacity:.2!important;transition:opacity .9s}
 #detail.psheet .psx{display:flex;position:absolute;top:6px;right:8px;width:40px;height:40px;align-items:center;justify-content:center;background:none;border:1px solid rgba(var(--crgb),.35);color:var(--cyan);font-size:16px;cursor:pointer}
 #detail.psheet .psgrab{display:block;position:absolute;top:8px;left:50%;width:44px;height:4px;margin-left:-22px;background:rgba(var(--crgb),.45);border-radius:2px}
 body.calm #detail.psheet{transition:none}
+
+/* Sheet tabs live in the bottom bar on phones */
+#botnav .bns{display:none!important}
+@media (max-width:760px){
+  body.sheetnav #botnav .bnx{display:none!important}
+  body.sheetnav #botnav .bns{display:flex!important}
+  body.sheetnav #vSheet > .vtabs{display:none!important}
+  #botnav .bns.pdot::after{content:'';position:absolute;top:6px;left:calc(50% + 9px);width:8px;height:8px;border-radius:50%;background:var(--yellow);box-shadow:0 0 6px var(--yellow)}
+  #bnMore:not([hidden]){left:8px;right:8px;min-width:0;max-height:calc(100dvh - 140px);overflow:auto}
+  #bnMore .bmh{display:block;font:600 10px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px 4px}
+  #bnMore .bmh:first-child{padding-top:4px}
+  #bnMore button.on{color:var(--cyan)}
+  #bnMore button.pdot::after{content:'';display:inline-block;width:8px;height:8px;margin-left:8px;border-radius:50%;background:var(--yellow);vertical-align:middle}
+  #bnMore .bmsw{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px 0 2px}
+  #bnMore .bmsw button{border:1px solid rgba(var(--crgb),.35);text-align:center;font-size:14px;padding:11px 6px}
+}
+@media (max-width:400px){#botnav>*{font:700 11px 'Exo 2',sans-serif!important;letter-spacing:.3px!important}#botnav{padding-left:2px!important;padding-right:2px!important}}
 </style>
 </head>
 <body>
@@ -1898,13 +1915,18 @@ body.calm #detail.psheet{transition:none}
 <div id="hitfx" aria-hidden="true"></div>
 <script src="vendor/anime.umd.min.js"></script>
 <nav id="botnav" aria-label="Main">
-  <a href="#sheet" data-bn="merc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg><span>Merc</span></a>
-  <a href="#live" data-bn="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5 5a9.9 9.9 0 0 0 0 14M19 5a9.9 9.9 0 0 1 0 14"/></svg><span>Live</span></a>
-  <a href="#rules" data-bn="rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg><span>Rules</span></a>
-  <a href="#codex" data-bn="codex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7.3v9.4L12 21.5l-8.5-4.8V7.3z"/><path d="M12 7.5v9M8 9.8l8 4.4M16 9.8l-8 4.4"/></svg><span>Codex</span></a>
-  <button type="button" data-bn="more" aria-expanded="false" aria-controls="bnMore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>More</span></button>
+  <button type="button" class="bns" data-st="combat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Combat</span></button>
+  <button type="button" class="bns" data-st="gear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="13" rx="1"/><path d="M9 7V4h6v3M4 12h16"/></svg><span>Gear</span></button>
+  <button type="button" class="bns" data-st="chrome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10"/><path d="M10 7V3M14 7V3M10 21v-4M14 21v-4M7 10H3M7 14H3M21 10h-4M21 14h-4"/></svg><span>Chrome</span></button>
+  <button type="button" class="bns" data-st="perks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 19.8 7.3v9.4L12 21.2l-7.8-4.5V7.3z"/><circle cx="12" cy="12" r="2.6"/></svg><span>Perks</span></button>
+  <button type="button" class="bns" data-bn="menu" aria-expanded="false" aria-controls="bnMore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
+  <a href="#sheet" class="bnx" data-bn="merc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg><span>Merc</span></a>
+  <a href="#live" class="bnx" data-bn="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.6 5.6 0 0 0 0 8M16 8a5.6 5.6 0 0 1 0 8M5 5a9.9 9.9 0 0 0 0 14M19 5a9.9 9.9 0 0 1 0 14"/></svg><span>Live</span></a>
+  <a href="#rules" class="bnx" data-bn="rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg><span>Rules</span></a>
+  <a href="#codex" class="bnx" data-bn="codex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 20.5 7.3v9.4L12 21.5l-8.5-4.8V7.3z"/><path d="M12 7.5v9M8 9.8l8 4.4M16 9.8l-8 4.4"/></svg><span>Codex</span></a>
+  <button type="button" class="bnx" data-bn="more" aria-expanded="false" aria-controls="bnMore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>More</span></button>
 </nav>
-<div id="bnMore" hidden><button type="button" data-bm="mercs">All mercs</button><button type="button" data-bm="search">Search</button><button type="button" data-bm="settings">Settings</button><button type="button" data-bm="sfx">Sound</button><button type="button" data-bm="fx">Motion</button></div>
+<div id="bnMore" hidden></div>
 <button type="button" id="toTop" hidden aria-label="Back to the top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <div class="dock"><button id="tSet" aria-expanded="false" title="Settings">SETTINGS</button><button id="tSfx" aria-pressed="true" title="Sound effects">SFX</button><button id="tFx" aria-pressed="true" title="Background motion">FX</button></div>
 
@@ -2907,6 +2929,7 @@ function show(v){
   $('#vRoster').hidden = v !== 'roster';
   $('#vWizard').hidden = v !== 'wizard';
   $('#vSheet').hidden = v !== 'sheet';
+  setTimeout(() => { if (typeof bnSync === 'function') try { bnSync(); } catch(e){} }, 0);
   const tt = v === 'wizard' ? 'New Merc' : v === 'sheet' ? 'Merc Sheet' : 'Your Mercs', te = $('#mercsTitle'), was = te.textContent;
   te.textContent = tt; if (was !== tt) fxScramble(te);
   if (v === 'roster') requestAnimationFrame(() => fxPop(document.querySelectorAll('#roster > *')));
@@ -3350,6 +3373,7 @@ function renderSheetHead(){
   $('#sheetHead').querySelectorAll('[data-cooluse]').forEach(b => b.onclick = () => useCool(b.dataset.cooluse, b.dataset.who));
   $('#stUndo').onclick = undo;
   const ptab = document.querySelector('.vtabs [data-v=perks]'); if (ptab) ptab.classList.toggle('pdot', perkLeft() > 0 || asiLeft() > 0);
+  if (typeof bnSync === 'function') try { bnSync(); } catch(e){}
   const gp = $('#goPerks'); if (gp) gp.onclick = () => { setSheetTab('perks'); const t = document.querySelector('.vtabs'); if (t) t.scrollIntoView({behavior:'smooth', block:'start'}); };
   // The level-up numbers live at the top of Perks and skills; the ID card and print tools live in Profile.
   const lt = $('#lvlTiles'), tpl = $('#lvlTilesT'); if (lt && tpl) lt.innerHTML = tpl.innerHTML + `<div class="xpslot"></div>`;
@@ -6757,6 +6781,7 @@ function renderLive(){
   liveLast = html;
   keepInputs(root, () => { root.innerHTML = html; });
   if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
+  if (typeof bnSync === 'function') try { bnSync(); } catch(e){}
 }
 function liveHTML(){
   if (!LIVE_OK){
@@ -8855,26 +8880,47 @@ const lookShapes = (t, curvature) => {
 /* ---- Phone layout. Bottom nav, pinned tabs, back to top, perk sheet ---- */
 const PH = matchMedia('(max-width:560px)');
 PH.addEventListener('change', () => { if (C && CS_TABS.includes(sheetTab)) renderCS(); if (!PH.matches) psClose(); });
+const onSheetNav = () => !!C && location.hash === '#sheet' && !$('#vSheet').hidden;
 function bnSync(){
   const h = location.hash.replace('#', ''), rules = h === 'rules' || h.startsWith('r-');
+  const sheetMode = onSheetNav();
+  document.body.classList.toggle('sheetnav', sheetMode);
   const crew = h === 'sheet' && sheetTab === 'party';
   const on = rules ? 'rules' : h === 'codex' ? 'codex' : h === 'live' || crew ? 'live' : 'merc';
-  document.querySelectorAll('#botnav [data-bn]').forEach(a => { const y = a.dataset.bn === on; a.classList.toggle('on', y); if (a.tagName === 'A') a.setAttribute('aria-current', y ? 'page' : 'false'); });
-  const m = $('#bnMore'); if (m){ const sf = m.querySelector('[data-bm=sfx]'), fx = m.querySelector('[data-bm=fx]'); sf.textContent = `Sound ${FXS.sfx ? 'on' : 'off'}`; fx.textContent = `Motion ${FXS.motion ? 'on' : 'off'}`; sf.classList.toggle('off', !FXS.sfx); fx.classList.toggle('off', !FXS.motion); }
+  document.querySelectorAll('#botnav .bnx[data-bn]').forEach(a => { const y = a.dataset.bn === on; a.classList.toggle('on', y); if (a.tagName === 'A') a.setAttribute('aria-current', y ? 'page' : 'false'); });
+  const inMenu = sheetTab === 'profile' || sheetTab === 'party';
+  document.querySelectorAll('#botnav .bns').forEach(b => { const y = b.dataset.st ? b.dataset.st === sheetTab : inMenu; b.classList.toggle('on', y); if (b.dataset.st) b.setAttribute('aria-current', y ? 'page' : 'false'); });
+  const pd = document.querySelector('#botnav [data-st=perks]'); if (pd) pd.classList.toggle('pdot', !!C && (perkLeft() > 0 || asiLeft() > 0));
+  const md = document.querySelector('#botnav [data-bn=menu]'); if (md) md.classList.toggle('pdot', crewNew());
+  if (!$('#bnMore').hidden) bnMoreFill();
+}
+// Crew tab gets a dot when log lines or handouts arrive while you're elsewhere
+let bnCrewSeen = -1;
+const bnCrewCount = () => (typeof logs !== 'undefined' ? logs.length : 0) + (typeof handouts !== 'undefined' ? handouts.length : 0);
+function crewNew(){ if (!partyOn()) return false; if (bnCrewSeen < 0 || sheetTab === 'party') bnCrewSeen = bnCrewCount(); return bnCrewCount() > bnCrewSeen; }
+function bnMoreFill(){
+  const sheet = onSheetNav(), it = (k, t, x = '') => `<button type="button" data-bm="${k}" class="${x}">${t}</button>`;
+  const sw = `<div class="bmsw">${it('sfx', `Sound ${FXS.sfx ? 'on' : 'off'}`, FXS.sfx ? '' : 'off')}${it('fx', `Motion ${FXS.motion ? 'on' : 'off'}`, FXS.motion ? '' : 'off')}</div>`;
+  $('#bnMore').innerHTML = sheet
+    ? `<span class="bmh">${esc(C.name)}</span>${it('profile', 'Profile', sheetTab === 'profile' ? 'on' : '')}${partyOn() ? it('crew', 'Crew', (sheetTab === 'party' ? 'on ' : '') + (crewNew() ? 'pdot' : '')) : ''}
+       <span class="bmh">Daemon Manual</span>${it('rules', 'Rules')}${it('codex', 'Codex')}${partyOn() ? '' : it('live', 'Live session')}${it('mercs', 'All mercs')}${it('search', 'Search')}${it('settings', 'Settings')}${sw}`
+    : `${it('mercs', 'All mercs')}${it('search', 'Search')}${it('settings', 'Settings')}${sw}`;
 }
 function bnMore(open){
-  const m = $('#bnMore'), b = document.querySelector('#botnav [data-bn=more]'); open = open ?? m.hidden;
-  m.hidden = !open; b.setAttribute('aria-expanded', open); b.classList.toggle('open', open); if (open) bnSync();
+  const m = $('#bnMore'), b = document.querySelector(onSheetNav() ? '#botnav [data-bn=menu]' : '#botnav [data-bn=more]'); open = open ?? m.hidden;
+  if (open) bnMoreFill();
+  m.hidden = !open; document.querySelectorAll('#botnav [data-bn=menu], #botnav [data-bn=more]').forEach(x => { x.setAttribute('aria-expanded', open && x === b); x.classList.toggle('open', open && x === b); });
 }
 $('#botnav').addEventListener('click', e => {
+  const st = e.target.closest('[data-st]');
+  if (st){ e.preventDefault(); bnMore(false); sfx('tab'); if (sheetTab === st.dataset.st) return window.scrollTo({top:0, behavior:'smooth'}); setSheetTab(st.dataset.st); window.scrollTo(0, 0); fxScan(); return; }
   const a = e.target.closest('[data-bn]'); if (!a) return;
   const k = a.dataset.bn; sfx('select');
-  if (k === 'more'){ e.preventDefault(); return bnMore(); }
+  if (k === 'more' || k === 'menu'){ e.preventDefault(); return bnMore(); }
   bnMore(false);
   if (k === 'merc'){
     e.preventDefault();
     if (!C){ location.hash = '#mercs'; return; }
-    if (location.hash === '#sheet' && sheetTab !== 'party'){ window.scrollTo({top:0, behavior:'smooth'}); return; }
     if (sheetTab === 'party') setSheetTab('combat');
     location.hash === '#sheet' ? (window.scrollTo(0, 0), bnSync()) : (location.hash = '#sheet');
     return;
@@ -8885,14 +8931,15 @@ $('#botnav').addEventListener('click', e => {
 $('#bnMore').addEventListener('click', e => {
   const b = e.target.closest('[data-bm]'); if (!b) return;
   const k = b.dataset.bm;
-  if (k === 'sfx'){ $('#tSfx').click(); return bnSync(); }
-  if (k === 'fx'){ $('#tFx').click(); return bnSync(); }
+  if (k === 'sfx'){ $('#tSfx').click(); return bnMoreFill(); }
+  if (k === 'fx'){ $('#tFx').click(); return bnMoreFill(); }
   bnMore(false); sfx('select');
-  if (k === 'mercs') location.hash = '#mercs';
+  if (k === 'profile' || k === 'crew'){ setSheetTab(k === 'crew' ? 'party' : 'profile'); window.scrollTo(0, 0); bnSync(); }
+  else if (k === 'rules' || k === 'codex' || k === 'live' || k === 'mercs') location.hash = '#' + k;
   else if (k === 'search') $('#navSearch').click();
   else if (k === 'settings') toggleSettings(true);
 });
-document.addEventListener('pointerdown', e => { if (!$('#bnMore').hidden && !e.target.closest('#bnMore') && !e.target.closest('#botnav [data-bn=more]')) bnMore(false); }, true);
+document.addEventListener('pointerdown', e => { if (!$('#bnMore').hidden && !e.target.closest('#bnMore') && !e.target.closest('#botnav [data-bn=more], #botnav [data-bn=menu]')) bnMore(false); }, true);
 addEventListener('hashchange', () => { bnMore(false); setTimeout(bnSync, 0); });
 // Pinned tabs sit right under the pinned vitals bar
 const vbRO = new ResizeObserver(() => { const v = $('#vitalsBar'); document.documentElement.style.setProperty('--vbh', (v && v.offsetParent ? v.offsetHeight + 10 : 0) + 'px'); });

@@ -342,3 +342,10 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Tapping a perk opens its details in a panel that slides up from the bottom. Close it with ✕, by tapping outside it, or by swiping down.
 - Achievements fold into one row with your count. A back-to-top button shows up after a couple of screens of scrolling (not on the Rules page).
 - Rules were left as they are for now.
+
+## Sheet tabs at the bottom (phones)
+- On a merc sheet the bottom bar becomes the sheet's tabs. Combat, Gear, Chrome, Perks and Menu, with icons. The tab row at the top is gone on phones.
+- Menu holds Profile, Crew (in a session), Rules, Codex, Live session, All mercs, Search, Settings, and the Sound and Motion switches.
+- Perks shows a yellow dot when you have points to spend. Menu and Crew show one when new log lines or handouts come in while you're on another tab.
+- Off the sheet (Rules, Codex, Live, the merc list) the bar goes back to Merc, Live, Rules, Codex, More.
+- Fixed a gap that was spreading the bottom bar wider than the screen on some phones.
