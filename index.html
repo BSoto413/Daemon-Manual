@@ -223,8 +223,9 @@ g.e.live .edge-live{opacity:.9}
 .available .hex{background:var(--cyan)}
 .available .hex::before{background:#06181c}
 .available .glyph,.available .label{color:var(--cyan)}
-.available .hexwrap{animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{filter:drop-shadow(0 0 2px rgba(var(--crgb),.3))}50%{filter:drop-shadow(0 0 12px rgba(var(--crgb),.9))}}
+/* Ready perks pulse with a glow layer that only changes opacity, so the GPU handles it. Animating a drop-shadow filter repainted every node every frame. */
+.available .hexwrap::before{content:'';position:absolute;left:50%;top:50%;width:150%;height:150%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(var(--crgb),.55),rgba(var(--crgb),0));pointer-events:none;z-index:-1;opacity:.2;animation:pulseGlow 1.8s ease-in-out infinite;will-change:opacity}
+@keyframes pulseGlow{0%,100%{opacity:.2}50%{opacity:1}}
 .nopoints .hex{background:rgba(var(--crgb),.35)}
 .nopoints .glyph,.nopoints .label{color:rgba(var(--crgb),.55)}
 .unlocked .hex,.unlocked .hex::before{background:var(--cyan)}
@@ -1341,6 +1342,9 @@ body.calm #detail.psheet{transition:none}
   #bnMore .bmsw button{border:1px solid rgba(var(--crgb),.35);text-align:center;font-size:14px;padding:11px 6px}
 }
 @media (max-width:400px){#botnav>*{font:700 11px 'Exo 2',sans-serif!important;letter-spacing:.3px!important}#botnav{padding-left:2px!important;padding-right:2px!important}}
+
+/* Decorative loops that repaint every frame pause while the page scrolls */
+body.scrolling #edges *,body.scrolling .hexwrap::before,body.scrolling .cwmini .cwc::after{animation-play-state:paused!important}
 </style>
 </head>
 <body>
@@ -8751,6 +8755,7 @@ const lookShapes = (t, curvature) => {
       st.raf = 0;
       if (!st.alive) return;
       if (!st.stopping && !ANX()) o.off();
+      if (o.phone && now - st.last < 31){ st.raf = requestAnimationFrame(frame); return; }   // 30 fps on phones
       const dt = Math.min(0.05, Math.max(0.001, (now - st.last) / 1000)); st.last = now;
       syncColors();
       const wanted = now < st.kickUntil ? 1 : 0;
@@ -8946,7 +8951,7 @@ const vbRO = new ResizeObserver(() => { const v = $('#vitalsBar'); document.docu
 vbRO.observe($('#vitalsBar'));
 // Back to the top, on long pages outside the rules
 let ttT = 0;
-addEventListener('scroll', () => { if (ttT) return; ttT = requestAnimationFrame(() => { ttT = 0; $('#toTop').hidden = document.body.classList.contains('on-rules') || scrollY < innerHeight * 2; }); }, {passive:true});
+addEventListener('scroll', () => { if (ttT) return; ttT = requestAnimationFrame(() => { ttT = 0; const hide = document.body.classList.contains('on-rules') || scrollY < innerHeight * 2, b = $('#toTop'); if (b.hidden !== hide) b.hidden = hide; }); }, {passive:true});
 $('#toTop').addEventListener('click', () => { sfx('select'); window.scrollTo({top:0, behavior: FXS.motion ? 'smooth' : 'auto'}); });
 // Perk sheet closes from its ✕, the backdrop, or a downward swipe on its grab bar
 $('#psBack').addEventListener('click', psClose);
@@ -9320,8 +9325,13 @@ function buildLayer(L){
   });
   L.tile = t;
 }
+// Phones draw the ambient background at 1x and 30 fps. It sits behind panels at partial opacity, so the extra pixels and frames bought nothing but scroll stutter.
+const BG_PHONE = () => innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
+let bgScrollT = 0;
+let scrT = 0;
+addEventListener('scroll', () => { bgScrollT = performance.now(); if (!scrT) document.body.classList.add('scrolling'); clearTimeout(scrT); scrT = setTimeout(() => { scrT = 0; document.body.classList.remove('scrolling'); }, 180); }, {passive:true});
 function sizeCanvas(){
-  const nd = PREFS.battery ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+  const nd = PREFS.battery || BG_PHONE() ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
   VW = innerWidth; VH = innerHeight;
   cv.width = Math.round(VW * nd); cv.height = Math.round(VH * nd);
   if (nd !== DPR || !LAYERS[0].tile){ DPR = nd; LAYERS.forEach(buildLayer); }
@@ -9814,7 +9824,10 @@ function post(t, dt, RS){
 let lastT = performance.now(), running = false;
 function frame(now){
   if (PREFS.table){ running = false; return; }
-  if (PREFS.battery && FXS.motion && now - lastT < 31){ requestAnimationFrame(frame); return; }
+  // 30 fps on phones, in battery saver, and on any device while the page is scrolling, so the page itself gets the frames
+  if (FXS.motion && (PREFS.battery || BG_PHONE() || now - bgScrollT < 250) && now - lastT < 31){ requestAnimationFrame(frame); return; }
+  // The Hyperspeed Net background covers this one while jacked in, so don't draw both
+  if (FXS.motion && document.body.classList.contains('hyper')){ lastT = now; requestAnimationFrame(frame); return; }
   const rdt = Math.min(.05, (now - lastT) / 1000); lastT = now;
   const RS = reactNow();
   vRate += ((RS.low ? .35 : 1) - vRate) * .05;
@@ -9866,7 +9879,7 @@ function frame(now){
 }
 function startBg(){ if (running) return; running = true; lastT = performance.now(); requestAnimationFrame(frame); }
 function drawStatic(){ frame(performance.now()); }
-addEventListener('scroll', () => { if (!FXS.motion) drawStatic(); }, {passive:true});
+// With motion off the background stays put while scrolling. Parallax is motion too, and redrawing it every scroll frame cost the most.
 let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { sizeCanvas(); FXS.motion ? startBg() : drawStatic(); }, 120); });
 sizeCanvas();
 FXS.motion ? startBg() : drawStatic();

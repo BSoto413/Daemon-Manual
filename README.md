@@ -349,3 +349,10 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Perks shows a yellow dot when you have points to spend. Menu and Crew show one when new log lines or handouts come in while you're on another tab.
 - Off the sheet (Rules, Codex, Live, the merc list) the bar goes back to Merc, Live, Rules, Codex, More.
 - Fixed a gap that was spreading the bottom bar wider than the screen on some phones.
+
+## Scroll performance
+- The moving background draws at 1x resolution and 30 fps on phones. Every device drops it to 30 fps while the page is scrolling, so scrolling gets the frames.
+- With motion off, the background no longer redraws on every scroll event.
+- The background stops drawing while the Hyperspeed Net background covers it. Hyperspeed itself runs at 30 fps on phones.
+- Ready perks pulse with a glow that only changes opacity, instead of an animated drop-shadow that repainted every node every frame.
+- Decorative loops (perk tree line flow, perk glow, deck card shimmer) pause while you scroll.
