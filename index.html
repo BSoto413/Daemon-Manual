@@ -1407,6 +1407,43 @@ button > .ic:only-child{width:1.15em;height:1.15em;vertical-align:middle}
 /* One chip shape for every tag and badge: tiers, weapon stats, status, LIVE, HOT, locks, NEW */
 .tagb,.stagb,.wpnb,.hotb,.qlk,.qnew,.livetag,.tierb,.cwc-tags span{font-family:Orbitron,sans-serif!important;font-weight:600;font-size:var(--fs-2xs)!important;letter-spacing:1px!important;line-height:1.4!important;padding:2px 6px!important;text-transform:uppercase}
 .qlk .ic,.tagb .ic{width:1.1em;height:1.1em;vertical-align:-.2em}
+
+/* Rules on phones */
+#rJump{display:none}
+@media (max-width:760px){
+  #pgRules #toc{position:sticky;top:0;z-index:5;display:flex;flex-wrap:nowrap;gap:8px;padding:8px 0;margin:0;background:rgba(6,8,14,.97);border-bottom:1px solid rgba(var(--crgb),.2)}
+  #pgRules #toc a{display:none}
+  #pgRules #toc input{flex:1 1 0;min-width:0;margin:0}
+  #rJump{display:block;flex:0 1 44%;min-width:0;min-height:44px}
+  #rulesBody .rsec{scroll-margin-top:72px}
+  #rulesBody.acc .rsec{margin:0 0 8px}
+  #rulesBody.acc .rsec > h2{display:flex;align-items:center;gap:10px;margin:0;padding:14px;min-height:52px;box-sizing:border-box;cursor:pointer;font-size:var(--fs-xl);border:1px solid rgba(var(--crgb),.25);background:var(--panel);-webkit-tap-highlight-color:transparent}
+  #rulesBody.acc .rsec > h2::after{content:'';flex:none;margin-left:auto;width:9px;height:9px;border-right:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(45deg) translate(-2px,-2px);transition:transform var(--t-fast)}
+  #rulesBody.acc .rsec:not(.shut) > h2{border-color:var(--cyan);color:var(--cyan)}
+  #rulesBody.acc .rsec:not(.shut) > h2::after{transform:rotate(-135deg) translate(-2px,-2px)}
+  #rulesBody.acc .rsec:not(.shut) > h2 + *{margin-top:8px}
+  #rulesBody.acc:not(.searching) .rsec.shut > :not(h2){display:none}
+}
+
+
+/* Bigger touch targets in the DM screens on tablets and phones */
+@media (max-width:1024px){
+  #liveBody input[type=number],#liveBody input[type=text]{min-height:36px}
+  #liveBody input[type=checkbox]{width:24px;height:24px}
+}
+/* DM screens on phones */
+@media (max-width:760px){
+  .dmhead .dmexpl{display:none}
+  .dmhead > .row{gap:6px}
+  .dmhead .row > .btn{padding:8px 10px;font-size:var(--fs-xs);min-height:40px}
+  .dmhead .code{font-size:var(--fs-3xl)}
+  #liveBody .dfold > .row > h3{cursor:pointer;display:flex;align-items:center;gap:8px;-webkit-tap-highlight-color:transparent}
+  #liveBody .dfold > .row > h3::after{content:'';width:8px;height:8px;border-right:2px solid var(--cyan);border-bottom:2px solid var(--cyan);transform:rotate(-135deg) translate(-1px,-1px);transition:transform var(--t-fast);flex:none}
+  #liveBody .dfold.dshut > .row > h3::after{transform:rotate(45deg) translate(-2px,-2px)}
+  #liveBody .dfold.dshut > :not(.row:first-child){display:none}
+  #liveBody .dfold.dshut{padding-top:12px;padding-bottom:12px}
+  #liveBody .dfold.dshut > .row > :not(h3){display:none}
+}
 </style>
 </head>
 <body>
@@ -1421,7 +1458,7 @@ button > .ic:only-child{width:1.15em;height:1.15em;vertical-align:middle}
   <div id="pgRules" hidden>
   <div class="rules-layout">
     <aside class="toc" id="toc">
-      <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off">
+      <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off"><select id="rJump" aria-label="Jump to a section"><option value="">Jump to…</option></select>
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a><a href="#r-attacks">Attacks and Weapons</a>
       <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-ice">Black ICE</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-crew">The Crew</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
@@ -6851,6 +6888,7 @@ function renderLive(){
   liveLast = html;
   keepInputs(root, () => { root.innerHTML = html; });
   if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
+  dmFolds();
   if (typeof bnSync === 'function') try { bnSync(); } catch(e){}
 }
 function liveHTML(){
@@ -6919,10 +6957,10 @@ function liveHTML(){
       <div class="row" style="justify-content:flex-end"><select id="lg-${i.id}" aria-label="Give ${esc(i.name)} to"><option value="*">Everyone</option>${players.map(p => `<option value="${p.id}">${esc(p.name || 'Player')}</option>`).join('')}</select>
       <button class="btn small primary" data-live="libgive" data-i="${i.id}" ${players.length ? '' : 'disabled'}>Give</button><button class="btn small" data-live="libhide" data-i="${i.id}" title="${i.hidden ? 'Hidden from the codex' : 'Shown in the codex'}">${i.hidden ? 'Hidden' : 'Codex'}</button><button class="btn small" data-live="libdel" data-i="${i.id}" aria-label="Delete ${esc(i.name)}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div></div>`).join('')
     : `<p class="muted mt10">No items yet. Make one above or load the starter pack.</p>`;
-  return `${err}<div class="panel"><div class="row"><div class="grow" style="min-width:220px"><span class="lbl">Session code</span><div class="code">${esc(LS.code)}</div>
+  return `${err}<div class="panel dmhead"><div class="row"><div class="grow" style="min-width:220px"><span class="lbl">Session code</span><div class="code">${esc(LS.code)}</div>
       <p class="muted mt8">${esc(sessMeta && sessMeta.name || 'Live session')} · <b class="ink">Session ${curPlay()}</b> · ${players.length} player${players.length === 1 ? '' : 's'} connected</p></div>
       <button class="btn" data-live="copycode">Copy code</button><button class="btn" data-live="leave">Close dashboard</button><button class="btn danger" data-live="end">${endConfirm ? 'Confirm delete' : 'Delete live game'}</button></div>
-      <p class="muted fs-md mt10">Close dashboard saves everything as Session ${curPlay()}. Reopen it later to keep going or start Session ${curPlay() + 1}. Delete live game kicks everyone and erases it for good.</p></div>
+      <p class="muted fs-md mt10 dmexpl">Close dashboard saves everything as Session ${curPlay()}. Reopen it later to keep going or start Session ${curPlay() + 1}. Delete live game kicks everyone and erases it for good.</p></div>
     ${reopenAsk ? playAskHTML() : ''}
     <div class="vtabs dmtabs" role="tablist">${[['party', 'Party', players.length], ['npcs', 'NPCs', npcsDM.length], ['items', 'Items', lib.length], ['crew', 'Crew', crewOf('gig').filter(g => g.status === 'open' || g.status === 'taken').length + players.reduce((a, p) => a + ((p.merc && p.merc.drafts) || []).length, 0)], ['session', 'Session', handouts.length]].map(([k, n, c]) => `<button role="tab" aria-selected="${dmTab === k}" class="${dmTab === k ? 'on' : ''}" data-live="dmtab" data-k="${k}">${n} <span class="muted">${c}</span></button>`).join('')}</div>
     ${dmTab === 'party' ? dmPartyHTML() : ''}
@@ -7784,7 +7822,7 @@ let rIndex = null;
 function clearMarks(root){ root.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); root.normalize(); }
 $('#rSearch').addEventListener('input', e => {
   const q = e.target.value.trim().toLowerCase(), body = $('#rulesBody');
-  clearMarks(body);
+  clearMarks(body); body.classList.toggle('searching', !!q); if (q && $('#rJump')) $('#rJump').value = '';
   let any = false;
   body.querySelectorAll('.rsec').forEach(sec => {
     const hit = !q || sec.textContent.toLowerCase().includes(q);
@@ -7813,6 +7851,7 @@ function route(){
   if (rules){
     fxRulesWatch();
     const el = h.startsWith('r-') && document.getElementById(h);
+    if (el) rulesOpen(el);
     requestAnimationFrame(() => el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0));
   } else {
     // Your Mercs and Live Session are separate pages now, not one long scroll.
@@ -9016,7 +9055,7 @@ const vbRO = new ResizeObserver(() => { const v = $('#vitalsBar'); document.docu
 vbRO.observe($('#vitalsBar'));
 // Back to the top, on long pages outside the rules
 let ttT = 0;
-addEventListener('scroll', () => { if (ttT) return; ttT = requestAnimationFrame(() => { ttT = 0; const hide = document.body.classList.contains('on-rules') || scrollY < innerHeight * 2, b = $('#toTop'); if (b.hidden !== hide) b.hidden = hide; }); }, {passive:true});
+addEventListener('scroll', () => { if (ttT) return; ttT = requestAnimationFrame(() => { ttT = 0; const hide = scrollY < innerHeight * 2, b = $('#toTop'); if (b.hidden !== hide) b.hidden = hide; }); }, {passive:true});
 $('#toTop').addEventListener('click', () => { sfx('select'); window.scrollTo({top:0, behavior: FXS.motion ? 'smooth' : 'auto'}); });
 // Perk sheet closes from its ✕, the backdrop, or a downward swipe on its grab bar
 $('#psBack').addEventListener('click', psClose);
@@ -9077,6 +9116,63 @@ function holdify(btn, label, done, run){
     RB.mount('HoldButton', host, {children: label, doneLabel: done, backgroundColor: '#1d0a10', fillColor: '#ff2a3a', textColor: '#ffb3bd', fillTextColor: '#fff', radius: 0, size: 'md', holdTime: 1100, releaseTime: 180, wave: true, glow: true, resetAfter: 900, onHold: () => { sfx('breach'); setTimeout(run, 220); }, onTap: () => toast('Press and hold to confirm.')});
   }).catch(() => {});
 }
+
+/* ---- Rules on phones: one section open at a time, a pinned search and Jump to ---- */
+const RULES_ACC = matchMedia('(max-width:760px)');
+function rulesAria(sec){ const hd = sec.querySelector(':scope > h2'); if (hd) hd.setAttribute('aria-expanded', String(!sec.classList.contains('shut'))); }
+function rulesAccInit(){
+  const body = $('#rulesBody'), on = RULES_ACC.matches;
+  body.classList.toggle('acc', on);
+  body.querySelectorAll('.rsec').forEach(sec => {
+    const hd = sec.querySelector(':scope > h2'); if (!hd) return;
+    if (!hd.dataset.acc){ hd.dataset.acc = '1'; hd.setAttribute('role', 'button'); hd.tabIndex = 0; hd.setAttribute('aria-controls', sec.id); }
+    sec.classList.toggle('shut', on && !sec.classList.contains('open'));
+    rulesAria(sec);
+  });
+  const j = $('#rJump');
+  if (j && j.options.length < 2) j.insertAdjacentHTML('beforeend', [...document.querySelectorAll('#toc a')].map(a => `<option value="${a.getAttribute('href').slice(1)}">${esc(a.textContent)}</option>`).join(''));
+}
+// Opens the section that holds this element and closes the rest (phones only)
+function rulesOpen(el){
+  const body = $('#rulesBody'); if (!body.classList.contains('acc')) return;
+  const sec = el.closest('.rsec'); if (!sec) return;
+  body.querySelectorAll('.rsec').forEach(s => { const me = s === sec; s.classList.toggle('shut', !me); s.classList.toggle('open', me); rulesAria(s); });
+  const j = $('#rJump'); if (j) j.value = sec.id;
+}
+function rulesToggle(sec){
+  if (sec.classList.contains('shut')){ rulesOpen(sec); history.replaceState(null, '', '#' + sec.id); requestAnimationFrame(() => sec.scrollIntoView({block:'start'})); sfx('tab'); }
+  else { sec.classList.add('shut'); sec.classList.remove('open'); rulesAria(sec); sfx('select'); }
+}
+$('#rulesBody').addEventListener('click', e => { const hd = e.target.closest('.rsec > h2'); if (hd && $('#rulesBody').classList.contains('acc')) rulesToggle(hd.parentElement); });
+$('#rulesBody').addEventListener('keydown', e => { const hd = e.target.closest('.rsec > h2'); if (hd && (e.key === 'Enter' || e.key === ' ') && $('#rulesBody').classList.contains('acc')){ e.preventDefault(); rulesToggle(hd.parentElement); } });
+$('#rJump').addEventListener('change', e => { const v = e.target.value; if (!v) return; if (location.hash === '#' + v){ const el = document.getElementById(v); rulesOpen(el); el.scrollIntoView({block:'start'}); } else location.hash = '#' + v; });
+RULES_ACC.addEventListener('change', rulesAccInit);
+rulesAccInit();
+
+/* ---- DM screens on phones: long tool panels fold, tap a panel's title to open it ---- */
+const DM_FOLD_SHUT = ['Generators', 'Preload from a spreadsheet', 'Random roller tables', 'Item library', 'Party progress', 'Activity', 'Party mood', 'Session notes'];
+const DFOLD = {};   // title → open, kept for the session
+const DM_PHONE = matchMedia('(max-width:760px)');
+function dmFolds(){
+  const root = $('#liveBody'); if (!root) return;
+  const on = DM_PHONE.matches && LS && LS.role === 'dm';
+  root.querySelectorAll('.panel').forEach(p => {
+    const row = p.firstElementChild, h3 = row && row.classList.contains('row') && row.querySelector(':scope > h3');
+    if (!h3 || p.parentElement.closest('.panel')) return;
+    const key = (h3.firstChild && h3.firstChild.nodeValue || h3.textContent).trim();
+    p.classList.toggle('dfold', on);
+    const shut = on && !(key in DFOLD ? DFOLD[key] : !DM_FOLD_SHUT.includes(key));
+    p.classList.toggle('dshut', shut);
+    if (on){ h3.setAttribute('role', 'button'); h3.tabIndex = 0; h3.setAttribute('aria-expanded', String(!shut)); h3.dataset.dfold = key; }
+  });
+}
+$('#liveBody') && $('#liveBody').addEventListener('click', e => {
+  const h3 = e.target.closest('.dfold > .row > h3'); if (!h3) return;
+  const p = h3.closest('.panel'), open = p.classList.contains('dshut');
+  DFOLD[h3.dataset.dfold] = open; p.classList.toggle('dshut', !open); h3.setAttribute('aria-expanded', String(open)); sfx(open ? 'tab' : 'select');
+});
+$('#liveBody') && $('#liveBody').addEventListener('keydown', e => { const h3 = e.target.closest('.dfold > .row > h3'); if (h3 && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); h3.click(); } });
+DM_PHONE.addEventListener('change', dmFolds);
 
 function fxBoot(){
   const a = AN(); let seen = false; try { seen = sessionStorage.getItem('daemon-booted') === '1'; sessionStorage.setItem('daemon-booted', '1'); } catch(e){}

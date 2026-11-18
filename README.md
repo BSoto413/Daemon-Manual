@@ -387,3 +387,9 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 ## Live backgrounds follow your colors
 - Terminal, Grid scan and Radar now use the same colors as the classic backgrounds. Lights is the glow, Board traces is the grid, and Glow adds a faint tint to the dark behind them. Color presets and every picker in Colors recolor them right away, without restarting the scene.
 - The site accent is back to only coloring text, panel edges and buttons.
+
+## Rules and DM screens on phones
+- Rules on phones (760px and under) are one list of section titles, about two screens instead of 68. Tap a title to open it; opening one closes the others. Search and a Jump to menu stay pinned at the top. Search opens every matching section and highlights the words. Links like #r-ice, and Search everything results, open the right section. Back to top works on the Rules page too. Desktop is unchanged.
+- DM screens on phones: the session header is compact (the explanation under the buttons is hidden). Long tool panels fold and are closed to start: Generators, Preload, Random roller tables, Item library, Party progress, Activity, Party mood and Session notes. Tap a panel title to open or close it. The Items tab went from 7.4 screens to 1.3.
+- DM inputs and checkboxes are bigger on tablets and phones.
+- The live session test checklist is a separate doc, shared in chat: https://claude.ai/artifact/1TFP3g6vbRp9yXeqJWWtyk
