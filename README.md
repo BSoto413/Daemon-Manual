@@ -383,3 +383,7 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Color pickers in Settings apply right away on phones. Phone pickers often report only when they close, and the site was only listening for live changes.
 - The "Cyan accent" button is now "Default accent".
 - Death saves follow the DM's wording. Three successes bring whatever zeroed you back to 1 and you're PRONE. Coming back from 0 NET HP also fries your processors, so no diving The Net until a Ripper repairs you. Both come back if both were at 0. Three failures and you're dead.
+
+## Live backgrounds follow your colors
+- Terminal, Grid scan and Radar now use the same colors as the classic backgrounds. Lights is the glow, Board traces is the grid, and Glow adds a faint tint to the dark behind them. Color presets and every picker in Colors recolor them right away, without restarting the scene.
+- The site accent is back to only coloring text, panel edges and buttons.

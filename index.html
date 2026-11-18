@@ -9036,21 +9036,25 @@ const RB_BGS = [['', 'Off', 'Your background style above'], ['terminal', 'Termin
 let rbBgKey = '', rbBgOff = null;
 function rbBgSync(){
   const want = PREFS.rbBg && ANX() && !PREFS.table ? PREFS.rbBg : '';
-  const acc = PREFS.accent || '#2fe6f0', phone = BG_PHONE(), key = want && want + acc + phone;
+  const phone = BG_PHONE(), key = want && want + phone;
   document.body.classList.toggle('rbbg', !!want);
-  if (key === rbBgKey) return;
-  rbBgKey = key;
-  if (rbBgOff){ rbBgOff(); rbBgOff = null; }
   let host = document.getElementById('rbbg');
-  if (!want){ if (host) host.remove(); return; }
+  if (!want){ rbBgKey = ''; if (rbBgOff){ rbBgOff(); rbBgOff = null; } if (host) host.remove(); return; }
+  // Live backgrounds use the same colors as the classic ones: Lights for the glow, Board traces for the grid, Glow for a hint of tint in the dark
+  const light = AT.light || '#2fe6f0', trace = AT.trace || mixHex(light, '#0b0a12', .55), base = mixHex(AT.bg || '#05060a', '#05060a', .88);
   if (!host){ host = document.createElement('div'); host.id = 'rbbg'; host.setAttribute('aria-hidden', 'true'); const ci = document.getElementById('circuit'); ci ? ci.after(host) : document.body.prepend(host); }
+  host.style.background = base;
   // Phones render the backdrop below screen resolution and let it scale up. It sits behind the panels, so softness doesn't show, and the GPU does a fraction of the work.
   const dpr = phone ? (want === 'terminal' ? .75 : .6) : Math.min(window.devicePixelRatio || 1, 1.25);
   const P = {
-    terminal: ['FaultyTerminal', {tint: acc, scale: phone ? 1.3 : 1.6, gridMul: [2, 1], digitSize: 1.3, timeScale: .4, scanlineIntensity: .45, glitchAmount: .8, flickerAmount: .7, curvature: .12, brightness: .55, glyphs: 'characters', glow: .5, vignette: .35, mouseReact: !phone, pageLoadAnimation: true, clickEffect: 'none', dpr}],
-    grid: ['GridScan', {linesColor: mixHex(acc, '#0b0a12', .55), scanColor: acc, cells: 8, depth: 3, glow: .6, trail: .5, scanDuration: 2.6, scanDelay: 1.8, interactive: !phone, clickEffect: 'none', enableWebcam: false, enableGyro: false, dpr}],
-    radar: ['Radar', {color: acc, mode: 'sweep', speed: .8, trail: .45, scale: phone ? 1.1 : 1, targets: 7, clutter: .35, glow: 1.3, brightness: 1.3, gridOpacity: 1, lineWidth: 1.3, mouseInteraction: !phone, centerY: .45, grain: .02, dpr}]
+    terminal: ['FaultyTerminal', {tint: light, scale: phone ? 1.3 : 1.6, gridMul: [2, 1], digitSize: 1.3, timeScale: .4, scanlineIntensity: .45, glitchAmount: .8, flickerAmount: .7, curvature: .12, brightness: .55, glyphs: 'characters', glow: .5, vignette: .35, mouseReact: !phone, pageLoadAnimation: true, clickEffect: 'none', dpr}],
+    grid: ['GridScan', {linesColor: trace, scanColor: light, cells: 8, depth: 3, glow: .6, trail: .5, scanDuration: 2.6, scanDelay: 1.8, interactive: !phone, clickEffect: 'none', enableWebcam: false, enableGyro: false, dpr}],
+    radar: ['Radar', {color: light, mode: 'sweep', speed: .8, trail: .45, scale: phone ? 1.1 : 1, targets: 7, clutter: .35, glow: 1.3, brightness: 1.3, gridOpacity: 1, lineWidth: 1.3, mouseInteraction: !phone, centerY: .45, grain: .02, dpr}]
   }[want];
+  const fresh = key !== rbBgKey;
+  if (fresh && rbBgOff){ rbBgOff(); rbBgOff = null; }
+  rbBgKey = key;
+  // Same scene: re-render with the new colors, no restart. New scene: mount it.
   rbLoad().then(RB => { if (rbBgKey !== key) return; rbBgOff = RB.mount(P[0], host, {...P[1], className: 'rbfill', style: {width: '100%', height: '100%'}}); }).catch(() => { document.body.classList.remove('rbbg'); });
 }
 // Black ICE electric border around the vitals bar while a jack-out is locked
@@ -10004,6 +10008,7 @@ function applyTheme(rebuild){
   document.documentElement.style.setProperty('--bgc', AT.bg);
   document.body.dataset.bg = AT.style;
   if (rebuild){ LAYERS.forEach(buildLayer); sceneKey = ''; pulses.length = 0; if (!FXS.motion) drawStatic(); }
+  if (typeof rbBgSync === 'function') try { rbBgSync(); } catch(e){}
 }
 const SET_AT_KEY = 'daemon-settings-at';
 const settingsAt = () => { try { return +localStorage.getItem(SET_AT_KEY) || 0; } catch(e){ return 0; } };
@@ -10064,7 +10069,7 @@ function renderSettings(){
     ${override ? `<p class="muted fs-sm" style="margin:6px 0 0;color:var(--yellow)">${override}</p>` : ''}
     <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${!live && THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}
       ${RB_BGS.filter(([k]) => k).map(([k, n, d]) => `<button data-rbbg="${k}" class="${PREFS.rbBg === k ? 'on' : ''}"><b>${n} <i class="livetag">LIVE</i></b><small>${d}</small></button>`).join('')}</div>
-    ${fold('colors', 'Colors', live ? 'Live backgrounds use your site accent' : preset ? preset[0] : 'Custom', `<div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}">${sw(t)}${n}</button>`).join('')}
+    ${fold('colors', 'Colors', preset ? preset[0] : 'Custom', `<div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}">${sw(t)}${n}</button>`).join('')}
         ${UNLOCKS.map(u => PREFS.unl.includes(u.id) ? `<button data-unlock="${u.id}" class="${same(u.pal) ? 'on' : ''}">${sw(u.pal)}${u.n}</button>` : `<button class="locked" disabled title="${esc(u.hint)}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> ${u.n}<small>${esc(u.hint)}</small></button>`).join('')}</div>
       <div class="swg">${keys.map((k, i) => swc('data-theme', k, THEME[k], S.lab[i][0])).join('')}${swc('data-accent', '1', PREFS.accent || '#2fe6f0', 'Site accent')}</div>
       <div class="row gap6 mt8"><button class="btn small" data-set="accLights">Accent from lights</button><button class="btn small" data-set="accReset">Default accent</button><button class="btn small" data-set="reset">Reset colors</button></div>`)}
