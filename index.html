@@ -1345,6 +1345,38 @@ body.calm #detail.psheet{transition:none}
 
 /* Decorative loops that repaint every frame pause while the page scrolls */
 body.scrolling #edges *,body.scrolling .hexwrap::before,body.scrolling .cwmini .cwc::after{animation-play-state:paused!important}
+
+#rbbg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.85;background:#05060a}
+html:has(body.rbbg),body.rbbg{background:#05060a!important}
+#rbbg > *{width:100%;height:100%}
+body.rbbg #circuit{display:none}
+body.hyper #rbbg{display:none}
+#vitalsBar .ebhost{position:absolute;inset:0;pointer-events:none;z-index:2}
+#vitalsBar .ebhost > *{position:absolute;inset:0}
+.holdhost{display:inline-block}
+.holdhost button{font-family:Orbitron,sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px}
+
+/* Settings, condensed */
+@media (max-width:560px){
+  #setPanel .styles{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  #setPanel .styles button{padding:9px 8px;min-height:44px}
+  #setPanel .styles button small{display:none}
+  #setPanel .styles button b{font-size:12px;line-height:1.3}
+}
+.sfold{margin-top:12px;border:1px solid rgba(var(--crgb),.22);background:rgba(255,255,255,.02)}
+.sfold>summary{display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer;list-style:none;min-height:44px;box-sizing:border-box}
+.sfold>summary::-webkit-details-marker{display:none}
+.sfold>summary>span:first-child{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sfold>summary b{font:600 12px Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#e8eef4}
+.sfold>summary small{font-size:12px;color:var(--muted)}
+.sfold[open]>summary .fchev{transform:rotate(180deg)}
+.sfold .sfb{padding:0 12px 12px}
+.sfold .presets{margin-top:0}
+.swg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
+.swc{display:flex;align-items:center;gap:8px;font-size:13px;color:#d6dde4;cursor:pointer;min-height:36px}
+.swc input[type=color]{width:38px;height:30px;padding:0;border:1px solid rgba(var(--crgb),.4);background:none;flex:none;cursor:pointer}
+.swc span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.livetag{font:600 9px Orbitron,sans-serif;font-style:normal;letter-spacing:1px;color:var(--yellow);border:1px solid var(--yellow);padding:0 4px;margin-left:4px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -2949,7 +2981,7 @@ function renderRoster(){
     c = normalize(c);
     const stats = ORDER.map(k => `<div><b>${score(k, c)}</b>${k}</div>`).join('');
     const del = pendingDelete === c.id
-      ? `<button class="btn danger small" data-del="${c.id}">Confirm delete</button><button class="btn small" data-keep="1">Keep</button>`
+      ? `<button class="btn danger small" data-del="${c.id}" data-hold="1">Confirm delete</button><button class="btn small" data-keep="1">Keep</button>`
       : `<button class="btn small" data-del="${c.id}">Delete</button>`;
     return `<div class="card ${sigOf(c) ? 'sigd' : ''}"${sigStyle(c)}><div class="row" style="flex-wrap:nowrap">${avatar(c, 'av sm')}<div style="min-width:0"><div class="nm">${esc(c.name)}</div><div class="sub">${c.background}${c.role ? ' · ' + c.role : ''} · Level ${c.level} · ${c.unlocked.length} perks · ★ ${ACH.filter(a => c.ach[a.id]).length}</div></div></div>
       <div class="mini-stats">${stats}</div>
@@ -2957,6 +2989,7 @@ function renderRoster(){
   }).join('');
   r.innerHTML = `<button class="card new" id="newMerc"><span class="plus">+</span><span class="nm" style="font-size:15px">Create a merc</span><span class="sub">Name, background, stats, then jack in</span></button>` + cards +
     `<button class="card new" id="openImport"><span class="plus">⇣</span><span class="nm" style="font-size:15px">Import a merc</span><span class="sub">From a save code or file</span></button>`;
+  const hb = r.querySelector('[data-hold]'); if (hb){ const id = hb.dataset.del; holdify(hb, 'Hold to delete', 'Deleted', () => { const b = document.createElement('button'); b.dataset.del = id; b.hidden = true; r.appendChild(b); b.click(); }); }
   const tb = $('#trashBox');
   if (tb) tb.innerHTML = DB.trash.length ? `<div class="panel gap"><div class="row"><h3>Recently deleted</h3><span class="spacer"></span><span class="muted" style="font-size:13px">Deleted mercs wait here for 30 days in case you change your mind.</span></div>
     ${DB.trash.map(x => { const m = normalize(x.merc); return `<div class="lrow trow">${avatar(m, 'av sm')}<span class="n">${esc(m.name)}</span><span class="muted">${m.background}${m.role ? ' · ' + m.role : ''} · Level ${m.level} · deleted ${ago(x.at)}</span>
@@ -3260,6 +3293,7 @@ function jackOutModal(){
     else { setJack(false, 'unsafe'); sfx('breach'); toast("Unsafe jack-out. Anything you didn't de-rez gets a free hit. Tell the DM."); }
     csSave(); if (liveMe()) flushLog(''); if (isOverheated()) setTimeout(() => heatFx(), 200);
   };
+  holdify(m.querySelector('[data-m=unsafe]'), 'Hold for unsafe jack-out', 'Jacked out', () => { const b = document.createElement('button'); b.dataset.m = 'unsafe'; b.hidden = true; m.querySelector('.mbox').appendChild(b); b.click(); });
 }
 function syncBodyFx(){
   const on = onSheet();
@@ -3268,6 +3302,7 @@ function syncBodyFx(){
   document.body.classList.toggle('dying', !!down);
   document.body.classList.toggle('jacked', on && !!ENVS.jack);
   HYPER.sync(on && !!ENVS.jack, !!ENVS.jack, C && C.lastOut);
+  try { ebSync(); } catch(e){}
 }
 addEventListener('hashchange', () => setTimeout(syncBodyFx, 30));
 let lvlT = null;
@@ -3301,6 +3336,7 @@ function renderVitalsBar(){
   el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
   if (prevMerc === C.id) el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'), now = b && b.firstChild ? parseInt(b.firstChild.nodeValue) : NaN; if (k in prev && Number.isFinite(prev[k]) && Number.isFinite(now) && prev[k] !== now){ fxCount(b.firstChild, prev[k], now); fxBump(b); if (k === 'HP' || k === 'Net HP') fxHit(v, now - prev[k], C.hpMax); if (k === 'Net HP' && now < prev[k]) HYPER.hit(); } });
   prevMerc = C.id;
+  if (typeof ebHost !== 'undefined' && ebHost) try { ebSync(); } catch(e){}
   syncBodyFx();
 }
 $('#vitalsBar').addEventListener('click', e => { if (e.target.closest('[data-ammo]')) return; const k = (e.target.closest('.vb') || {}).dataset; if (k && (k.k === 'hp' || k.k === 'net') && C && C.hpMax) return openPad(k.k); if (sheetTab !== 'combat') setSheetTab('combat'); const v = document.querySelector('#vCS .cs-grid'); if (v) v.scrollIntoView({behavior:'smooth', block:'start'}); });
@@ -7844,7 +7880,7 @@ const motionPick = (() => { try { return localStorage.getItem('daemon-motion'); 
 // The FX button is an explicit choice, so it wins over the phone's reduced-motion hint. With no choice made we follow the phone.
 const FXS = {sfx: PREF('daemon-sfx'), motion: motionPick === '1' ? true : motionPick === '0' ? false : !reducedMotion};
 const PREFS_KEY = 'daemon-prefs';
-const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', netA:'#3fd0ff', netB:'#ff3fd8', unl:[]};
+const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', rbBg:'', netA:'#3fd0ff', netB:'#ff3fd8', unl:[]};
 let PREFS = {...PREFS_DEF};
 /* ---- Motion, built on Anime.js (vendor/anime.umd.min.js, animejs.com). Pure polish. Every call is a no-op when the
    library didn't load, motion effects are off, Calm or Battery saver is on, or the device asks for reduced motion. ---- */
@@ -8962,6 +8998,53 @@ $('#detail').addEventListener('click', e => { if (e.target.closest('.psx')) psCl
 addEventListener('hashchange', psClose);
 setTimeout(bnSync, 0);
 
+/* ---- React Bits extras: live backdrops, Black ICE electric border, hold-to-confirm. Loaded on first use. ---- */
+let rbP = null;
+// React Bits pieces pace themselves. They hold still while the page scrolls, and run at about 30 fps on phones.
+window.RBCAP = () => performance.now() - bgScrollT < 200 ? 2 : BG_PHONE() ? 1 : 0;
+const rbLoad = () => window.RB ? Promise.resolve(window.RB) : (rbP = rbP || new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'vendor/rb.min.js'; s.onload = () => window.RB ? res(window.RB) : rej(); s.onerror = () => { rbP = null; rej(); }; document.head.appendChild(s); }));
+const RB_BGS = [['', 'Off', 'Your background style above'], ['terminal', 'Terminal', 'A flickering CRT wall of glyphs'], ['grid', 'Grid scan', 'A 3D grid room swept by a scan beam'], ['radar', 'Radar', 'A radar sweep with blips on the scope']];
+let rbBgKey = '', rbBgOff = null;
+function rbBgSync(){
+  const want = PREFS.rbBg && ANX() && !PREFS.table ? PREFS.rbBg : '';
+  const acc = PREFS.accent || '#2fe6f0', phone = BG_PHONE(), key = want && want + acc + phone;
+  document.body.classList.toggle('rbbg', !!want);
+  if (key === rbBgKey) return;
+  rbBgKey = key;
+  if (rbBgOff){ rbBgOff(); rbBgOff = null; }
+  let host = document.getElementById('rbbg');
+  if (!want){ if (host) host.remove(); return; }
+  if (!host){ host = document.createElement('div'); host.id = 'rbbg'; host.setAttribute('aria-hidden', 'true'); const ci = document.getElementById('circuit'); ci ? ci.after(host) : document.body.prepend(host); }
+  // Phones render the backdrop below screen resolution and let it scale up. It sits behind the panels, so softness doesn't show, and the GPU does a fraction of the work.
+  const dpr = phone ? (want === 'terminal' ? .75 : .6) : Math.min(window.devicePixelRatio || 1, 1.25);
+  const P = {
+    terminal: ['FaultyTerminal', {tint: acc, scale: phone ? 1.3 : 1.6, gridMul: [2, 1], digitSize: 1.3, timeScale: .4, scanlineIntensity: .45, glitchAmount: .8, flickerAmount: .7, curvature: .12, brightness: .55, glyphs: 'characters', glow: .5, vignette: .35, mouseReact: !phone, pageLoadAnimation: true, clickEffect: 'none', dpr}],
+    grid: ['GridScan', {linesColor: mixHex(acc, '#0b0a12', .55), scanColor: acc, cells: 8, depth: 3, glow: .6, trail: .5, scanDuration: 2.6, scanDelay: 1.8, interactive: !phone, clickEffect: 'none', enableWebcam: false, enableGyro: false, dpr}],
+    radar: ['Radar', {color: acc, mode: 'sweep', speed: .8, trail: .45, scale: phone ? 1.1 : 1, targets: 7, clutter: .35, glow: 1.3, brightness: 1.3, gridOpacity: 1, lineWidth: 1.3, mouseInteraction: !phone, centerY: .45, grain: .02, dpr}]
+  }[want];
+  rbLoad().then(RB => { if (rbBgKey !== key) return; rbBgOff = RB.mount(P[0], host, {...P[1], className: 'rbfill', style: {width: '100%', height: '100%'}}); }).catch(() => { document.body.classList.remove('rbbg'); });
+}
+// Black ICE electric border around the vitals bar while a jack-out is locked
+let ebOff = null, ebHost = null;
+function ebSync(){
+  const want = !!(C && C.jackLock && ENVS.jack && onSheet() && ANX());
+  const vb = $('#vitalsBar');
+  if (!want){ if (ebOff){ ebOff(); ebOff = null; } if (ebHost) ebHost.remove(); ebHost = null; return; }
+  if (!ebHost){ ebHost = document.createElement('div'); ebHost.className = 'ebhost'; ebHost.setAttribute('aria-hidden', 'true'); }
+  if (ebHost.parentNode !== vb) vb.appendChild(ebHost);
+  if (!ebOff) rbLoad().then(RB => { if (!ebHost || ebOff) return; ebOff = RB.mount('ElectricBorder', ebHost, {color: '#ff2a3a', glowColor: '#ff2a3a', speed: 1.1, chaos: .6, spread: .6, thickness: 1.6, strands: 3, glow: .8, intensity: .9, arcs: 2, flicker: .6, borderRadius: 0, interactive: false, className: 'ebfill', style: {position: 'absolute', inset: 0}}); }).catch(() => {});
+}
+// Swap a plain confirm button for a hold-to-confirm one. The plain button stays until the hold button loads, and is the fallback.
+function holdify(btn, label, done, run){
+  if (!btn || !ANX()) return;
+  rbLoad().then(RB => {
+    if (!btn.isConnected) return;
+    const host = document.createElement('span'); host.className = 'holdhost';
+    btn.replaceWith(host);
+    RB.mount('HoldButton', host, {children: label, doneLabel: done, backgroundColor: '#1d0a10', fillColor: '#ff2a3a', textColor: '#ffb3bd', fillTextColor: '#fff', radius: 0, size: 'md', holdTime: 1100, releaseTime: 180, wave: true, glow: true, resetAfter: 900, onHold: () => { sfx('breach'); setTimeout(run, 220); }, onTap: () => toast('Press and hold to confirm.')});
+  }).catch(() => {});
+}
+
 function fxBoot(){
   const a = AN(); let seen = false; try { seen = sessionStorage.getItem('daemon-booted') === '1'; sessionStorage.setItem('daemon-booted', '1'); } catch(e){}
   if (!a || seen) return;
@@ -9326,7 +9409,9 @@ function buildLayer(L){
   L.tile = t;
 }
 // Phones draw the ambient background at 1x and 30 fps. It sits behind panels at partial opacity, so the extra pixels and frames bought nothing but scroll stutter.
-const BG_PHONE = () => innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
+let bgPhoneV = innerWidth <= 760 || matchMedia('(pointer: coarse)').matches;
+addEventListener('resize', () => { bgPhoneV = innerWidth <= 760 || matchMedia('(pointer: coarse)').matches; });
+const BG_PHONE = () => bgPhoneV;
 let bgScrollT = 0;
 let scrT = 0;
 addEventListener('scroll', () => { bgScrollT = performance.now(); if (!scrT) document.body.classList.add('scrolling'); clearTimeout(scrT); scrT = setTimeout(() => { scrT = 0; document.body.classList.remove('scrolling'); }, 180); }, {passive:true});
@@ -9827,7 +9912,7 @@ function frame(now){
   // 30 fps on phones, in battery saver, and on any device while the page is scrolling, so the page itself gets the frames
   if (FXS.motion && (PREFS.battery || BG_PHONE() || now - bgScrollT < 250) && now - lastT < 31){ requestAnimationFrame(frame); return; }
   // The Hyperspeed Net background covers this one while jacked in, so don't draw both
-  if (FXS.motion && document.body.classList.contains('hyper')){ lastT = now; requestAnimationFrame(frame); return; }
+  if (FXS.motion && (document.body.classList.contains('hyper') || document.body.classList.contains('rbbg'))){ lastT = now; requestAnimationFrame(frame); return; }
   const rdt = Math.min(.05, (now - lastT) / 1000); lastT = now;
   const RS = reactNow();
   vRate += ((RS.low ? .35 : 1) - vRate) * .05;
@@ -9908,6 +9993,7 @@ function applyPrefs(prev){
   cv.style.opacity = PREFS.dim / 100;
   b.classList.toggle('cb', PREFS.cb); b.classList.toggle('compact', PREFS.compact); b.classList.toggle('calm', PREFS.calm); b.classList.toggle('table', !!PREFS.table);
   b.classList.toggle('fx', flashOK());
+  if (typeof rbBgSync === 'function') try { rbBgSync(); } catch(e){}
   if (master) master.gain.value = .7 * PREFS.vol / 100;
   if (prev.calm !== PREFS.calm){ updatePsy(); updateHack(); updateVignette(); }
   if (prev.table !== undefined && prev.table !== PREFS.table){ updatePsy(); updateHack(); updateVignette(); if (!PREFS.table){ FXS.motion ? startBg() : drawStatic(); } }
@@ -9923,6 +10009,7 @@ addEventListener('appinstalled', () => { installEvt = null; });
 if ('serviceWorker' in navigator && !framed && /^https?:$/.test(location.protocol) && !MOCK) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW', e)));
 const SHORTCUTS = [['/ or Ctrl K', 'Search everything'], ['Ctrl Z', 'Undo the last change to your merc'], ['1 2 3 4', 'Rules, Your Mercs, Live Session, Codex'], ['P', 'Perks and skills tab'], ['C', 'Character sheet tab'], ['D', 'Damage (uses the amount box, or jumps to it)'], ['H', 'Heal (same)'], ['R', 'Reaction, spends RAM. While dragging an item, rotates it instead'], ['S', 'Open or close settings'], ['?', 'Show these shortcuts'], ['Esc', 'Close settings']];
 const NET_LOOKS = [['Netrunner', '#3fd0ff', '#ff3fd8'], ['Black ICE', '#ff2a3a', '#ff8a1f'], ['Arasaka', '#ffd23f', '#ff2a3a'], ['Toxic', '#3ee08a', '#c6ff3f'], ['Ghost', '#e8f6ff', '#5a7dff'], ['Militech', '#ff8a1f', '#3fd0ff']];
+const SFOLD = {};   // which Settings sections are open, kept across redraws
 function renderSettings(){
   const tabs = [['look', 'Look'], ['comfort', 'Comfort'], ['sound', 'Sound'], ['controls', 'Controls']];
   const tog = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="checkbox" class="sw2" data-pref="${k}" ${PREFS[k] ? 'checked' : ''} aria-label="${label}"></label>`;
@@ -9930,32 +10017,33 @@ function renderSettings(){
   let body = '';
   if (setTab === 'look'){
     const same = t => ['bg', 'trace', 'light', 'accent'].every(k => t[k].toLowerCase() === THEME[k].toLowerCase());
-    const row = (k, label, hint) => `<label class="crow"><span>${label}<small>${hint}</small></span><input type="color" data-theme="${k}" value="${THEME[k]}" aria-label="${label}"></label>`;
     const S = STYLES[THEME.style] || STYLES.circuit, keys = ['bg', 'trace', 'light', 'accent'];
+    const swc = (attr, k, v, label) => `<label class="swc"><input type="color" ${attr}="${k}" value="${v}" aria-label="${label}"><span>${label}</span></label>`;
     const sw = t => `<span class="sw"><i style="background:${t.bg}"></i><i style="background:${t.trace}"></i><i style="background:${t.light}"></i><i style="background:${t.accent}"></i></span>`;
     const psel = (k, list, label) => `<label>${label}<select data-pref="${k}" aria-label="${label}">${list.map(([v, n]) => `<option value="${v}" ${PREFS[k] === v ? 'selected' : ''}>${n}</option>`).join('')}</select></label>`;
-    const override = AT.src === 'jack' ? 'You are jacked in, so the Net is showing. Jack out on your sheet to go back.' : AT.src === 'mood' ? `The DM set the mood to ${STYLES[AT.style].n}. Turn off Let the DM set the mood to use your own.` : AT.src === 'origin' ? `Matching ${C ? esc(C.name) : 'your merc'}'s origin right now.` : '';
-    body = `<span class="lbl" style="margin-top:12px;display:block">Background</span>
+    const fold = (k, title, sub, inner, open) => `<details class="sfold" data-sfold="${k}" ${open || SFOLD[k] ? 'open' : ''}><summary><span><b>${title}</b><small>${sub}</small></span><span class="fchev" aria-hidden="true">▾</span></summary><div class="sfb">${inner}</div></details>`;
+    const jack = AT.src === 'jack', live = !!PREFS.rbBg;
+    const override = jack ? "You're in the Net, so the Net lights are showing. Your background comes back when you jack out." : AT.src === 'mood' ? `The DM set the mood to ${STYLES[AT.style].n}. Turn off Let the DM set the mood under Scene to use your own.` : AT.src === 'origin' ? `Matching ${C ? esc(C.name) : 'your merc'}'s origin right now.` : '';
+    const preset = PRESETS.find(([, t]) => same(t)), netPre = NET_LOOKS.find(([, a, b]) => PREFS.netA.toLowerCase() === a && PREFS.netB.toLowerCase() === b);
+    const netSec = fold('net', 'Net lights', jack ? 'Showing now' : netPre ? netPre[0] : 'Custom', `<p class="muted" style="font-size:12px;margin:0 0 8px">The highway of light behind your sheet while you're jacked in.</p>
+      <div class="presets">${NET_LOOKS.map(([n, a, b]) => `<button data-netlook="${a},${b}" class="${netPre && netPre[0] === n ? 'on' : ''}"><span class="sw"><i style="background:${a}"></i><i style="background:${b}"></i></span>${n}</button>`).join('')}</div>
+      <div class="swg">${swc('data-netc', 'netA', PREFS.netA, 'Oncoming')}${swc('data-netc', 'netB', PREFS.netB, 'Outgoing')}</div>
+      ${jack ? '' : '<div class="row" style="gap:6px;margin-top:8px"><button class="btn small" data-set="netPrev">Preview</button></div>'}`, jack);
+    body = `${jack ? netSec : ''}
+    <span class="lbl" style="margin-top:12px;display:block">Background</span>
     ${override ? `<p class="muted" style="font-size:12px;margin:6px 0 0;color:var(--yellow)">${override}</p>` : ''}
-    <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}</div>
-    <div class="selrow">${psel('tod', TODS, 'Time of day')}${psel('weather', WEATHERS, 'Weather')}</div>
-    ${tog('matchOrigin', 'Match my origin', 'Opening a merc switches to their Nomad, Corpo or Streetkid background')}
-    ${tog('react', 'React to my merc', 'Low HP drains the color. Cyberpsychosis turns it red, hacks turn it green and overheating makes it ripple.')}
-    ${tog('dmMood', 'Let the DM set the mood', 'In a live session the DM can push a background to the party')}
-    <span class="lbl" style="margin-top:10px;display:block">Color presets</span>
-    <div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}">${sw(t)}${n}</button>`).join('')}
-      ${UNLOCKS.map(u => PREFS.unl.includes(u.id) ? `<button data-unlock="${u.id}" class="${same(u.pal) ? 'on' : ''}">${sw(u.pal)}${u.n}</button>` : `<button class="locked" disabled title="${esc(u.hint)}">🔒 ${u.n}<small>${esc(u.hint)}</small></button>`).join('')}</div>
-    ${keys.map((k, i) => row(k, S.lab[i][0], S.lab[i][1])).join('')}
-    <label class="crow"><span>Site accent<small>Text, panel edges and buttons. Default is cyan</small></span><input type="color" data-accent="1" value="${PREFS.accent || '#2fe6f0'}" aria-label="Site accent"></label>
-    <div class="row" style="gap:6px"><button class="btn small" data-set="accLights">Use my lights color</button><button class="btn small" data-set="accReset">Cyan</button></div>
-    <span class="lbl" style="margin-top:14px;display:block">Net lights</span>
-    <p class="muted" style="font-size:12px;margin:4px 0 0">The highway of light behind your sheet while you're jacked in.</p>
-    <div class="presets">${NET_LOOKS.map(([n, a, b]) => `<button data-netlook="${a},${b}" class="${PREFS.netA.toLowerCase() === a && PREFS.netB.toLowerCase() === b ? 'on' : ''}"><span class="sw"><i style="background:${a}"></i><i style="background:${b}"></i></span>${n}</button>`).join('')}</div>
-    <label class="crow"><span>Oncoming lights<small>Rushing toward you on the right</small></span><input type="color" data-netc="netA" value="${PREFS.netA}" aria-label="Oncoming lights"></label>
-    <label class="crow"><span>Outgoing lights<small>Heading away on the left</small></span><input type="color" data-netc="netB" value="${PREFS.netB}" aria-label="Outgoing lights"></label>
-    <div class="row" style="gap:6px"><button class="btn small" data-set="netPrev">Preview</button></div>
-    ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
-    <div class="row gap"><button class="btn small" data-set="reset">Reset colors</button></div>`;
+    <div class="styles">${Object.entries(STYLES).map(([k, v]) => `<button data-style="${k}" class="${!live && THEME.style === k ? 'on' : ''}"><b>${v.n}</b><small>${v.d}</small></button>`).join('')}
+      ${RB_BGS.filter(([k]) => k).map(([k, n, d]) => `<button data-rbbg="${k}" class="${PREFS.rbBg === k ? 'on' : ''}"><b>${n} <i class="livetag">LIVE</i></b><small>${d}</small></button>`).join('')}</div>
+    ${fold('colors', 'Colors', live ? 'Live backgrounds use your site accent' : preset ? preset[0] : 'Custom', `<div class="presets">${PRESETS.map(([n, t], i) => `<button data-preset="${i}" class="${same(t) ? 'on' : ''}">${sw(t)}${n}</button>`).join('')}
+        ${UNLOCKS.map(u => PREFS.unl.includes(u.id) ? `<button data-unlock="${u.id}" class="${same(u.pal) ? 'on' : ''}">${sw(u.pal)}${u.n}</button>` : `<button class="locked" disabled title="${esc(u.hint)}">🔒 ${u.n}<small>${esc(u.hint)}</small></button>`).join('')}</div>
+      <div class="swg">${keys.map((k, i) => swc('data-theme', k, THEME[k], S.lab[i][0])).join('')}${swc('data-accent', '1', PREFS.accent || '#2fe6f0', 'Site accent')}</div>
+      <div class="row" style="gap:6px;margin-top:8px"><button class="btn small" data-set="accLights">Accent from lights</button><button class="btn small" data-set="accReset">Cyan accent</button><button class="btn small" data-set="reset">Reset colors</button></div>`)}
+    ${jack ? '' : netSec}
+    ${fold('scene', 'Scene', 'Time, weather, brightness and auto switching', `<div class="selrow" style="margin-top:0">${psel('tod', TODS, 'Time of day')}${psel('weather', WEATHERS, 'Weather')}</div>
+      ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
+      ${tog('matchOrigin', 'Match my origin', 'Opening a merc switches to their Nomad, Corpo or Streetkid background')}
+      ${tog('react', 'React to my merc', 'Low HP drains the color. Cyberpsychosis turns it red, hacks turn it green and overheating makes it ripple.')}
+      ${tog('dmMood', 'Let the DM set the mood', 'In a live session the DM can push a background to the party')}`)}`;
   } else if (setTab === 'comfort'){
     body = `${tog('table', 'Table mode', 'For playing at the table. Turns off the moving background, glitches and flashing text, and puts solid backing behind every panel')}
     ${tog('awake', 'Keep screen on in live sessions', 'Your phone won\'t dim or lock while you\'re connected to a session')}
@@ -9971,14 +10059,14 @@ function renderSettings(){
     ${tog('ui', 'UI clicks', 'Buttons, tabs and steppers')}
     ${tog('game', 'Game sounds', 'Damage, healing, items, perks and chrome')}
     ${tog('big', 'Big moments', 'Flatline, cyberpsychosis, overheat, hacks, level ups and COOL Tokens')}
-    <span class="lbl" style="margin-top:14px;display:block">Sound board</span>
+    <details class="sfold" data-sfold="sboard" ${SFOLD.sboard ? 'open' : ''}><summary><span><b>Sound board</b><small>Hear every sound, and see which ones use your own files</small></span><span class="fchev" aria-hidden="true">▾</span></summary><div class="sfb">
     <div class="sboard">${SOUND_INFO.map(([k, d]) => `<button class="btn small sbtn ${SND_CAT[k] || 'game'}" data-sfxtest="${k}"><b>${k}${SFILE[k] ? ' <i class="sfc">CUSTOM</i>' : ''}</b><small>${d}</small></button>`).join('')}</div>
-    <p class="muted" style="font-size:12px;margin:8px 0 0">Tap any sound to hear it, even if its group is switched off. CUSTOM ones play your file from the sounds folder, the rest use the built-in sound. The SFX button still mutes everything during play.</p>`;
+    <p class="muted" style="font-size:12px;margin:8px 0 0">Tap any sound to hear it, even if its group is switched off. CUSTOM ones play your file from the sounds folder, the rest use the built-in sound. The SFX button still mutes everything during play.</p></div></details>`;
   } else {
     body = `<span class="lbl" style="margin-top:12px;display:block">App</span>
     <div class="crow"><span>Install as an app<small>${isStandalone() ? 'Running as an app right now.' : installEvt ? 'Adds Daemon Manual to your home screen or desktop with its own icon. Works offline too.' : isIOS() ? 'On iPhone or iPad, tap Share, then Add to Home Screen.' : 'Open the site from its web address in Chrome or Edge to install it. On iPhone use Share, then Add to Home Screen.'}</small></span>${installEvt && !isStandalone() ? '<button class="btn small primary" data-set="install">Install</button>' : ''}</div>
     ${tog('keys', 'Keyboard shortcuts', 'Ignored while you are typing in a box')}
-    <div class="keys">${SHORTCUTS.map(([k, d]) => `<div><kbd>${k}</kbd><span>${d}</span></div>`).join('')}</div>`;
+    <details class="sfold" data-sfold="keys" ${SFOLD.keys ? 'open' : ''}><summary><span><b>Shortcut list</b><small>For a keyboard</small></span><span class="fchev" aria-hidden="true">▾</span></summary><div class="sfb"><div class="keys">${SHORTCUTS.map(([k, d]) => `<div><kbd>${k}</kbd><span>${d}</span></div>`).join('')}</div></div></details>`;
   }
   const keepScroll = $('#setPanel').scrollTop;
   $('#setPanel').innerHTML = `<div class="sethead"><h3>Settings</h3><span class="spacer"></span><button class="btn small" data-set="close" aria-label="Close settings">✕</button></div>
@@ -10009,17 +10097,19 @@ $('#setPanel').addEventListener('click', e => {
   if (t.dataset.stab){ setTab = t.dataset.stab; return renderSettings(); }
   if (t.dataset.set === 'install'){ if (installEvt){ installEvt.prompt(); installEvt.userChoice.then(c => { if (c.outcome === 'accepted') toast('Installed. Look for Daemon on your home screen.', true); installEvt = null; renderSettings(); }); } return; }
   if (t.dataset.set === 'test'){ playSnd('perk'); return; }
+  if (t.dataset.rbbg !== undefined){ PREFS.rbBg = t.dataset.rbbg; savePrefs(); rbBgSync(); renderSettings(); sfx('up'); if (PREFS.rbBg && !ANX()) toast('Turn animations on to see it. Calm mode and Table mode keep it off too.'); return; }
   if (t.dataset.netlook){ const [a, b] = t.dataset.netlook.split(','); PREFS.netA = a; PREFS.netB = b; savePrefs(); HYPER.recolor(); renderSettings(); sfx('select'); return; }
   if (t.dataset.set === 'netPrev'){ if (!HYPER.preview()) toast('Turn animations on to see the Net lights. Calm mode and Table mode keep them off too.'); else toggleSettings(false); return; }
   if (t.dataset.sfxtest){ try { ac(); playSnd(t.dataset.sfxtest); } catch(err){} return; }
   if (t.dataset.set === 'motionOn'){ FXS.motion = true; try { localStorage.setItem('daemon-motion', '1'); } catch(e){} syncDock(); startBg(); updateVignette(); document.body.classList.toggle('fx', flashOK()); renderSettings(); sfx('select'); return; }
   if (t.dataset.set === 'reset'){ THEME = {style:THEME.style, ...(STYLES[THEME.style] || STYLES.circuit).pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('select'); return; }
-  if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); return; }
+  if (t.dataset.style){ THEME = {style:t.dataset.style, ...STYLES[t.dataset.style].pal}; saveTheme(); applyTheme(true); if (PREFS.rbBg){ PREFS.rbBg = ''; savePrefs(); rbBgSync(); } renderSettings(); sfx('up'); return; }
   if (t.dataset.preset){ THEME = {...THEME, ...PRESETS[+t.dataset.preset][1], style:THEME.style}; saveTheme(); applyTheme(true); renderSettings(); sfx('up'); }
   if (t.dataset.unlock){ const u = UNLOCKS.find(x => x.id === t.dataset.unlock); if (u){ THEME = {...THEME, ...u.pal}; saveTheme(); applyTheme(true); renderSettings(); sfx('cool'); } }
   if (t.dataset.set === 'accLights' || t.dataset.set === 'accReset'){ const prev = {...PREFS}; PREFS.accent = t.dataset.set === 'accReset' ? '' : AT.light; applyPrefs(prev); savePrefs(); renderSettings(); }
 });
 let themeT, prefT;
+$('#setPanel').addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.sfold) SFOLD[d.dataset.sfold] = d.open; }, true);
 $('#setPanel').addEventListener('input', e => {
   const nk = e.target.dataset.netc;
   if (nk){ PREFS[nk] = e.target.value; HYPER.recolor(); clearTimeout(prefT); prefT = setTimeout(() => { savePrefs(); $('#setPanel').querySelectorAll('[data-netlook]').forEach(b => b.classList.toggle('on', b.dataset.netlook === PREFS.netA.toLowerCase() + ',' + PREFS.netB.toLowerCase())); }, 150); return; }
@@ -10095,7 +10185,7 @@ function syncDock(){
 $('#tSfx').onclick = () => { FXS.sfx = !FXS.sfx; try { localStorage.setItem('daemon-sfx', FXS.sfx ? '1' : '0'); } catch(e){} syncDock(); if (FXS.sfx) sfx('up'); };
 $('#tFx').onclick = () => {
   FXS.motion = !FXS.motion; try { localStorage.setItem('daemon-motion', FXS.motion ? '1' : '0'); } catch(e){}
-  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); updatePsy(); updateHack(); document.body.classList.toggle('fx', flashOK()); sfx('select');
+  syncDock(); pulses.length = 0; FXS.motion ? startBg() : drawStatic(); updateVignette(); updatePsy(); updateHack(); document.body.classList.toggle('fx', flashOK()); rbBgSync(); try { ebSync(); } catch(e){} sfx('select');
 };
 syncDock();
 

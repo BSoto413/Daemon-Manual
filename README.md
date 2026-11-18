@@ -356,3 +356,16 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - The background stops drawing while the Hyperspeed Net background covers it. Hyperspeed itself runs at 30 fps on phones.
 - Ready perks pulse with a glow that only changes opacity, instead of an animated drop-shadow that repainted every node every frame.
 - Decorative loops (perk tree line flow, perk glow, deck card shimmer) pause while you scroll.
+
+## React Bits extras
+- Three live backgrounds sit in Settings, Look, Background next to the classic styles, marked LIVE. Terminal (flickering CRT glyph wall), Grid scan (3D grid room with a scan beam) and Radar (sweep with blips). They use your site accent color.
+- A red electric border crackles around the vitals bar while Black ICE has your jack-out locked.
+- Unsafe jack-out and deleting a merc are hold-to-confirm buttons, so a mis-tap at the table can't do them.
+- All of it comes from React Bits (reactbits.dev, MIT plus Commons Clause, see vendor/reactbits.LICENSE), bundled with Preact into vendor/rb.min.js (about 40 KB gzipped). It only downloads the first time one of these is used.
+- They hold still while the page scrolls and run at about 30 fps on phones. Phones also render the live backgrounds below screen resolution. Calm mode, Table mode and Motion off turn them all off.
+
+## Settings cleanup
+- Look is grouped. Background is one grid with the classic and live styles. Colors, Net lights and Scene (time, weather, brightness, auto switching) are folding sections that remember if they're open.
+- While you're jacked in, Net lights moves to the top and opens, because that's what's on screen. A note explains your background colors come back when you jack out. That was why color edits looked like they did nothing while netrunning.
+- On phones the background picker is three short columns.
+- The sound board and the keyboard shortcut list fold away.
