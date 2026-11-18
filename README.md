@@ -369,3 +369,11 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - While you're jacked in, Net lights moves to the top and opens, because that's what's on screen. A note explains your background colors come back when you jack out. That was why color edits looked like they did nothing while netrunning.
 - On phones the background picker is three short columns.
 - The sound board and the keyboard shortcut list fold away.
+
+## Design language pass (site version 0.85)
+- Design tokens at the top of the stylesheet. One type scale (10, 11, 12, 13, 14, 16, 18, 20, 24, 30, 36 px), named colors (ink levels, surfaces, gold, green, blue, orange, purple, magenta, red) and motion timings (fast, base, slow). About 300 hand-picked colors and 360 font sizes now point at them, so a change in one place carries everywhere.
+- Inline styles went from 589 to 232. The common ones (text size, top margin, gaps) became small utility classes.
+- Emoji icons (✕ 🔒 ★ ⚙ ⌕ ⚔ ✎ ✂ ✓) became line icons in the same stroke style as the item art, so they look the same on every phone.
+- Every tag and badge (tiers, weapon stats, status, LIVE, HOT, locks, NEW) shares one chip shape.
+- Wording: NET HP everywhere (it was half Net HP), and RipperDoc everywhere.
+- The footer shows the site version next to the V0.77 name. Settings, Controls shows it too. Bump SITE_VER and the footer together when you release.
