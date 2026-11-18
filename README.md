@@ -393,3 +393,19 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - DM screens on phones: the session header is compact (the explanation under the buttons is hidden). Long tool panels fold and are closed to start: Generators, Preload, Random roller tables, Item library, Party progress, Activity, Party mood and Session notes. Tap a panel title to open or close it. The Items tab went from 7.4 screens to 1.3.
 - DM inputs and checkboxes are bigger on tablets and phones.
 - The live session test checklist is a separate doc, shared in chat: https://claude.ai/artifact/1TFP3g6vbRp9yXeqJWWtyk
+
+## Accessibility, first-time players, backups
+- Accessibility. A Skip to content link and a main landmark for keyboards and screen readers. Every tappable thing is a real button, including status chips, Rules section titles and DM panel titles. HP and NET HP on the vitals bar work with Enter or Space. Ammo buttons say what they do. Perk nodes read their tier and whether they're installed. A clear focus outline shows when you use a keyboard. Purple was lightened so its text passes contrast. The axe audit comes back clean on every page.
+- First-time players. With no mercs yet, the Mercs page shows a three-step welcome card (make a merc, join your crew on Live, open the Rules). It can be closed and stays closed. The first time someone opens a sheet, three quick tips walk through the vitals bar, the bottom tabs and Rules links. Skip tips turns them off for good.
+- Backups. The Mercs page has a Backups panel. Download a backup saves a dated file, Copy as text gives the same thing for pasting, and Restore a backup loads one back. Restoring never just overwrites; if a merc changes, the old copy goes to the trash so it can be brought back.
+- Automatic copy on update. The first time a phone opens a new site version, it keeps a copy of every merc from before the update and shows a one-time note pointing to it. The Backups panel can restore that copy with two taps.
+- If a phone's storage for the site fills up, the player gets told their last change didn't save, instead of losing it quietly.
+- Saves carry a save version and the site version. For future releases, bump SITE_VER (and the footer). If the save shape ever changes, bump SAVE_V and add a step to MIGRATIONS so old mercs get updated when they load.
+
+## One rules block, draw-in, sound pass, What's new (site version 0.90)
+- DM RULES. Every rule number and table now sits in one block near the top of the script, starting at the DM RULES banner. Death saves, Net program costs, hot-swap and fabrication prices, quickhacks, Black ICE, the weapon chart, clips, ammo, item tiers, dismemberment, Street Cred tiers, hacks and status effects. The Rules page and the sheet both read from it, so a DM note is a change in one place. Numbers inside the Rules text are tagged too, so they follow.
+- Design cleanup. 161 of the 231 one-off styles became shared utility classes. The 70 left are computed (colors and sizes from data) and have to stay inline. A pixel comparison of every main screen at phone and desktop size came back identical.
+- Panels draw in when a page or tab opens. The frame wipes open from its lit left edge, one panel after another. Only panels on screen animate, and Motion off, Calm and Table mode skip it.
+- Sound pass. Added cash (eddies, the shop, gig payouts, crew stash), handout and card sounds. Every sound was rendered and measured, then trimmed so UI sits around −47 dB, game sounds around −32 and big moments around −25. The new ones show up on the Settings sound board.
+- What's new. Shows once to returning players after an update, with a note about the automatic backup. New players skip it. Tap the site version in the footer, or What's new in Settings, Controls, to see it again.
+- Releasing. Bump SITE_VER, add a WHATS_NEW entry at the top, and add the same notes to CHANGELOG.md. The footer fills in the version by itself now.
