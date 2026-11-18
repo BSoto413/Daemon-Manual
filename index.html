@@ -1472,8 +1472,11 @@ button:focus:not(:focus-visible){outline:none}
 .welcome h3{color:var(--gold)}
 .wsteps{margin:12px 0 0;padding-left:22px;display:grid;gap:12px}
 .wsteps li::marker{color:var(--gold);font-family:Orbitron,sans-serif}
-.tipcard{margin-top:10px;border-left-color:var(--gold);display:grid;gap:6px}
-.tipcard .tiptitle{color:var(--gold);font-size:var(--fs-lg)}
+.coach{position:fixed;z-index:120;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));max-width:420px;margin:0 auto;padding:14px 16px;background:var(--void-2);border:1px solid rgba(var(--crgb),.35);border-left:3px solid var(--gold);box-shadow:0 12px 40px rgba(0,0,0,.6);display:grid;gap:6px;color:var(--ink-2);font-size:var(--fs-md);line-height:1.45;animation:coachIn .28s var(--ease) both}
+@media (min-width:761px){.coach{left:auto;right:20px;bottom:20px;margin:0}}
+.coach .coacht{color:var(--gold);font-size:var(--fs-lg)}
+@keyframes coachIn{from{opacity:0;transform:translateY(10px)}}
+#coachRing{position:fixed;z-index:119;pointer-events:none;border:2px solid var(--gold);border-radius:4px;box-shadow:0 0 0 3px rgba(0,0,0,.35),0 0 18px rgba(255,214,0,.35)}
 .bakauto{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:12px;padding:10px 12px;border:1px solid rgba(var(--crgb),.25);font-size:var(--fs-md)}
 .bakauto span{flex:1 1 220px}
 </style>
@@ -1555,7 +1558,7 @@ button:focus:not(:focus-visible){outline:none}
           <div class="vkinds"><span>Car</span><span>Bike</span><span>Water</span><span>Air (AV)</span></div>
           <p class="mt10">Anyone can drive anything. Add your proficiency to Vehicle checks only for the kinds you drive well. For everything else, roll without it.</p>
           <div class="drv">
-            <div><b>No proficiency</b><span>Car <em>or</em> Bike. Pick one and add your proficiency for it.</span></div>
+            <div><b>No proficiency</b><span>Car <em>or</em> Bike. Pick one when you make your merc and add your proficiency for it. It's locked after that.</span></div>
             <div><b>Proficiency</b><span>Car, Bike and Water.</span></div>
             <div><b>Double proficiency</b><span>Car, Bike, Water and Air (AVs).</span></div>
           </div>
@@ -1647,12 +1650,14 @@ button:focus:not(:focus-visible){outline:none}
           <div id="rClips"></div>
           <p class="muted fs-md mt6">Revolvers count as Hand Cannons.</p>
           <h3 class="mt18">Ammo types</h3>
-          <p class="mt8">Standard ammo is assumed, like a sci-fi game. You never run out, you only RELOAD. Every gun takes one of four standard types. <b>Explosive</b> ammo is the exception.</p>
+          <p class="mt8">Standard ammo is assumed, like a sci-fi game. You never run out, you only RELOAD. Every gun takes one of five standard types. <b>Explosive</b> ammo is the exception.</p>
           <div id="rAmmo"></div>
           <p class="mt8"><b>Explosive ammo</b> for Grenade and Rocket Launchers is tracked like special rounds, to keep them balanced. It comes as Ammo items (Explosive rounds, grenades or rockets). Reloading tops up the launcher from your bag, and a new launcher arrives empty.</p>
-          <p class="mt8"><b>Special rounds</b> are finite. Armor Piercing, Incendiary, EMP, Tracking, Tranquilizer and Toxin rounds come as Ammo items made for one ammo type, like Incendiary Pistol rounds. They only go in <b>tier 2 and up</b> guns, or a tier 1 gun that's <b>fortified</b>, and never in explosive weapons. Loading them follows the normal RELOAD rules, and the whole clip goes special. When it runs dry, the next RELOAD is standard unless you load special again. Swap back early and the special rounds left in the clip go back in your bag. The DM sets what each round does.</p>
+          <p class="mt8"><b>EMP rounds</b> are for explosive weapons only. Grenade and Rocket Launchers are the only guns that can load them, at any tier. A launcher holds one kind at a time, so switching between explosive and EMP puts what's left back in your bag.</p>
+          <p class="mt8"><b>Smart Ammo</b> is the standard ammo for smart weapons. Smart weapons can't take special rounds, and you need the <b>Nerd!</b> perk in the INT tree to use one. Without it you can carry a smart weapon, but you can't equip or fire it.</p>
+          <p class="mt8"><b>Special rounds</b> are finite. Armor Piercing, Incendiary, Tracking, Tranquilizer and Toxin rounds come as Ammo items made for one ammo type, like Incendiary Pistol rounds. They only go in <b>tier 2 and up</b> guns, or a tier 1 gun that's <b>fortified</b>, and never in explosive or smart weapons. Loading them follows the normal RELOAD rules, and the whole clip goes special. When it runs dry, the next RELOAD is standard unless you load special again. Swap back early and the special rounds left in the clip go back in your bag. The DM sets what each round does.</p>
           <h3 class="mt18">Concealment</h3>
-          <p class="mt8">Pistols, Revolvers, Hand Cannons and SMGs can be concealed, and so can <b>some</b> Assault Rifles. The DM decides which ones. A gun can only be concealed with a <b>Standard</b> clip. Swap in an Extended or Drum clip and everyone can see it.</p>
+          <p class="mt8">Pistols, Revolvers, Hand Cannons, SMGs, Smart Pistols and Smart SMGs can be concealed, and so can <b>some</b> Assault Rifles. The DM decides which ones. A gun can only be concealed with a <b>Standard</b> clip. Swap in an Extended or Drum clip and everyone can see it.</p>
           <h3 class="mt18">Quick reload</h3>
           <p class="mt8">With double proficiency in <b>Sleight of Hand</b>, you can sacrifice 1 ROF to RELOAD instead of spending a whole ACTION on it. A Soldier with a 3-ROF weapon and double proficiency in Sleight of Hand reloads by making their next ATTACK action 2-ROF.</p>
           <p class="muted fs-md mt8">Every gun on your sheet shows its ROF, reload speed, clip and whether it's concealable. Equipped guns track the shots you have left. Tap Fire to spend one ATTACK's worth and Reload to fill the clip. The DM sets these, and you can edit them in the item.</p>
@@ -2150,7 +2155,7 @@ const PERKS = {
   },
   INT:{
     'A.r': {n:'Jack In', d:'You can enter The Net.'},
-    'B.r': {n:'Nerd!', d:'Proficiency with smart weapons.'},
+    'B.r': {n:'Nerd!', d:'Lets you use smart weapons. Without it you can carry one, but you can\'t equip or fire it.'},
     'A.p': {n:'Insulated Wires', d:'Passive. You never overheat when your RAM hits 0, and NET attacks that would hurt your IRL HP, like a Hellhound\'s fire or a Daemon, only do half damage to it.'},
     'S.p': {n:'Extra Slot', d:'Double your max RAM.'},
     'B.p': {n:'R.E.M.', d:'Hack multiple things at once. Each extra target costs half the original RAM.'},
@@ -2291,6 +2296,10 @@ const WEAPON_TABLE = [
   {n:'Sniper Rifle', rof:1, dice:'6d6', dt:'piercing', st:'REF', kind:'gun', rng:'200/600', note:''},
   {n:'Grenade Launcher', rof:1, dice:'6d6', dt:'explosive', st:'STR', kind:'gun', rng:'100/400', note:'REF save for half'},
   {n:'Rocket Launcher', rof:1, dice:'8d6', dt:'explosive', st:'STR', kind:'gun', rng:'200', note:'REF save for half'},
+  // Smart weapons. INT based, Smart Ammo only, and you need the Nerd! perk (INT tree) to equip or fire one.
+  {n:'Smart Pistol', rof:2, dice:'2d4', dt:'piercing', st:'INT', kind:'gun', rng:'60', note:'smart, needs Nerd!', smart:true},
+  {n:'Smart SMG', rof:4, dice:'2d4', dt:'piercing', st:'INT', kind:'gun', rng:'60', note:'smart, needs Nerd!', smart:true},
+  {n:'Smart Rifle', rof:3, dice:'4d4', dt:'piercing', st:'INT', kind:'gun', rng:'80', note:'smart, needs Nerd!', smart:true},
   {n:'Sword', rof:2, dice:'2d6', dt:'slashing', st:'REF', kind:'melee', note:'finesse'},
   {n:'Knife', rof:2, dice:'2d4', dt:'slashing', st:'REF', kind:'melee', note:'thrown, finesse'},
   {n:'Club', rof:2, dice:'2d4', dt:'bludgeoning', st:'STR', kind:'melee', note:''},
@@ -2301,14 +2310,19 @@ const WEAPON_TABLE = [
 // Clip sizes, Standard / Extended / Drum.
 const CLIPS = {
   'Light Pistol':[12, 28, 46], 'Heavy Pistol':[8, 24, 38], 'Hand Cannon':[8, 24, 38], 'SMG':[30, 50, 60], 'LMG':[50, 60, 70],
-  'Shotgun':[4, 18, 26], 'Assault Rifle':[25, 45, 55], 'Sniper Rifle':[4, 18, 22], 'Grenade Launcher':[2, 14, 16], 'Rocket Launcher':[1, 12, 13]
+  'Shotgun':[4, 18, 26], 'Assault Rifle':[25, 45, 55], 'Sniper Rifle':[4, 18, 22], 'Grenade Launcher':[2, 14, 16], 'Rocket Launcher':[1, 12, 13],
+  'Smart Pistol':[12, 28, 46], 'Smart SMG':[30, 50, 60], 'Smart Rifle':[25, 45, 55]   // same as their regular versions
 };
 
 // Ammo types and which guns take them.
-const AMMO_STD = ['Pistol', 'Heavy', 'Sniper', 'Shotgun', 'Explosive'];
+const AMMO_STD = ['Pistol', 'Heavy', 'Sniper', 'Shotgun', 'Smart', 'Explosive'];
 
-const AMMO_OF = {'Light Pistol':'Pistol', 'Heavy Pistol':'Pistol', 'SMG':'Pistol', 'Hand Cannon':'Heavy', 'Assault Rifle':'Heavy', 'LMG':'Heavy', 'Sniper Rifle':'Sniper', 'Shotgun':'Shotgun', 'Grenade Launcher':'Explosive', 'Rocket Launcher':'Explosive'};
-const CONCEAL_AUTO = ['Light Pistol', 'Heavy Pistol', 'Hand Cannon', 'SMG'];
+const AMMO_OF = {'Light Pistol':'Pistol', 'Heavy Pistol':'Pistol', 'SMG':'Pistol', 'Hand Cannon':'Heavy', 'Assault Rifle':'Heavy', 'LMG':'Heavy', 'Sniper Rifle':'Sniper', 'Shotgun':'Shotgun', 'Grenade Launcher':'Explosive', 'Rocket Launcher':'Explosive', 'Smart Pistol':'Smart', 'Smart SMG':'Smart', 'Smart Rifle':'Smart'};
+// Special rounds. EMP rounds only go in explosive weapons (launchers), the rest only in regular guns. Smart guns take none.
+const EMP_ONLY = 'Explosive', NO_SPECIAL = ['Smart'];
+// The perk you need for smart weapons.
+const SMART_PERK = 'INT.B.r';
+const CONCEAL_AUTO = ['Light Pistol', 'Heavy Pistol', 'Hand Cannon', 'SMG', 'Smart Pistol', 'Smart SMG'];
 
 // Item tiers. gun and mel are the weapon damage bonus at that tier (they stack).
 const ITEM_TIERS = [
@@ -2440,6 +2454,7 @@ function normalize0(c){
       qty: Math.max(0, parseInt(i.qty) || 0) || (i.qty === 0 ? 0 : 1), stats: String(i.stats || '').slice(0, 120), hot: !!i.hot,
       tier: Math.max(0, Math.min(3, parseInt(i.tier) || 0)), fort: !!i.fort, cw: Math.max(0, parseInt(i.cw) || 0),
       ...sizeOf(i), ...weaponOf(i), gx: Number.isInteger(i.gx) ? i.gx : null, gy: Number.isInteger(i.gy) ? i.gy : null,
+      ...(i.type === 'Weapon' && i.bn ? {bn:String(i.bn).slice(0, 60)} : {}),
       ...(i.type === 'Weapon' && SP[i.ld] ? {ld:i.ld, ldName:String(i.ldName || SP[i.ld].n + ' rounds').slice(0, 60), ldFx:String(i.ldFx || '').slice(0, 120)} : {}),
       ...(STACKS.includes(i.type) && capNum(i.cap) ? {cap:capNum(i.cap)} : {}), ...(i.type === 'Cyberware' && WT[i.wc] ? {wc:i.wc} : {}),
       ...(i.type === 'Vehicle' ? {vk: vkOf(i)} : {})
@@ -2535,6 +2550,7 @@ const MELEE_CLASSES = WEAPON_TABLE.filter(w => w.kind === 'melee').map(w => w.n)
 // Guess which chart weapon an item is from its name.
 function classGuess(name, stats){
   const n = (name || '') + ' ' + (stats || '');
+  if (/smart/i.test(n)){ if (/smg|machine/i.test(n)) return 'Smart SMG'; if (/rifle|carbine/i.test(n)) return 'Smart Rifle'; return 'Smart Pistol'; }
   if (/rocket/i.test(n)) return 'Rocket Launcher';
   if (/launcher/i.test(n)) return 'Grenade Launcher';
   if (/\blmg\b|\bhmg\b|minigun|machine ?gun/i.test(n)) return 'LMG';
@@ -2622,11 +2638,18 @@ const SP = Object.fromEntries(SPECIAL.map(x => [x.id, x]));
 // A special round stack, or null. Its ammo type comes from the name too (Pistol, Heavy, Sniper or Shotgun). No type in the name means it fits any gun.
 const roundOf = i => { if (!i || i.type !== 'Ammo') return null; const sp = SPECIAL.find(x => x.re.test(i.name)); if (!sp) return null; const ak = AMMO_STD.find(k => new RegExp('\\b' + k, 'i').test(i.name)) || null; return {sp:sp.id, n:sp.n, ak}; };
 const ammoKind = i => i && i.type === 'Weapon' ? AMMO_OF[GUN_ALIAS[i.gtype] || i.gtype] || null : null;
-// Special rounds need a tier 2+ gun, or a fortified tier 1. Never in explosive weapons.
+// Special rounds need a tier 2+ gun, or a fortified tier 1. Never in explosive weapons, except EMP. Never in smart weapons.
 // Explosive ammo for launchers is finite too. Any Ammo item named Explosive, Grenade or Rocket.
 const isBoom = i => !!i && i.type === 'Ammo' && i.qty > 0 && /explosive|grenade|rocket/i.test(i.name);
-const takesSpecial = g => { const k = ammoKind(g); return !!k && k !== 'Explosive' && (g.tier >= 1 || !!g.fort); };
-const roundsFor = (m, gun) => { const k = ammoKind(gun); return takesSpecial(gun) ? m.inv.filter(x => { const r = roundOf(x); return r && x.qty > 0 && (!r.ak || r.ak === k); }) : []; };
+const takesSpecial = g => { const k = ammoKind(g); return !!k && k !== EMP_ONLY && !NO_SPECIAL.includes(k) && (g.tier >= 1 || !!g.fort); };
+const roundsFor = (m, gun) => { const k = ammoKind(gun); return takesSpecial(gun) ? m.inv.filter(x => { const r = roundOf(x); return r && r.sp !== 'emp' && x.qty > 0 && (!r.ak || r.ak === k); }) : []; };
+// Launcher ammo is explosive rounds or EMP rounds. Launchers don't need a tier for EMP.
+const isEmp = i => !!i && i.type === 'Ammo' && /\bEMP\b/i.test(i.name);
+const launcherAmmo = i => !!i && i.type === 'Ammo' && i.qty > 0 && (isBoom(i) || isEmp(i));
+// Smart weapons need the Nerd! perk.
+const isSmart = i => !!i && i.type === 'Weapon' && !!(WT[i.wclass] || WT[i.gtype] || {}).smart;
+const nerdOK = (i, c = C) => !isSmart(i) || hasPerk(SMART_PERK, c);
+const noNerd = () => toast('Smart weapons need the Nerd! perk in the INT tree. You can carry this one, but not equip or fire it.');
 const isCons = i => !!i && i.type === 'Consumable';
 const clipCap = i => i.type === 'Weapon' && CLIPS[i.gtype] ? CLIPS[i.gtype][CLIP_KEYS.indexOf(i.clip || 'std')] : null;
 // Can this gun be concealed at all, and is it concealed right now (Standard clip only)?
@@ -3141,7 +3164,7 @@ function show(v){
   $('#vRoster').hidden = v !== 'roster';
   $('#vWizard').hidden = v !== 'wizard';
   $('#vSheet').hidden = v !== 'sheet';
-  setTimeout(() => { if (typeof bnSync === 'function') try { bnSync(); } catch(e){} if (v === 'sheet' && typeof tipsShow === 'function') try { tipsShow(); } catch(e){} }, 0);
+  setTimeout(() => { if (typeof bnSync === 'function') try { bnSync(); } catch(e){} if (v === 'sheet' && typeof coachSoon === 'function') try { coachSoon('sheet_' + sheetTab); } catch(e){} }, 0);
   const tt = v === 'wizard' ? 'New Merc' : v === 'sheet' ? 'Merc Sheet' : 'Your Mercs', te = $('#mercsTitle'), was = te.textContent;
   te.textContent = tt; if (was !== tt) fxScramble(te);
   if (v === 'roster') requestAnimationFrame(() => { fxPop(document.querySelectorAll('#roster > *')); fxFrames($('#vRoster')); });
@@ -3315,7 +3338,7 @@ const ROLES = {
 };
 const HANDLES = ['Static','Ghostwire','Neon Jackal','Rook','Hex','Vandal','Cinder','Byte','Lockjaw','Mirage','Switchblade','Halogen','Kestrel','Rust','Glitch','Saint','Volt','Nomi','Razor','Echo'];
 function startWizard(){
-  W = {name:'', portrait:null, background:null, bgSkills:[], role:null, rolePerk:null, base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
+  W = {name:'', portrait:null, background:null, bgSkills:[], role:null, rolePerk:null, vpick:null, base:{STR:8,REF:8,BOD:8,INT:8,TEC:8,COO:8}};
   wStep = 0; lastStep = -1; show('wizard'); renderWizard(); goTop();
 }
 const statBox = (k, v) => `<div class="statbox"><div class="ab">${k}</div><div class="sc">${v}</div><div class="md">${sgn(mod(v))}</div><div class="nmx">${STATS[k].name}</div></div>`;
@@ -3377,6 +3400,14 @@ function renderWizard(){
         <p class="mt0 mb10 mx0 muted fs-base">One free perk from ${rs.join(' or ')}. ${opts.length ? 'Pick one now or skip it and pick it on your Perks tab later.' : `Your ${rs.join(' and ')} ${rs.length > 1 ? 'are' : 'is'} under 10, so no ${rs.length > 1 ? 'tree is' : 'tree is'} online yet. Go back and raise one to 10, or pick your role perk later.`}</p>
         <div class="bgs rperks">${opts.map(k => { const [st, sl] = split(k), pk = perk(st, sl); return `<button class="bg ${W.rolePerk === k ? 'on' : ''}" data-rp="${k}"><span class="t">${esc(pk.n)}</span><span class="rk">${st} · Rookie</span><span class="d mt6">${esc(pk.d)}</span></button>`; }).join('')}</div>`;
       })()}
+      ${(() => {
+        const has = W.bgSkills.includes('Vehicle') || W.rolePerk === PERK_PROF_VEH;
+        return `<h4 class="mt22 mb4 mx0">Drives well</h4>` + (has
+          ? `<p class="mt0 mb0 mx0 muted fs-base">You're proficient in Vehicle, so you add your proficiency for Car, Bike and Water.</p>`
+          : `<p class="mt0 mb10 mx0 muted fs-base">No Vehicle proficiency, so pick the one you drive well and add your proficiency for it. <b class="c-yellow">You can't change it later.</b></p>
+        <div class="bgs vpicks">${['car', 'bike'].map(k => `<button class="bg ${W.vpick === k ? 'on' : ''}" data-vp="${k}"><span class="t">${VK[k]}</span><span class="d mt6">${k === 'car' ? 'Cars, vans and trucks.' : 'Motorcycles and other bikes.'}</span></button>`).join('')}</div>`);
+      })()}
+      <div class="err" id="wErr"></div>
       <p class="muted mt16">You start at level 1. You earn your next perk point when you hit level 2.</p>`;
   }
   const back = wStep > 0 ? `<button class="btn" id="wBack">Back</button>` : `<button class="btn" id="wCancel">Cancel</button>`;
@@ -3416,6 +3447,7 @@ $('#wbody').addEventListener('click', e => {
     return renderWizard();
   }
   if (t.dataset.rp){ W.rolePerk = W.rolePerk === t.dataset.rp ? null : t.dataset.rp; return renderWizard(); }
+  if (t.dataset.vp){ W.vpick = t.dataset.vp === 'bike' ? 'bike' : 'car'; return renderWizard(); }
   if (t.dataset.pb){
     const k = t.dataset.pb, v = W.base[k] + (+t.dataset.d);
     if (v < 8 || v > 15) return;
@@ -3424,6 +3456,7 @@ $('#wbody').addEventListener('click', e => {
     return renderWizard();
   }
   if (t.id === 'wDone'){
+    if (!W.vpick && !(W.bgSkills.includes('Vehicle') || W.rolePerk === PERK_PROF_VEH)){ $('#wErr').textContent = 'Pick Car or Bike first.'; const v = $('.vpicks'); if (v) v.scrollIntoView({block:'center', behavior:'smooth'}); return; }
     const c = normalize({...W, pv:3, id:uid(), level:1, unlocked:W.rolePerk ? [W.rolePerk] : [], asi:[], created:Date.now(), hpMax:Math.max(1, 20 + mod(W.base.BOD)), hpLv:1,
       active: ORDER.slice().sort((a, b) => W.base[b] - W.base[a])[0]});
     DB.chars.push(c); persist();
@@ -3687,6 +3720,7 @@ function renderTabs(){
 }
 
 const PERK_PROF = {'COO.A.r':'Persuasion', 'COO.B.r':'Deception', 'TEC.B.r':'Vehicle'};
+const PERK_PROF_VEH = 'TEC.B.r';
 function skillProf(name, st, c = C){
   const roleP = !!(ROLES[c.role] && ROLES[c.role].prof.includes(name));
   const vals = Object.values(c.tierPicks || {}), picked = vals.includes(name), doubled = vals.includes('2:' + name);
@@ -3941,6 +3975,10 @@ function toast(msg, good, quiet){
 // What's new. Newest first. Add an entry at the top with each release and bump SITE_VER to match.
 const WHATS_NEW = [
   {v:'0.90', items:[
+    'Smart weapons are here. Smart Pistol, Smart SMG and Smart Rifle run on INT and Smart Ammo, and you need the Nerd! perk to equip or fire one.',
+    'EMP rounds now go in Grenade and Rocket Launchers only, at any tier.',
+    "Without Vehicle proficiency you pick Car or Bike when you make your merc, and it's locked after that.",
+    'Walkthroughs. The sheet tabs, the crew, the Net, Live, the DM screens, Codex, Rules and Settings each show you around the first time you open them. Replay them from Settings, Controls.',
     "Every rule number now comes from one place. The Rules page and your sheet can't disagree anymore, and DM changes land faster.",
     'Panels draw in when you open a page or tab. Turn it off with Motion in Menu, or Calm in Settings.',
     'New sounds for eddies and the shop, handouts and cyberware cards. Every sound was leveled so nothing jumps out.',
@@ -3948,7 +3986,7 @@ const WHATS_NEW = [
   ]},
   {v:'0.85', items:[
     "Backups. Download your mercs, copy them as text or restore them from the Mercs page. Before an update the site keeps a copy for you.",
-    'A welcome card for new players and three quick tips the first time you open a sheet.',
+    'A welcome card for new players.',
     'Better with screen readers and keyboards, and easier to read.',
     'Rules and the DM screens on phones fold up, so they are a couple of screens instead of dozens.',
     'Death saves follow the DM. Coming back from 0 leaves you PRONE, and from 0 NET HP your processors are fried.',
@@ -4252,7 +4290,8 @@ const canFab = (c = C) => c.unlocked.includes(FABRICATOR);
 const upCost = i => FAB_COST.upgrade * (i.tier + 1);
 function driveHTML(){
   const lv = skillProf('Vehicle', 'TEC').level, ds = driveSet(), vb = mod(score('TEC'));
-  const pick = lv ? '' : `<div class="row gap6 mt6"><span class="muted fs-sm">No Vehicle proficiency. Pick the one you're good at</span><button class="btn small ${C.vpick === 'car' ? 'on' : ''}" data-act="vpick" data-v="car">Car</button><button class="btn small ${C.vpick === 'bike' ? 'on' : ''}" data-act="vpick" data-v="bike">Bike</button></div>`;
+  // Car or Bike is picked once, when the merc is made. Older mercs that never picked get one pick here.
+  const pick = lv || C.vpick ? '' : `<div class="row gap6 mt6"><span class="muted fs-sm">No Vehicle proficiency. Pick the one you drive well, it's locked after</span><button class="btn small" data-act="vpick" data-v="car">Car</button><button class="btn small" data-act="vpick" data-v="bike">Bike</button></div>`;
   return `<div class="drive"><div><span class="muted fs-sm">Drives well</span> <b>${ds.length ? ds.map(k => VK[k]).join(', ') : 'Pick Car or Bike'}</b></div>
     <div class="mt2 muted fs-sm">Vehicle checks ${sgn(lv ? skillBonus('Vehicle', 'TEC') : vb + prof(C.level))} for those, ${sgn(vb)} for anything else (no proficiency).${lv === 1 ? ' Double proficiency adds Air (AVs).' : ''}</div>${pick}</div>`;
 }
@@ -4288,6 +4327,7 @@ function setSheetTab(t){
   if (t === 'profile') renderAch();
   updateTabs();
   if (CS_TABS.includes(t)) renderCS(); else if (t === 'perks') requestAnimationFrame(layout); else if (t === 'party') placeLive();
+  if (!$('#vSheet').hidden && typeof coachSoon === 'function') coachSoon('sheet_' + t);
 }
 function tabsEdge(){
   const t = document.querySelector('#vSheet > .vtabs'); if (!t) return;
@@ -4327,21 +4367,23 @@ function ammoHTML(i){
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-ammo]'); if (!b || !C) return;
   const i = C.inv.find(x => x.id === b.dataset.i), cap = i && clipCap(i); if (!cap) return;
+  if (!nerdOK(i)){ noNerd(); return sfx('deny'); }
   const a = i.ammo == null ? cap : i.ammo;
   if (b.dataset.ammo === 'fire' || b.dataset.ammo === 'one'){ const n = b.dataset.ammo === 'one' ? Math.min(1, a) : Math.min(i.rof, a); i.ammo = a - n; if (!i.ammo) toast(`Clip's empty. ${i.reload === 'heavy' ? 'HEAVY reload takes your whole turn.' : 'LIGHT reload takes an action.'}`); }
   else if (b.dataset.ammo === 'add') i.ammo = Math.min(cap, a + 1);
   else {
     if (ammoKind(i) === 'Explosive'){
-      const st = C.inv.filter(isBoom);
-      if (a >= cap) return toast("It's already loaded.");
-      if (!st.length) return toast('No explosive rounds in your bag. Explosive ammo is tracked, so you need to buy or find more.');
+      const st = C.inv.filter(launcherAmmo);
+      if (a >= cap && !st.some(x => isEmp(x) !== (i.ld === 'emp'))) return toast("It's already loaded.");
+      if (!st.length) return toast('No explosive or EMP rounds in your bag. Launcher ammo is tracked, so you need to buy or find more.');
       if (st.length === 1) return loadBoom(i, st[0]);
       return boomModal(i, st);
     }
     if (roundsFor(C, i).length || i.ld) return reloadModal(i);
     doReload(i, null);
     const k = ammoKind(i), have = k && !takesSpecial(i) && C.inv.some(x => { const r = roundOf(x); return r && x.qty > 0 && (!r.ak || r.ak === k); });
-    if (have) setTimeout(() => toast(k === 'Explosive' ? "Special rounds don't go in explosive weapons." : `${i.name} is tier 1. Special rounds need tier 2 and up, or a fortified gun.`), 1600);
+    if (have) setTimeout(() => toast(NO_SPECIAL.includes(k) ? 'Smart weapons only take Smart Ammo, no special rounds.' : `${i.name} is tier 1. Special rounds need tier 2 and up, or a fortified gun.`), 1600);
+    else if (k && k !== EMP_ONLY && C.inv.some(x => isEmp(x) && x.qty > 0) && !C._empHint){ C._empHint = 1; setTimeout(() => toast('EMP rounds only go in Grenade and Rocket Launchers.'), 1600); }
     return;
   }
   saveC(); renderCS(); renderVitalsBar();
@@ -4364,7 +4406,15 @@ function doReload(i, stack){
 }
 // Launchers top up from an explosive stack. What's already in the tube stays.
 function loadBoom(i, stack){
-  const cap = clipCap(i), a = i.ammo || 0, n = Math.min(cap - a, stack.qty); if (n <= 0) return;
+  const cap = clipCap(i), emp = isEmp(stack);
+  // The whole clip is one kind. Switching between explosive and EMP puts what's left back in your bag.
+  if ((i.ammo || 0) > 0 && emp !== (i.ld === 'emp')){
+    giveItem(C, {name: i.ld === 'emp' ? i.ldName : (i.bn || 'Explosive rounds'), type:'Ammo', qty:i.ammo, stats: i.ld === 'emp' ? (i.ldFx || '') : ''});
+    i.ammo = 0;
+  }
+  if (emp){ i.ld = 'emp'; i.ldName = String(stack.name).slice(0, 60); i.ldFx = String(stack.stats || '').slice(0, 120); }
+  else { delete i.ld; delete i.ldName; delete i.ldFx; i.bn = String(stack.name).slice(0, 60); }
+  const a = i.ammo || 0, n = Math.min(cap - a, stack.qty); if (n <= 0) return;
   stack.qty -= n; if (stack.qty <= 0){ C.inv = C.inv.filter(x => x !== stack); fixEq(C); }
   i.ammo = a + n;
   toast(`Loaded ${n} ${stack.name}. ${stack.qty > 0 ? stack.qty + ' left in your bag.' : 'That was the last of them.'} HEAVY reload takes your whole turn.`, true);
@@ -4373,7 +4423,7 @@ function loadBoom(i, stack){
 function boomModal(i, st){
   const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
   m.innerHTML = `<div class="maxw440 mbox"><div class="sethead"><h3>Reload ${esc(i.name)}</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    ${st.map(x => `<div class="jopt"><button class="btn primary" data-m="${x.id}">${esc(x.name)} ×${x.qty}</button><p>${esc(x.stats || 'Explosive rounds.')}</p></div>`).join('')}</div>`;
+    ${st.map(x => `<div class="jopt"><button class="btn primary" data-m="${x.id}">${esc(x.name)} ×${x.qty}</button><p>${esc(x.stats || (isEmp(x) ? 'EMP rounds. The DM has the effect.' : 'Explosive rounds.'))}</p></div>`).join('')}</div>`;
   m.onclick = e => { const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return; closeModal(); if (b.dataset.m === 'close') return; const x = C.inv.find(y => y.id === b.dataset.m); if (x) loadBoom(i, x); };
 }
 function reloadModal(i){
@@ -4829,6 +4879,7 @@ function moveTo(i, x, y, w, h){
 }
 function equipTo(i, k){
   if (k === 'armor' ? i.type !== 'Armor' : i.type !== 'Weapon'){ toast(k === 'armor' ? 'Only armor goes there.' : 'Only weapons go there.'); return false; }
+  if (k !== 'armor' && !nerdOK(i)){ noNerd(); sfx('deny'); return false; }
   if (stunned() || (k !== 'armor' && blocked('weapons'))) return false;
   const old = C.inv.find(x => x.id === C.eq[k]);
   ['primary', 'secondary'].forEach(s => { if (C.eq[s] === i.id) C.eq[s] = null; });
@@ -4974,6 +5025,7 @@ $('#vCS').addEventListener('click', e => {
   if (t.dataset.uninstall && blocked('cyber')) return;
   if (t.dataset.equip){
     const k = t.dataset.equip, id = t.dataset.i, other = k === 'primary' ? 'secondary' : k === 'secondary' ? 'primary' : null;
+    if (C.eq[k] !== id && !nerdOK(C.inv.find(x => x.id === id))){ noNerd(); return sfx('deny'); }
     if (C.eq[k] === id){ C.eq[k] = null; const i = C.inv.find(x => x.id === id); if (i){ i.gx = null; i.gy = null; } }
     else { const old = C.eq[k]; C.eq[k] = id; if (other && C.eq[other] === id) C.eq[other] = null; const o = C.inv.find(x => x.id === old); if (o){ o.gx = null; o.gy = null; } }
     packInv(C); bagNote();
@@ -5084,7 +5136,7 @@ $('#vCS').addEventListener('click', e => {
       if (ENVS.jack) return jackOutModal();
       if (!canJack()) return toast('Only Netrunners and mercs with the INT perk Jack In can enter The Net.');
       if (C.status.some(x => x.id === 'fried')) return toast('Your processors are fried. No Net until a Ripper fixes you.');
-      setJack(true); toast(`Jacked in. Stay within ${NET_PROG.range} ft of the access point or you take an Unsafe Jack-Out.`, true);
+      setJack(true); coachSoon('net'); toast(`Jacked in. Stay within ${NET_PROG.range} ft of the access point or you take an Unsafe Jack-Out.`, true);
       csSave(); if (liveMe()) flushLog('');
       return;
     }
@@ -5139,7 +5191,7 @@ $('#vCS').addEventListener('click', e => {
       return;
     }
     case 'rmPortrait': C.portrait = null; return csSave();
-    case 'vpick': C.vpick = t.dataset.v === 'bike' ? 'bike' : 'car'; sfx('select'); return csSave();
+    case 'vpick': if (C.vpick) return; C.vpick = t.dataset.v === 'bike' ? 'bike' : 'car'; toast(`${VK[C.vpick]} it is. That's locked in.`, true); sfx('select'); return csSave();
     case 'sig': C.sig = t.dataset.c || null; sfx('select'); renderSheetHead(); return csSave();
     case 'limbRoll': {
       const r = 1 + Math.floor(Math.random() * 6), L = LIMBS[r - 1];
@@ -7043,6 +7095,7 @@ function renderLive(){
   if (sheetU && !$('#modal').hidden && $('#modal .mbox[data-sheet]')) showDmSheet(sheetU);
   dmFolds();
   if (typeof bnSync === 'function') try { bnSync(); } catch(e){}
+  if (location.hash === '#live' && typeof liveCoach === 'function'){ const k = liveCoach(); if (k) coachSoon(k); }
 }
 function liveHTML(){
   if (!LIVE_OK){
@@ -7225,7 +7278,7 @@ $('#liveBody').addEventListener('click', async e => {
     LS = {role:'player', code, mercId:c.id}; saveLS(); return connect();
   }
   if (await genClick(a, t)) return;
-  if (a === 'dmtab'){ dmTab = t.dataset.k; sfx('tab'); renderLive(); requestAnimationFrame(() => fxFrames($('#live'))); return; }
+  if (a === 'dmtab'){ dmTab = t.dataset.k; sfx('tab'); renderLive(); requestAnimationFrame(() => { fxFrames($('#live')); coachSoon('dm_' + dmTab); }); return; }
   if (a === 'dmsel'){
     dmSel = !DM_WIDE.matches && dmSel === u ? null : (u || null); sfx('tab'); renderLive();
     if (dmSel){ dmTab = 'party'; const f = $('#dmFocus'); if (f && !DM_WIDE.matches) f.scrollIntoView({block:'nearest', behavior:'smooth'}); }
@@ -8000,17 +8053,17 @@ function route(){
   setTimeout(() => { updateVignette(); updatePsy(); updateHack(); updateHeat(); }, 0);
   $('#pgRules').hidden = !rules; $('#pgCodex').hidden = !codex; $('#pgApp').hidden = rules || codex;
   document.querySelectorAll('#topnav a').forEach(a => a.classList.toggle('on', rules ? a.dataset.pg === 'rules' : codex ? a.dataset.pg === 'codex' : a.getAttribute('href') === '#' + (h === 'sheet' || !h ? 'mercs' : h)));
-  if (codex){ renderCodex(); window.scrollTo(0, 0); requestAnimationFrame(() => { fxPop(document.querySelectorAll('#pgCodex .cxcard')); fxDraw($('#pgCodex'), 80); fxFrames($('#pgCodex')); }); return; }
+  if (codex){ renderCodex(); window.scrollTo(0, 0); requestAnimationFrame(() => { fxPop(document.querySelectorAll('#pgCodex .cxcard')); fxDraw($('#pgCodex'), 80); fxFrames($('#pgCodex')); coachSoon('codex'); }); return; }
   if (rules){
     fxRulesWatch();
     const el = h.startsWith('r-') && document.getElementById(h);
     if (el) rulesOpen(el);
-    requestAnimationFrame(() => { el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0); requestAnimationFrame(() => fxFrames($('#pgRules'))); });
+    requestAnimationFrame(() => { el ? el.scrollIntoView({block:'start'}) : window.scrollTo(0, 0); requestAnimationFrame(() => { fxFrames($('#pgRules')); coachSoon('rules'); }); });
   } else {
     // Your Mercs and Live Session are separate pages now, not one long scroll.
     const live = h === 'live';
     $('#mercs').hidden = live; $('#live').hidden = !live;
-    if (live){ renderLive(); window.scrollTo(0, 0); requestAnimationFrame(() => fxFrames($('#live'))); }
+    if (live){ renderLive(); window.scrollTo(0, 0); requestAnimationFrame(() => { fxFrames($('#live')); const k = liveCoach(); if (k) coachSoon(k); }); }
     else if (h === 'mercs'){ if (!$('#vSheet').hidden || !$('#vWizard').hidden){ show('roster'); renderRoster(); } window.scrollTo(0, 0); }
     else if (h === 'sheet'){ if (C && $('#vSheet').hidden){ show('sheet'); setSheetTab(sheetTab); } window.scrollTo(0, 0); }
     else { const el = h && document.getElementById(h); if (el) requestAnimationFrame(() => el.scrollIntoView({block:'start'})); }
@@ -9344,25 +9397,150 @@ DM_PHONE.addEventListener('change', dmFolds);
 const welcomeDone = () => { try { return localStorage.getItem('daemon-welcome') === '1'; } catch(e){ return false; } };
 $('#welcomeX').onclick = () => { try { localStorage.setItem('daemon-welcome', '1'); } catch(e){} $('#welcome').hidden = true; sfx('select'); };
 $('#welcomeMake').onclick = () => { const n = $('#newMerc'); if (n) n.click(); };
-const TIPS = [
-  ['Tap HP or NET HP', 'The bar at the top is always there. Tap HP or NET HP to take damage or heal, and use the ammo buttons when you shoot.'],
-  ['Your tabs are at the bottom', 'Combat, Gear, Chrome and Perks sit along the bottom of the screen. Menu has your Profile, the Rules, Live and Settings.'],
-  ['Joining a game', 'Get the session code from your DM, then open Menu, Live session. Your sheet updates for the DM as you play.']
-];
-let tipI = 0;
-function tipsDone(){ try { return localStorage.getItem('daemon-tips') === '1'; } catch(e){ return false; } }
-function tipsShow(){
-  if (tipsDone() || !C || $('#vSheet').hidden) return;
-  let el = $('#tipCard');
-  if (!el){ el = document.createElement('div'); el.id = 'tipCard'; el.className = 'panel tipcard'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Quick tips'); $('#sheetHead').after(el); }
-  const [t, d] = TIPS[tipI];
-  el.innerHTML = `<div class="row"><span class="lbl m0">Quick tip ${tipI + 1} of ${TIPS.length}</span><span class="spacer"></span><button class="btn small" data-tip="skip">Skip tips</button></div><b class="tiptitle">${t}</b><p class="m0">${d}</p><div class="row mt8"><button class="btn small primary" data-tip="next">${tipI < TIPS.length - 1 ? 'Next' : 'Got it'}</button></div>`;
+// First-time walkthroughs. Each part of the site explains itself the first time you open it.
+// Steps point at a panel by its heading (H) or a selector. Missing targets are skipped.
+const cH = t => () => [...document.querySelectorAll('.panel')].find(p => p.offsetParent !== null && !p.parentElement.closest('.panel') && (((p.querySelector('h2,h3,h4,.lbl') || {}).textContent || '').trim().toLowerCase().startsWith(t.toLowerCase())));
+const cVis = e => !!e && e.getClientRects().length > 0 && getComputedStyle(e).visibility !== 'hidden';
+const cS = q => () => { const e = document.querySelector(q); return cVis(e) ? e : null; };
+const TABS_AT = () => (PH.matches ? cS('#botnav') : cS('#vSheet > .vtabs'))();
+const COACH = {
+  sheet_combat: ['Your sheet', [
+    [cS('#vitalsBar'), 'Vitals', 'Your HP, NET HP, AC and ammo stay pinned at the top. Tap HP or NET HP to take damage or heal.'],
+    [cH('Equipped'), 'Equipped', 'Your weapons and armor. Drag them in from Gear, or tap an item in your bag. Your gun\'s ammo buttons show up here.'],
+    [cH('Quick slots'), 'Quick slots', 'Put meds and other consumables here so they\'re one tap away in a fight.'],
+    [cH('Your rolls'), 'Your rolls', 'Your bonuses for attacks, skills and saves. Roll your real dice and add these.'],
+    [TABS_AT, 'Your tabs', 'Combat, Gear, Chrome and Perks. Each one shows you around the first time you open it. Menu has your Profile, the Rules and Live.']]],
+  sheet_gear: ['Gear', [
+    [cS('#invPanel'), 'Your backpack', 'A grid. Bigger things take more space. Drag items around, or tap one to equip, use, move or drop it. Anything that doesn\'t fit lands on the floor.'],
+    [cH('Fabrication'), 'Fabrication', 'With the Fabricator perk you can create, upgrade and fortify gear here.'],
+    [cH('Eddies ledger'), 'Eddies', 'Log eddies coming in and going out, so your balance is always right.']]],
+  sheet_chrome: ['Chrome', [
+    [cH('Chrome load'), 'Chrome load', 'Every piece of cyberware has a Chrome Weight. Go past your limit and you start rolling against Cyberpsychosis.'],
+    [cH('Cyberware'), 'Cyberware slots', 'Each slot holds one piece. A RipperDoc installs chrome. Hot-swappable chrome you can swap yourself for RAM.']]],
+  sheet_perks: ['Perks', [
+    [cS('#lvlTiles'), 'Perk points', 'You earn a perk point as you level. Spend it in any tree that\'s online.'],
+    [cS('#treePanel'), 'Perk trees', 'Each stat has its own tree. A tree comes online once that stat is 10 or higher. Start with a Rookie perk, then it branches.'],
+    [cS('#detail'), 'Perk details', 'Tap any perk to read it here, then unlock it.'],
+    [cH('Skill picks'), 'Skill picks', 'Some perks and levels give you skill picks. Choose them here.']]],
+  sheet_profile: ['Profile', [
+    [cH('Handle'), 'Your merc', 'Your portrait, background and role.'],
+    [cH('Notes'), 'Notes', 'Anything you want to remember. Only you see it.'],
+    [cH('Achievements'), 'Achievements', 'Unlocked as you play. Some are secret.'],
+    [() => { const e = document.querySelector('#codeOut'); return e && e.offsetParent !== null ? e.closest('.panel') : null; }, 'Save code', 'A copy of this merc as a code or a file. Handy when you switch phones.']]],
+  sheet_party: ['The crew', [
+    [cH('Connected to'), 'Live session', 'You\'re in your DM\'s game. Your sheet syncs to them as you play.'],
+    [cH('Gig board'), 'Gigs', 'Jobs your DM posts. Pay goes out when the gig is done.'],
+    [cH('Shop'), 'The shop', 'When the DM opens it, buy gear here with your eddies.'],
+    [cH('Crew stash'), 'Crew stash', 'Shared loot and eddies for the whole crew. Take what you need, drop off what you don\'t.'],
+    [cH('Activity'), 'Activity', 'Everything that happens in the session shows up here.']]],
+  net: ['The Net', [
+    [cH('The Net'), 'Jacked in', 'SWORD attacks, SHIELD is your AC in the Net, and every program costs RAM.'],
+    [cS('#vitalsBar'), 'NET HP', 'Your health in the Net. Hit 0 and your processors fry, so no diving until a RipperDoc fixes you.'],
+    [cH('Quickhacks'), 'Quickhacks', 'Hack people and tech. Each one shows its RAM cost.']]],
+  live_home: ['Live sessions', [
+    [cH('Join a session'), 'Joining', 'Get the code from your DM, pick your merc and join. Your sheet updates for the DM as you play.'],
+    [cH('Host as DM'), 'Hosting', 'Running the game? Host here and share the code with your players.']]],
+  dm_party: ['DM screen', [
+    [cS('.dmhead'), 'Session code', 'Share it with your players. Close dashboard saves everything for next week.'],
+    [() => { const e = document.querySelector('.dmhead'); const n = e && e.nextElementSibling; return n && n.classList.contains('panel') && n.offsetParent ? n : null; }, 'The party', 'Every merc in the session, live. Tap one to see their sheet and send damage, items or hacks.'],
+    [cH('Party progress'), 'Progress', 'XP and levels for the whole crew.'],
+    [cH('Activity'), 'Activity', 'Everything your players do, as it happens.']]],
+  dm_npcs: ['NPCs', [
+    [cS('#encPanel'), 'Encounters', 'Build a fight from NPCs and Black ICE and track their HP.'],
+    [cH('NPCs'), 'Your NPCs', 'Everyone you\'ve made, ready to drop into an encounter.'],
+    [cH('Generators'), 'Generators', 'Roll up an NPC on the fly.']]],
+  dm_items: ['Items', [
+    [cS('#deckPanel'), 'Cyberware deck', 'Give players draws and they pull cyberware cards on their phones.'],
+    [cH('Generators'), 'Loot', 'Roll weapons, gear and loot by tier.'],
+    [cH('Item library'), 'Item library', 'Everything you make lands here, ready to send to a player or the crew stash.']]],
+  dm_crew: ['Crew', [
+    [cH('Street Cred'), 'Street Cred', 'The crew\'s rep. It decides what tier of gear they can buy.'],
+    [cH('Gig board'), 'Gig board', 'Post jobs with a fixer and a payout.'],
+    [cH('Shop'), 'Shop', 'Stock it, name it and open it when the crew finds a vendor.'],
+    [cH('Crew stash'), 'Crew stash', 'Shared loot and eddies the whole crew can see.']]],
+  dm_session: ['Session', [
+    [cH('Handouts'), 'Handouts', 'Send images and notes straight to your players\' phones.'],
+    [cH('Session notes'), 'Notes', 'Your private notes. They carry over to next session.'],
+    [cH('Session recap'), 'Recap', 'A summary of what happened, shown to players when they rejoin.'],
+    [cH('Party backups'), 'Backups', 'A copy of every merc in the session, in case a phone dies.']]],
+  codex: ['Codex', [
+    [cH(''), 'The Codex', 'Everything your crew runs into gets logged here. NPCs, Black ICE, weapons, vehicles and cyberware.']]],
+  rules: ['Rules', [
+    [cS('#toc'), 'Finding rules', 'Search, or jump straight to a section. On your sheet, tap underlined rule names to read them without leaving.']]],
+  settings: ['Settings', [
+    [cS('#setPanel'), 'Settings', 'Colors, live backgrounds, sound and motion. Controls has the version, What\'s new and a button to replay these tips.']]]
+};
+const COACH_KEY = 'daemon-coach', COACH_OFF = 'daemon-coach-off';
+const coachSeen = () => { try { return JSON.parse(localStorage.getItem(COACH_KEY)) || []; } catch(e){ return []; } };
+const coachOff = () => { try { return localStorage.getItem(COACH_OFF) === '1'; } catch(e){ return false; } };
+let coachNow = null, coachQ = [], coachRaf = 0;
+function coachSoon(key, tries = 0){
+  if (!COACH[key] || coachOff() || coachSeen().includes(key)) return;
+  if (coachNow){ if (coachNow.key !== key && !coachQ.includes(key)) coachQ.push(key); return; }
+  setTimeout(() => {
+    const busy = !$('#modal').hidden || document.querySelector('#boot');
+    if (busy) return tries < 12 && coachSoon(key, tries + 1);
+    if (!coachNow) coachStart(key);
+  }, tries ? 1200 : 700);
 }
+function coachStart(key, tries = 0){
+  // Only run a tab's walkthrough while that tab is actually on screen. Otherwise wait for the next visit.
+  if (key.startsWith('sheet_') && ($('#vSheet').hidden || sheetTab !== key.slice(6))) return;
+  if (key.startsWith('dm_') && (dmTab !== key.slice(3) || !document.querySelector('#live .dmhead') || $('#pgApp').hidden)) return;
+  if (key === 'settings' && $('#setPanel').hidden) return;
+  const all = COACH[key][1], steps = all.filter(s => { try { return s[0] && s[0](); } catch(e){ return false; } });
+  // A screen that's still drawing shows fewer panels. Give it a moment before settling for a short walkthrough.
+  if (steps.length < Math.ceil(all.length / 2) && tries < 3) return setTimeout(() => { if (!coachNow) coachStart(key, tries + 1); }, 900);
+  if (!steps.length) return;
+  coachNow = {key, steps, i:0}; coachShow();
+}
+function coachRing(){
+  const r = $('#coachRing'); if (!coachNow || !r) return;
+  const t = coachNow.el && coachNow.el.isConnected ? coachNow.el.getBoundingClientRect() : null;
+  if (!t || (!t.width && !t.height)){ r.hidden = true; return; }
+  r.hidden = false; const pad = 6;
+  Object.assign(r.style, {left:(t.left - pad) + 'px', top:(t.top - pad) + 'px', width:(t.width + pad * 2) + 'px', height:(t.height + pad * 2) + 'px'});
+}
+function coachTrack(){ cancelAnimationFrame(coachRaf); if (!coachNow) return; coachRing(); coachRaf = requestAnimationFrame(coachTrack); }
+function coachShow(){
+  const c = coachNow, [find, t, d] = c.steps[c.i], el = find();
+  c.el = el;
+  let card = $('#coach'), ring = $('#coachRing');
+  if (!card){
+    ring = document.createElement('div'); ring.id = 'coachRing'; ring.setAttribute('aria-hidden', 'true'); document.body.appendChild(ring);
+    card = document.createElement('div'); card.id = 'coach'; card.className = 'coach'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-live', 'polite'); document.body.appendChild(card);
+  }
+  const n = c.steps.length, last = c.i === n - 1;
+  card.setAttribute('aria-label', COACH[c.key][0] + ' walkthrough');
+  card.innerHTML = `<div class="row"><span class="lbl m0">${esc(COACH[c.key][0])}${n > 1 ? ` · ${c.i + 1} of ${n}` : ''}</span><span class="spacer"></span><button class="linkbtn fs-sm muted" data-coach="off">Skip all tips</button></div>
+    <b class="coacht">${esc(t)}</b><p class="m0">${esc(d)}</p>
+    <div class="row mt8">${c.i ? '<button class="btn small" data-coach="back">Back</button>' : ''}<span class="spacer"></span><button class="btn small primary" data-coach="next">${last ? 'Got it' : 'Next'}</button></div>`;
+  if (el && el.id !== 'vitalsBar' && el.id !== 'botnav' && !el.closest('#setPanel')){
+    const r = el.getBoundingClientRect(), room = innerHeight - card.offsetHeight - 90;
+    if (r.top < 70 || r.top > room) el.scrollIntoView({block: r.height > room ? 'start' : 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }
+  coachTrack();
+  requestAnimationFrame(() => { const b = card.querySelector('[data-coach=next]'); if (b) b.focus({preventScroll:true}); });
+}
+function coachEnd(markAll){
+  if (!coachNow) return;
+  try { const s = coachSeen(); if (!s.includes(coachNow.key)) s.push(coachNow.key); localStorage.setItem(COACH_KEY, JSON.stringify(s)); if (markAll) localStorage.setItem(COACH_OFF, '1'); } catch(e){}
+  coachNow = null; cancelAnimationFrame(coachRaf);
+  ['#coach', '#coachRing'].forEach(q => { const e = $(q); if (e) e.remove(); });
+  if (markAll){ coachQ = []; return toast('Tips are off. Turn them back on in Settings, Controls.', true); }
+  const nx = coachQ.shift(); if (nx) coachSoon(nx);
+}
+function coachReset(){ try { localStorage.removeItem(COACH_KEY); localStorage.removeItem(COACH_OFF); } catch(e){} }
 document.addEventListener('click', e => {
-  const b = e.target.closest('[data-tip]'); if (!b) return;
-  if (b.dataset.tip === 'next' && tipI < TIPS.length - 1){ tipI++; tipsShow(); sfx('select'); return; }
-  try { localStorage.setItem('daemon-tips', '1'); } catch(err){} const el = $('#tipCard'); if (el) el.remove(); sfx('select');
+  const b = e.target.closest('[data-coach]'); if (!b || !coachNow) return;
+  const a = b.dataset.coach; sfx('select');
+  if (a === 'next'){ if (coachNow.i < coachNow.steps.length - 1){ coachNow.i++; return coachShow(); } return coachEnd(false); }
+  if (a === 'back' && coachNow.i){ coachNow.i--; return coachShow(); }
+  if (a === 'off') return coachEnd(true);
 });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && coachNow && document.activeElement && document.activeElement.closest('#coach')) coachEnd(false); });
+// The live page has three faces. Pick the right walkthrough for whichever is showing.
+const liveCoach = () => document.querySelector('#live .dmhead') ? 'dm_' + dmTab : document.querySelector('[data-live=join]') ? 'live_home' : null;
 
 function fxBoot(){
   const a = AN(); let seen = false; try { seen = sessionStorage.getItem('daemon-booted') === '1'; sessionStorage.setItem('daemon-booted', '1'); } catch(e){}
@@ -10391,6 +10569,7 @@ function renderSettings(){
   } else {
     body = `<span class="db lbl mt12">App</span>
     <div class="crow"><span>Install as an app<small>${isStandalone() ? 'Running as an app right now.' : installEvt ? 'Adds Daemon Manual to your home screen or desktop with its own icon. Works offline too.' : isIOS() ? 'On iPhone or iPad, tap Share, then Add to Home Screen.' : 'Open the site from its web address in Chrome or Edge to install it. On iPhone use Share, then Add to Home Screen.'}</small></span>${installEvt && !isStandalone() ? '<button class="btn small primary" data-set="install">Install</button>' : ''}</div>
+    <div class="crow"><span>Tips<small>${coachOff() ? 'Tips are off.' : 'Walkthroughs show the first time you open each part of the site.'}</small></span><button class="btn small" data-set="coachReplay">${coachOff() ? 'Turn tips on' : 'Replay all tips'}</button></div>
     <div class="crow"><span>Site version<small>Daemon Manual V0.77 is the name. This is the build you're running.</small></span><b class="fs-base ink">${SITE_VER}</b><button class="btn small" data-wn="1">What's new</button></div>
     ${tog('keys', 'Keyboard shortcuts', 'Ignored while you are typing in a box')}
     <details class="sfold" data-sfold="keys" ${SFOLD.keys ? 'open' : ''}><summary><span><b>Shortcut list</b><small>For a keyboard</small></span><span class="fchev" aria-hidden="true">▾</span></summary><div class="sfb"><div class="keys">${SHORTCUTS.map(([k, d]) => `<div><kbd>${k}</kbd><span>${d}</span></div>`).join('')}</div></div></details>`;
@@ -10407,7 +10586,8 @@ function toggleSettings(open){
   const p = $('#setPanel'); open = open ?? p.hidden;
   p.hidden = !open; $('#setBack').hidden = !open; $('#tSet').setAttribute('aria-expanded', open);
   document.documentElement.classList.toggle('noscroll', open);
-  if (open){ p.scrollTop = 0; renderSettings(); }
+  if (open){ p.scrollTop = 0; renderSettings(); coachSoon('settings'); }
+  else if (coachNow && coachNow.key === 'settings') coachEnd(false);
 }
 $('#setBack').addEventListener('click', () => toggleSettings(false));
 $('#tSet').onclick = () => { sfx('select'); toggleSettings(); };
@@ -10424,6 +10604,7 @@ $('#setPanel').addEventListener('click', e => {
   if (t.dataset.stab){ setTab = t.dataset.stab; return renderSettings(); }
   if (t.dataset.set === 'install'){ if (installEvt){ installEvt.prompt(); installEvt.userChoice.then(c => { if (c.outcome === 'accepted') toast('Installed. Look for Daemon on your home screen.', true); installEvt = null; renderSettings(); }); } return; }
   if (t.dataset.set === 'test'){ playSnd('perk'); return; }
+  if (t.dataset.set === 'coachReplay'){ coachReset(); renderSettings(); toast('Tips are on. Each part of the site will show you around again.', true); return; }
   if (t.dataset.rbbg !== undefined){ PREFS.rbBg = t.dataset.rbbg; savePrefs(); rbBgSync(); renderSettings(); sfx('up'); if (PREFS.rbBg && !ANX()) toast('Turn animations on to see it. Calm mode and Table mode keep it off too.'); return; }
   if (t.dataset.netlook){ const [a, b] = t.dataset.netlook.split(','); PREFS.netA = a; PREFS.netB = b; savePrefs(); HYPER.recolor(); renderSettings(); sfx('select'); return; }
   if (t.dataset.set === 'netPrev'){ if (!HYPER.preview()) toast('Turn animations on to see the Net lights. Calm mode and Table mode keep them off too.'); else toggleSettings(false); return; }
