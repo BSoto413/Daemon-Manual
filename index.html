@@ -57,6 +57,8 @@ h2{font-family:Orbitron,sans-serif;font-weight:400;color:var(--ink);font-size:cl
 h3{font-family:Orbitron,sans-serif;font-weight:400;color:var(--ink);font-size:var(--fs-lg);margin:0}
 .panel{background:var(--panel);border-left:3px solid var(--cyan);padding:18px 22px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%)}
 .panel p{margin:0 0 10px}
+body.seethru :is(.panel,.card,.pcard,.cxcard,.tab,.drow-w){text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 6px rgba(0,0,0,.6)}
+.mbox .panel,#setPanel .panel{background:rgba(10,10,18,.94)}
 .linkbtn{all:unset;cursor:pointer;color:inherit;display:inline-block;padding:4px 2px;min-height:24px;line-height:16px;box-sizing:border-box;text-decoration:underline dotted;text-underline-offset:3px}.linkbtn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wnbox .rlist li{margin:4px 0}
 /* Arwes-style draw-in. A panel's frame wipes open from its lit left edge when a page or tab opens. */
@@ -179,7 +181,7 @@ textarea{font-family:monospace;font-size:var(--fs-sm);resize:vertical;min-height
 @media (max-width:760px){.vitals{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .vital{min-width:0}
 .vital .v{overflow-wrap:break-word}
-.vital{background:var(--void-2);border:1px solid rgba(var(--crgb),.14);padding:10px 12px}
+.vital{background:var(--inbox,var(--void-2));border:1px solid rgba(var(--crgb),.14);padding:10px 12px}
 .vital .lbl{font-size:var(--fs-2xs);color:var(--muted)}
 @media (max-width:560px){.vital{padding:10px 9px}.vital .lbl{letter-spacing:1px;overflow-wrap:break-word;hyphens:auto;display:block}}
 .vital .v{font-family:Orbitron,sans-serif;font-size:var(--fs-2xl);color:var(--ink)}
@@ -299,7 +301,7 @@ g.e.live .edge-live{opacity:.9}
 .skill.exp .s::before{content:'◆◆ ';font-size:var(--fs-2xs)}
 .skill.exp .m{color:var(--yellow)}
 
-.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;z-index:5;transition:all var(--t-base);pointer-events:none;background:var(--panel);border-left:3px solid var(--red);padding:12px 18px;color:var(--ink);font-size:var(--fs-base);max-width:90vw}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;z-index:5;transition:all var(--t-base);pointer-events:none;background:rgba(10,10,18,.94);border-left:3px solid var(--red);padding:12px 18px;color:var(--ink);font-size:var(--fs-base);max-width:90vw}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .toast.good{border-left-color:var(--cyan)}
 
@@ -501,7 +503,7 @@ details.fold[open] > summary{margin-bottom:10px}
 .body [data-bp=ocular].on,.body [data-bp=circ].on,.body [data-bp=shard].on,.body [data-bp=os].on{fill:var(--cyan)}
 .body .bp.hl{stroke:var(--yellow)!important;stroke-width:2.2;filter:drop-shadow(0 0 4px var(--yellow))}
 .body [data-bp=ocular].hl,.body [data-bp=circ].hl,.body [data-bp=shard].hl,.body [data-bp=os].hl{fill:var(--yellow)}
-.cyslot{min-width:0;background:var(--void-2);border:1px solid rgba(var(--crgb),.16);padding:10px;transition:border-color var(--t-fast),background var(--t-fast)}
+.cyslot{min-width:0;background:var(--inbox,var(--void-2));border:1px solid rgba(var(--crgb),.16);padding:10px;transition:border-color var(--t-fast),background var(--t-fast)}
 .cyslot.has{border-color:rgba(var(--crgb),.45)}
 .cyslot.droph{border-color:var(--green)!important;background:rgba(59,227,122,.1)}
 .cyslot .h{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:var(--fs-sm);letter-spacing:1px;text-transform:uppercase}
@@ -674,7 +676,7 @@ mark{background:rgba(255,230,0,.3);color:inherit}
 #vignette.dead{background:radial-gradient(ellipse at center, rgba(120,0,10,.15) 20%, rgba(255,10,30,.85) 100%)}
 @keyframes heartbeat{0%,100%{opacity:var(--vmin,.3)}14%{opacity:var(--vmax,.7)}28%{opacity:var(--vmin,.3)}42%{opacity:calc(var(--vmax,.7) * .8)}60%{opacity:var(--vmin,.3)}}
 .dock{position:fixed;right:14px;bottom:14px;z-index:6;display:flex;gap:6px}
-.dock button{font-family:Orbitron,sans-serif;font-size:var(--fs-2xs);letter-spacing:2px;background:var(--panel);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
+.dock button{font-family:Orbitron,sans-serif;font-size:var(--fs-2xs);letter-spacing:2px;background:rgba(10,10,18,.94);color:var(--cyan);border:1px solid var(--cyan-dim);padding:7px 10px;cursor:pointer}
 .setp{position:fixed;right:14px;bottom:58px;z-index:7;width:min(360px,calc(100vw - 28px));max-height:calc(100vh - 80px);max-height:calc(100dvh - 80px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:rgba(10,10,18,.97);border:1px solid var(--cyan-dim);border-left:3px solid var(--cyan);padding:0 18px 16px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
 /* ---------- sheet layout: back link, sticky vitals, sub tabs ---------- */
 .sheettop{margin:-4px 0 8px}.backlink{background:none;border:0;color:var(--cyan);font:500 var(--fs-md) Orbitron,sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:6px 0}.backlink:hover{text-decoration:underline}
@@ -910,7 +912,7 @@ html.noscroll,html.noscroll body{overflow:hidden;overscroll-behavior:none}
 .srhit b{display:block;color:var(--ink);font-weight:500}.srhit span{display:block;font-size:var(--fs-md);color:var(--muted)}.srhit small{display:block;font-size:var(--fs-sm);color:#cfe;margin-top:2px}
 .flashhit{animation:flashhit 1.6s ease-out 1}@keyframes flashhit{0%{box-shadow:0 0 0 2px var(--yellow)}100%{box-shadow:0 0 0 2px transparent}}
 .qhs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:10px}
-.qh{text-align:left;background:var(--void-2);border:1px solid rgba(var(--crgb),.25);color:inherit;font:inherit;padding:10px 12px;cursor:pointer;position:relative}
+.qh{text-align:left;background:var(--inbox,var(--void-2));border:1px solid rgba(var(--crgb),.25);color:inherit;font:inherit;padding:10px 12px;cursor:pointer;position:relative}
 .qh:hover:not(:disabled){border-color:var(--cyan);background:rgba(var(--crgb),.06)}
 .qh b{display:block;color:var(--ink);font-family:Orbitron,sans-serif;font-weight:500;font-size:var(--fs-sm);letter-spacing:.5px;padding-right:56px}
 .qh .rc{position:absolute;top:10px;right:10px;font-family:Orbitron,sans-serif;font-size:var(--fs-xs);color:var(--yellow)}
@@ -3978,6 +3980,7 @@ const WHATS_NEW = [
     'Smart weapons are here. Smart Pistol, Smart SMG and Smart Rifle run on INT and Smart Ammo, and you need the Nerd! perk to equip or fire one.',
     'EMP rounds now go in Grenade and Rocket Launchers only, at any tier.',
     "Without Vehicle proficiency you pick Car or Bike when you make your merc, and it's locked after that.",
+    'Panel opacity in Settings, Look. Turn it down to see more of the background through the panels.',
     'Walkthroughs. The sheet tabs, the crew, the Net, Live, the DM screens, Codex, Rules and Settings each show you around the first time you open them. Replay them from Settings, Controls.',
     "Every rule number now comes from one place. The Rules page and your sheet can't disagree anymore, and DM changes land faster.",
     'Panels draw in when you open a page or tab. Turn it off with Motion in Menu, or Calm in Settings.',
@@ -8155,7 +8158,7 @@ const motionPick = (() => { try { return localStorage.getItem('daemon-motion'); 
 // The FX button is an explicit choice, so it wins over the phone's reduced-motion hint. With no choice made we follow the phone.
 const FXS = {sfx: PREF('daemon-sfx'), motion: motionPick === '1' ? true : motionPick === '0' ? false : !reducedMotion};
 const PREFS_KEY = 'daemon-prefs';
-const PREFS_DEF = {text:100, dim:100, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', rbBg:'', netA:'#3fd0ff', netB:'#ff3fd8', unl:[]};
+const PREFS_DEF = {text:100, dim:100, panelA:88, vol:70, ui:true, game:true, big:true, calm:reducedMotion, table:false, awake:true, cb:false, battery:false, compact:false, keys:true, matchOrigin:false, react:true, dmMood:true, tod:'default', weather:'default', accent:'', rbBg:'', netA:'#3fd0ff', netB:'#ff3fd8', unl:[]};
 let PREFS = {...PREFS_DEF};
 /* ---- Motion, built on Anime.js (vendor/anime.umd.min.js, animejs.com). Pure polish. Every call is a no-op when the
    library didn't load, motion effects are off, Calm or Battery saver is on, or the device asks for reduced motion. ---- */
@@ -10495,6 +10498,11 @@ function applyPrefs(prev){
   if (['matchOrigin', 'dmMood', 'tod', 'weather'].some(k => prev[k] !== undefined && prev[k] !== PREFS[k])) refreshEnv();
   $('.wrap').style.zoom = PREFS.text === 100 ? '' : PREFS.text / 100;
   cv.style.opacity = PREFS.dim / 100;
+  // Panel opacity. Below 70% the text gets a soft shadow so it stays readable over the background.
+  const pa = Math.min(100, Math.max(10, +PREFS.panelA || 88));
+  if (pa === 88){ root.removeProperty('--panel'); root.removeProperty('--inbox'); }
+  else { root.setProperty('--panel', `rgba(10,10,18,${pa / 100})`); root.setProperty('--inbox', pa >= 100 ? '' : `rgba(8,8,15,${Math.min(1, pa / 88).toFixed(2)})`); if (pa >= 100) root.removeProperty('--inbox'); }
+  b.classList.toggle('seethru', pa < 70);
   b.classList.toggle('cb', PREFS.cb); b.classList.toggle('compact', PREFS.compact); b.classList.toggle('calm', PREFS.calm); b.classList.toggle('table', !!PREFS.table);
   b.classList.toggle('fx', flashOK());
   if (typeof rbBgSync === 'function') try { rbBgSync(); } catch(e){}
@@ -10545,6 +10553,7 @@ function renderSettings(){
     ${jack ? '' : netSec}
     ${fold('scene', 'Scene', 'Time, weather, brightness and auto switching', `<div class="selrow mt0">${psel('tod', TODS, 'Time of day')}${psel('weather', WEATHERS, 'Weather')}</div>
       ${rng('dim', 'Background brightness', 'Turn it down to make panels and rules easier to read', 15, 100, 5, '%')}
+      ${rng('panelA', 'Panel opacity', 'Turn it down to see more of the background through the panels. Pop-ups stay solid', 10, 100, 2, '%')}
       ${tog('matchOrigin', 'Match my origin', 'Opening a merc switches to their Nomad, Corpo or Streetkid background')}
       ${tog('react', 'React to my merc', 'Low HP drains the color. Cyberpsychosis turns it red, hacks turn it green and overheating makes it ripple.')}
       ${tog('dmMood', 'Let the DM set the mood', 'In a live session the DM can push a background to the party')}`)}`;

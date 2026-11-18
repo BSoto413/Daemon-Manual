@@ -7,6 +7,7 @@ The site name stays Daemon Manual V0.77. These are the site versions, newest fir
 - EMP rounds are for Grenade and Rocket Launchers only, at any tier. A launcher holds one kind at a time, and switching puts what's left back in the bag.
 - Car or Bike is picked once, in merc creation, by anyone without Vehicle proficiency. It can't be toggled on the sheet anymore. Older mercs that never picked get one pick on the sheet.
 - Walkthroughs replace the three sheet tips. Combat, Gear, Chrome, Perks, Profile, the crew tab, the Net, Live, every DM tab, Codex, Rules and Settings each explain themselves the first time they open. A lit frame shows what each step is about. Skip all tips turns them off, and Settings, Controls can replay them.
+- Panel opacity in Settings, Look. Turn it down to see the background through the panels, all the way to 10%. Text gets a soft shadow below 70% so it stays readable, and pop-ups stay solid.
 - Every rule number and rule table lives in one block at the top of the code (DM RULES). The Rules page and the character sheet both read from it, so they always match and a DM note is a one-line change.
 - The Rules page builds its hacks, clip, ammo, Net program, jack-out, hot-swap, fabrication, dismemberment and tier damage tables from that block.
 - Panels draw in when a page or tab opens, Arwes style. Motion off or Calm turns it off.
