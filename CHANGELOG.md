@@ -2,6 +2,15 @@
 
 The site name stays Daemon Manual V0.77. These are the site versions, newest first. The same notes show in the What's new screen.
 
+## 0.91 · November 2026
+- Meds from the DM's table, used straight from the bag or a quick slot. Heals ask for your roll, Quick-Clot ends BLEEDING, RAM Jolt gives bonus RAM, and the rest show under Active effects on Combat with an End effect button. No timers.
+- Stat boosts add to the modifier, so attacks, damage, skills and saves go up, but never count toward unlocking perks. Same stat boosts don't stack. Boosting a second stat takes a DC 25 BOD save plus Medicine if proficient. Fail and you get ROID RAGE until the boosts end, which auto-fails INT, TEC and COO checks and saves, Cyberpsychosis included.
+- Bonus HP and bonus RAM, spent before HP and RAM. They don't stack, the higher one counts. Players can enter them and the DM can send them.
+- BURNING status. Damage each turn is half the fire damage that set it. Overheating sets your wiring on fire, the DM's Hellhound fire button sets it, and Incendiary rounds and grenades cause it. Insulated Wires stops overheating and Hellhound fire from setting you alight.
+- Hand grenades. Thrown 60 ft, REF save DC 15, 5d6 of their special type. Incendiary, EMP, Tracking, Tranquilizer and Toxin, no Armor Piercing. EMP hand grenades also load into launchers.
+- Pseudo-Psycho quickhack at 12 RAM, level 13. Knife has the Thrown property, 20/60. Item and ammo save DC is 15.
+- Chrome tab on phones. Long slot names wrap inside their box instead of leaking out, and installed chrome shows its name on two lines instead of one letter.
+
 ## 0.90 · November 2026
 - Smart weapons from the DM's chart. Smart Pistol, Smart SMG and Smart Rifle use INT and Smart Ammo, a fifth standard ammo type. They need the Nerd! perk to equip or fire, can't take special rounds, and the pistol and SMG can be concealed.
 - EMP rounds are for Grenade and Rocket Launchers only, at any tier. A launcher holds one kind at a time, and switching puts what's left back in the bag.

@@ -57,6 +57,14 @@ h2{font-family:Orbitron,sans-serif;font-weight:400;color:var(--ink);font-size:cl
 h3{font-family:Orbitron,sans-serif;font-weight:400;color:var(--ink);font-size:var(--fs-lg);margin:0}
 .panel{background:var(--panel);border-left:3px solid var(--cyan);padding:18px 22px;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%)}
 .panel p{margin:0 0 10px}
+.fxbox{border-left:3px solid var(--green)}
+.fxrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid rgba(var(--crgb),.12)}
+.fxrow:first-of-type{border-top:0}
+.fxrow > div:first-child{display:grid;gap:2px;min-width:0;flex:1 1 160px}.fxrow b{color:var(--green)}.fxrow span{color:var(--ink-2);font-size:var(--fs-md)}
+.fxrow.burn b{color:var(--orange)}
+.bonrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px}
+.vbon{font-style:normal;color:var(--green);font-size:.7em;margin-left:4px}
+.msave.fail b,.mskills .fail{color:var(--red)}
 body.seethru :is(.panel,.card,.pcard,.cxcard,.tab,.drow-w){text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 6px rgba(0,0,0,.6)}
 .mbox .panel,#setPanel .panel{background:rgba(10,10,18,.94)}
 .linkbtn{all:unset;cursor:pointer;color:inherit;display:inline-block;padding:4px 2px;min-height:24px;line-height:16px;box-sizing:border-box;text-decoration:underline dotted;text-underline-offset:3px}.linkbtn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
@@ -533,13 +541,15 @@ span.cyempty{cursor:default;min-height:30px}
   .cybody .body{max-width:116px}
   .cycol{align-content:start}
   .cyslot{padding:8px;min-width:0}
+  .cyslot{overflow:hidden}
   .cyslot .h{font-size:var(--fs-2xs);letter-spacing:.2px;gap:4px 6px;flex-wrap:wrap}
+  .cyslot .h b{letter-spacing:0;overflow-wrap:anywhere;hyphens:auto}
   .cyslot .h b{flex:1 1 auto}
   .cyslot .cap{margin-left:auto}
-  .cyslot .cells{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .cyslot .cells{grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:4px}
   .cyempty,.cychip{min-height:48px;aspect-ratio:auto}
   .cychip{padding:5px 2px;justify-content:space-between}
-  .cychip span{font-size:var(--fs-2xs);width:100%;text-align:center}
+  .cychip span{font-size:var(--fs-2xs);width:100%;text-align:center;white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.15}
   .cyi{width:18px;height:18px}
 }
 .dsheet .cymap{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.dsheet .cybody{grid-column:1/-1;grid-row:1;position:static}.dsheet .cybody .body{max-width:120px}
@@ -1500,7 +1510,7 @@ button:focus:not(:focus-visible){outline:none}
       <input type="text" class="f" id="rSearch" placeholder="Search the rules" aria-label="Search the rules" autocomplete="off"><select id="rJump" aria-label="Jump to a section"><option value="">Jump to…</option></select>
       <a href="#r-basics">How Daemon Works</a><a href="#r-stats">Stats</a><a href="#r-roles">Roles</a><a href="#r-skills">Skills</a>
       <a href="#r-backgrounds">Backgrounds</a><a href="#r-creation">Making a Merc</a><a href="#r-turn">Your Turn</a><a href="#r-reactions">Reactions</a><a href="#r-attacks">Attacks and Weapons</a>
-      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-ice">Black ICE</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-crew">The Crew</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
+      <a href="#r-ram">RAM</a><a href="#r-quickhacks">Quickhacks</a><a href="#r-net">Netrunning</a><a href="#r-ice">Black ICE</a><a href="#r-chrome">Cyberware</a><a href="#r-fab">Fabrication</a><a href="#r-meds">Meds and Boosts</a><a href="#r-status">Status and Death</a><a href="#r-inventory">Inventory</a><a href="#r-crew">The Crew</a><a href="#r-tiers">Item Tiers</a><a href="#r-hacks">Hacks</a><a href="#r-psycho">Cyberpsychosis</a><a href="#r-trees">Perk Trees</a>
       <a href="#r-perks">Every Perk</a><a href="#r-coming">In the Works</a>
     </aside>
     <div class="rules" id="rulesBody">
@@ -1655,7 +1665,11 @@ button:focus:not(:focus-visible){outline:none}
           <p class="mt8">Standard ammo is assumed, like a sci-fi game. You never run out, you only RELOAD. Every gun takes one of five standard types. <b>Explosive</b> ammo is the exception.</p>
           <div id="rAmmo"></div>
           <p class="mt8"><b>Explosive ammo</b> for Grenade and Rocket Launchers is tracked like special rounds, to keep them balanced. It comes as Ammo items (Explosive rounds, grenades or rockets). Reloading tops up the launcher from your bag, and a new launcher arrives empty.</p>
-          <p class="mt8"><b>EMP rounds</b> are for explosive weapons only. Grenade and Rocket Launchers are the only guns that can load them, at any tier. A launcher holds one kind at a time, so switching between explosive and EMP puts what's left back in your bag.</p>
+          <p class="mt8">Special rounds and grenades that call for a save use <b>DC <span data-r="ITEM_DC">15</span></b>. <b>Incendiary</b> rounds and grenades set the target <b>BURNING</b>.</p>
+          <p class="mt8"><b>EMP rounds</b> are for explosive weapons only. EMP hand grenades load into launchers too. Grenade and Rocket Launchers are the only guns that can load them, at any tier. A launcher holds one kind at a time, so switching between explosive and EMP puts what's left back in your bag.</p>
+          <h3 class="mt18" id="r-grenades">Hand grenades</h3>
+          <p class="mt8">Thrown, not fired. Each one is used up when you throw it, and they stack in your bag like meds.</p>
+          <div id="rGrenades"></div>
           <p class="mt8"><b>Smart Ammo</b> is the standard ammo for smart weapons. Smart weapons can't take special rounds, and you need the <b>Nerd!</b> perk in the INT tree to use one. Without it you can carry a smart weapon, but you can't equip or fire it.</p>
           <p class="mt8"><b>Special rounds</b> are finite. Armor Piercing, Incendiary, Tracking, Tranquilizer and Toxin rounds come as Ammo items made for one ammo type, like Incendiary Pistol rounds. They only go in <b>tier 2 and up</b> guns, or a tier 1 gun that's <b>fortified</b>, and never in explosive or smart weapons. Loading them follows the normal RELOAD rules, and the whole clip goes special. When it runs dry, the next RELOAD is standard unless you load special again. Swap back early and the special rounds left in the clip go back in your bag. The DM sets what each round does.</p>
           <h3 class="mt18">Concealment</h3>
@@ -1671,7 +1685,7 @@ button:focus:not(:focus-visible){outline:none}
           <p>RAM is the fuel for reactions, hacks and some perks. Your max RAM is 4 + your RAM skill, plus whatever your installed cyberware adds. Your RAM skill is your INT mod plus your proficiency bonus if you're proficient in RAM, or twice it with double proficiency.</p>
           <p>The INT perk Extra Slot doubles your max RAM. Automation cuts every RAM cost by 1, so reactions only cost 1.</p>
           <h3 class="mt18">Overheated</h3>
-          <p class="mt8">If your RAM hits 0 your system overheats. You're stunned and can't do anything until your RAM comes back. The INT perk Insulated Wires keeps you from ever overheating. The DM can drain or restore your RAM at any time.</p>
+          <p class="mt8">If your RAM hits 0 your system overheats. You're stunned and can't do anything until your RAM comes back, and your internal wiring catches fire, so you're <b>BURNING</b> too. The INT perk Insulated Wires keeps you from ever overheating or catching fire. The DM can drain or restore your RAM at any time.</p>
           <h3 class="mt18">Cooldown round</h3>
           <p class="mt8">A cooldown round is a round where you use no RAM. After one, all your RAM comes back.</p>
         </div>
@@ -1712,6 +1726,7 @@ button:focus:not(:focus-visible){outline:none}
           <div id="rJackOut"></div>
           <p class="mt8"><b>Progress.</b> Safely jacking out undetected saves your progress within that network. Every Unsafe Jack-Out undoes any progress you made.</p>
           <h3 class="mt18">NET HP</h3>
+          <p class="mt8"><b>Bonus RAM</b> from meds or the DM is spent before your RAM. It works like bonus HP, so a new amount only counts if it's higher.</p>
           <p class="mt8">Netrunners have two HP pools, <b>IRL HP</b> and <b>NET HP</b>. NET HP matches your IRL HP unless an implant changes it. Black ICE mostly hits your NET HP, but your body can still be attacked while you're under. Some Black ICE, like a Hellhound's fire, and Daemons can also damage your IRL HP straight from The Net. The INT perk <b>Insulated Wires</b> halves that damage, rounded down.</p>
           <p class="mt8">If your NET HP hits 0 you Flatline and go into critical condition, and you start rolling death saves. Once you stabilize, your processors are <b>fried</b>. While fried you can't go into The Net and can't use more than <span data-r="NET_PROG.friedCap">3</span> RAM at a time. You need a Ripper to repair them, and you can't access The Net until your injuries heal.</p>
           <p class="muted fs-md mt8">Netrunners and anyone with Jack In installed get a Net panel on their character sheet, with their SHIELD and buttons that spend the RAM for SWORD, SHIELD react, SCAN Ping and Safe Jack-Out.</p>
@@ -1768,6 +1783,18 @@ button:focus:not(:focus-visible){outline:none}
           <p>Only a merc with the TEC Phenom perk <b>Fabricator</b> can create, upgrade or fortify items. Roll Craft against a DC the DM sets, then pay for the parts. To work on a crewmate's gear, they hand it to you and you hand it back.</p>
           <div id="rFab"></div>
           <p class="muted fs-md mt10">The Maintenance Crew perk lets you repair items with your Craft score. These prices are a draft until the GM sets them.</p>
+        </div>
+      </section>
+
+      <section class="rsec" id="r-meds"><h2>Meds, Boosts and Bonus HP</h2>
+        <div class="panel">
+          <p>Meds are consumables. Use one from your bag or a quick slot and the sheet does the rest. Heals ask for your roll, boosts show up under <b>Active effects</b> on Combat with an <b>End effect</b> button. There are no timers, the DM says when a minute is up.</p>
+          <div id="rMeds"></div>
+          <h3 class="mt18">Boosts</h3>
+          <p class="mt8">A stat boost adds straight to that stat's modifier, so your attacks, damage, skills and saves all go up. It never changes the score, so it can't unlock a perk tree. Boosts to the same stat don't stack.</p>
+          <p class="mt8">You can boost different stats at once, at a risk. Stacking a boost on a second stat takes a <b>DC <span data-r="BOOST_SAVE.dc">25</span> BOD save</b>, and if you're proficient in Medicine you add that bonus. Pass and you get the boosts. Fail and you still get them, but you go into <b>ROID RAGE</b> until they end. You attack anyone and anything around you with your full might, and you automatically fail every INT, TEC and COO check and save, Cyberpsychosis included.</p>
+          <h3 class="mt18">Bonus HP</h3>
+          <p class="mt8">Bonus HP works like temporary HP in 5e. Damage comes off it first, and it doesn't stack, so a new amount only counts if it's higher than what you have. It isn't healing, and it can't be healed back. Bonus RAM works the same way for RAM.</p>
         </div>
       </section>
 
@@ -2001,7 +2028,7 @@ button:focus:not(:focus-visible){outline:none}
   </div>
   </main>
 
-  <footer>Daemon Manual V0.77 · <button type="button" class="sitever linkbtn" data-wn="1">Site version <span class="sv">0.90</span></button> · Assembled by Brayan, Crafted by Manny. Made with Love.</footer>
+  <footer>Daemon Manual V0.77 · <button type="button" class="sitever linkbtn" data-wn="1">Site version <span class="sv">0.91</span></button> · Assembled by Brayan, Crafted by Manny. Made with Love.</footer>
 </div>
 <div class="toast" id="toast" role="status"></div>
 <div id="vignette" aria-hidden="true"></div>
@@ -2158,7 +2185,7 @@ const PERKS = {
   INT:{
     'A.r': {n:'Jack In', d:'You can enter The Net.'},
     'B.r': {n:'Nerd!', d:'Lets you use smart weapons. Without it you can carry one, but you can\'t equip or fire it.'},
-    'A.p': {n:'Insulated Wires', d:'Passive. You never overheat when your RAM hits 0, and NET attacks that would hurt your IRL HP, like a Hellhound\'s fire or a Daemon, only do half damage to it.'},
+    'A.p': {n:'Insulated Wires', d:'Passive. You never overheat when your RAM hits 0, your wiring never catches fire, so no BURNING from overheating or a Hellhound, and NET attacks that would hurt your IRL HP, like a Hellhound\'s fire or a Daemon, only do half damage to it.'},
     'S.p': {n:'Extra Slot', d:'Double your max RAM.'},
     'B.p': {n:'R.E.M.', d:'Hack multiple things at once. Each extra target costs half the original RAM.'},
     'A.ph':{n:'Who Let the Dogs Out', d:'Code 2 Hellhounds whenever you Jack In.'},
@@ -2198,7 +2225,7 @@ const glyph = p => p.unknown ? '?' : p.n.split(/\s+/).filter(w => /^[A-Za-z]/.te
 
 /* ================= STORAGE ================= */
 const KEY = 'daemon-mercs-v1';
-const SITE_VER = '0.90';   // shown in the footer and Settings, Controls. Bump with each release, and add a WHATS_NEW entry.
+const SITE_VER = '0.91';   // shown in the footer and Settings, Controls. Bump with each release, and add a WHATS_NEW entry.
 document.querySelectorAll('.sitever .sv').forEach(e => { e.textContent = SITE_VER; });
 // Save format. Bump SAVE_V and add a step to MIGRATIONS when a rules change means old mercs need updating.
 // Each step gets a merc saved at the version before it and returns it updated. Steps run in order on load.
@@ -2250,6 +2277,26 @@ const NET_PROG = {
 // Hot-swap chrome. RipperDoc fee in eddies, RAM to swap a part in or out yourself.
 const HOTSWAP_COST = 500, HOTSWAP_RAM = 2;
 
+// Save DC for item and ammo effects, like special rounds and grenades.
+const ITEM_DC = 15;
+
+// Meds. heal is dice you roll, clears ends a status, bram is bonus RAM, fx is an effect that lasts until you end it.
+// st boosts add straight to a stat's modifier and never count toward unlocking perks. Boosts to the same stat don't stack.
+const MEDS = [
+  {n:'MaxDoc', price:150, d:'HEAL 3d6', heal:'3d6'},
+  {n:'Quick-Clot', price:100, d:'Ends BLEEDING', clears:'bleeding'},
+  {n:'Bounce Back', price:200, d:'HEAL 2d4 every ROUND for 1 minute', fx:{tick:'2d4'}},
+  {n:'RAM Jolt', price:500, d:'+5 bonus RAM', bram:5},
+  {n:'Booster', price:500, d:'+60 bonus HP for 1 minute', fx:{bhp:60}},
+  {n:'Jitterbug', price:600, d:'+2 REF and +10 MOVE for 1 minute', fx:{st:{REF:2}, move:10}},
+  {n:'Rambe Rumbler', price:600, d:'+2 STR and +40 bonus HP for 1 minute', fx:{st:{STR:2}, bhp:40}}
+];
+// Boosting a second stat while another is boosted takes this save. Fail and you get the boosts anyway, plus ROID RAGE.
+const BOOST_SAVE = {dc:25, stat:'BOD', skill:'Medicine'};
+
+// Hand grenades. Thrown, REF save against ITEM_DC, damage is the grenade's special type. No Armor Piercing grenades.
+const GRENADE = {range:60, dice:'5d6', save:'REF', kinds:['Incendiary', 'EMP', 'Tracking', 'Tranquilizer', 'Toxin']};
+
 // Fabricator prices in eddies. Upgrade is per tier of the item.
 const FAB_COST = {create:300, fortify:150, upgrade:200};
 
@@ -2270,12 +2317,13 @@ const QUICKHACKS = [   // cheapest first
   {id:'wipe', n:'Memory Wipe', ram:8, lvl:9, d:"Touch. INT save, no effect on a save. Erases the target's memory. Untraceable"},
   {id:'burnout', n:'Burnout', ram:10, lvl:11, d:'Touch. 5d10 damage to IRL and NET HP'},
   {id:'collapse', n:'Collapse', ram:10, lvl:11, d:'60 ft range, 20 ft radius. INT save. Targets fall unconscious for 1d4 + 1 rounds, or half as long on a save'},
-  {id:'detonate', n:'Detonate', ram:12, lvl:13, d:'30 ft range. 8d12 damage, INT save for half. A target that hits 0 HP from this is reduced to ash'}
+  {id:'detonate', n:'Detonate', ram:12, lvl:13, d:'30 ft range. 8d12 damage, INT save for half. A target that hits 0 HP from this is reduced to ash'},
+  {id:'pseudo', n:'Pseudo-Psycho', ram:12, lvl:13, d:'60 ft range. INT save, with disadvantage if the target is Charmed. Causes cyberpsychosis for 1d4 + 1 rounds. The target attacks its allies, and with none in view its cyberware malfunctions, dealing its CW Threshold as damage each round'}
 ];
 
 // Black ICE programs. hit is the attack bonus, per is passive PERCEPTION.
 const BLACK_ICE = [
-  {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:''},
+  {id:'hellhound', n:'Hellhound', ac:12, hp:16, hit:6, per:6, dmg:'2d6 NET damage and 1d6 fire damage to IRL HP', fx:'Its fire sets the target BURNING, unless they have Insulated Wires'},
   {id:'cobra', n:'Cobra', ac:12, hp:12, hit:6, per:4, dmg:'Drains 1d4+1 RAM', fx:''},
   {id:'raven', n:'Raven', ac:12, hp:10, hit:0, per:6, dmg:'No damage. Pings the netrunner, which reveals their physical location to other netrunners and warns the next Black ICE program that they\'re coming.', fx:''},
   {id:'skunk', n:'Skunk', ac:12, hp:8, hit:4, per:2, dmg:"−2 to the Netrunner's SLIDE checks, stacks with each hit", fx:''},
@@ -2303,7 +2351,7 @@ const WEAPON_TABLE = [
   {n:'Smart SMG', rof:4, dice:'2d4', dt:'piercing', st:'INT', kind:'gun', rng:'60', note:'smart, needs Nerd!', smart:true},
   {n:'Smart Rifle', rof:3, dice:'4d4', dt:'piercing', st:'INT', kind:'gun', rng:'80', note:'smart, needs Nerd!', smart:true},
   {n:'Sword', rof:2, dice:'2d6', dt:'slashing', st:'REF', kind:'melee', note:'finesse'},
-  {n:'Knife', rof:2, dice:'2d4', dt:'slashing', st:'REF', kind:'melee', note:'thrown, finesse'},
+  {n:'Knife', rof:2, dice:'2d4', dt:'slashing', st:'REF', kind:'melee', note:'thrown, finesse', thrown:'20/60'},
   {n:'Club', rof:2, dice:'2d4', dt:'bludgeoning', st:'STR', kind:'melee', note:''},
   {n:'Light Hammer', rof:2, dice:'2d6', dt:'bludgeoning', st:'STR', kind:'melee', note:''},
   {n:'Heavy Hammer', rof:1, dice:'4d6', dt:'bludgeoning', st:'STR', kind:'melee', note:'heavy, two-handed'}
@@ -2368,6 +2416,8 @@ const STATUS = [
   {id:'stunned', n:'Stunned', d:"Incapacitated, can't move and can barely speak. Fails STR and REF saves. Attacks against you have advantage."},
   {id:'unconscious', n:'Unconscious', d:'Incapacitated, can\'t move or speak and unaware of your surroundings. You drop what you\'re holding and fall prone. Hits from within 5 ft are crits.'},
   {id:'burning', n:'Burning', d:'Takes fire damage at the start of each turn until put out. Damage and how to put it out are TBD.', cyber:true},
+  {id:'burning', n:'Burning', d:'Takes fire damage at the top of each turn, half the fire damage that set them alight. Use an ACTION to put out the flames, or get doused.', amt:true},
+  {id:'roid', n:'ROID RAGE', d:'You attack anyone and anything around you with your full might. You automatically fail INT, TEC and COO checks and saves, Cyberpsychosis included. Ends when your boosts end.'},
   {id:'bleeding', n:'Bleeding', d:'Loses HP at the start of each turn until treated. Amount and treatment are TBD.', cyber:true},
   {id:'shocked', n:'Shocked', d:'Electrical damage scrambles your systems. Effect TBD.', cyber:true},
   {id:'emp', n:"EMP'd", d:'Cyberware goes offline. Which effects stop working, and for how long, is TBD.', cyber:true},
@@ -2392,7 +2442,7 @@ const SLOTMAP = Object.fromEntries(CYBER_SLOTS.map(s => [s[0], s]));
 // AC is 10 + REF mod + TEC mod. Installed chrome can add to it, and meds or consumables can add a temporary bonus.
 const acIn = t => { const m = /([+\-−]\s*\d+)\s*AC\b/i.exec(t || ''); return m ? parseInt(m[1].replace(/[−\s]/g, c => c === '−' ? '-' : '')) : 0; };
 const acChrome = m => (m.cyber || []).reduce((n, x) => n + (x.hot ? Math.ceil((x.ac || 0) / 2) : (x.ac || 0)), 0);
-const acBase = m => 10 + mod(score('REF', m)) + mod(score('TEC', m));
+const acBase = m => 10 + smod('REF', m) + smod('TEC', m);
 const acOf = m => acBase(m) + acChrome(m) + (m.acTemp || 0);
 const PORTRAIT_RE = /^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/;
 const numOrNull = v => (v === null || v === undefined || v === '' || isNaN(+v)) ? null : +v;
@@ -2474,7 +2524,9 @@ function normalize0(c){
       tierUsed: c.tierUsed ? Object.fromEntries(ORDER.map(k => [k, (v => Number.isFinite(v) ? Math.max(-1, Math.min(3, v)) : -1)(parseInt(c.tierUsed[k]))])) : null, pickLv: Math.max(0, parseInt(c.pickLv) || 0)
     } : {tierPicks: {}, tierUsed: Object.fromEntries(ORDER.map(k => [k, -1])), pickLv: 0}),
     ds: {p: Math.max(0, Math.min(3, parseInt((c.ds || {}).p) || 0)), f: Math.max(0, Math.min(3, parseInt((c.ds || {}).f) || 0))}, dead: !!c.dead,
-    status: (Array.isArray(c.status) ? c.status : []).filter(x => x && STATUSMAP[x.id]).map(x => ({id:x.id, r: x.r == null || x.r === '' ? null : Math.max(0, parseInt(x.r) || 0), v: Math.max(1, Math.min(6, parseInt(x.v) || 1))})),
+    status: (Array.isArray(c.status) ? c.status : []).filter(x => x && STATUSMAP[x.id]).map(x => ({id:x.id, r: x.r == null || x.r === '' ? null : Math.max(0, parseInt(x.r) || 0), v: STATUSMAP[x.id].amt ? Math.max(0, Math.min(99, parseInt(x.v) || 0)) : Math.max(1, Math.min(6, parseInt(x.v) || 1))})),
+    bhp: Math.max(0, Math.min(999, parseInt(c.bhp) || 0)), bram: Math.max(0, Math.min(99, parseInt(c.bram) || 0)),
+    fx: (Array.isArray(c.fx) ? c.fx : []).filter(f => f && f.n).slice(0, 12).map(f => ({id: String(f.id || uid()).slice(0, 24), n: String(f.n).slice(0, 40), d: String(f.d || '').slice(0, 120), st: Object.fromEntries(Object.entries(f.st || {}).filter(([k, v]) => ORDER.includes(k)).map(([k, v]) => [k, Math.max(-5, Math.min(5, parseInt(v) || 0))])), bhp: Math.max(0, parseInt(f.bhp) || 0), move: parseInt(f.move) || 0, tick: f.tick ? String(f.tick).slice(0, 12) : ''})),
     eddies: Math.max(0, parseInt(c.eddies) || 0),
     notes: String(c.notes || '').slice(0, 5000),
     psycho: !!c.psycho,
@@ -2507,7 +2559,7 @@ function fixEq(c){
 /* ================= SPATIAL INVENTORY ================= */
 // Backpack is always 6 wide. STR 10 gets 4 rows, each STR mod point adds or removes one.
 const BAG_COLS = 6, BAG_MAX_W = 6, BAG_MAX_H = 8;
-const bagRows = m => Math.max(1, Math.min(12, 4 + mod(score('STR', m))));
+const bagRows = m => Math.max(1, Math.min(12, 4 + smod('STR', m)));
 const SIZE_RULES = [
   [/heavy hammer|sledge|maul/i, 'Weapon', [4, 1]], [/light hammer/i, 'Weapon', [2, 1]], [/grenade launcher/i, 'Weapon', [4, 1]], [/hand ?cannon/i, 'Weapon', [2, 1]],
   [/sniper|lmg|hmg|minigun|railgun|launcher/i, 'Weapon', [5, 1]],
@@ -2547,7 +2599,7 @@ const GUN_ALIAS = {'Medium Pistol':'Light Pistol', 'Very Heavy Pistol':'Hand Can
 // The DM's weapon chart. Tier bonuses stack (see dmgBonus).
 const WT = Object.fromEntries(WEAPON_TABLE.map(w => [w.n, w]));
 // Range. First number is normal, second is with disadvantage, past it is a miss. One number means a fixed range.
-const rngText = n => { const w = WT[n]; return !w ? '' : w.kind === 'melee' ? 'Melee' : /\//.test(w.rng) ? `${w.rng} ft` : `${w.rng} ft fixed`; };
+const rngText = n => { const w = WT[n]; return !w ? '' : w.kind === 'melee' ? (w.thrown ? `Melee, thrown ${w.thrown} ft` : 'Melee') : /\//.test(w.rng) ? `${w.rng} ft` : `${w.rng} ft fixed`; };
 const MELEE_CLASSES = WEAPON_TABLE.filter(w => w.kind === 'melee').map(w => w.n);
 // Guess which chart weapon an item is from its name.
 function classGuess(name, stats){
@@ -2580,7 +2632,7 @@ function dmgText(cls, tier, m, dice, dt){
   const w = WT[cls], b = dmgBonus(cls, tier); if (!w) return '';
   dice = dice || w.dice; dt = dt || w.dt;
   let s = dice + (b.d4 ? ' + 1d4' : '');
-  if (m){ const n = b.flat + (b.mod ? mod(score(w.st, m)) : 0); if (n) s += n > 0 ? ` + ${n}` : ` − ${-n}`; }
+  if (m){ const n = b.flat + (b.mod ? smod(w.st, m) : 0); if (n) s += n > 0 ? ` + ${n}` : ` − ${-n}`; }
   else { if (b.flat) s += ` + ${b.flat}`; if (b.mod) s += ` + ${w.st} mod`; }
   return `${s} ${dt}`;
 }
@@ -2647,7 +2699,9 @@ const takesSpecial = g => { const k = ammoKind(g); return !!k && k !== EMP_ONLY 
 const roundsFor = (m, gun) => { const k = ammoKind(gun); return takesSpecial(gun) ? m.inv.filter(x => { const r = roundOf(x); return r && r.sp !== 'emp' && x.qty > 0 && (!r.ak || r.ak === k); }) : []; };
 // Launcher ammo is explosive rounds or EMP rounds. Launchers don't need a tier for EMP.
 const isEmp = i => !!i && i.type === 'Ammo' && /\bEMP\b/i.test(i.name);
-const launcherAmmo = i => !!i && i.type === 'Ammo' && i.qty > 0 && (isBoom(i) || isEmp(i));
+// EMP hand grenades work in launchers too.
+const isEmpG = i => !!i && i.type === 'Consumable' && /\bEMP\b/i.test(i.name) && /grenade/i.test(i.name);
+const launcherAmmo = i => !!i && i.qty > 0 && ((i.type === 'Ammo' && (isBoom(i) || isEmp(i))) || isEmpG(i));
 // Smart weapons need the Nerd! perk.
 const isSmart = i => !!i && i.type === 'Weapon' && !!(WT[i.wclass] || WT[i.gtype] || {}).smart;
 const nerdOK = (i, c = C) => !isSmart(i) || hasPerk(SMART_PERK, c);
@@ -2850,7 +2904,7 @@ function idCardCanvas(m){
       g.strokeStyle = rgbA(pal.light, .6); g.lineWidth = 1.5; g.strokeRect(x, y, 190, 92);
       g.fillStyle = '#2fe6f0'; g.font = font(500, 16); g.fillText(k, x + 14, y + 26);
       g.fillStyle = '#ffffff'; g.font = font(600, 40); g.fillText(String(score(k, m)), x + 14, y + 74);
-      g.fillStyle = '#ffe600'; g.font = font(500, 20); g.fillText(sgn(mod(score(k, m))), x + 120, y + 74); });
+      g.fillStyle = '#ffe600'; g.font = font(500, 20); g.fillText(sgn(smod(k, m)), x + 120, y + 74); });
     const ach = ACH.filter(a => m.ach[a.id]).length;
     g.fillStyle = 'rgba(255,255,255,.75)'; g.font = font(400, 17);
     [`${m.unlocked.length} PERK${m.unlocked.length === 1 ? '' : 'S'}`, `${m.cyber.length} CHROME`, `${ach} ACHIEVEMENT${ach === 1 ? '' : 'S'}`].forEach((t2, i) => g.fillText(t2, 90, 468 + i * 28));
@@ -2895,11 +2949,11 @@ function closeModal(){ const m = $('#modal'); m.hidden = true; m.innerHTML = '';
 function printSheet(){
   if (!C) return;
   const m = normalize(C), p = prof(m.level), it = id => m.inv.find(i => i.id === id);
-  const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<tr><td>${pf.level === 2 ? '◆◆' : pf.level ? '◆' : ''}</td><td>${n}</td><td>${st}</td><td>${sgn(mod(score(st, m)) + p * pf.level)}</td></tr>`; }).join('');
+  const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<tr><td>${pf.level === 2 ? '◆◆' : pf.level ? '◆' : ''}</td><td>${n}</td><td>${st}</td><td>${sgn(smod(st, m) + p * pf.level)}</td></tr>`; }).join('');
   const hm = m.hpMax;
   $('#printSheet').innerHTML = `<div class="ps">
     <div class="pshead"><div><h1>${esc(m.name)}</h1><p>${m.background} · ${m.role || 'No role'} · Level ${m.level} · Proficiency ${sgn(p)}</p></div><div class="psbrand">DAEMON MANUAL</div></div>
-    <div class="psgrid6">${ORDER.map(k => `<div><b>${k}</b><span>${score(k, m)}</span><i>${sgn(mod(score(k, m)))}</i></div>`).join('')}</div>
+    <div class="psgrid6">${ORDER.map(k => `<div><b>${k}</b><span>${score(k, m)}</span><i>${sgn(smod(k, m))}</i></div>`).join('')}</div>
     <div class="pscols">
       <div><h2>Vitals</h2><table>
         <tr><td>HP</td><td>${hm ? (m.hp ?? hm) + ' / ' + hm : '____ / ____'}</td></tr><tr><td>NET HP</td><td>${hm ? (m.netHp ?? hm) + ' / ' + hm : '____ / ____'}</td></tr>
@@ -2923,7 +2977,7 @@ function dmSheetHTML(p){
   const m = normalize(p.merc), pb = prof(m.level), it = id => m.inv.find(i => i.id === id);
   const hm = m.hpMax, hp = m.hp == null ? hm : m.hp, net = m.netHp == null ? hm : m.netHp;
   const profs = [...new Set([...m.bgSkills, ...(ROLES[m.role] ? ROLES[m.role].prof : [])])];
-  const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<div><span class="${pf.level ? 'p' : ''}">${pf.level === 2 ? '◆◆ ' : pf.level ? '◆ ' : ''}${n} <span class="muted">${st}</span></span><b>${sgn(mod(score(st, m)) + pb * pf.level)}</b></div>`; }).join('');
+  const sk = SKILLS.map(([n, st]) => { const pf = skillProf(n, st, m); return `<div><span class="${pf.level ? 'p' : ''}">${pf.level === 2 ? '◆◆ ' : pf.level ? '◆ ' : ''}${n} <span class="muted">${st}</span></span><b>${sgn(smod(st, m) + pb * pf.level)}</b></div>`; }).join('');
   const eqd = k => { const i = it(m.eq[k]); return i ? `<b>${esc(i.name)}</b>${i.type === 'Weapon' ? ` · ROF ${i.rof}${i.reload !== 'none' ? ' ' + i.reload.toUpperCase() : ''}${WT[i.wclass] ? ` · ${esc(dmgText(i.wclass, i.tier, m))}` : ''}${clipCap(i) ? ` · Ammo ${i.ammo == null ? clipCap(i) : i.ammo}/${clipCap(i)} ${CLIP_TXT[i.clip || 'std']}` : ''}${concealed(i) ? ' · Concealable' : ''}` : ''}${i.stats ? ' · ' + esc(i.stats) : ''}` : '<span class="muted">none</span>'; };
   const ach = ACH.filter(a => m.ach[a.id]).length;
   return `<div class="dsheet">
@@ -2932,7 +2986,7 @@ function dmSheetHTML(p){
     <div class="statgrid">${ORDER.map(k => statBox(k, score(k, m))).join('')}</div>
     <div class="cols"><div>
       <h4>Vitals</h4><div class="kv">
-        <span>AC</span><b>${acOf(m)} <span class="muted fs-sm">10 ${sgn(mod(score('REF', m)))} REF ${sgn(mod(score('TEC', m)))} TEC${acChrome(m) ? ' ' + sgn(acChrome(m)) + ' chrome' : ''}${m.acTemp ? ' ' + sgn(m.acTemp) + ' temp' : ''}</span></b>
+        <span>AC</span><b>${acOf(m)} <span class="muted fs-sm">10 ${sgn(smod('REF', m))} REF ${sgn(smod('TEC', m))} TEC${acChrome(m) ? ' ' + sgn(acChrome(m)) + ' chrome' : ''}${m.acTemp ? ' ' + sgn(m.acTemp) + ' temp' : ''}</span></b>
         <span>HP</span><b>${hm ? hp + ' / ' + hm : 'Not set'}</b>
         <span>NET HP</span><b>${hm ? net + ' / ' + hm : 'Not set'}</b>
         <span>RAM</span><b>${ramNow(m)} / ${ramMax(m)}</b>
@@ -3100,6 +3154,11 @@ function bagHTML(m, ro){
 
 /* ================= CHARACTER MATH ================= */
 const score = (st, c = C) => c.base[st] + c.asi.filter(k => k === st).length;
+// Boosts from meds add straight to the modifier. They never change the score, so they never unlock perks. Same stat boosts don't stack.
+const boostOf = (st, c = C) => Math.max(0, ...((c && c.fx) || []).map(f => (f.st || {})[st] || 0));
+const smod = (st, c = C) => mod(score(st, c)) + boostOf(st, c);
+const roid = (c = C) => !!c && (c.status || []).some(x => x.id === 'roid');
+const ROID_STATS = ['INT', 'TEC', 'COO'];
 // Role perk. Every merc gets one extra perk at level 1, and it has to come from one of their role's key stat trees.
 // Save proficiencies come from your role (DM, Nov 16). No role yet falls back to the 5e Fighter's STR and BOD.
 const ROLE_SAVES = {Netrunner:['INT', 'COO'], Bruiser:['BOD', 'STR'], Soldier:['STR', 'REF'], Technician:['TEC', 'INT'], Shinobi:['REF', 'COO']};
@@ -3484,7 +3543,10 @@ function updateHeat(){
   if (!C){ document.body.classList.remove('overheat'); return; }
   const on = isOverheated(), cur = ramNow(C);
   if (heatState.id === C.id){
-    if (on && !heatState.on) heatFx();
+    if (on && !heatState.on){ heatFx();
+      // Overheating sets your internal wiring on fire. Insulated Wires already keeps you from overheating at all.
+      if (!C.status.some(x => x.id === 'burning')) setTimeout(() => { if (!C || !isOverheated()) return; C.status.push({id:'burning', r:null, v:0}); toast('Your internal wiring caught fire. You\'re BURNING. Ask the DM for the damage, then put it out with an ACTION.', true); csSave(); }, 900);
+    }
     else if (!on && heatState.on) setTimeout(() => toast('Systems cooled. You can act again.', true), 1400);
     else if (!on && cur === 0 && heatState.ram > 0 && C.unlocked.includes(INSULATED)) setTimeout(() => toast('RAM hit 0, but Insulated Wires kept you from overheating.', true), 1400);
   }
@@ -3510,7 +3572,7 @@ function setJack(on, how){
   renderVitalsBar(); setTimeout(refreshEnv, flashOK() ? 200 : 0);
 }
 function jackOutModal(){
-  const cost = netCost(NET_PROG.safeOut.ram), locked = !!C.jackLock, ok = ramCur() >= cost && !locked;
+  const cost = netCost(NET_PROG.safeOut.ram), locked = !!C.jackLock, ok = ramHave() >= cost && !locked;
   const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
   m.innerHTML = `<div class="maxw440 mbox"><div class="sethead"><h3>Jack out</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="jopt"><button class="btn primary" data-m="safe" ${ok ? '' : 'disabled'}>Safe jack-out</button><p>Costs an ACTION and ${cost} RAM. Saves your progress in this network if you weren't detected.${locked ? ' Locked by Black ICE. Only an Unsafe Jack-Out gets you out.' : ok ? '' : ` You only have ${ramCur()} RAM.`}</p></div>
@@ -3519,7 +3581,7 @@ function jackOutModal(){
     const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return;
     if (b.dataset.m === 'close') return closeModal();
     closeModal();
-    if (b.dataset.m === 'safe'){ C.ram = ramCur() - cost; setJack(false, 'safe'); toast(`Jacked out safely. −${cost} RAM. That used your ACTION.`, true); }
+    if (b.dataset.m === 'safe'){ spendRam(cost); setJack(false, 'safe'); toast(`Jacked out safely. −${cost} RAM. That used your ACTION.`, true); }
     else { setJack(false, 'unsafe'); sfx('breach'); toast("Unsafe jack-out. Anything you didn't de-rez gets a free hit. Tell the DM."); }
     csSave(); if (liveMe()) flushLog(''); if (isOverheated()) setTimeout(() => heatFx(), 200);
   };
@@ -3564,7 +3626,9 @@ function renderVitalsBar(){
   const gun = C.inv.find(i => i.id === C.eq.primary && clipCap(i)), cap = gun && clipCap(gun), am = gun ? (gun.ammo == null ? cap : gun.ammo) : 0;
   const ammoC = gun ? `<div class="vb ammo ${am < gun.rof ? 'low' : ''}"><small>${gun.ld ? esc(SP[gun.ld].n) : 'Ammo'}</small><b>${am}<small> / ${cap}</small></b><span class="vfire"><button data-ammo="fire" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="−${gun.rof}, fire full ROF">−${gun.rof}</button>${gun.rof > 1 ? `<button data-ammo="one" data-i="${gun.id}" ${am ? '' : 'disabled'} aria-label="−1, fire a single shot">−1</button>` : ''}</span><button class="vrl" data-ammo="reload" data-i="${gun.id}" aria-label="Reload ${esc(gun.name)}" ${am >= cap ? 'disabled' : ''}>↻</button></div>` : '';
   const prev = {}; el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'); if (k && b && b.firstChild) prev[k] = parseInt(b.firstChild.nodeValue); });
-  el.innerHTML = (ENVS.jack ? netC + cell('RAM', ramCur(), ramMax(), true) + hpC + cell('AC', acOf(C)) : hpC + (showNet ? netC : '') + cell('RAM', ramCur(), ramMax(), true) + cell('AC', acOf(C))) + ammoC;
+  const bon = (h, n) => n ? h.replace('</b>', `<em class="vbon" title="Bonus, used up first">+${n}</em></b>`) : h;
+  const hpB = bon(hpC, C.bhp), ramB = bon(cell('RAM', ramCur(), ramMax(), true), C.bram);
+  el.innerHTML = (ENVS.jack ? netC + ramB + hpB + cell('AC', acOf(C)) : hpB + (showNet ? netC : '') + ramB + cell('AC', acOf(C))) + ammoC;
   if (prevMerc === C.id) el.querySelectorAll('.vb').forEach(v => { const k = (v.querySelector('small') || {}).textContent, b = v.querySelector('b'), now = b && b.firstChild ? parseInt(b.firstChild.nodeValue) : NaN; if (k in prev && Number.isFinite(prev[k]) && Number.isFinite(now) && prev[k] !== now){ fxCount(b.firstChild, prev[k], now); fxBump(b); if (k === 'HP' || k === 'NET HP') fxHit(v, now - prev[k], C.hpMax); if (k === 'NET HP' && now < prev[k]) HYPER.hit(); } });
   prevMerc = C.id;
   if (typeof ebHost !== 'undefined' && ebHost) try { ebSync(); } catch(e){}
@@ -3577,7 +3641,7 @@ let padFor = null;
 function hitVital(which, n){
   if (!C || !C.hpMax || !n) return;
   const hm = C.hpMax, key = which === 'net' ? 'netHp' : 'hp', pv = C[key] ?? hm;
-  C[key] = Math.max(0, Math.min(hm, pv + n)); sfx(n < 0 ? 'damage' : 'heal'); csSave();
+  if (key === 'hp' && n < 0) hurtHp(C, -n); else C[key] = Math.max(0, Math.min(hm, pv + n)); sfx(n < 0 ? 'damage' : 'heal'); csSave();
   if (pv > 0 && C[key] === 0) flatline(which === 'net' ? 'net' : 'body');
   if (padFor) renderPad();
 }
@@ -3631,7 +3695,7 @@ function renderSheetHead(){
     <div class="vital ${perkLeft() > 0 ? 'hot' : ''}"><span class="lbl">Perk points</span><div class="v">${perkLeft()} <small>/ ${perkTotal()}</small></div></div>
     <div class="vital ${asiLeft() > 0 ? 'hot' : ''}"><span class="lbl">Stat increases</span><div class="v">${asiLeft()} <small>${na ? 'next at lvl ' + na : 'all earned'}</small></div></div>
     <div class="vital"><span class="lbl">Max RAM</span><div class="v">${ramMax()}</div></div>
-    <div class="vital"><span class="lbl">HP per level</span><div class="v">10 + d10 <small>${sgn(mod(score('BOD')))}</small></div></div>
+    <div class="vital"><span class="lbl">HP per level</span><div class="v">10 + d10 <small>${sgn(smod('BOD'))}</small></div></div>
     <div class="vital"><span class="lbl">Proficiency</span><div class="v">${sgn(p)}</div></div>
   </div></template>
   ${coolPick && C.cool ? coolPickHTML() : ''}
@@ -3656,7 +3720,7 @@ function renderSheetHead(){
 }
 let coolPick = false;
 function coolPickHTML(){
-  const cm = mod(score('COO')), s = sgn(cm);
+  const cm = smod('COO'), s = sgn(cm);
   const live = LS && liveApi && liveState === 'on';
   const allies = live ? players.filter(p => p.merc && p.mercId !== C.id) : [];
   const cb = live && sessMeta && sessMeta.combat, foes = cb ? cb.list.map(c => ({name: c.name})) : live ? npcsPub.filter(n => !n.down) : [];
@@ -3670,7 +3734,7 @@ function coolPickHTML(){
 }
 function useCool(kind, who){
   if (!C || !C.cool) return;
-  const cm = mod(score('COO')), s = sgn(cm);
+  const cm = smod('COO'), s = sgn(cm);
   const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
   if (live) flushLog('');
   C.cool = Math.max(0, C.cool - 1); C.ctr.coolUsed++; coolPick = false; saveC();
@@ -3755,7 +3819,7 @@ function renderSkills(){
   $('#skillNote').innerHTML = `◆ proficient · ◆◆ double proficiency. Double proficiency needs the skill's stat to move two tiers past where you got it, and costs a tier pick or a second perk. Renamed skills show their old 5e name.`;
   $('#skills').innerHTML = SKILLS.map(([n, st, old]) => {
     const pf = skillProf(n, st);
-    const m = mod(score(st)) + p * pf.level;
+    const m = smod(st) + p * pf.level;
     const dis = hacked('short') || (hacked('optics') && (n === 'Perception' || n === 'Scan'));
     const info = SKILL_INFO[n];
     return `<div class="skill ${pf.level === 2 ? 'exp' : pf.level ? 'prof' : ''}" ${info ? `data-rule="${n}" data-rd="${esc(info)}" title="Tap for what ${n} does"` : ''}><span class="s">${n}${info ? ' <span class="muted" aria-hidden="true">ⓘ</span>' : ''}<small>${st}${old ? ' · was ' + old : ''}${pf.role ? ' · ' + C.role : ''}${pf.doubled ? ' · doubled by a tier pick' : pf.picked ? ' · tier pick' : ''}${pf.locked ? ' · double at ' + st + ' 17' : ''}</small></span><span class="m">${dis ? '<span class="disb">DIS</span> ' : ''}${sgn(m)}</span></div>`;
@@ -3976,6 +4040,14 @@ function toast(msg, good, quiet){
 }
 // What's new. Newest first. Add an entry at the top with each release and bump SITE_VER to match.
 const WHATS_NEW = [
+  {v:'0.91', items:[
+    'Meds. MaxDoc, Quick-Clot, Bounce Back, RAM Jolt, Booster, Jitterbug and Rambe Rumbler work straight from your bag. Boosts show under Active effects on Combat with an End effect button.',
+    'Stat boosts add to your modifier everywhere. Boosting a second stat takes a DC 25 BOD save, and failing it puts you in ROID RAGE.',
+    'Bonus HP and bonus RAM. They get used up first and the higher one counts, like 5e temporary HP.',
+    "BURNING. Overheating, a Hellhound's fire and Incendiary rounds or grenades set you alight. Take the damage at the top of your turn or put it out with an ACTION.",
+    'Hand grenades, the Pseudo-Psycho quickhack and a thrown Knife. Item and ammo saves are DC 15.',
+    "The Chrome tab doesn't spill out of its boxes on phones anymore."
+  ]},
   {v:'0.90', items:[
     'Smart weapons are here. Smart Pistol, Smart SMG and Smart Rifle run on INT and Smart Ammo, and you need the Nerd! perk to equip or fire one.',
     'EMP rounds now go in Grenade and Rocket Launchers only, at any tier.',
@@ -4029,12 +4101,12 @@ const cwLoad = (c = C) => Math.max(0, c.cyber.reduce((n, x) => n + (x.cw || 0), 
 const cwOver = (c = C) => Math.max(0, cwLoad(c) - cwTOf(c));
 // Overflow can go up to half your threshold, rounded up. Filling the last (red) overflow hex is the point of no return.
 // Threshold is 10 + your Cyberware skill bonus (TEC mod, plus proficiency if you have the skill, doubled if you doubled it).
-const cwTOf = c => Math.max(0, 10 + mod(score('TEC', c)) + prof(c.level || 1) * skillProf('Cyberware', 'TEC', c).level);
+const cwTOf = c => Math.max(0, 10 + smod('TEC', c) + prof(c.level || 1) * skillProf('Cyberware', 'TEC', c).level);
 const cwCap = c => Math.ceil(cwTOf(c) / 2);
 const cwMaxOf = c => cwTOf(c) + cwCap(c);
 const LIMB = k => LIMBS.find(x => x.k === k);
 const psyDC = c => 10 + (c.unlocked.includes('BOD.A.l') ? 1 : 2) * cwOver(c);
-const psyMod = c => mod(score('TEC', c)) + (c.unlocked.includes('COO.A.l') ? mod(score('COO', c)) : 0);
+const psyMod = c => smod('TEC', c) + (c.unlocked.includes('COO.A.l') ? smod('COO', c) : 0);
 function lostFix(m){ if (!Array.isArray(m.cyber)) return false; if (m.lostSave != null && cwLoad(m) <= m.lostSave) return false; if (!m.lost && cwCap(m) > 0 && cwLoad(m) >= cwMaxOf(m)){ m.lost = true; m.psycho = true; return true; } return false; }
 function lostFx(){
   const el = $('#flatline'); if (!el) return;
@@ -4065,14 +4137,14 @@ const qhNext = lv => { const n = QUICKHACKS.filter(q => q.lvl > lv).reduce((m, q
 const friedCap = (c = C) => !!c && c.status.some(x => x.id === 'fried');
 const hackDC = (c = C) => 10 + skillBonus('Hacking', 'INT', c);
 // Net combat. SWORD and SHIELD run on HACKING and CODE. Automation cuts every RAM cost by 1.
-const skillBonus = (n, st, c = C) => mod(score(st, c)) + prof(c.level || 1) * skillProf(n, st, c).level;
+const skillBonus = (n, st, c = C) => smod(st, c) + prof(c.level || 1) * skillProf(n, st, c).level;
 const shieldOf = (c = C) => NET_PROG.shield.base + skillBonus('Code', 'INT', c);
 const netCost = (n, c = C) => Math.max(0, n - (hasPerk('INT.S.ph', c) ? 1 : 0));
 const swordCost = (k, c = C) => netCost(NET_PROG.sword.ram + NET_PROG.sword.extra * (k - 1), c);
 let swordN = 1;
 function netPanel(){
   if (!canJack()) return '';
-  const fried = C.status.some(x => x.id === 'fried'), lock = hacked('lockout'), rc = ramCur(), code = skillBonus('Code', 'INT');
+  const fried = C.status.some(x => x.id === 'fried'), lock = hacked('lockout'), rc = ramHave(), code = skillBonus('Code', 'INT');
   const btn = (n, label, cost, sub) => `<button class="qh ${fried || lock || rc < cost ? 'off' : ''}" data-act="net" data-n="${n}" ${fried || lock || rc < cost ? 'disabled' : ''}><b>${label}</b><span class="rc">${cost} RAM</span><small>${sub}</small></button>`;
   return `<div class="panel gap"><div class="row"><h3>The Net</h3><span class="spacer"></span><span class="muted fs-md">RAM ${rc} / ${ramMax()} · NET HP ${netNow(C) ?? '—'}</span></div>
     <div class="row" style="gap:18px;margin:8px 0 12px;align-items:flex-end"><div><span class="lbl m0">Shield</span><div class="num fs-4xl">${shieldOf()}</div><span class="muted fs-sm">${NET_PROG.shield.base} ${sgn(code)} CODE · react makes it ${NET_PROG.shield.base + 2 * code}</span></div>
@@ -4121,7 +4193,8 @@ const GEN = {
   models: ['Viper','Hornet','Jackal','Mamba','Wraith','Lynx','Bastion','Torque','Riot','Halo','Spectre','Grinder','Nomad','Cinder','Saint','Razorback','Howler','Mantle','Pike','Dusk'],
   weapons: WEAPON_TABLE.map(w => [w.n, `${w.dice} ${w.dt}`, w.note, w.kind === 'melee' ? w.n : w.n]),
   items: {
-    Consumable: [['Med Injector','Heal 2d4'],['Trauma Stim','Heal 4d4, then 1 level of exhaustion'],['Frag Grenade','3d6 in a 10 ft radius'],['EMP Grenade','Shorts out cyberware and drones in 10 ft'],['Smoke Grenade','Heavy obscurement in 15 ft'],['Focus Shot','Advantage on your next INT check'],['Flash Grenade','Blinds for 1 round, DEX save']],
+    // Meds and hand grenades come from the DM RULES block, so loot and the shop match the Rules page.
+    Consumable: [...MEDS.map(m => [m.n, m.d]), ...GRENADE.kinds.map(k => [`${k} Hand Grenade`, `Thrown ${GRENADE.range} ft. ${GRENADE.save} save DC ${ITEM_DC}. ${GRENADE.dice} ${k} damage${k === 'Incendiary' ? ' and BURNING' : ''}`])],
     Gear: [['Lockpick Kit','Advantage to pick mechanical locks'],['Handheld Scanner','Scan a target in 30 ft'],['Grapple Line','50 ft climb in one action'],['Burner Phone','Untraceable for one call'],['Data Shard','Holds one stolen file'],['Medkit','Stabilize a dying merc'],['Night Optics','Darkvision 60 ft while worn']],
     Armor: [['Armored Jacket','+1 AC'],['Ballistic Vest','+2 AC, disadvantage on Stealth'],['Riot Plate','+3 AC, heavy'],['Padded Hoodie','+1 AC, concealed'],['Combat Helmet','+1 AC vs ranged']],
     Ammo: [['Pistol Rounds','20 rounds'],['Rifle Rounds','30 rounds'],['Shotgun Shells','12 shells'],['Sniper Rounds','10 rounds']],
@@ -4257,7 +4330,7 @@ function renderRuleWeapons(){
 }
 // Rules tables built from the DM RULES block, so the page and the sheet never disagree.
 const RT = (head, rows) => `<table class="rtable">${head ? `<thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead>` : ''}<tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td>${i ? c : `<b>${c}</b>`}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-const RULE_NUM = {NET_PROG, DEATH_SAVE, HOTSWAP_COST, HOTSWAP_RAM, FAB_COST};
+const RULE_NUM = {NET_PROG, DEATH_SAVE, HOTSWAP_COST, HOTSWAP_RAM, FAB_COST, ITEM_DC, BOOST_SAVE};
 function renderRuleData(){
   const put = (id, h) => { const el = $('#' + id); if (el) el.innerHTML = h; };
   const np = NET_PROG;
@@ -4279,6 +4352,8 @@ function renderRuleData(){
     ['Fortify', `${FAB_COST.fortify} €$`, "The item is reinforced and tagged FORT. Fortified items don't drop tiers when damaged"]]));
   put('rHacks', RT(['Hack', 'Effect'], Object.values(HACKS).map(h => [h.n, esc(h.d.replace(/\.$/, ''))])));
   put('rLimbs', RT(['1d6', 'Limb', 'Effect'], LIMBS.map((L, i) => [i + 1, L.n, L.e])));
+  put('rMeds', RT(['Med', 'Price', 'Effect'], MEDS.map(m => [m.n, `${m.price} €$`, m.d])));
+  put('rGrenades', RT(['Grenade', 'Range', 'Save', 'Damage'], GRENADE.kinds.map(k => [k, `${GRENADE.range} ft`, `${GRENADE.save} DC ${ITEM_DC}`, `${GRENADE.dice} ${k}${k === 'Incendiary' ? ', BURNING' : ''}`])));
   document.querySelectorAll('[data-r]').forEach(el => { const v = el.dataset.r.split('.').reduce((o, k) => o == null ? o : o[k], RULE_NUM); if (v != null) el.textContent = v; });
 }
 function renderRuleTiers(){
@@ -4292,7 +4367,7 @@ function renderRuleTiers(){
 const canFab = (c = C) => c.unlocked.includes(FABRICATOR);
 const upCost = i => FAB_COST.upgrade * (i.tier + 1);
 function driveHTML(){
-  const lv = skillProf('Vehicle', 'TEC').level, ds = driveSet(), vb = mod(score('TEC'));
+  const lv = skillProf('Vehicle', 'TEC').level, ds = driveSet(), vb = smod('TEC');
   // Car or Bike is picked once, when the merc is made. Older mercs that never picked get one pick here.
   const pick = lv || C.vpick ? '' : `<div class="row gap6 mt6"><span class="muted fs-sm">No Vehicle proficiency. Pick the one you drive well, it's locked after</span><button class="btn small" data-act="vpick" data-v="car">Car</button><button class="btn small" data-act="vpick" data-v="bike">Bike</button></div>`;
   return `<div class="drive"><div><span class="muted fs-sm">Drives well</span> <b>${ds.length ? ds.map(k => VK[k]).join(', ') : 'Pick Car or Bike'}</b></div>
@@ -4305,7 +4380,7 @@ const cyberRam = (c = C) => (c.hacks || []).includes('cyber') ? 0 : c.cyber.redu
 const canRip = (c = C) => c.unlocked.includes(RIPPER);
 const INSULATED = 'INT.A.p';
 function ramNow(c){ const mx = ramMax(c); return c.ram == null ? mx : Math.max(0, Math.min(c.ram, mx)); }
-const isOverheated = (c = C) => !!c && ramMax(c) > 0 && ramNow(c) <= 0 && !c.unlocked.includes(INSULATED);
+const isOverheated = (c = C) => !!c && ramMax(c) > 0 && ramNow(c) <= 0 && !(c.bram > 0) && !c.unlocked.includes(INSULATED);
 function stunned(){ if (!isOverheated()) return false; toast("You're OVERHEATED. You can't do anything until your RAM comes back."); return true; }
 const hacked = (k, c = C) => !!c && (c.hacks || []).includes(k);
 function blocked(k){ if (!hacked(k)) return false; toast(`Blocked. ${HACKS[k].n} is messing with your systems.`); return true; }
@@ -4317,6 +4392,10 @@ const ramBase = (c = C) => Math.max(0, 4 + skillBonus('RAM', 'INT', c) + cyberRa
 const ramMax = (c = C) => ramBase(c) * (hasPerk('INT.S.p', c) ? 2 : 1);
 const reactCost = (c = C) => hasPerk('INT.S.ph', c) ? 1 : 2;
 const ramCur = () => C.ram == null ? ramMax() : Math.max(0, Math.min(C.ram, ramMax()));
+// Bonus RAM and bonus HP are spent first. Like 5e temporary HP they don't stack, a new one only counts if it's higher.
+const ramHave = () => ramCur() + (C.bram || 0);
+function spendRam(n){ n = Math.max(0, n | 0); const b = Math.min(C.bram || 0, n); C.bram = (C.bram || 0) - b; C.ram = Math.max(0, ramCur() - (n - b)); }
+function hurtHp(m, n){ n = Math.max(0, n | 0); const b = Math.min(m.bhp || 0, n); m.bhp = (m.bhp || 0) - b; const cur = m.hp == null ? m.hpMax : m.hp; m.hp = Math.max(0, cur - (n - b)); return n - b; }
 let sheetTab = 'combat', cyberForm = null, delItem = null, psyConfirm = false;
 // Combat, Gear, Chrome and Profile are views of the same sheet (#vCS). Party shows the live session. Old names still work.
 const CS_TABS = ['combat', 'gear', 'chrome', 'profile'], TAB_ALIAS = {cs:'combat', ach:'profile'};
@@ -4377,7 +4456,7 @@ document.addEventListener('click', e => {
   else {
     if (ammoKind(i) === 'Explosive'){
       const st = C.inv.filter(launcherAmmo);
-      if (a >= cap && !st.some(x => isEmp(x) !== (i.ld === 'emp'))) return toast("It's already loaded.");
+      if (a >= cap && !st.some(x => (isEmp(x) || isEmpG(x)) !== (i.ld === 'emp'))) return toast("It's already loaded.");
       if (!st.length) return toast('No explosive or EMP rounds in your bag. Launcher ammo is tracked, so you need to buy or find more.');
       if (st.length === 1) return loadBoom(i, st[0]);
       return boomModal(i, st);
@@ -4409,7 +4488,7 @@ function doReload(i, stack){
 }
 // Launchers top up from an explosive stack. What's already in the tube stays.
 function loadBoom(i, stack){
-  const cap = clipCap(i), emp = isEmp(stack);
+  const cap = clipCap(i), emp = isEmp(stack) || isEmpG(stack);
   // The whole clip is one kind. Switching between explosive and EMP puts what's left back in your bag.
   if ((i.ammo || 0) > 0 && emp !== (i.ld === 'emp')){
     giveItem(C, {name: i.ld === 'emp' ? i.ldName : (i.bn || 'Explosive rounds'), type:'Ammo', qty:i.ammo, stats: i.ld === 'emp' ? (i.ldFx || '') : ''});
@@ -4426,7 +4505,7 @@ function loadBoom(i, stack){
 function boomModal(i, st){
   const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
   m.innerHTML = `<div class="maxw440 mbox"><div class="sethead"><h3>Reload ${esc(i.name)}</h3><span class="spacer"></span><button class="btn small" data-m="close" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    ${st.map(x => `<div class="jopt"><button class="btn primary" data-m="${x.id}">${esc(x.name)} ×${x.qty}</button><p>${esc(x.stats || (isEmp(x) ? 'EMP rounds. The DM has the effect.' : 'Explosive rounds.'))}</p></div>`).join('')}</div>`;
+    ${st.map(x => `<div class="jopt"><button class="btn primary" data-m="${x.id}">${esc(x.name)} ×${x.qty}</button><p>${esc(x.stats || (isEmp(x) || isEmpG(x) ? 'EMP rounds. The DM has the effect.' : 'Explosive rounds.'))}</p></div>`).join('')}</div>`;
   m.onclick = e => { const b = e.target.closest('[data-m]'); if (!b && e.target === m) return closeModal(); if (!b) return; closeModal(); if (b.dataset.m === 'close') return; const x = C.inv.find(y => y.id === b.dataset.m); if (x) loadBoom(i, x); };
 }
 function reloadModal(i){
@@ -4466,17 +4545,17 @@ function modsPanel(){
     const i = C.inv.find(x => x.id === C.eq[slot]); if (!i || i.type !== 'Weapon') return '';
     const w = WT[i.wclass], st = w ? w.st : i.reload === 'none' ? 'STR' : 'REF', t = i.tier || 0;
     const dmg = w ? dmgText(i.wclass, t, C) : (i.stats || '').split('·')[0].trim();
-    return row(esc(i.name), `d20 ${sgn(mod(score(st)) + pb + t)}`, `${st}${t ? ' · tier +' + t : ''}${dmg ? ' · ' + esc(dmg) : ''}${w ? ' · ' + rngText(i.wclass) : ''}`);
+    return row(esc(i.name), `d20 ${sgn(smod(st) + pb + t)}`, `${st}${t ? ' · tier +' + t : ''}${dmg ? ' · ' + esc(dmg) : ''}${w ? ' · ' + rngText(i.wclass) : ''}`);
   };
-  const unarmed = row('Unarmed', `d20 ${sgn(mod(score('STR')) + pb)}`, `STR · ${Math.max(1, 1 + mod(score('STR')))} bludgeoning`);
-  const sp = saveProfs(), saves = ['STR', 'REF', 'BOD', 'INT', 'TEC', 'COO'].map(k => `<div class="msave ${sp.includes(k) ? 'p' : ''}"><span>${k}</span><b>${sgn(mod(score(k)) + (sp.includes(k) ? pb : 0))}</b></div>`).join('');
+  const unarmed = row('Unarmed', `d20 ${sgn(smod('STR') + pb)}`, `STR · ${Math.max(1, 1 + smod('STR'))} bludgeoning`);
+  const sp = saveProfs(), rr = roid(), fail = k => rr && ROID_STATS.includes(k), saves = ['STR', 'REF', 'BOD', 'INT', 'TEC', 'COO'].map(k => `<div class="msave ${sp.includes(k) ? 'p' : ''} ${fail(k) ? 'fail' : ''}"><span>${k}</span><b>${fail(k) ? 'FAIL' : sgn(smod(k) + (sp.includes(k) ? pb : 0))}</b></div>`).join('');
   const sk = SKILLS.map(([n, st]) => ({n, st, l: skillProf(n, st).level})).filter(x => x.l > 0);
   return foldWrap('rolls', 'Your rolls', 'Add these to the dice at the table', `<div class="mods">
     <span class="lbl">Attacks</span>${atk('primary')}${atk('secondary')}${unarmed}
-    ${row('Initiative', `d20 ${sgn(mod(score('REF')))}`, 'REF')}${C.cyber.length ? row('Cyberpsychosis save', `d20 ${sgn(mod(score('TEC')))}`, `TEC vs DC ${psyDC(C)}`) : ''}${row('Hack DC', `${hackDC()}`, `10 ${sgn(skillBonus('Hacking', 'INT'))} Hacking · targets save with INT`)}
+    ${row('Initiative', `d20 ${sgn(smod('REF'))}`, 'REF')}${C.cyber.length ? row('Cyberpsychosis save', rr ? 'FAIL' : `d20 ${sgn(smod('TEC'))}`, rr ? 'ROID RAGE, fails automatically' : `TEC vs DC ${psyDC(C)}`) : ''}${row('Hack DC', `${hackDC()}`, `10 ${sgn(skillBonus('Hacking', 'INT'))} Hacking · targets save with INT`)}
     <span class="lbl mt12">Saving throws</span><div class="msaves">${saves}</div>
     <p class="mt4 mb0 mx0 muted fs-sm">Highlighted saves add your proficiency (+${pb}). ${C.role ? `${C.role}s are proficient in ${sp.join(' and ')} saves.` : 'Pick a role to set yours.'}</p>
-    ${sk.length ? `<span class="lbl mt12">Your skills</span><div class="mskills">${sk.map(x => `<span>${x.n}${x.l > 1 ? ' ◆◆' : ''}<b>${sgn(skillBonus(x.n, x.st))}</b></span>`).join('')}</div>` : ''}
+    ${sk.length ? `<span class="lbl mt12">Your skills</span><div class="mskills">${sk.map(x => `<span>${x.n}${x.l > 1 ? ' ◆◆' : ''}<b>${fail(x.st) ? 'FAIL' : sgn(skillBonus(x.n, x.st))}</b></span>`).join('')}</div>${C.fx.some(f => Object.keys(f.st || {}).length) ? `<p class="mt6 mb0 mx0 c-green fs-sm">Boosted ${[...new Set(C.fx.flatMap(f => Object.keys(f.st || {})))].map(k => k + ' ' + sgn(boostOf(k))).join(', ')}. Already counted in these numbers.</p>` : ''}` : ''}
   </div>`);
 }
 // Combat folds remember open or closed per device.
@@ -4484,6 +4563,49 @@ let FOLD = {}; try { FOLD = JSON.parse(localStorage.getItem('daemon-fold') || '{
 const foldOpen = k => FOLD[k] === true;   // folded by default
 document.addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.fold && d.open) fxPop(d.querySelectorAll('.qh, .mrow, .msave, .mskills > span'));
   if (d && d.dataset && d.dataset.fold){ FOLD[d.dataset.fold] = d.open; try { localStorage.setItem('daemon-fold', JSON.stringify(FOLD)); } catch(err){} } }, true);
+// Meds and hand grenades, matched by item name.
+const medOf = i => i && i.type === 'Consumable' ? MEDS.find(m => new RegExp('^\\s*' + m.n.replace(/[-\s]+/g, '[-\\s]*') + '\\b', 'i').test(i.name)) || null : null;
+const grenadeOf = i => { if (!i || !/hand\s*grenade|\bgrenade\b/i.test(i.name) || (i.type !== 'Consumable' && !(i.type === 'Ammo' && isEmp(i)))) return null; const k = GRENADE.kinds.find(x => new RegExp(x.slice(0, 5), 'i').test(i.name)); return {kind: k || null}; };
+const grenadeText = g => `Thrown ${GRENADE.range} ft. ${GRENADE.save} save DC ${ITEM_DC}. ${GRENADE.dice} ${g.kind ? g.kind + ' damage' : 'damage'}${g.kind === 'Incendiary' ? ' and BURNING' : ''}`;
+// A small two-button question in the modal. No rolling, the player rolls at the table and says how it went.
+function askBox(title, body, yes, no, onYes, onNo){
+  const m = $('#modal'); m.hidden = false; document.documentElement.classList.add('noscroll');
+  m.innerHTML = `<div class="mbox maxw460" role="dialog" aria-modal="true" aria-labelledby="askT"><h3 id="askT" class="m0">${title}</h3><div class="mt10">${body}</div><div class="row gap8 mt14"><span class="spacer"></span>${no ? `<button class="btn danger" data-ask="no">${no}</button>` : ''}<button class="btn primary" data-ask="yes">${yes}</button></div></div>`;
+  m.onclick = e => { const b = e.target.closest('[data-ask]'); if (!b) return; const inp = m.querySelector('input'), v = inp ? inp.value : null; closeModal(); (b.dataset.ask === 'yes' ? onYes : onNo || (() => {}))(v); };
+  requestAnimationFrame(() => { const f = m.querySelector('input') || m.querySelector('[data-ask=yes]'); if (f) f.focus(); });
+}
+function takeMed(i, med){
+  const done = msg => { i.qty--; if (i.qty <= 0){ C.inv = C.inv.filter(x => x !== i); fixEq(C); } sfx('heal'); toast(msg, true); csSave(); };
+  if (med.heal) return askBox(esc(med.n), `<p class="m0">Roll ${med.heal} and enter the total.</p><input type="number" min="1" class="mt8 w120" aria-label="Your ${med.heal} roll" inputmode="numeric">`, 'Heal', 'Cancel', v => {
+    const n = parseInt(v); if (!(n > 0)) return toast(`Enter your ${med.heal} roll.`);
+    const hm = C.hpMax || 0; if (hm) C.hp = Math.min(hm, (C.hp ?? hm) + n); done(`${med.n}. Healed ${n}.`);
+  });
+  if (med.clears){ const had = C.status.some(x => x.id === med.clears); C.status = C.status.filter(x => x.id !== med.clears); return done(`${med.n}. ${had ? STATUSMAP[med.clears].n + ' is gone.' : 'Nothing to clear, but it\'s used.'}`); }
+  if (med.bram){ const was = C.bram || 0; C.bram = Math.max(was, med.bram); return done(`${med.n}. ${C.bram > was ? `+${med.bram} bonus RAM.` : `You already had ${was} bonus RAM, so it didn't stack.`}`); }
+  const f = med.fx || {}, add = () => {
+    const st = f.st || {}, same = Object.keys(st).filter(k => C.fx.some(x => (x.st || {})[k]));
+    C.fx = C.fx.filter(x => !(x.n === med.n));   // taking the same med again refreshes it
+    C.fx.push({id: uid(), n: med.n, d: med.d.replace(/ for 1 minute$/i, ''), st, bhp: f.bhp || 0, move: f.move || 0, tick: f.tick || ''});
+    if (f.bhp) C.bhp = Math.max(C.bhp || 0, f.bhp);
+    return same;
+  };
+  const st = Object.keys(f.st || {}), others = C.fx.filter(x => x.n !== med.n && Object.keys(x.st || {}).some(k => !st.includes(k)) && Object.keys(x.st || {}).length);
+  if (st.length && others.length){
+    const bonus = smod(BOOST_SAVE.stat) + prof(C.level) * skillProf(BOOST_SAVE.skill, 'TEC').level;
+    const medP = skillProf(BOOST_SAVE.skill, 'TEC').level;
+    return askBox('Boosting another stat', `<p class="m0">You're already boosted. Stacking a boost on a different stat takes a <b>DC ${BOOST_SAVE.dc} ${BOOST_SAVE.stat} save</b>. Roll d20 ${sgn(smod(BOOST_SAVE.stat))} ${BOOST_SAVE.stat}${medP ? ` ${sgn(prof(C.level) * medP)} Medicine, so d20 ${sgn(bonus)}` : ''}.</p><p class="mt8 mb0 mx0 muted fs-md">Either way you get the boosts. Fail and you go into ROID RAGE until they end.</p>`,
+      'I passed', 'I failed', () => { add(); done(`${med.n}. Boosted. You held it together.`); },
+      () => { add(); if (!C.status.some(x => x.id === 'roid')) C.status.push({id:'roid', r:null, v:1}); done(`${med.n}. Boosted, and you're in ROID RAGE.`); setTimeout(() => sfx('psycho'), 300); });
+  }
+  const same = add(); done(`${med.n}. ${med.d}.${same.length ? ` Boosts to the same stat don't stack, so this replaced the last one.` : ''}`);
+}
+function endFx(id){
+  const f = C.fx.find(x => x.id === id); if (!f) return;
+  C.fx = C.fx.filter(x => x !== f);
+  if (f.bhp && !C.fx.some(x => x.bhp)) C.bhp = 0;
+  if (!C.fx.some(x => Object.keys(x.st || {}).length)) C.status = C.status.filter(x => x.id !== 'roid');
+  sfx('select'); toast(`${f.n} wore off.`, true); csSave();
+}
 // Belt. Two quick slots for consumables plus every other consumable in the bag, all one tap from Use.
 function beltHTML(){
   const it = id => C.inv.find(x => x.id === id), cons = C.inv.filter(i => isCons(i) && i.qty > 0);
@@ -4524,18 +4646,19 @@ function renderCS0(){
     <p class="muted fs-base mt12">Proficient in ${SKILLS.filter(([n, st]) => skillProf(n, st).level).map(([n]) => n).join(', ') || 'nothing yet'} · ${C.unlocked.length} perk${C.unlocked.length === 1 ? '' : 's'} installed</p>
     ${pendingPicks(C).length ? `<div class="tpicks due mt10"><div class="row gap8"><span class="tpn">1 skill pick waiting</span><span class="muted fs-sm">A stat reached a new tier</span></div>${pickBoxHTML(C)}</div>` : ''}`;
   const hpBlock = hm == null
-    ? `<div class="track"><span class="lbl">HP</span><p class="mt4 mb10 mx0 muted fs-base">Level 1 HP is 10 + 10 + BOD mod, so ${Math.max(1, 20 + mod(score('BOD')))}. Every level after adds 10 + 1d10 + BOD mod. Enter your current max.</p>
-       <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" value="${C.level === 1 ? Math.max(1, 20 + mod(score('BOD'))) : ''}" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
+    ? `<div class="track"><span class="lbl">HP</span><p class="mt4 mb10 mx0 muted fs-base">Level 1 HP is 10 + 10 + BOD mod, so ${Math.max(1, 20 + smod('BOD'))}. Every level after adds 10 + 1d10 + BOD mod. Enter your current max.</p>
+       <div class="row"><input type="number" min="1" id="setHpMax" placeholder="Max" value="${C.level === 1 ? Math.max(1, 20 + smod('BOD')) : ''}" aria-label="Max HP"><button class="btn small primary" data-act="setHpMax">Set max HP</button></div></div>`
     : `<div class="track hpt"><div class="head"><span class="lbl m0">HP</span><span class="muted fs-sm">Max <input type="number" min="1" data-field="hpMax" value="${hm}" aria-label="Max HP"></span></div>
-       ${C.hpLv < C.level ? `<div class="lvhp"><b>Level ${C.hpLv + 1} HP</b> <span class="muted">Roll 1d10 and add 10 ${sgn(mod(score('BOD')))}. ${C.level - C.hpLv > 1 ? (C.level - C.hpLv) + ' level ups waiting.' : ''}</span>
+       ${C.hpLv < C.level ? `<div class="lvhp"><b>Level ${C.hpLv + 1} HP</b> <span class="muted">Roll 1d10 and add 10 ${sgn(smod('BOD'))}. ${C.level - C.hpLv > 1 ? (C.level - C.hpLv) + ' level ups waiting.' : ''}</span>
          <div class="row mt6"><input type="number" min="1" max="10" id="lvHpRoll" placeholder="d10" aria-label="Your d10 roll" class="w80"><button class="btn small primary" data-act="lvHp">Add</button><button class="btn small" data-act="lvHpRoll">Roll for me</button><button class="btn small" data-act="lvHpSkip" title="Already added it by hand">Skip</button></div></div>` : ''}
        <div class="num">${hp} <small>/ ${hm}</small></div><div class="bar"><i style="width:${pct(hp, hm)}%"></i></div>
-       <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div></div>
+       <div class="row"><input type="number" min="0" id="hpAmt" placeholder="Amt" aria-label="HP amount"><button class="btn small danger" data-act="dmg">Damage</button><button class="btn small" data-act="heal">Heal</button><button class="btn small" data-act="hpFull">Full</button></div>
+       <div class="bonrow"><span class="lbl m0">Bonus HP</span><input type="number" min="0" data-field="bhp" value="${C.bhp || ''}" placeholder="0" aria-label="Bonus HP" class="w80"><span class="muted fs-sm">Used up before your HP. Doesn't stack, keep the higher one.</span></div></div>
      <div class="track hpt"><div class="head"><span class="lbl m0">NET HP</span><span class="muted fs-sm">Netrunning pool ${canJack() || ENVS.jack ? `<button class="ml8 btn small ${ENVS.jack ? 'primary' : ''}" data-act="jack" ${ENVS.jack && C.jackLock ? 'title="Black ICE locked a Safe Jack-Out. Only an Unsafe one works"' : ''}>${ENVS.jack ? (C.jackLock ? 'Jack-out locked' : 'Jack out') : 'Jack in'}</button>` : ''}</span></div>
        <div class="num">${net} <small>/ ${hm}</small></div><div class="bar net"><i style="width:${pct(net, hm)}%"></i></div>
        <div class="row"><input type="number" min="0" id="netAmt" placeholder="Amt" aria-label="NET HP amount"><button class="btn small danger" data-act="netDmg">Damage</button><button class="btn small" data-act="netHeal">Heal</button><button class="btn small" data-act="netFull">Full</button></div></div>`;
   const acc = acChrome(C), act = C.acTemp || 0;
-  const acBlock = `<div class="track acbox"><div class="head"><span class="lbl m0">Armor class</span><span class="muted fs-sm">10 ${sgn(mod(score('REF')))} REF ${sgn(mod(score('TEC')))} TEC${acc ? ' ' + sgn(acc) + ' chrome' : ''}${act ? ' ' + sgn(act) + ' temporary' : ''}</span></div>
+  const acBlock = `<div class="track acbox"><div class="head"><span class="lbl m0">Armor class</span><span class="muted fs-sm">10 ${sgn(smod('REF'))} REF ${sgn(smod('TEC'))} TEC${acc ? ' ' + sgn(acc) + ' chrome' : ''}${act ? ' ' + sgn(act) + ' temporary' : ''}</span></div>
       <div class="acrow"><div class="acshield" aria-label="Armor class ${acOf(C)}"><svg viewBox="0 0 40 46" aria-hidden="true"><path d="M20 2 L37 8 V22 C37 33 29 41 20 44 C11 41 3 33 3 22 V8 Z"/></svg><b>${acOf(C)}</b></div>
       <div class="actemp"><span class="lbl m0">Temporary AC</span><div class="q"><button data-act="acT-" aria-label="Lower temporary AC">−</button><span>${sgn(act)}</span><button data-act="acT+" aria-label="Raise temporary AC">+</button>${act ? '<button class="btn small" data-act="acT0" style="width:auto;height:auto">Clear</button>' : ''}</div>
       <span class="muted fs-sm">From meds or consumables. Clear it when it wears off.</span></div></div></div>`;
@@ -4558,10 +4681,11 @@ function renderCS0(){
         : cwo ? `<div class="psysave"><button class="btn small danger" data-act="psyRoll">Roll Cyberpsychosis save</button><span class="muted fs-sm">d20 ${sgn(psyMod(C))} (TEC${hasPerk('COO.A.l') ? ' + COOL from Tranquility' : ''})${hasPerk('BOD.A.ph') ? ' with advantage from Theseus' : ''} against DC ${psyDC(C)}${hasPerk('BOD.A.l') ? ', halved by I\'m Special' : ''}</span></div>` : ''}
       <div class="row"><button class="btn small" data-act="cw-">−1</button><button class="btn small" data-act="cw+">+1</button><span class="muted fs-sm">Installed chrome fills this on its own. The DM sets your threshold, and your max is that plus half, rounded up.</span></div>
       ${hasPerk('TEC.A.l') ? '<p class="mt8 mb0 mx0 muted fs-sm">Limit Setter: the first piece that pushes you past your threshold won\'t make you a Cyberpsycho.</p>' : ''}</div>`;
-  const ramBlock = `<div class="track"><div class="head"><span class="lbl m0">RAM</span><span class="muted fs-sm">4 base ${sgn(mod(score('INT')))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
+  const ramBlock = `<div class="track"><div class="head"><span class="lbl m0">RAM</span><span class="muted fs-sm">4 base ${sgn(smod('INT'))} INT${cr ? ' ' + sgn(cr) + ' cyberware' : ''}${hasPerk('INT.S.p') ? ', ×2 Extra Slot' : ''}</span></div>
       <div class="num">${rc} <small>/ ${rm}</small></div>
       <div class="pips">${Array.from({length: rm}, (_, i) => `<i class="pip ${i < rc ? 'on' : ''}"></i>`).join('')}</div>
-      <div class="row"><button class="btn small" data-act="ram-1" ${hacked('lockout') ? 'disabled' : ''}>−1</button><button class="btn small" data-act="ram-2" ${hacked('lockout') ? 'disabled' : ''}>Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull" title="All RAM comes back after a round where you use none">Cooldown round</button></div></div>`;
+      <div class="row"><button class="btn small" data-act="ram-1" ${hacked('lockout') ? 'disabled' : ''}>−1</button><button class="btn small" data-act="ram-2" ${hacked('lockout') ? 'disabled' : ''}>Reaction −${reactCost()}</button><button class="btn small" data-act="ram+1">+1</button><button class="btn small" data-act="ramFull" title="All RAM comes back after a round where you use none">Cooldown round</button></div>
+      <div class="bonrow"><span class="lbl m0">Bonus RAM</span><input type="number" min="0" data-field="bram" value="${C.bram || ''}" placeholder="0" aria-label="Bonus RAM" class="w80"><span class="muted fs-sm">Spent before your RAM. Doesn't stack, keep the higher one.</span></div></div>`;
   const irow = i => {
     const p = C.eq.primary === i.id, s2 = C.eq.secondary === i.id;
     const others = liveMe() ? players.filter(x => x.id !== liveApi.uid) : [];
@@ -4607,7 +4731,7 @@ function renderCS0(){
       <div class="garage"><span class="lbl">Garage</span>${driveHTML()}${garage.length ? `<div class="floor">${garage.map(i => tileHTML(i, selItem === i.id ? 'sel' : '', '--w:2;--h:1')).join('')}</div>${garage.map(i => `<div class="vrow"><b>${esc(i.name)}</b>${vkTag(i)}</div>`).join('')}` : ''}</div>
     </div><div class="selcol">${selPanel}</div></div>`;
   const rip = canRip(), fab = canFab();
-  const craft = mod(score('TEC')) + prof(C.level) * skillProf('Craft', 'TEC').level;
+  const craft = smod('TEC') + prof(C.level) * skillProf('Craft', 'TEC').level;
   const psyBlock = `<div class="track psy ${C.psycho ? 'on' : ''}"><div class="head"><span class="lbl m0">Cyberpsychosis</span><span class="muted fs-sm">Saves at −5</span></div>
       <div class="num fs-xl">${C.psycho ? '<span class="gl" data-text="CYBERPSYCHO">CYBERPSYCHO</span>' : 'Stable'}</div>
       <div class="row mt8">${C.psycho ? '<button class="btn small" data-act="psyOff">Pull back</button>' : `<button class="btn small danger" data-act="psyOn">${psyConfirm ? 'Confirm. Lose it' : 'Lose it'}</button>`}</div></div>`;
@@ -4625,7 +4749,12 @@ function renderCS0(){
     : `<p class="fs-base mt6">Creating, upgrading and fortifying gear takes the TEC Phenom perk <b>Fabricator</b>. Find a crewmate who has it and hand them your gear.</p>`}
   </div>`;
   $('#vCS').dataset.sub = CS_TABS.includes(sheetTab) ? sheetTab : 'combat';
-  const vitP = `<div class="panel cs-vit"><h3 class="mb14">Vitals</h3>${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>`;
+  const burn = C.status.find(x => x.id === 'burning');
+  const fxBlock = !C.fx.length && !burn ? '' : `<div class="track fxbox"><div class="head"><span class="lbl m0">Active effects</span><span class="muted fs-sm">No timers. End one when the DM says it's over</span></div>
+      ${burn ? `<div class="fxrow burn"><div><b>BURNING</b><span>${burn.v ? `${burn.v} fire damage at the top of your turn` : 'Ask the DM how much fire damage you take each turn'}</span></div><div class="row gap6">${burn.v ? `<button class="btn small danger" data-act="burnTick">Take ${burn.v}</button>` : `<input type="number" min="1" id="burnV" placeholder="Dmg" aria-label="Burning damage per turn" class="w70"><button class="btn small" data-act="burnSet">Set</button>`}<button class="btn small" data-act="burnOut" title="Uses your ACTION">Put it out</button></div></div>` : ''}
+      ${C.fx.map(f => `<div class="fxrow"><div><b>${esc(f.n)}</b><span>${esc(f.d)}</span></div><button class="btn small" data-act="fxEnd" data-f="${f.id}">End effect</button></div>`).join('')}
+      ${roid() ? '<p class="mt6 mb0 mx0 c-red fs-md"><b>ROID RAGE.</b> You attack anyone and anything near you. INT, TEC and COO checks and saves fail automatically. It ends when your boosts do.</p>' : ''}</div>`;
+  const vitP = `<div class="panel cs-vit"><h3 class="mb14">Vitals</h3>${fxBlock}${acBlock}${hpBlock}${dsBlock}${stBlock}${ramBlock}</div>`;
   const eqP = `<div class="panel cs-eq"><h3 class="mb14">Equipped</h3><div class="eqslots">${eqCard('primary', 'Primary')}${eqCard('secondary', 'Secondary')}${eqCard('armor', 'Armor')}</div>${hasPerk('REF.A.l') ? '<div class="row gap mt12" style="align-items:center"><button class="btn small danger" data-act="limbRoll">Blender · Roll limb</button><span class="muted fs-sm">After a CRIT on a foe below 50 HP</span></div>' : ''}</div>`;
   $('#vCS').innerHTML = `
     <div class="panel gap" data-sub="profile"><div class="idwrap"><div class="gap8" style="display:grid;justify-items:start">${avatar(C, 'av lg')}
@@ -4642,7 +4771,7 @@ function renderCS0(){
     ${beltHTML()}
     ${modsPanel()}`}
     ${foldWrap('qh', 'Quickhacks', `RAM ${ramCur()} / ${ramMax()} · Cooldown round restores it all`, `<p class="mt0 mb10 mx0 fs-base">Your <b>Hack DC</b> is <b class="num fs-xl">${hackDC()}</b> <span class="muted fs-sm">10 ${sgn(skillBonus('Hacking', 'INT'))} Hacking. Targets make INT saves against it</span></p>${(() => { const nx = qhNext(C.level); return nx ? `<div class="qhnext"><span class="lkic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span>Next unlock at <b>level ${nx.lvl}</b> · ${nx.qs.map(q => q.n).join(' and ')}</span></div>` : '<div class="qhnext all"><span>Every quickhack is unlocked.</span></div>'; })()}
-<div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), lk = C.level < q.lvl, nw = !lk && q.lvl > 1 && q.lvl === C.level, fr = !lk && friedCap() && c > NET_PROG.friedCap, off = lk || fr || hacked('lockout') || ramCur() < c; return `<button class="qh ${off ? 'off' : ''} ${lk ? 'lk' : ''} ${nw ? 'nw' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${lk ? `Locked. Unlocks at level ${q.lvl}. ` : ''}${esc(q.d)}"><b>${q.n}</b>${lk ? `<span class="qlk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> LV ${q.lvl}</span>` : fr ? `<span class="qlk">FRIED · 3 MAX</span>` : `<span class="rc">${c} RAM</span>`}${nw ? '<span class="qnew">NEW</span>' : ''}<small>${lk ? `<span class="qlkt">Unlocks at level ${q.lvl}.</span> ` : ''}${esc(q.d)}</small></button>`; }).join('')}</div>
+<div class="qhs">${QUICKHACKS.map(q => { const c = qhCost(q), lk = C.level < q.lvl, nw = !lk && q.lvl > 1 && q.lvl === C.level, fr = !lk && friedCap() && c > NET_PROG.friedCap, off = lk || fr || hacked('lockout') || ramHave() < c; return `<button class="qh ${off ? 'off' : ''} ${lk ? 'lk' : ''} ${nw ? 'nw' : ''}" data-act="qh" data-q="${q.id}" ${off ? 'disabled' : ''} title="${lk ? `Locked. Unlocks at level ${q.lvl}. ` : ''}${esc(q.d)}"><b>${q.n}</b>${lk ? `<span class="qlk"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> LV ${q.lvl}</span>` : fr ? `<span class="qlk">FRIED · 3 MAX</span>` : `<span class="rc">${c} RAM</span>`}${nw ? '<span class="qnew">NEW</span>' : ''}<small>${lk ? `<span class="qlkt">Unlocks at level ${q.lvl}.</span> ` : ''}${esc(q.d)}</small></button>`; }).join('')}</div>
       <p class="muted fs-md mt10">${hacked('lockout') ? 'System Lockout. You can\'t run quickhacks until the DM clears it.' : C.unlocked.includes('INT.S.ph') ? 'Automation is cutting every cost by 1.' : 'Tap one to spend the RAM. Greyed out means you don\'t have enough.'}</p>`)}
     <div data-sub="combat" class="netwrap">${netPanel()}</div>
     </div><div class="csR">
@@ -4688,13 +4817,14 @@ function afterlife(){
   sfxFlatline();
   clearTimeout(flatline.t); flatline.t = setTimeout(() => { el.hidden = true; tx.textContent = 'FLATLINED'; tx.dataset.text = 'FLATLINED'; tx.classList.remove('afl'); }, flashOK() ? 6500 : 4000);
 }
-const statusChips = (m, ctl) => (m.status || []).map(x => { const s = STATUSMAP[x.id]; return `<span class="schip ${s.cyber ? 'cy' : ''}"><button type="button" class="schb" title="${esc(s.d)}" data-rule="${esc(s.n)}" data-rd="${esc(s.d)}"><b>${s.n}${s.lvl ? ' ' + x.v : ''}</b>${x.r != null ? `<i>${x.r} rd${x.r === 1 ? '' : 's'}</i>` : ''}</button>${ctl ? ctl(x) : ''}</span>`; }).join('');
+const statusChips = (m, ctl) => (m.status || []).map(x => { const s = STATUSMAP[x.id]; return `<span class="schip ${s.cyber ? 'cy' : ''}"><button type="button" class="schb" title="${esc(s.d)}" data-rule="${esc(s.n)}" data-rd="${esc(s.d)}"><b>${s.n}${s.lvl || (s.amt && x.v) ? ' ' + x.v : ''}</b>${x.r != null ? `<i>${x.r} rd${x.r === 1 ? '' : 's'}</i>` : ''}</button>${ctl ? ctl(x) : ''}</span>`; }).join('');
 const statusOpts = () => `<optgroup label="5e conditions">${STATUS.filter(s => !s.cyber).map(s => `<option value="${s.id}">${s.n}</option>`).join('')}</optgroup><optgroup label="Cyber (drafts)">${STATUS.filter(s => s.cyber).map(s => `<option value="${s.id}">${s.n}</option>`).join('')}</optgroup>`;
 function addStatus(m, id, r, v){
   const s = STATUSMAP[id]; if (!s) return;
   const ex = m.status.find(x => x.id === id), rr = r == null || r === '' || isNaN(+r) ? null : Math.max(1, parseInt(r));
-  if (ex){ if (s.lvl) ex.v = Math.min(6, ex.v + Math.max(1, parseInt(v) || 1)); ex.r = rr ?? ex.r; }
-  else m.status.push({id, r:rr, v:Math.max(1, Math.min(6, parseInt(v) || 1))});
+  const top = s.amt ? 99 : 6;
+  if (ex){ if (s.lvl) ex.v = Math.min(6, ex.v + Math.max(1, parseInt(v) || 1)); else if (s.amt) ex.v = Math.max(ex.v || 0, Math.min(top, parseInt(v) || 0)); ex.r = rr ?? ex.r; }
+  else m.status.push({id, r:rr, v: s.amt ? Math.max(0, Math.min(top, parseInt(v) || 0)) : Math.max(1, Math.min(top, parseInt(v) || 1))});
 }
 function tickStatus(m){
   const gone = [];
@@ -4851,8 +4981,8 @@ function installItem(i, slot){
   capWarn = null;
   if (!canRip()){
     if (!i.hot){ toast('Only a RipperDoc can install that.'); return false; }
-    if (ramCur() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return false; }
-    C.ram = ramCur() - HOTSWAP_RAM;
+    if (ramHave() < HOTSWAP_RAM){ toast(`Swapping in takes ${HOTSWAP_RAM} RAM.`); return false; }
+    spendRam(HOTSWAP_RAM);
   }
   const m = /RAM\s*([+\-−]?\d+)/i.exec(i.stats || '');
   const x = {id:uid(), slot, name:i.name, hot:i.hot, cw:i.cw || 0, tier:i.tier || 0, ...(WT[i.wc] ? {wc:i.wc} : {}), ac:acIn(i.stats), ram:m ? parseInt(m[1].replace('−', '-')) : 0, effect:(i.stats || '').replace(/RAM\s*[+\-−]?\d+\s*·?\s*/i, '').trim()};
@@ -5058,8 +5188,8 @@ $('#vCS').addEventListener('click', e => {
     if (x){
       if (!canRip()){
         if (!x.hot) return toast('Only a RipperDoc can take that out.');
-        if (ramCur() < HOTSWAP_RAM) return toast(`Swapping out takes ${HOTSWAP_RAM} RAM.`);
-        C.ram = ramCur() - HOTSWAP_RAM;
+        if (ramHave() < HOTSWAP_RAM) return toast(`Swapping out takes ${HOTSWAP_RAM} RAM.`);
+        spendRam(HOTSWAP_RAM);
       }
       C.cyber = C.cyber.filter(y => y !== x);
       C.inv.push({id:uid(), name:x.name, type:'Cyberware', qty:1, hot:x.hot, cw:x.cw || 0, tier:x.tier || 0, ...(WT[x.wc] ? {wc:x.wc} : {}), gx:null, gy:null, stats:[x.ram ? 'RAM ' + sgn(x.ram) : '', x.ac && !acIn(x.effect) ? sgn(x.ac) + ' AC' : '', x.effect].filter(Boolean).join(' · ')});
@@ -5080,19 +5210,25 @@ $('#vCS').addEventListener('click', e => {
   switch (t.dataset.act){
     case 'useC': {
       const i = C.inv.find(x => x.id === t.dataset.i); if (!i || !(i.qty > 0)) return;
+      const med = medOf(i); if (med) return takeMed(i, med);
+      const gr = grenadeOf(i); if (gr){ i.qty--; const left = i.qty; if (left <= 0){ C.inv = C.inv.filter(x => x !== i); fixEq(C); } sfx('select'); toast(`Threw ${i.name}. ${grenadeText(gr)}. ${left ? left + ' left.' : 'That was the last one.'}`, true); return csSave(); }
       i.qty--; const left = i.qty;
       if (left <= 0){ C.inv = C.inv.filter(x => x !== i); fixEq(C); }
       sfx('heal'); toast(`Used ${i.name}.${i.stats ? ' ' + i.stats + '.' : ''} ${left ? left + ' left.' : 'That was the last one.'}`, true);
       return csSave();
     }
+    case 'fxEnd': return endFx(t.dataset.f);
+    case 'burnTick': { const b = C.status.find(x => x.id === 'burning'); if (!b || !b.v) return; const pv = C.hp ?? hm; hurtHp(C, b.v); sfx('damage'); toast(`${b.v} fire damage.`); csSave(); if (pv > 0 && C.hp === 0) flatline('body'); return; }
+    case 'burnSet': { const b = C.status.find(x => x.id === 'burning'), n = parseInt(($('#burnV') || {}).value); if (!b || !(n > 0)) return toast('Enter the damage per turn.'); b.v = Math.min(99, n); return csSave(); }
+    case 'burnOut': C.status = C.status.filter(x => x.id !== 'burning'); sfx('heal'); toast('Flames out. That used your ACTION.', true); return csSave();
     case 'lvHp': case 'lvHpRoll': case 'lvHpSkip': {
       if (C.hpLv >= C.level) return;
       if (t.dataset.act === 'lvHpSkip'){ C.hpLv++; return csSave(); }
       const d = t.dataset.act === 'lvHpRoll' ? 1 + Math.floor(Math.random() * 10) : parseInt(($('#lvHpRoll') || {}).value);
       if (!(d >= 1 && d <= 10)) return toast('Enter your d10 roll, 1 to 10.');
-      const gain = Math.max(1, 10 + d + mod(score('BOD')));
+      const gain = Math.max(1, 10 + d + smod('BOD'));
       C.hpMax += gain; if (C.hp != null) C.hp += gain; if (C.netHp != null) C.netHp += gain; C.hpLv++;
-      sfx('heal'); toast(`${t.dataset.act === 'lvHpRoll' ? 'Rolled ' + d + '. ' : ''}+${gain} max HP (10 + ${d} ${sgn(mod(score('BOD')))}). Max HP is now ${C.hpMax}.`, true);
+      sfx('heal'); toast(`${t.dataset.act === 'lvHpRoll' ? 'Rolled ' + d + '. ' : ''}+${gain} max HP (10 + ${d} ${sgn(smod('BOD'))}). Max HP is now ${C.hpMax}.`, true);
       return csSave();
     }
     case 'lgIn': case 'lgOut': {
@@ -5104,7 +5240,7 @@ $('#vCS').addEventListener('click', e => {
     }
     case 'lgAll': ledgerAll = !ledgerAll; return renderCS();
     case 'setHpMax': { const v = parseInt($('#setHpMax').value); if (v > 0){ C.hpMax = v; C.hp = v; C.netHp = v; C.hpLv = C.level; } else toast('Enter your max HP first.'); return csSave(); }
-    case 'dmg': { const pv = C.hp ?? hm; C.hp = Math.max(0, pv - amt('hpAmt')); csSave(); if (pv > 0 && C.hp === 0) flatline('body'); return; }
+    case 'dmg': { const pv = C.hp ?? hm; hurtHp(C, amt('hpAmt')); csSave(); if (pv > 0 && C.hp === 0) flatline('body'); return; }
     case 'heal': C.hp = Math.min(hm, (C.hp ?? hm) + amt('hpAmt')); return csSave();
     case 'hpFull': C.hp = hm; return csSave();
     case 'netDmg': { const pv = C.netHp ?? hm; C.netHp = Math.max(0, pv - amt('netAmt')); csSave(); if (pv > 0 && C.netHp === 0) flatline('net'); return; }
@@ -5143,8 +5279,8 @@ $('#vCS').addEventListener('click', e => {
       csSave(); if (liveMe()) flushLog('');
       return;
     }
-    case 'ram-1': if (blocked('lockout')) return; C.ram = Math.max(0, ramCur() - 1); return csSave();
-    case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramCur() < rc) return toast('Not enough RAM for a reaction.'); C.ram = ramCur() - rc; return csSave(); }
+    case 'ram-1': if (blocked('lockout')) return; spendRam(1); return csSave();
+    case 'ram-2': { if (blocked('lockout')) return; const rc = reactCost(); if (ramHave() < rc) return toast('Not enough RAM for a reaction.'); spendRam(rc); return csSave(); }
     case 'ram+1': C.ram = Math.min(ramMax(), ramCur() + 1); return csSave();
     case 'ramFull': C.ram = null; return csSave();
     case 'net': {
@@ -5153,10 +5289,10 @@ $('#vCS').addEventListener('click', e => {
       if (t.dataset.n === 'jackout'){ if (!ENVS.jack) return toast("You're not jacked in."); if (C.jackLock) return toast("Black ICE locked a Safe Jack-Out. Tap Jack out for an Unsafe one."); }
       const n = t.dataset.n, cost = n === 'sword' ? swordCost(swordN) : netCost(n === 'shield' ? NET_PROG.shield.react : n === 'ping' ? NET_PROG.ping.ram : NET_PROG.safeOut.ram);
       const label = n === 'sword' ? `SWORD ×${swordN}` : n === 'shield' ? 'SHIELD react' : n === 'ping' ? 'SCAN Ping' : 'Safe Jack-Out';
-      if (ramCur() < cost) return toast(`${label} needs ${cost} RAM. You have ${ramCur()}.`);
+      if (ramHave() < cost) return toast(`${label} needs ${cost} RAM. You have ${ramHave()}.`);
       const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
       if (live) flushLog('');
-      C.ram = ramCur() - cost; saveC();
+      spendRam(cost); saveC();
       if (live){ logBase = normalize(C); liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:C.id, name:C.name, via:'The Net', lines:[{t:`${label} · −${cost} RAM (${ramCur()}/${ramMax()} left)`, k:'bad'}]}).catch(() => {}); }
       sfx(n === 'jackout' ? 'down' : 'breach');
       if (n !== 'jackout') HYPER.burst();
@@ -5172,10 +5308,10 @@ $('#vCS').addEventListener('click', e => {
       const q = QUICKHACKS.find(x => x.id === t.dataset.q); if (!q) return;
       if (C.level < q.lvl) return toast(`${q.n} unlocks at level ${q.lvl}.`);
       if (friedCap() && qhCost(q) > NET_PROG.friedCap) return toast(`Your processors are fried. You can't use more than ${NET_PROG.friedCap} RAM at a time.`);
-      const c = qhCost(q); if (ramCur() < c) return toast(`${q.n} needs ${c} RAM. You have ${ramCur()}.`);
+      const c = qhCost(q); if (ramHave() < c) return toast(`${q.n} needs ${c} RAM. You have ${ramHave()}.`);
       const live = LS && LS.role === 'player' && liveApi && liveState === 'on' && LS.mercId === C.id;
       if (live) flushLog('');
-      C.ram = ramCur() - c; saveC();
+      spendRam(c); saveC();
       if (live){ logBase = normalize(C); liveApi.addLog(LS.code, {at:Date.now(), uid:liveApi.uid, mercId:C.id, name:C.name, via:'Quickhack', lines:[{t:`${q.n} · −${c} RAM (${ramCur()}/${ramMax()} left)`, k:'bad'}]}).catch(() => {}); }
       sfx('breach'); if (flashOK()) coolFx(q.n.toUpperCase(), false);
       HYPER.burst();
@@ -5333,6 +5469,7 @@ $('#vCS').addEventListener('change', async e => {
   const f = t.dataset.field;
   if (f === 'notes'){ C.notes = t.value.slice(0, 5000); return saveC(); }
   if (f === 'role'){ if (!C.role && ROLES[t.value]){ C.role = t.value; toast(`${C.name} is a ${C.role}. Proficient in ${ROLES[C.role].prof.join(' and ')}. Roles are locked from here on.`, true); sfx('perk'); csSave(); renderSkills(); } return; }
+  if (f === 'bhp' || f === 'bram'){ C[f] = Math.max(0, Math.min(f === 'bhp' ? 999 : 99, parseInt(t.value) || 0)); return csSave(); }
   if (f === 'eddies'){ C.eddies = Math.max(0, parseInt(t.value) || 0); t.value = C.eddies; edNote = 'Edited by hand'; return csSave(); }
   if (f === 'hpMax'){
     const v = parseInt(t.value);
@@ -6558,7 +6695,11 @@ function applyOp(op){
     m.hacks = []; msg = 'Your systems are clean again.'; sound = 'heal';
   } else if (op.kind === 'status' && STATUSMAP[op.sid]){
     addStatus(m, op.sid, op.r, op.v); const x = m.status.find(y => y.id === op.sid);
-    msg = `The DM put you under ${STATUSMAP[op.sid].n}${STATUSMAP[op.sid].lvl ? ' ' + x.v : ''}${x.r != null ? ' for ' + x.r + ' round' + (x.r === 1 ? '' : 's') : ''}.`; sound = 'damage'; good = false;
+    msg = `The DM put you under ${STATUSMAP[op.sid].n}${STATUSMAP[op.sid].lvl || (STATUSMAP[op.sid].amt && x.v) ? ' ' + x.v : ''}${x.r != null ? ' for ' + x.r + ' round' + (x.r === 1 ? '' : 's') : ''}.`; sound = 'damage'; good = false;
+  } else if (op.kind === 'bonus'){
+    if (op.hp) m.bhp = Math.max(m.bhp || 0, parseInt(op.hp) || 0);
+    if (op.ram) m.bram = Math.max(m.bram || 0, parseInt(op.ram) || 0);
+    msg = `The DM gave you ${op.hp ? op.hp + ' bonus HP' : op.ram + ' bonus RAM'}. It's used up first.`; sound = 'heal';
   } else if (op.kind === 'unstatus' && STATUSMAP[op.sid]){
     m.status = m.status.filter(x => x.id !== op.sid); msg = `${STATUSMAP[op.sid].n} cleared by the DM.`; sound = 'heal';
   } else if (op.kind === 'tick'){
@@ -6577,9 +6718,10 @@ function applyOp(op){
     setTimeout(() => cyberpsycho(!!op.on), 50);
   } else if (op.kind === 'hp' && m.hpMax){
     const n = parseInt(op.amount) || 0, cur = m.hp == null ? m.hpMax : m.hp;
-    m.hp = Math.max(0, Math.min(m.hpMax, cur + n));
+    if (n < 0) hurtHp(m, -n); else m.hp = Math.max(0, Math.min(m.hpMax, cur + n));
+    if (op.burn && !(m.unlocked || []).includes(INSULATED)) addStatus(m, 'burning', null, op.burn);
     if (cur > 0 && m.hp === 0) setTimeout(() => flatline('body'), 50);
-    msg = n < 0 ? `The DM dealt ${-n} damage.` : `The DM healed you for ${n}.`; sound = n < 0 ? 'damage' : 'heal';
+    msg = n < 0 ? `The DM dealt ${-n} damage.${op.burn && !(m.unlocked || []).includes(INSULATED) ? ` You're BURNING, ${op.burn} a turn.` : ''}` : `The DM healed you for ${n}.`; sound = n < 0 ? 'damage' : 'heal';
   } else if (op.kind === 'net' && m.hpMax){
     const n = parseInt(op.amount) || 0, cur = m.netHp == null ? m.hpMax : m.netHp;
     m.netHp = Math.max(0, Math.min(m.hpMax, cur + n));
@@ -6591,7 +6733,7 @@ function applyOp(op){
     msg = `The DM ${n > 0 ? 'added to' : 'lowered'} your cyberware tally. ${nl} / ${cwTOf(m)}${nl > cwTOf(m) ? `, Cyberpsychosis DC +${(nl - cwTOf(m)) * 2}` : ''}.`; sound = n > 0 ? 'down' : 'up';
   } else if (op.kind === 'ramDelta'){
     const n = parseInt(op.amount) || 0, mx = ramMax(m), cur = ramNow(m);
-    m.ram = Math.max(0, Math.min(mx, cur + n));
+    if (n < 0){ const b = Math.min(m.bram || 0, -n); m.bram = (m.bram || 0) - b; m.ram = Math.max(0, cur + n + b); } else m.ram = Math.max(0, Math.min(mx, cur + n));
     msg = n < 0 ? `The DM drained ${Math.min(-n, cur)} RAM.` : `The DM gave you ${n} RAM.`; sound = n < 0 ? 'down' : 'up';
   } else if (op.kind === 'ram'){
     m.ram = null; msg = 'The DM restored your RAM.';
@@ -6707,12 +6849,12 @@ const STARTER = [
   ['SMG','Weapon','1d6 piercing, burst fire'],['Assault Rifle','Weapon','2d8 piercing, range 150 ft'],
   ['Shotgun','Weapon','2d8 piercing, close range'],['Sniper Rifle','Weapon','2d10 piercing, range 300 ft'],
   ['Katana','Weapon','1d10 slashing'],['Combat Knife','Weapon','1d4 slashing, thrown'],['Baseball Bat','Weapon','1d6 bludgeoning'],
-  ['Frag Grenade','Consumable','3d6 in a 10 ft radius'],['Med Injector','Consumable','Heal 2d4'],
+  ['Incendiary Hand Grenade','Consumable','Thrown 60 ft. REF save DC 15. 5d6 Incendiary damage and BURNING'],['MaxDoc','Consumable','HEAL 3d6'],
   ['Armored Jacket','Armor','+1 AC'],['Ammo Box','Ammo','20 rounds']
 ];
-const UNDOABLE = new Set(['hp-', 'hp+', 'net-', 'net+', 'irl-', 'ramd-', 'ramd+', 'ram', 'cw-', 'cw+', 'ed+', 'ed-', 'cool+', 'cool-', 'stApply', 'stRm', 'hack', 'unhack', 'unhack1', 'psy', 'xp1', 'dsP', 'dsF', 'jacklock', 'blast', 'restS', 'restL', 'revive']);
-const UNDO_F = ['hp', 'netHp', 'ram', 'eddies', 'cool', 'xp', 'status', 'hacks', 'cwAdj', 'psycho', 'jackLock', 'ds', 'dead', 'lost', 'lostSave'];
-const UNDO_TXT = {'hp-':'Damage', 'hp+':'Heal', 'net-':'NET damage', 'net+':'NET heal', 'irl-':'Net to body', 'ramd-':'RAM drain', 'ramd+':'RAM add', ram:'RAM restore', 'cw-':'Chrome −1', 'cw+':'Chrome +1', 'ed+':'Eddies', 'ed-':'Eddies', 'cool+':'COOL +1', 'cool-':'COOL −1', stApply:'Status', stRm:'Status cleared', hack:'Hack', unhack:'Hacks cleared', unhack1:'Hack cleared', psy:'Cyberpsycho', xp1:'XP', dsP:'Death save', dsF:'Death save', jacklock:'Jack-out lock', blast:'Party hit', restS:'Short rest', restL:'Long rest', revive:'Bring back'};
+const UNDOABLE = new Set(['hp-', 'hp+', 'net-', 'net+', 'irl-', 'hhfire', 'bhp', 'bram', 'ramd-', 'ramd+', 'ram', 'cw-', 'cw+', 'ed+', 'ed-', 'cool+', 'cool-', 'stApply', 'stRm', 'hack', 'unhack', 'unhack1', 'psy', 'xp1', 'dsP', 'dsF', 'jacklock', 'blast', 'restS', 'restL', 'revive']);
+const UNDO_F = ['hp', 'bhp', 'bram', 'netHp', 'ram', 'eddies', 'cool', 'xp', 'status', 'hacks', 'cwAdj', 'psycho', 'jackLock', 'ds', 'dead', 'lost', 'lostSave'];
+const UNDO_TXT = {'hp-':'Damage', 'hp+':'Heal', 'net-':'NET damage', 'net+':'NET heal', 'irl-':'Net to body', hhfire:'Hellhound fire', bhp:'Bonus HP', bram:'Bonus RAM', 'ramd-':'RAM drain', 'ramd+':'RAM add', ram:'RAM restore', 'cw-':'Chrome −1', 'cw+':'Chrome +1', 'ed+':'Eddies', 'ed-':'Eddies', 'cool+':'COOL +1', 'cool-':'COOL −1', stApply:'Status', stRm:'Status cleared', hack:'Hack', unhack:'Hacks cleared', unhack1:'Hack cleared', psy:'Cyberpsycho', xp1:'XP', dsP:'Death save', dsF:'Death save', jacklock:'Jack-out lock', blast:'Party hit', restS:'Short rest', restL:'Long rest', revive:'Bring back'};
 let undoCap = null; const undoStack = [];
 document.addEventListener('click', e => {
   const t = e.target.closest && e.target.closest('#liveBody button[data-live]'); if (!t || !LS || LS.role !== 'dm' || !UNDOABLE.has(t.dataset.live)) return;
@@ -6890,9 +7032,10 @@ function dmFocusHTML(p){
   if (dmSub === 'vitals') body = `<div class="ctlgrid">${amtRow}
       <span class="ctl">HP</span><div class="row"><button class="btn small danger" data-live="hp-" data-u="${k}">Damage</button><button class="btn small" data-live="hp+" data-u="${k}">Heal</button></div>
       <span class="ctl">NET HP</span><div class="row"><button class="btn small danger" data-live="net-" data-u="${k}">Damage</button><button class="btn small" data-live="net+" data-u="${k}">Heal</button></div>
-      <span class="ctl">Net to body</span><div class="row"><button class="btn small danger" data-live="irl-" data-u="${k}" title="IRL HP damage from Black ICE or a Daemon">Damage</button><span class="muted fs-sm">${m.unlocked.includes(INSULATED) ? 'Insulated Wires, takes half' : 'Hellhound fire, Daemons'}</span></div>
+      <span class="ctl">Net to body</span><div class="row"><button class="btn small danger" data-live="irl-" data-u="${k}" title="IRL HP damage from Black ICE or a Daemon">Damage</button><button class="btn small danger" data-live="hhfire" data-u="${k}" title="Hellhound fire damage to IRL HP. Sets them BURNING for half, unless they have Insulated Wires">Hellhound fire</button><span class="muted fs-sm">${m.unlocked.includes(INSULATED) ? 'Insulated Wires, takes half and never catches fire' : 'Daemons, Hellhounds'}</span></div>
+      <span class="ctl">Bonus</span><div class="row"><button class="btn small" data-live="bhp" data-u="${k}" title="Bonus HP, spent before HP. Doesn't stack, the higher one counts">Bonus HP</button><button class="btn small" data-live="bram" data-u="${k}" title="Bonus RAM, spent before RAM. Doesn't stack, the higher one counts">Bonus RAM</button><span class="muted fs-sm">${m.bhp ? m.bhp + ' HP ' : ''}${m.bram ? m.bram + ' RAM' : ''}</span></div>
       <span class="ctl">RAM</span><div class="row"><button class="btn small danger" data-live="ramd-" data-u="${k}">Drain</button><button class="btn small" data-live="ramd+" data-u="${k}">Add</button><button class="btn small" data-live="ram" data-u="${k}">Restore</button></div>
-      <span class="ctl">Status</span><div class="row"><select id="sts-${k}" aria-label="Status effect for ${esc(m.name)}">${statusOpts()}</select><input type="number" min="1" id="str-${k}" placeholder="Rds" aria-label="Rounds, blank means until removed" class="w70"><button class="btn small" data-live="stApply" data-u="${k}">Apply</button></div>
+      <span class="ctl">Status</span><div class="row"><select id="sts-${k}" aria-label="Status effect for ${esc(m.name)}">${statusOpts()}</select><input type="number" min="1" id="str-${k}" placeholder="Rds" aria-label="Rounds, blank means until removed" class="w70"><input type="number" min="1" id="stv-${k}" placeholder="Fire" aria-label="For Burning, the fire damage that set them alight. They take half each turn" title="For Burning, the fire damage that set them alight. They take half each turn" class="w70"><button class="btn small" data-live="stApply" data-u="${k}">Apply</button></div>
       <span class="ctl">COOL</span><div class="row"><button class="btn small primary" data-live="cool+" data-u="${k}">+1 Token</button>${m.cool ? `<button class="btn small" data-live="cool-" data-u="${k}">−1</button>` : ''}</div></div>`;
   if (dmSub === 'give') body = `<div class="ctlgrid">
       <span class="ctl">Item</span><div class="row"><select id="give-${k}" aria-label="Item to give" class="grow minw0">${lib.length ? lib.map(i => `<option value="${i.id}">${esc(i.name)} (${i.type})</option>`).join('') : '<option value="">Library is empty</option>'}</select><button class="btn small primary" data-live="give" data-u="${k}" ${lib.length ? '' : 'disabled'}>Give</button></div>
@@ -7321,6 +7464,20 @@ $('#liveBody').addEventListener('click', async e => {
     if (await sendOp(u, {kind:'xp', amount:n})) toast(`+${n.toLocaleString()} XP for ${pname(u)}.`, true);
     return;
   }
+  if (a === 'hhfire'){
+    const n = amt(); if (!n) return toast('Enter the fire damage first.');
+    const p = players.find(x => x.id === u), ins = !!(p && p.merc && (p.merc.unlocked || []).includes(INSULATED)), r = irlHit(u, n);
+    // One message carries both, so the damage and BURNING can't arrive apart.
+    if (await sendOp(u, {kind:'hp', amount:-r, ...(ins ? {} : {burn:Math.max(1, Math.floor(n / 2))})})){
+      toast(`${r} Hellhound fire to ${pname(u)}.${ins ? ' Insulated Wires halved it, and they don\'t catch fire.' : ` They're BURNING for ${Math.max(1, Math.floor(n / 2))} a turn.`}`, true);
+    }
+    return;
+  }
+  if (a === 'bhp' || a === 'bram'){
+    const n = amt(); if (!n) return toast('Enter an amount first.');
+    if (await sendOp(u, {kind:'bonus', [a === 'bhp' ? 'hp' : 'ram']:n})) toast(`${n} bonus ${a === 'bhp' ? 'HP' : 'RAM'} to ${pname(u)}. It only counts if it's higher than what they have.`, true);
+    return;
+  }
   if (a === 'irl-'){
     const n = amt(); if (!n) return toast('Enter an amount first.');
     const r = irlHit(u, n); if (await sendOp(u, {kind:'hp', amount:-r})) toast(`${r} Net to body damage to ${pname(u)}${r !== n ? ' (halved by Insulated Wires)' : ''}.`, true);
@@ -7395,7 +7552,7 @@ $('#liveBody').addEventListener('click', async e => {
     return leaveLive(true);
   }
   if (a === 'tickAll'){ for (const p of players) await sendOp(p.id, {kind:'tick'}); toast('Round over. Timed status effects counted down.', true); return; }
-  if (a === 'stApply'){ const id = ($('#sts-' + u) || {}).value, r = ($('#str-' + u) || {}).value; if (id && await sendOp(u, {kind:'status', sid:id, r:r || null, v:1})) toast(`${STATUSMAP[id].n} on ${pname(u)}.`, true); return; }
+  if (a === 'stApply'){ const id = ($('#sts-' + u) || {}).value, r = ($('#str-' + u) || {}).value, fire = parseInt(($('#stv-' + u) || {}).value) || 0; if (id && await sendOp(u, {kind:'status', sid:id, r:r || null, v: id === 'burning' ? (fire ? Math.max(1, Math.floor(fire / 2)) : 0) : 1})) toast(`${STATUSMAP[id].n} on ${pname(u)}.`, true); return; }
   if (a === 'stRm'){ if (await sendOp(u, {kind:'unstatus', sid:t.dataset.s})) toast(`Cleared ${STATUSMAP[t.dataset.s].n} for ${pname(u)}.`, true); return; }
   if (a === 'dsP' || a === 'dsF'){ if (await sendOp(u, {kind:'ds', pass:a === 'dsP'})) toast(`${a === 'dsP' ? 'Pass' : 'Fail'} logged for ${pname(u)}.`, true); return; }
   if (a === 'hp-' || a === 'hp+'){
@@ -7588,10 +7745,10 @@ function mercAttack(m){
   const i = m.inv.find(x => x.id === m.eq.primary), lv = prof(m.level || 1);
   if (i && i.type === 'Weapon'){
     const w = WT[i.wclass], t = i.tier || 0;
-    if (w) return {hit: mod(score(w.st, m)) + lv + t, avg: avgDice(dmgText(i.wclass, t, m)), n: w.kind === 'melee' ? 1 : (i.rof || w.rof || 1)};
-    const d = avgDice(i.stats); return {hit: mod(score('REF', m)) + lv + t, avg: d || 5, n: i.reload === 'none' ? 1 : (i.rof || 1)};
+    if (w) return {hit: smod(w.st, m) + lv + t, avg: avgDice(dmgText(i.wclass, t, m)), n: w.kind === 'melee' ? 1 : (i.rof || w.rof || 1)};
+    const d = avgDice(i.stats); return {hit: smod('REF', m) + lv + t, avg: d || 5, n: i.reload === 'none' ? 1 : (i.rof || 1)};
   }
-  return {hit: mod(score('STR', m)) + lv, avg: Math.max(1, 1 + mod(score('STR', m))), n: 1};
+  return {hit: smod('STR', m) + lv, avg: Math.max(1, 1 + smod('STR', m)), n: 1};
 }
 // NPC entries read their stats from the NPC list, so NPCs made before stats existed (or given stats later) still count.
 const encStat = c => { if (c.k !== 'npc') return c; const n = npcsDM.find(x => x.id === c.ref); if (!n) return c;
@@ -7736,7 +7893,7 @@ async function encAction(a, t){
     const c = enc.find(x => x.id === t.dataset.e); if (!c) return true;
     const d = t.dataset.d, n = d === 'dmg' || d === 'heal' ? Math.max(0, parseInt(($('#ea-' + c.id) || {}).value) || 0) : +d;
     if (!n){ toast('Enter an amount first.'); return true; }
-    const was = c.hp; c.hp = Math.max(0, Math.min(c.hpMax, c.hp + (d === 'dmg' ? -n : n)));
+    const was = c.hp; if (d === 'dmg') hurtHp(c, n); else c.hp = Math.max(0, Math.min(c.hpMax, c.hp + n));
     if (was > 0 && c.hp === 0) toast(`${c.name} is down.`, true); else sfx(d === 'dmg' ? 'damage' : 'heal');
     saveEnc(); renderLive(); return true;
   }

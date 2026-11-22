@@ -413,3 +413,9 @@ Cyberware slot names and counts are in `CYBER_SLOTS`.
 - Car or Bike (vpick) is chosen on the last creator step when the merc has no Vehicle proficiency, and Jack in waits for it. The sheet only offers a pick if vpick is empty, and it locks after one tap.
 - Walkthroughs (COACH). Each entry is a list of steps, each step a target finder, a title and a line of text. cH('Heading') finds a panel by its heading, cS('#id') by selector. Missing targets are skipped. coachSoon(key) runs one the first time that part opens. Seen keys live in daemon-coach, Skip all sets daemon-coach-off, and Settings, Controls can replay them. Tests set daemon-coach-off so cards don't cover clicks.
 - Panel opacity (PREFS.panelA, 10 to 100, default 88). applyPrefs sets --panel and --inbox (quickhacks, cyberware slots, vitals) and adds body.seethru below 70% for a text shadow. Toasts, the dock, modals and Settings stay solid.
+
+## Meds, boosts, bonus pools and BURNING (site version 0.91)
+- MEDS, BOOST_SAVE, GRENADE and ITEM_DC live in the DM RULES block. A consumable is a med or a hand grenade if its name matches (medOf, grenadeOf). The Rules tables and the loot generator read the same lists.
+- Stat boosts sit in C.fx and only change the modifier. Every modifier goes through smod(stat), which is mod(score) plus boostOf(stat). score() is untouched, so perks never unlock from a boost.
+- Bonus HP and RAM are C.bhp and C.bram. hurtHp() and spendRam() spend them first. New amounts keep the higher one.
+- BURNING is a status with an amount (amt). v is the damage per turn, 0 means the DM hasn't said yet. The DM's status row has a Fire box that halves what they type, and a Hellhound fire button that skips BURNING for Insulated Wires.
